@@ -1,0 +1,23 @@
+[model]
+temperature_c = 25.0
+temperature_tolerance_c = 0.5
+
+[sampler]
+n_walkers = 48
+n_steps = 5000
+burn = 1000
+
+[diagnostics]
+min_ess = 400.0
+min_steps_per_tau = 50.0
+acceptance_min = 0.20
+acceptance_max = 0.60
+
+[eig]
+n_outer = 300
+n_inner = 100
+max_measurements = 25
+
+[stop_rule]
+pcv_ci_half_width_pct = 8.0
+lm_ci_half_width_pct = 5.0

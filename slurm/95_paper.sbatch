@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=4G
+#SBATCH --time=00:20:00
+#SBATCH --job-name=magcore-paper
+#SBATCH --mail-type=END,FAIL
+
+set -Eeuo pipefail
+ROOT="$(cd "$1/source" && pwd -P)"
+source "$ROOT/slurm/common.sh"
+load_run "$1"
+init_task paper 0
+run_python "$MAGCORE_CODE_ROOT/scripts/validate_run.py" --run-dir "$MAGCORE_RUN_DIR" --mode verify-lock
+run_python - "$MAGCORE_RUN_DIR/figures/manifest.json" "$MAGCORE_RUN_DIR/freeze/release.json" <<'PY'
+import json, sys
+figures = json.load(open(sys.argv[1], encoding="utf-8"))
+release = json.load(open(sys.argv[2], encoding="utf-8"))
+if figures.get("freeze_id") != release["release_id"] or \
+        figures.get("release_manifest_sha256") != release["manifest_sha256"]:
+    raise SystemExit("paper figure provenance does not match locked release")
+PY
+MAIN_TEX="$MAGCORE_CODE_ROOT/paper/current_state/source/main.tex"
+[[ -f "$MAIN_TEX" ]] || { echo "FATAL: missing paper entry point $MAIN_TEX" >&2; exit 67; }
+BUILD_DIR="$MAGCORE_RUN_DIR/paper"
+mkdir -p "$BUILD_DIR"
+cd "$(dirname "$MAIN_TEX")"
+srun --ntasks=1 --cpus-per-task="$SLURM_CPUS_PER_TASK" --cpu-bind=cores \
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir="$BUILD_DIR" "$(basename "$MAIN_TEX")"
+PDF="$BUILD_DIR/$(basename "${MAIN_TEX%.tex}.pdf")"
+[[ -s "$PDF" ]]
+if command -v pdfinfo >/dev/null 2>&1; then
+    PAGES="$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')"
+    [[ "$PAGES" == "6" ]] || { echo "FATAL: conference paper must be exactly six pages" >&2; exit 68; }
+fi
+# latexmk keeps BibTeX's .bbl beside the source when the entry point is built
+# from its source directory, even though PDF/aux/log outputs use -outdir.
+BBL="$(dirname "$MAIN_TEX")/main.bbl"
+LOG="$BUILD_DIR/main.log"
+FLS="$BUILD_DIR/main.fls"
+[[ -s "$FLS" ]] || { echo "FATAL: missing LaTeX recorder output" >&2; exit 69; }
+grep -Fq 'INPUT ./tables/frozen_result_macros.tex' "$FLS" || {
+    echo "FATAL: paper did not consume locked result macros" >&2
+    exit 69
+}
+grep -Fq 'INPUT ./tables/frozen_results.tex' "$FLS" || {
+    echo "FATAL: paper did not consume locked recovery table" >&2
+    exit 69
+}
+if grep -Eq 'INPUT (\./)?tables/(result_values|recovery_table)\.tex' "$FLS"; then
+    echo "FATAL: paper consumed an unverified generated-result input" >&2
+    exit 69
+fi
+[[ -s "$BBL" ]] || { echo "FATAL: missing generated bibliography $BBL" >&2; exit 69; }
+[[ "$(grep -c '^\\bibitem' "$BBL")" == "35" ]] || {
+    echo "FATAL: paper must contain exactly 35 bibliography items" >&2
+    exit 69
+}
+if grep -Eq 'LaTeX Warning:.*undefined|Citation.*undefined|Reference.*undefined|Overfull|Fatal error|Emergency stop' "$LOG"; then
+    echo "FATAL: publication-blocking LaTeX diagnostic found" >&2
+    exit 70
+fi
+task_done

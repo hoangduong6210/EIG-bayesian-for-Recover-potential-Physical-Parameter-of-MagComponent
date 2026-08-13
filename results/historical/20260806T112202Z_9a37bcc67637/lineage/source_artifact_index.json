@@ -1,0 +1,102 @@
+{
+  "aggregation": {
+    "mean": "arithmetic mean",
+    "measured_error": "direct in-sample relative RMS from convergence-valid records",
+    "paired_reduction_pct": "100 * (uniform_count - eig_count) / uniform_count",
+    "sample_sd": "sample standard deviation with denominator n-1"
+  },
+  "freeze_id": "20260806T112202Z_9a37bcc67637",
+  "inputs": [
+    {
+      "path": "results/eig/seed42/eig_seed42.json",
+      "sha256": "f393bde4224b35fe19b33c3777735d212654117b269af61141d526b8e98cd8f9"
+    },
+    {
+      "path": "results/eig/seed43/eig_seed43.json",
+      "sha256": "3e74d8a186d3af4b72e7cfc7ab876fd4dd214719be00de368bee0b293787c3df"
+    },
+    {
+      "path": "results/eig/seed44/eig_seed44.json",
+      "sha256": "8b9bb682b7afd567f14e0c90ce77952a1ef4acaea43c244c524533993e83d74f"
+    },
+    {
+      "path": "results/eig/seed45/eig_seed45.json",
+      "sha256": "82c0f153441855d14fea42edbd4a5270384295eee43ab5b95ce655c7e6c47331"
+    },
+    {
+      "path": "results/eig/seed46/eig_seed46.json",
+      "sha256": "9d9f4607f40b58522aac9e4733129a114f68324386edd00c751f8944974bda75"
+    },
+    {
+      "path": "results/identifiability/0/identifiability.json",
+      "sha256": "cc3f27d6f204e946a97e53f9d52c853df105ea2af9ef82a67b0e7f3c733f2569"
+    },
+    {
+      "path": "results/measured_mu/N87_LEA_MTB/measured_mu_N87_LEA_MTB.json",
+      "sha256": "9112d11d9c4f52bedf278014919b242a5943c95b3afd62e5a2998d3eb9ec5ea4"
+    },
+    {
+      "path": "results/measured_mu/N95_LEA_MTB/measured_mu_N95_LEA_MTB.json",
+      "sha256": "79699f28589fc99b41e0e4950f91b789dfb25f09f79e516048cc03a674d671ae"
+    },
+    {
+      "path": "results/measured_pcv/3C95/measured_pcv_3C95.json",
+      "sha256": "40c25d09d39d4ff13e16728a80326c80e4a8d5d494f549ba2c527d7ce5623baf"
+    },
+    {
+      "path": "results/measured_pcv/N49/measured_pcv_N49.json",
+      "sha256": "e1f89f10be55a4e868af0300c75c6640b587437834a8f1f88b55d8d0c1fdfb52"
+    },
+    {
+      "path": "results/measured_pcv/N87/measured_pcv_N87.json",
+      "sha256": "c12e9192da844e474be168e42c7b524e21424465f3b4dc0c25a3673d6fdaae53"
+    },
+    {
+      "path": "results/measured_pcv/N95/measured_pcv_N95.json",
+      "sha256": "b7fa3125d67c73463945f217af3f76d11377be285dcbae7e4ea679c4d3ba81d9"
+    },
+    {
+      "path": "results/posterior/seed42/posterior_seed42.json",
+      "sha256": "9f30c881ed919b2182f04e0bef60892b6a75df7f47f3e5e66eb89fe0e85a133c"
+    },
+    {
+      "path": "results/posterior/seed43/posterior_seed43.json",
+      "sha256": "1aebb64c743b285640494d034d4a976a9430e694bfc7b4b90eab804ec5d2ef06"
+    },
+    {
+      "path": "results/posterior/seed44/posterior_seed44.json",
+      "sha256": "906a07c9da7b2f3bf016037b7aeb80e7bb445d6b2b3f83f483bcb90cf8c53cc8"
+    },
+    {
+      "path": "results/posterior/seed45/posterior_seed45.json",
+      "sha256": "29c40889329b68f0bd6f28148f87e6ba22bbbac3f6108c2568b32f8e160a0150"
+    },
+    {
+      "path": "results/posterior/seed46/posterior_seed46.json",
+      "sha256": "6bb69223e7d7798f5c0d348d89c170c2c12b668c33a2b839c740d1c403e03f94"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "summary/paper_summary.json",
+      "sha256": "0fc603ecd0ca7e94696c35f48ef7001165a4b9211e74d214c599425755c4c095"
+    },
+    {
+      "path": "summary/frozen_result_macros.tex",
+      "sha256": "b9fc490aac70b869d1c7bd86e2cb78d8d6e71e8f4abab440077ef1fa305d52da"
+    },
+    {
+      "path": "summary/frozen_results.tex",
+      "sha256": "9128792b8b683137568179178e32199eb3ba969aa5f58fc810d99018ef7455b1"
+    },
+    {
+      "path": "figures/synthetic_results.pdf",
+      "sha256": "f550473a9838916a23db93dd2e5fb360ad60e14230cd6b5a81455a670448d7de"
+    },
+    {
+      "path": "figures/acquisition_measured_results.pdf",
+      "sha256": "009d1b5a191f5d1a2d4d8da341ec5fde954b5729fa912d1e48307dd508905a0d"
+    }
+  ],
+  "schema_version": "paper-artifacts/1.0"
+}

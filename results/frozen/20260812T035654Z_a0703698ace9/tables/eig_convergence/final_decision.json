@@ -1,0 +1,264 @@
+{
+  "candidate_selected_setting": {
+    "n_inner": 400,
+    "n_outer": 1200,
+    "n_replicates": 40
+  },
+  "case_study": "magnetic_core",
+  "downstream_candidate_passed": true,
+  "objectives": {
+    "per_cost": {
+      "all_seeds_stable": true,
+      "atol": 0,
+      "endpoint": "modeled_cost_to_gate",
+      "seed_comparisons": [
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7200,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "cdf5a505008a96fc556802fc2d9a6c414156a48e8f98e2ad4ed2f08443069c0b"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7201,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "b4ec80ecc64ae09c6b27a87249c1d78de51fe8a99d9b38ceb5793c7c27058743"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7202,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "24406c91047585ba953d244d080e5cdf0ece8967845a61082a9f1bc414b97164"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7203,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "70f1d6cd6d2d19c750f548d7f01fdf45e8e39ee7a6774c49f2deaf0390402e66"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7204,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "25e3989350994b7df8e756c342fb03bff2674b169f6024584014c8d07892478e"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7205,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "641c85dc382bbb3adb37ba9118ec50481598f76c74d72fdac8cfae3eb7957878"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7206,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "e929db1eb832b0245ab23893d468b3d194f8bf2e388d7da1e5878a829ff0fb88"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7207,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "9d6f117514ab3017a5db7f5db0711d67f830dd6773b61cdb49ecaecdd3bf990b"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7208,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "f81608033a10b57c63bf4fc8f1cfef5089a3e7924905db47f31fa0de47f38b47"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 190.0,
+          "reference_valid": true,
+          "seed": 7209,
+          "selected_endpoint": 190.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "d9ef5099e9f65198cb263c718401de263f82690d42747de19cd9633ef24f6ab0"
+        }
+      ]
+    },
+    "raw": {
+      "all_seeds_stable": true,
+      "atol": 0,
+      "endpoint": "measurement_count_to_gate",
+      "seed_comparisons": [
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7200,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "cdf5a505008a96fc556802fc2d9a6c414156a48e8f98e2ad4ed2f08443069c0b"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7201,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "b4ec80ecc64ae09c6b27a87249c1d78de51fe8a99d9b38ceb5793c7c27058743"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7202,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "24406c91047585ba953d244d080e5cdf0ece8967845a61082a9f1bc414b97164"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7203,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "70f1d6cd6d2d19c750f548d7f01fdf45e8e39ee7a6774c49f2deaf0390402e66"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7204,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "25e3989350994b7df8e756c342fb03bff2674b169f6024584014c8d07892478e"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7205,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "641c85dc382bbb3adb37ba9118ec50481598f76c74d72fdac8cfae3eb7957878"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7206,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "e929db1eb832b0245ab23893d468b3d194f8bf2e388d7da1e5878a829ff0fb88"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7207,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "9d6f117514ab3017a5db7f5db0711d67f830dd6773b61cdb49ecaecdd3bf990b"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7208,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "f81608033a10b57c63bf4fc8f1cfef5089a3e7924905db47f31fa0de47f38b47"
+        },
+        {
+          "endpoint_stable": true,
+          "path": "downstream.json",
+          "reference_endpoint": 5.0,
+          "reference_valid": true,
+          "seed": 7209,
+          "selected_endpoint": 5.0,
+          "selected_minus_reference": 0.0,
+          "selected_valid": true,
+          "sha256": "d9ef5099e9f65198cb263c718401de263f82690d42747de19cd9633ef24f6ab0"
+        }
+      ]
+    }
+  },
+  "per_cost_claim_gate_passed": true,
+  "raw_claim_gate_passed": true,
+  "reference_audit_passed": true,
+  "reference_downstream_passed": true,
+  "reference_setting": {
+    "n_inner": 400,
+    "n_outer": 1200,
+    "n_replicates": 40
+  },
+  "schema_version": "eig-convergence-final/1.0",
+  "selected_setting": {
+    "n_inner": 400,
+    "n_outer": 1200,
+    "n_replicates": 40
+  },
+  "selection_mode": "reference_fallback",
+  "selection_path": "static_decision.json",
+  "selection_sha256": "fb22f20e40b23e700607d235fde065ce10401c4d594232145aaa8ec5eebc33da",
+  "valid": true
+}

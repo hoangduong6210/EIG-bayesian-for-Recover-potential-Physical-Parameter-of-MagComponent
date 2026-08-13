@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this research package, cite the current manuscript and this software artifact."
+title: "Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters"
+type: software
+authors:
+  - family-names: Duong
+    given-names: Viet Hoang
+  - family-names: Duong
+    given-names: Viet Huy
+  - family-names: Shih
+    given-names: Lun-Min
+version: 1.0.0
+date-released: 2026-08-13
+license: MIT
+keywords:
+  - Bayesian calibration
+  - magnetic core
+  - core loss
+  - complex permeability
+  - optimal experimental design
+  - expected information gain

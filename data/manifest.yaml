@@ -1,0 +1,82 @@
+schema_version: 1
+dataset_family: materialdatabase
+snapshot_root: data/external/materialdatabase/data
+license_file: data/external/materialdatabase/LICENSE
+scope: magnetic_only
+notes:
+  - Complex-permeability entries are public measured curves identified by their upstream source label.
+  - Core-loss entries are datasheet curves and must not be described as new measurements by this project.
+  - Paths are relative to the repository root.
+inputs:
+  - id: mu_n95_lea_mtb
+    kind: complex_permeability
+    material: N95
+    source: LEA_MTB
+    path: data/external/materialdatabase/data/complex_permeability/LEA_MTB/N95.csv
+    sha256: 766766f2192ba12ba7e3b03154c66e8ce2c253793d9423bd4f6525bd5a941e30
+  - id: mu_n87_lea_mtb
+    kind: complex_permeability
+    material: N87
+    source: LEA_MTB
+    path: data/external/materialdatabase/data/complex_permeability/LEA_MTB/N87.csv
+    sha256: 5423cf18f3449a1a03746c881752635120dea6cfde22a7b9575ae3a09907c555
+  - id: mu_n87_magnet
+    kind: complex_permeability
+    material: N87
+    source: MagNet
+    path: data/external/materialdatabase/data/complex_permeability/MagNet/N87.csv
+    sha256: eb160e423cf82498ad11847c101a91f3aa5d2682b715251845f0b6ddb1988092
+  - id: mu_3c95_magnet
+    kind: complex_permeability
+    material: 3C95
+    source: MagNet
+    path: data/external/materialdatabase/data/complex_permeability/MagNet/3C95.csv
+    sha256: b57e04096bb8086c8ea28db927af8c1b4288cceb6b08667010c9e9b0c66e376f
+  - id: pcv_n49_datasheet_f_sweep
+    kind: core_loss
+    material: N49
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N49/p_v_over_f_at_b_T.csv
+    sha256: 14f1418dfb1c7b7c7be09a4c6e9c822f30f2592ca93d7e18538b78407454ae88
+  - id: pcv_n87_datasheet_f_sweep
+    kind: core_loss
+    material: N87
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N87/p_v_over_f_at_b_T.csv
+    sha256: fca394c0262df729be6b569db4ac816ea746349a8f3037687563a1522cf64bbd
+  - id: pcv_n95_datasheet_f_sweep
+    kind: core_loss
+    material: N95
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N95/p_v_over_f_at_b_T.csv
+    sha256: 2a64111e8b6f13dca4c1c57f3b29df422c8c29392394515d62fc197bd9b39c44
+  - id: pcv_3c95_datasheet_f_sweep
+    kind: core_loss
+    material: 3C95
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/3C95/p_v_over_f_at_b_T.csv
+    sha256: 2bf06121f8fc921dbe493f2948e5040ef30e8d298f7d53823e0ac70e27744e19
+  - id: pcv_n49_datasheet_b_sweep
+    kind: core_loss
+    material: N49
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N49/p_v_over_b_at_f_T.csv
+    sha256: f60018ec1ead334633de6b48ff845c326b3c5ec50a81918c3560a8fe144a720c
+  - id: pcv_n87_datasheet_b_sweep
+    kind: core_loss
+    material: N87
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N87/p_v_over_b_at_f_T.csv
+    sha256: 30d4bd686b0a3c1b09e71c1087d7e9769d37f63c10532c7a854240c1f3e722b5
+  - id: pcv_n95_datasheet_b_sweep
+    kind: core_loss
+    material: N95
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/N95/p_v_over_b_at_f_T.csv
+    sha256: ec48af83c178acfda3c320936698a1251f2d9b3dec700498a5258fcd529afad3
+  - id: pcv_3c95_datasheet_b_sweep
+    kind: core_loss
+    material: 3C95
+    source: datasheet_curves
+    path: data/external/materialdatabase/data/datasheet_curves/3C95/p_v_over_b_at_f_T.csv
+    sha256: dee3a0af5879c292156aa8e161557ba8bc3e440c197be74b62f44e2d4b2b7c61

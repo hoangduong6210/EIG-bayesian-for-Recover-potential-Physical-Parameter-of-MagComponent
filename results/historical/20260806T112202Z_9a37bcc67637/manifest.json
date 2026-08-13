@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "bundle_type": "allowlisted_historical_scientific_evidence",
+  "historical_release_id": "20260806T112202Z_9a37bcc67637",
+  "historical_git_revision": "9a37bcc67637062cc4d9f453b8ec3ec1de257d87",
+  "historical_manifest_sha256": "7b00abfeaa3f307d2b9e97e1456a843e396e2061ad876225dadf439307f8998a",
+  "historical_source_archive_sha256": "d64b47e186d2543bf8eec58c6b34daee3d0e86c5fb368f0b1753a710a51c182a",
+  "checksums_sha256": "f5c75b398608db8def189d05cb88d72be401ead3487d4f61b58f3e1f22be4e22",
+  "artifacts": [
+    {"path": "figures/synthetic_results.pdf", "bytes": 29161, "sha256": "f550473a9838916a23db93dd2e5fb360ad60e14230cd6b5a81455a670448d7de"},
+    {"path": "figures/acquisition_measured_results.pdf", "bytes": 23830, "sha256": "009d1b5a191f5d1a2d4d8da341ec5fde954b5729fa912d1e48307dd508905a0d"},
+    {"path": "tables/paper_summary.json", "bytes": 4043, "sha256": "0fc603ecd0ca7e94696c35f48ef7001165a4b9211e74d214c599425755c4c095"},
+    {"path": "tables/frozen_result_macros.tex", "bytes": 845, "sha256": "b9fc490aac70b869d1c7bd86e2cb78d8d6e71e8f4abab440077ef1fa305d52da"},
+    {"path": "tables/frozen_results.tex", "bytes": 578, "sha256": "9128792b8b683137568179178e32199eb3ba969aa5f58fc810d99018ef7455b1"},
+    {"path": "protocol/default.toml", "bytes": 337, "sha256": "fb80c8864155d78b4b8ebf5a5d2bc367dbc1f49e988d594d0832bb330a3b5dea"},
+    {"path": "protocol/protocol_audit.json", "bytes": 2812, "sha256": "3192707023ee8e4641fc9631e1dd3d24f14c5b200baf001835f3f25956fbbd74"},
+    {"path": "lineage/source_artifact_index.json", "bytes": 3832, "sha256": "7f585633781979c42f3bee7ac467d2aec1d114e6ed05bee80a9e934160c1bd52"},
+    {"path": "lineage/complete_source_artifact_index.json", "bytes": 10668, "sha256": "e87bd44a0ddac37f705d57b07e7f5badf1346556d59c60fe24fd43c8de952233"},
+    {"path": "lineage/input-data-sha256.txt", "bytes": 1897, "sha256": "0c947f6ef7710068e03fa7c48e43c27326876ad6e1f9c0a1f200c380a25b8bc7"}
+  ]
+}

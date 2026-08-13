@@ -1,0 +1,7 @@
+schema_version: 1
+status: FROZEN
+release_id: 20260812T035654Z_a0703698ace9
+manifest_sha256: c5a6b05e1ab84b3f8b72a40be1480148c360889b6142884c44cf9e35df219dc0
+locked_at_utc: 2026-08-13T15:57:37+00:00
+notes:
+  - Selects the evidence release used by the current manuscript.

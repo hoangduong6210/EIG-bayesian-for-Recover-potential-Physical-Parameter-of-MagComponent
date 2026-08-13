@@ -1,0 +1,603 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+\usepackage[top=21mm,bottom=21mm,left=18mm,right=18mm,columnsep=7.5mm]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype,url,caption}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
+\hypersetup{
+  pdftitle={Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters},
+  pdfauthor={Viet Hoang Duong, Viet Huy Duong, Lun-Min Shih},
+  pdfsubject={Bayesian calibration and optimal experimental design for magnetic-core models},
+  pdfkeywords={Bayesian calibration, magnetic core, core loss, complex permeability, optimal experimental design, expected information gain}
+}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thetable}{\Roman{table}}
+\captionsetup[figure]{name=Fig.,labelsep=period,justification=centering,singlelinecheck=false}
+\captionsetup[table]{name=TABLE,labelsep=colon,justification=centering,singlelinecheck=false,textfont=sc}
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{0pt}{1.2ex plus .2ex}{.5ex}{\centering\normalsize\bfseries\scshape}}
+\renewcommand\subsection{\@startsection{subsection}{2}{0pt}{1ex plus .2ex}{.35ex}{\normalsize\bfseries}}
+\makeatother
+\renewenvironment{abstract}{%
+  \par\begin{center}\bfseries Abstract\end{center}\vspace{-.5em}\noindent
+}{\par}
+\newcommand{\scientific}[1]{\expandafter\scientificaux#1\relax}
+\def\scientificaux#1e+#2\relax{\ensuremath{#1\mathbin{\times}10^{\number\numexpr#2\relax}}}
+\pagestyle{plain}
+
+\input{tables/frozen_result_macros.tex}
+% Defaults allow source validation before generated release macros are staged.
+\providecommand{\EIGSeedCount}{5}
+\providecommand{\EIGCountDifferenceCILow}{4.0}
+\providecommand{\EIGCountDifferenceCIHigh}{4.0}
+\providecommand{\EIGCountWinRate}{100.0}
+\providecommand{\EIGRawFailureRate}{0.0}
+\providecommand{\EIGOuter}{300}
+\providecommand{\EIGInner}{100}
+\providecommand{\EIGReplicates}{20}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\begin{center}
+{\fontsize{14}{16}\selectfont\bfseries Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters\par}
+\vspace{4pt}
+{\fontsize{12}{14}\selectfont
+Viet Hoang Duong\textsuperscript{1,*},
+Viet Huy Duong\textsuperscript{2},
+Lun-Min Shih\textsuperscript{1}\par}
+{\fontsize{10}{12}\selectfont
+\textsuperscript{1}Department of Computer Science, Da-Yeh University, Taiwan\par
+\textsuperscript{2}Department of Computer Science, Kent State University, United States of America\par
+Hoangduong4316@icloud.com; huydv6210@gmail.com; Lmshih@mail.dyu.edu.tw
+(\textsuperscript{*}corresponding author)\par}
+\end{center}
+\vspace{4pt}
+\end{@twocolumnfalse}]
+
+\begin{abstract}
+Magnetic-core models used in power-converter design are commonly fitted to
+nominal material curves despite limited operating-point coverage and material
+variation. We present a Bayesian framework that calibrates Steinmetz core-loss
+and Cole--Cole complex-permeability models and uses expected information gain
+(EIG) to select measurements. Across five matched-model synthetic data sets,
+per-parameter median absolute relative errors of the posterior medians ranged
+from \RecoveryMedianMin\% to \RecoveryMedianMax\%, and the known values fell
+within \RecoveryInclusion{} equal-tailed 90\% model-conditional posterior
+credible intervals. In a separate \EIGSeedCount-seed paired acquisition
+study, raw EIG reached a prespecified two-target latent
+mean-response precision gate using \EIGRange{} measurements; a fixed
+channel-balanced grid traversal required \UniformRange{}, giving a mean paired reduction of
+\EIGReduction\%. The paired count-difference bootstrap 95\% interval was
+\EIGCountDifferenceCILow--\EIGCountDifferenceCIHigh{} measurements, with
+\EIGCountWinRate\% paired wins and a \EIGRawFailureRate\% raw-EIG gate-failure
+rate. For accepted measured records, in-sample relative
+root-mean-square errors ranged from \NEightySevenPcvRms\% to
+\NNinetyFivePcvRms\% for core loss, from \NNinetyFiveMuRealRms\% to
+\NEightySevenMuRealRms\% for $\mu'$, and from
+\NNinetyFiveMuImagRms\% to \NEightySevenMuImagRms\% for $\mu''$. The larger
+$\mu''$ residuals identify a limitation of the tested single-pole
+permeability model. These results support uncertainty-aware calibration and
+model-conditional measurement planning within the tested models and operating
+ranges; they do not establish an optimal laboratory plan.
+\end{abstract}
+\par\smallskip
+\noindent\textit{Keywords:} Bayesian calibration; magnetic core; core loss; complex permeability; optimal experimental design; expected information gain.
+\vspace{8pt}
+
+\section{Introduction}
+Power-converter efficiency, thermal margin, and magnetic-component sizing
+depend on models for volumetric core loss and complex permeability. Vendor
+curves provide essential design information, but cover a finite set of
+frequencies, flux densities, and temperatures and normally do not provide a
+joint parameter distribution. Fitting one nominal curve can therefore hide
+parameter non-identifiability and model discrepancy.
+
+Bayesian calibration represents uncertainty in model parameters conditional
+on the selected model, observations, and prior. It also supports Bayesian
+optimal experimental design: a candidate measurement can be ranked by its
+expected reduction of posterior uncertainty~\cite{chaloner1995,ryan2016}.
+This is useful when characterization time is limited and dense uniform sweeps
+are costly. It also makes the measurement objective explicit: the selected
+point should reduce uncertainty in the quantities represented by the model,
+not merely occupy an unmeasured location in a frequency--flux grid.
+
+This work contributes (1) a reproducible posterior formulation for Steinmetz
+and Cole--Cole parameters, (2) a Fisher-spectrum diagnosis of locally
+constrained parameter combinations, and (3) a paired comparison of EIG
+acquisition with a fixed channel-balanced grid traversal. These elements address
+distinct questions: matched-model recovery checks inference against known
+synthetic truth, Fisher analysis assesses local identifiability under the
+specified experiment, and measured-data residuals assess model adequacy.
+Success in the first two does not establish the third.
+
+The remainder of the paper reviews magnetic and Bayesian design literature,
+defines the forward and statistical models, documents the reproducible
+protocol, and then reports synthetic and measured-data results from one
+prespecified evaluation.
+
+\section{Related Work}
+\subsection{Magnetic loss and permeability models}
+The Steinmetz power law remains a compact engineering description for
+sinusoidal loss, while loss-separation and hysteresis models provide more
+physical decompositions~\cite{steinmetz1892,bertotti1988,jiles1986}.
+Converter waveforms motivated modified and generalized Steinmetz relations
+that integrate the instantaneous flux-density trajectory or use waveform
+correction factors~\cite{reinert2001,li2001,venkatachalam2002}.
+Subsequent work improved practical loss calculation and reviewed the physical
+contributions to loss in soft ferrites~\cite{muehlethaler2012,dobak2022}.
+Textbook treatments emphasize that material law, geometry, winding, and
+thermal assumptions must remain distinct in component design
+~\cite{snelling1988,mclyman2011}.
+
+Frequency-dispersive permeability is commonly described through relaxation
+or resonance spectra. The Cole--Cole law introduced a broadened relaxation
+distribution~\cite{cole1941}; applying its algebraic form to permeability is
+an engineering adaptation rather than a claim that ferrite magnetization is a
+dielectric process. Measurements of Mn--Zn and Ni--Zn ferrites show that
+domain-wall motion, rotational processes, resonance, and relaxation can all
+shape $\mu'$ and $\mu''$~\cite{tsutaoka2003}. The single-pole model used here
+is therefore intentionally diagnostic: a large loss-component residual is
+evidence for missing dynamics, not a parameter-estimation failure alone.
+
+Open magnetic datasets now permit reproducible comparisons beyond individual
+vendor plots. MagNet provides systematically measured core-loss data across
+materials and excitations~\cite{magnet2022}, while the LEA material database
+publishes machine-readable permeability and loss records with source
+metadata~\cite{materialdatabase}. Public data improve traceability but do not
+substitute for a controlled multi-lot characterization campaign.
+
+\subsection{Bayesian calibration and experimental design}
+Bayesian calibration represents parameter uncertainty conditional on a
+forward model, likelihood, and prior~\cite{gelman2013}. Computer-experiment
+literature distinguishes emulator uncertainty, observation error, calibration
+parameters, and structural discrepancy~\cite{sacks1989,kennedy2001}.
+Validation frameworks consequently compare predictions with observations
+rather than treating posterior concentration as proof of physical validity
+~\cite{bayarri2007}. Ignoring discrepancy can bias inferred physical
+parameters and produce overconfident extrapolation~\cite{brynjarsdottir2014}.
+
+Bayesian experimental design formalizes the value of a proposed observation
+through expected utility. Lindley's information criterion
+~\cite{lindley1956}, foundational reviews~\cite{chaloner1995,ryan2016}, and
+classical optimum-design methods~\cite{atkinson2007} motivate the EIG
+criterion used here. Estimation remains challenging because the predictive
+density is generally unavailable; relevant strategies include Laplace and
+MCMC approximations~\cite{ryan2003}, nested Monte Carlo
+~\cite{rainforth2018}, stochastic simulation-based optimization
+~\cite{huan2013}, and variational bounds~\cite{foster2019}. Adaptive-policy
+amortization offers a scalable direction for longer experimental sequences
+~\cite{foster2021}, but the present work deliberately uses a transparent
+one-step ranking over a finite candidate library.
+
+\section{Magnetic-Core Models}
+\subsection{Core loss}
+For sinusoidal excitation within a specified operating window, the Steinmetz
+model is
+\begin{equation}
+  P_v(f,B_{\mathrm{pk}})=k f^{\alpha}B_{\mathrm{pk}}^{\beta},
+  \label{eq:steinmetz}
+\end{equation}
+where $P_v$ is volumetric loss and $(k,\alpha,\beta)$ are inferred parameters
+~\cite{steinmetz1892}. The units of $k$ depend on the units used for $P_v$,
+$f$, and $B_{\mathrm{pk}}$. Equation~\eqref{eq:steinmetz} is not temperature
+dependent in the present implementation. Measured-data analysis therefore
+uses a specified temperature subset; extrapolation across temperature is out
+of scope. More general waveform-dependent loss equations remain important for
+converter application studies~\cite{reinert2001,muehlethaler2012}.
+
+\subsection{Complex permeability}
+We adopt the $e^{j2\pi ft}$ time convention and write
+$\mu_r=\mu'-j\mu''$, so the reported loss component is
+$\mu''=-\operatorname{Im}\mu_r\geq0$ for a passive response. The relative
+complex permeability is represented with a single Cole--Cole
+relaxation~\cite{cole1941},
+\begin{equation}
+ \mu_r(f)=1+\frac{\mu_s-1}
+ {1+\left(jf/f_{\mathrm{rel}}\right)^{1-a_{\mathrm{cc}}}},
+ \label{eq:colecole}
+\end{equation}
+where $\mu_s$ is low-frequency permeability, $f_{\mathrm{rel}}$ is a
+relaxation frequency, and $a_{\mathrm{cc}}$ broadens the relaxation. Storage
+and loss components are evaluated separately because a model can fit $\mu'$
+while failing to represent $\mu''$. A one-pole model is a deliberate
+low-order approximation, not a complete ferrite loss model.
+
+Equation~\eqref{eq:colecole} fixes the high-frequency asymptote to unity and
+absorbs the angular-frequency convention into $f_{\mathrm{rel}}$. The real
+and loss components follow from the same complex denominator, which prevents
+independent tuning of $\mu'$ and $\mu''$. For an optional inductance channel,
+the real component is mapped through
+$L_m=\mu_0\mu' N^2A_e/\ell_e$ using specified geometry
+~\cite{snelling1988,mclyman2011}. Geometry is never inferred jointly with
+material parameters in the present study.
+
+\subsection{Validity window}
+Both forward laws are isothermal and evaluated only inside specified data
+ranges. A data point is defined by channel, frequency, peak flux density, and
+temperature. Core-loss points require positive $B_{\mathrm{pk}}$; permeability
+points use small-signal records. The likelihood rejects mixed temperature
+cohorts. Measured permeability uses material-specific cohorts of
+$25\pm0.75\,^{\circ}\mathrm C$ for N87 and $30\pm0.75\,^{\circ}\mathrm C$ for
+N95. Measured core loss uses $25\pm0.5\,^{\circ}\mathrm C$ for N49, N87, and
+N95, and $100\pm0.5\,^{\circ}\mathrm C$ for 3C95.
+These restrictions prevent an apparently precise posterior from silently
+extrapolating across temperature, waveform, or excitation regime.
+
+\section{Bayesian Calibration and Design}
+Let $\theta=(\log k,\alpha,\beta,\log\mu_s,\log f_{\mathrm{rel}},
+a_{\mathrm{cc}})$ denote the active transformed parameters. Log coordinates
+enforce positivity of scale parameters while retaining direct coordinates for
+the exponents. For observation
+$y_o$ at design $d_o$, the likelihood is
+\begin{equation}
+ p(\mathbf y\mid\theta,\mathbf d)=
+ \prod_o \mathcal N\!\left(y_o;F_o(\theta,d_o),\sigma_o^2\right),
+\end{equation}
+with fixed relative scales. Synthetic scales are 3% for core loss, 2% for
+$\mu'$, 5% for $\mu''$, and 1% for inductance; measured records use a 3%
+relative scale as a weighting model. The posterior is
+\begin{equation}
+ p(\theta\mid\mathbf y,\mathbf d)\propto
+ p(\mathbf y\mid\theta,\mathbf d)p(\theta).
+\end{equation}
+Priors are defined directly in the transformed space used by the sampler, so
+no inverse-transform Jacobian is added to this active-coordinate density.
+Bounds encode physically admissible numerical domains, not empirical proof
+that the chosen model is correct.
+
+\subsection{Posterior computation and diagnostics}
+Posterior sampling uses the affine-invariant ensemble construction
+~\cite{goodman2010} implemented by \texttt{emcee}~\cite{foreman2013}. Each
+ensemble retains 5000 steps after 1000 warm-up steps for each
+of 48 walkers. Initial states are perturbations of the prior center and both
+initialization and proposal streams are deterministically seeded. A fit is
+accepted only with finite integrated autocorrelation estimates, at least 50
+retained steps per autocorrelation time, effective sample size at least 400,
+mean acceptance between 0.20 and 0.60, and finite log probability for every
+retained sample.
+
+These checks follow the principle of comparing Monte Carlo variation with
+between-sequence behavior~\cite{gelman1992} and modern effective-sample-size
+practice~\cite{vehtari2021}, but interacting ensemble walkers are not treated
+as independent chains. Accordingly, the paper does not report a conventional
+$\widehat R$ for the ensemble. Diagnostic failure invalidates a measured fit
+for quantitative publication rather than being repaired by discarding an
+unfavorable seed.
+
+The local Fisher approximation~\cite{fisher1922} is
+\begin{equation}
+ \mathcal I_{ij}=\sum_o\frac{1}{\sigma_o^2}
+ \frac{\partial F_o}{\partial\theta_i}
+ \frac{\partial F_o}{\partial\theta_j}.
+\end{equation}
+Its spectrum is computed over the exact active vector and with reported
+scaling. A large condition number indicates locally sloppy combinations but
+does not by itself establish global non-identifiability~\cite{gutenkunst2007}.
+Geometric analyses of sloppy models likewise interpret broad eigenvalue
+spectra as anisotropic distinguishability, not as a universal parameter
+ranking~\cite{transtrum2015}. The spectrum is therefore reported together
+with its dimension and scaling convention.
+
+Let $\mathcal D_t=(\mathbf y_t,\mathbf d_t)$ denote the observations available
+before acquisition step $t$. For candidate $d$, the one-step EIG is
+the conditional mutual information~\cite{lindley1956,chaloner1995}
+\begin{equation}
+ \mathrm{EIG}_t(d)=
+ \mathbb E_{\substack{\theta\sim p(\theta\mid\mathcal D_t)\\
+ y\sim p(y\mid\theta,d)}}
+ \left[
+ \log p(y\mid\theta,d)-\log p(y\mid d,\mathcal D_t)
+ \right],
+ \label{eq:eig}
+\end{equation}
+where
+\begin{equation}
+ p(y\mid d,\mathcal D_t)=
+ \int p(y\mid\vartheta,d)
+ p(\vartheta\mid\mathcal D_t)\,d\vartheta .
+\end{equation}
+The nested Monte Carlo estimator draws \EIGOuter{} outer parameter--observation pairs
+and uses \EIGInner{} inner posterior draws to approximate the posterior-predictive
+density~\cite{ryan2003,rainforth2018}. Each score is repeated
+\EIGReplicates{} times;
+the mean, standard error, 95\% Monte Carlo interval, and top-rank frequency are
+retained. Candidate streams are seeded from a stable key comprising channel,
+frequency, flux density, and temperature, so list permutation cannot change a
+design's draws. We evaluate two distinct objectives: raw EIG for the measurement-count endpoint
+and EIG divided by a prespecified modeled acquisition cost for the total-cost
+endpoint.
+
+\subsection{Paired sequential policy}
+After the same two initial observations---$P_v$ at 30 kHz, 0.05 T, and
+$25\,^{\circ}\mathrm C$, and $\mu'$ at 10 kHz and $25\,^{\circ}\mathrm C$---each
+policy selects one unrevealed candidate, receives its pre-generated noisy
+outcome, refits the posterior, and checks the common precision gate. Raw EIG
+maximizes estimated information, EIG/cost maximizes information per modeled
+cost, and the comparator follows a deterministic fixed channel-balanced grid
+traversal. It is not uniform random sampling, a space-filling design, or a
+D-optimal design. All policies share the candidate library, latent truth,
+candidate-indexed noisy outcomes, maximum budget, and stopping rule. The
+candidate library is isothermal, so it contains no temperature-only duplicates
+of the implemented forward laws.
+The numerical settings are summarized in Table~\ref{tab:protocol}.
+
+The stopping statistic is the half-width of the central 90\% posterior interval
+for the noise-free latent mean response divided by the absolute posterior
+median. Observation noise is not added to this gate. The two fixed targets are
+$P_v(100\,\mathrm{kHz},0.1\,\mathrm T,25\,^{\circ}\mathrm C)$ at 8\% and
+$L_m(100\,\mathrm{kHz},25\,^{\circ}\mathrm C)$ at 5\%. This is a local precision
+criterion: it checks neither truth proximity, six-parameter recovery, other
+channels, held-out performance, nor model adequacy. A policy that misses either
+threshold is recorded as a failure at the maximum budget.
+
+\section{Computational Reproducibility}
+All experiments use fixed software versions, specified model and inference
+settings, explicit data selections, and deterministic random seeds. Results
+are retained at the individual-seed level and are accepted for aggregation
+only when the prespecified convergence, validity, and completeness criteria
+are satisfied.
+
+\begin{table}[t]
+\caption{Computational settings used for the reported experiments.}
+\label{tab:protocol}
+\centering\footnotesize
+\begin{tabular}{@{}p{0.32\columnwidth}p{0.62\columnwidth}@{}}
+\toprule Item & Setting \\
+\midrule
+Ensemble sampler & 48 walkers; 1000 warm-up + 5000 retained \\
+Convergence criteria & ESS $\geq400$; steps/$\tau\geq50$ \\
+Acceptance criterion & $0.20$--$0.60$ \\
+Nested EIG & \EIGOuter{} outer; \EIGInner{} inner; \EIGReplicates{} score replicates \\
+Sequential budget & at most 25 measurements \\
+Acquisition endpoints & raw EIG/count; EIG/cost/modeled cost \\
+Temperature cohorts & material and channel specific, as stated in text \\
+Precision gate & latent mean response: 8\% $P_v$; 5\% $L_m$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The analysis checks all required seed and material cases before forming
+aggregate summaries. Records with nonfinite values, failed convergence, or
+boundary-active parameters are excluded according to criteria specified
+before evaluation. Numerical statements, tables, and figures are generated
+programmatically from the same complete set of accepted records, avoiding
+manual transcription or selective replacement of outcomes.
+
+\section{Evaluation Protocol}
+Five fixed seeds are used for matched-model recovery. A disjoint, prespecified
+set of \EIGSeedCount{} seeds is used for the paired acquisition comparison only
+after the nested-Monte-Carlo setting passes a separate convergence study.
+That study uses prefix-nested common random numbers and a deterministic paired
+bootstrap of the replicate-mean selector; it requires stable candidate and
+reference winners, rank correlation, score-interval overlap, low reference
+regret, and downstream endpoint agreement. The policies share initial observations,
+candidate library, realized candidate outcomes, noise policy, budget, and stopping
+rule. Results include per-seed counts, modeled costs, and failures, not only
+an aggregate ratio. The stopping rule concerns posterior precision
+of two latent mean responses and is not an accuracy or coverage guarantee.
+
+For recovery, observations are generated from the same six-parameter forward
+family used in inference. A parameter vector is drawn independently for each
+seed before observation noise is generated. The reported error is the absolute
+relative difference between posterior median and the generating value. The
+interval statistic counts whether that value falls within the equal-tailed
+90\% model-conditional posterior credible interval. With only five seeds, the
+count is a descriptive implementation check, not a coverage experiment.
+The Fisher matrix is evaluated in the exact transformed coordinate system used
+by sampling.
+
+The measured evaluation uses public complex-permeability curves for specified
+N95, N87, and 3C95 source/material pairs and datasheet core-loss curves for
+N49, N87, N95, and 3C95~\cite{materialdatabase}. Input-data versions,
+temperature cohorts, unit conversions, and range filters were fixed before
+inference. Storage/loss permeability errors, core-loss residuals, boundary
+activity, and operating-window coverage are reported separately. Records with
+failed convergence or active boundary flags are retained for diagnostic review
+but excluded from aggregate numerical claims.
+
+Core-loss adequacy is summarized by in-sample relative root-mean-square error
+(RRMSE) within each temperature cohort. Permeability adequacy is evaluated
+separately for storage and loss components because combining them can conceal
+a poor $\mu''$ fit behind the larger magnitude of $\mu'$. These metrics assess
+the selected low-order model on observed records; they are neither held-out
+prediction errors nor component-level thermal validation.
+
+\section{Results}
+
+\subsection{Identifiability and synthetic recovery}
+The synthetic $6\times6$ Fisher matrix was full rank. As shown in
+Fig.~\ref{fig:synthetic-results}(a), its eigenvalues span
+\scientific{\FisherMin} to \scientific{\FisherMax}, giving a full-matrix
+condition number of \scientific{\FisherCondition}.
+The broad spectrum indicates strong local sensitivity anisotropy in the active
+transformed coordinates; it does not establish global identifiability.
+Fig.~\ref{fig:synthetic-results}(b) shows the absolute posterior-median
+errors for each parameter and seed. Across five prior-predictive matched-model
+data sets, the per-parameter medians range from \RecoveryMedianMin\% to
+\RecoveryMedianMax\%. The known values fell within \RecoveryInclusion{}
+equal-tailed 90\% model-conditional posterior credible intervals. This
+observed inclusion count is descriptive, not a coverage estimate.
+Table~\ref{tab:recovery} reports the same matched-model recovery check.
+
+\input{tables/frozen_results.tex}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{synthetic_results.pdf}
+  \caption{Synthetic local identifiability and matched-model recovery. (a)
+  Fisher eigenvalues in ascending order. (b) Absolute posterior-median errors
+  across five seeds; circles are horizontally
+  offset for visibility and horizontal ticks mark medians.}
+  \label{fig:synthetic-results}
+\end{figure*}
+
+\subsection{Paired synthetic acquisition}
+Fig.~\ref{fig:acquisition-measured}(a) makes the paired outcome structure
+explicit. Raw EIG reached the two-target latent mean-response precision gate
+with \EIGRange{} measurements, while the fixed channel-balanced grid traversal
+required \UniformRange{}. Raw EIG used fewer measurements in every paired run,
+with a mean reduction of \EIGReduction\%. These results evaluate selection
+efficiency for the count endpoint in this \EIGSeedCount-seed matched-model
+experiment. The mean paired count difference has a bootstrap 95\% interval of
+\EIGCountDifferenceCILow--\EIGCountDifferenceCIHigh{} measurements; the paired
+win rate is \EIGCountWinRate\% and the raw-EIG gate-failure rate is
+\EIGRawFailureRate\%.
+\ifdefined\EIGCostReduction
+For the separate modeled-cost endpoint, EIG/cost gave a descriptive mean paired
+reduction of \EIGCostReduction\%; neither policy comparison had a gate failure.
+The cost units are prespecified rather than measured laboratory time.
+\else
+EIG/cost is evaluated separately against total modeled acquisition cost; no
+claim of measured laboratory-time savings is made.
+\fi
+
+\subsection{Measured-data model adequacy}
+Fig.~\ref{fig:acquisition-measured}(b) compares the in-sample relative
+root-mean-square errors (RRMSEs) of the accepted measured-data fits. For
+LEA Material Database permeability records that satisfied the convergence
+criteria, RRMSEs were
+\NEightySevenMuRealRms\%/\NEightySevenMuImagRms\% for
+$\mu'/\mu''$ on N87 and \NNinetyFiveMuRealRms\%/\NNinetyFiveMuImagRms\% on
+N95. The larger $\mu''$ errors expose discrepancy in the one-pole model.
+N87 and 3C95 MagNet records failed convergence or boundary gates and were
+excluded from numerical claims~\cite{magnet2022}. Measured Steinmetz fits
+produced in-sample RRMSEs of \NEightySevenPcvRms\% (N87), \NFortyNinePcvRms\%
+(N49), \ThreeCNinetyFivePcvRms\% (3C95), and \NNinetyFivePcvRms\% (N95)
+within their specified temperature cohorts. These are fit residuals, not
+held-out errors.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{acquisition_measured_results.pdf}
+  \caption{Paired synthetic acquisition and measured-data model adequacy. (a)
+  Measurements required to reach the two-target latent mean-response precision
+  gate; each
+  label lists seeds sharing the same paired outcome, and line styles expose
+  coincident endpoints. (b) Measured-data in-sample RRMSE; fill and hatch
+  distinguish core loss, $\mu'$, and $\mu''$. Excluded MagNet fits are not
+  plotted.}
+  \label{fig:acquisition-measured}
+\end{figure*}
+
+All numerical results in this section, including
+Figs.~\ref{fig:synthetic-results} and~\ref{fig:acquisition-measured}, use the
+same prespecified models, data filters, random seeds, and evaluation criteria.
+
+\section{Discussion and Limitations}
+\subsection{Interpretation of the evidence}
+The framework separates whether available measurements constrain parameters
+within a chosen model from whether that model represents measured material
+behavior. Fisher information and posterior width address the former locally
+or conditionally; reported in-sample residuals expose, but do not fully
+quantify, the latter. Held-out predictive validation remains future work.
+
+The synthetic results support implementation-level conclusions. Full local
+rank shows that every active coordinate affects the specified synthetic
+experiment, while the broad spectrum shows that those effects occur at very
+different scales. The recovery table then checks the nonlinear posterior under
+matched truth. Neither result implies that the same coordinates are uniquely
+physical when the material response lies outside the six-parameter family.
+This distinction matters for converter models because several parameter sets
+can produce similar loss or permeability over a narrow operating window yet
+diverge when frequency, flux density, or temperature changes.
+
+The paired acquisition result shows that raw EIG exploited posterior structure
+in the matched problem: it reached the two-target precision gate with fewer
+measurements for every reported seed under shared candidate outcomes. The
+result means only that fewer measurements were needed to narrow two specified
+latent mean-response intervals. It does not establish accurate recovery of the
+magnetic component, global predictive accuracy, or robustness to model
+misspecification.
+
+\subsection{Implications for converter modeling}
+For a converter workflow, the posterior is most useful as a conditional input
+to loss, inductance, and sensitivity calculations over the specified
+operating region. Posterior draws can be propagated through a component model
+instead of substituting one nominal coefficient set, allowing a designer to
+determine whether parameter uncertainty materially affects thermal or magnetic
+design margins. The Fisher spectrum can motivate testing whether a new channel
+or a wider, physically controlled excitation range would constrain a weak
+direction more effectively than densifying the original sweep
+~\cite{chaloner1995,atkinson2007}.
+
+Measured residuals define a separate model-adequacy assessment. The accepted core-loss
+fits show the error remaining after estimating Steinmetz coefficients inside
+one temperature cohort. The much larger loss-component permeability residuals
+show that a single Cole--Cole pole cannot be treated as a broadband physical
+description for these records. A component calculation that is sensitive to
+$\mu''$ should therefore retain an explicit discrepancy allowance or adopt a
+higher-order permeability law before relying on posterior parameter width.
+Conversely, a reasonable $\mu'$ residual does not validate $\mu''$, because
+the two components occupy different numerical scales and correspond to
+different design consequences.
+
+The common evaluation protocol safeguards this interpretation by preventing
+combination of a favorable recovery run, a figure from another seed set, and
+a measured fit produced under different filters. Fixed model settings, data
+selections, and random seeds also make it possible to distinguish sampling
+variation from changes to the computational experiment.
+
+\subsection{Threats to validity}
+Internal validity is limited by five synthetic recovery seeds and
+\EIGSeedCount{} paired acquisition seeds. Pairing controls differences in
+candidate outcomes between policies. A prespecified convergence study compares
+candidate ranks and downstream endpoints against a higher-budget reference;
+finite nested Monte Carlo variance nevertheless remains. Synthetic recovery is
+matched-model, and the observed interval-inclusion count is too small to
+establish calibrated frequentist coverage.
+
+Construct validity is limited by the low-order forward models and available
+data. The Steinmetz relation is temperature independent, and one Cole--Cole
+pole does not capture all ferrite relaxation, resonance, or loss processes
+~\cite{tsutaoka2003}. Measured errors are in-sample. Public curves may also
+contain digitization, instrument, preprocessing, and source-specific errors
+not represented by the likelihood. Excluding convergence-invalid or
+boundary-active records prevents unsupported aggregate claims but restricts
+the population represented by the accepted subset.
+
+External validity is confined to the specified channels, temperature cohorts,
+excitation ranges, materials, and cost model. The measured-data EIG ranking is
+a model-conditional acquisition suggestion, not a validated optimal laboratory
+plan, particularly given the observed $\mu''$ discrepancy. Measurement-count reductions
+must not be interpreted as laboratory-time savings because setup, settling,
+calibration, rejection, and batch costs were not measured. The results do not
+replace held-out validation, controlled multi-lot characterization,
+switching-waveform experiments, or component qualification. Those extensions
+require new experimental evidence rather than broader interpretation of the
+present results.
+
+\section{Conclusion}
+Bayesian calibration recovered the six active Steinmetz and Cole--Cole
+parameters with per-parameter median absolute relative errors of
+\RecoveryMedianMin\%--\RecoveryMedianMax\% across five matched-model synthetic
+data sets. The known values fell within \RecoveryInclusion{} equal-tailed
+90\% model-conditional posterior credible intervals. Under paired candidate
+outcomes and a common stopping rule, raw EIG reached the two-target latent
+mean-response precision gate with \EIGRange{} measurements, compared with
+\UniformRange{} for the fixed channel-balanced grid traversal, a descriptive
+mean reduction of \EIGReduction\% across \EIGSeedCount{} seeds. The paired
+count-difference bootstrap interval was \EIGCountDifferenceCILow--
+\EIGCountDifferenceCIHigh{} measurements, with \EIGCountWinRate\% paired wins
+and a \EIGRawFailureRate\% raw-EIG gate-failure rate. The
+accepted measured records produced substantially larger RRMSEs for $\mu''$
+than for $\mu'$, showing that posterior concentration cannot compensate for an
+inadequate permeability law. The workflow links inference, local
+identifiability, measurement selection,
+model-adequacy checks, and traceable evidence within the tested models,
+public data records, and operating ranges.
+
+\let\standardthebibliography\thebibliography
+\renewcommand{\thebibliography}[1]{%
+  \standardthebibliography{#1}%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parskip}{0pt}%
+}
+{\fontsize{8}{8.5}\selectfont
+\bibliographystyle{ieeetr}
+\bibliography{refs}
+}
+\end{document}

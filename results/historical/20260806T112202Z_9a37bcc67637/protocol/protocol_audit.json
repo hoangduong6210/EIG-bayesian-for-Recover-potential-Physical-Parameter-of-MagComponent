@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "historical_release_id": "20260806T112202Z_9a37bcc67637",
+  "historical_git_revision": "9a37bcc67637062cc4d9f453b8ec3ec1de257d87",
+  "historical_manifest_sha256": "7b00abfeaa3f307d2b9e97e1456a843e396e2061ad876225dadf439307f8998a",
+  "historical_source_archive_sha256": "d64b47e186d2543bf8eec58c6b34daee3d0e86c5fb368f0b1753a710a51c182a",
+  "historical_release_checksum_entries_verified": 242,
+  "synthetic_protocol": {
+    "seeds": [42, 43, 44, 45, 46],
+    "candidate_count": 37,
+    "candidate_temperature_c": 25.0,
+    "candidate_temperature_tolerance_c": 0.5,
+    "common_random_outcomes_between_policies": true,
+    "truth_drawn_from_fixed_prior": true,
+    "prior_centered_on_realized_truth": false,
+    "sampler_initialized_at_realized_truth": false,
+    "noise_fraction": {
+      "pcv": 0.03,
+      "mu_real": 0.02,
+      "mu_imag": 0.05,
+      "lm": 0.01
+    },
+    "measurement_cost_seconds": {
+      "pcv": 60.0,
+      "mu_real": 20.0,
+      "mu_imag": 20.0,
+      "lm": 15.0
+    },
+    "acquisition_objective": "estimated_eig_per_modeled_measurement_cost",
+    "baseline": "deterministic_channel_balanced_traversal"
+  },
+  "measured_weighting_fraction": 0.03,
+  "measured_cohorts": {
+    "permeability": {
+      "N87_LEA_MTB": {
+        "target_temperature_c": 25.0,
+        "tolerance_c": 0.75,
+        "actual_range_c": [24.91, 25.485],
+        "n": 80,
+        "accepted": true
+      },
+      "N95_LEA_MTB": {
+        "target_temperature_c": 30.0,
+        "tolerance_c": 0.75,
+        "actual_range_c": [30.042, 30.369],
+        "n": 1640,
+        "accepted": true
+      },
+      "N87_MagNet": {
+        "target_temperature_c": 25.0,
+        "tolerance_c": 0.75,
+        "accepted": false
+      },
+      "3C95_MagNet": {
+        "target_temperature_c": 25.0,
+        "tolerance_c": 0.75,
+        "accepted": false
+      }
+    },
+    "core_loss": {
+      "N49": {"target_temperature_c": 25.0, "tolerance_c": 0.5, "n": 241},
+      "N87": {"target_temperature_c": 25.0, "tolerance_c": 0.5, "n": 146},
+      "N95": {"target_temperature_c": 25.0, "tolerance_c": 0.5, "n": 112},
+      "3C95": {"target_temperature_c": 100.0, "tolerance_c": 0.5, "n": 164}
+    }
+  },
+  "audit_findings": {
+    "candidate_seed_depends_on_list_index": true,
+    "candidate_order_invariance_claim_supported": false,
+    "stopping_interval_includes_observation_noise": false,
+    "stopping_interval_correct_name": "posterior interval for latent mean response",
+    "single_25_plus_minus_0_5_c_measured_cohort_claim_supported": false
+  },
+  "lineage": {
+    "scientific_input_hash_index": "../lineage/source_artifact_index.json",
+    "complete_historical_artifact_hash_index": "../lineage/complete_source_artifact_index.json",
+    "measured_data_hash_index": "../lineage/input-data-sha256.txt"
+  }
+}

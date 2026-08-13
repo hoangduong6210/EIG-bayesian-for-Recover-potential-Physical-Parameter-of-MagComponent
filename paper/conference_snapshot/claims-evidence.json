@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "snapshot_pdf_sha256": "05588315a56e6c8460d43f8775d78d367953bde930e3c411c909bf7b8d700db2",
+  "historical_release_id": "20260806T112202Z_9a37bcc67637",
+  "current_release_id": "20260812T035654Z_a0703698ace9",
+  "evidence_root": "../../results/historical/20260806T112202Z_9a37bcc67637",
+  "claims": [
+    {
+      "id": "CS-MOD-01",
+      "pages": [2],
+      "class": "model",
+      "status": "supported",
+      "statement": "The historical implementation uses an isothermal Steinmetz core-loss law with inferred k, alpha, and beta.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol"}
+      ]
+    },
+    {
+      "id": "CS-MOD-02",
+      "pages": [2],
+      "class": "model",
+      "status": "supported",
+      "statement": "The historical implementation uses a single-pole Cole-Cole permeability model and a specified-geometry inductance mapping.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/lineage/source_artifact_index.json", "selector": "/freeze_id"}
+      ]
+    },
+    {
+      "id": "CS-SCOPE-01",
+      "pages": [2, 3],
+      "class": "protocol",
+      "status": "corrected",
+      "statement": "The synthetic library is isothermal at 25 C, but the measured records use material-specific temperature cohorts.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/measured_cohorts"},
+        {"path": "ERRATA.md", "selector": "item 4"}
+      ]
+    },
+    {
+      "id": "CS-STAT-01",
+      "pages": [2],
+      "class": "method",
+      "status": "supported",
+      "statement": "Inference uses six active transformed parameters with a Gaussian likelihood and a prior defined in active coordinates.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/recovery"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/default.toml", "selector": "model"}
+      ]
+    },
+    {
+      "id": "CS-STAT-02",
+      "pages": [2],
+      "class": "protocol",
+      "status": "corrected",
+      "statement": "Synthetic relative noise fractions are 3% Pcv, 2% mu-real, 5% mu-imag, and 1% Lm; measured weighting is 3%.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol/noise_fraction"},
+        {"path": "ERRATA.md", "selector": "item 1"}
+      ]
+    },
+    {
+      "id": "CS-MCMC-01",
+      "pages": [2, 3],
+      "class": "configuration",
+      "status": "supported",
+      "statement": "The recorded configuration uses 48 walkers, 1000 warm-up steps, 5000 retained steps, ESS at least 400, steps/tau at least 50, and acceptance 0.20 to 0.60.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/default.toml", "selector": "sampler,diagnostics"}
+      ]
+    },
+    {
+      "id": "CS-FISH-METHOD-01",
+      "pages": [2],
+      "class": "method",
+      "status": "supported",
+      "statement": "The Fisher matrix is a local sensitivity calculation in the six active transformed coordinates.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/fisher"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/synthetic_results.pdf", "selector": "panel a"}
+      ]
+    },
+    {
+      "id": "CS-EIG-METHOD-01",
+      "pages": [2, 3],
+      "class": "method",
+      "status": "qualified",
+      "statement": "The historical policy estimates one-step EIG with 300 outer and 100 inner draws and ranks EIG per modeled measurement cost.",
+      "qualification": "The headline response is measurement count, while the selection objective includes modeled channel costs.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/default.toml", "selector": "eig"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol/acquisition_objective"}
+      ]
+    },
+    {
+      "id": "CS-EIG-SEED-01",
+      "pages": [3],
+      "class": "method",
+      "status": "contradicted",
+      "statement": "The PDF claim that list order cannot change a candidate score is not supported by the archived index-based seed implementation.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/audit_findings/candidate_order_invariance_claim_supported"},
+        {"path": "ERRATA.md", "selector": "item 2"}
+      ]
+    },
+    {
+      "id": "CS-SEQ-01",
+      "pages": [3],
+      "class": "protocol",
+      "status": "supported",
+      "statement": "EIG and the deterministic channel-balanced baseline use the same pre-generated candidate outcomes in each paired seed.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol/common_random_outcomes_between_policies"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/lineage/source_artifact_index.json", "selector": "/inputs"}
+      ]
+    },
+    {
+      "id": "CS-ORACLE-01",
+      "pages": [3],
+      "class": "protocol",
+      "status": "supported",
+      "statement": "Truth is drawn from a fixed prior; neither the prior center nor sampler initialization is set from realized truth.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol"}
+      ]
+    },
+    {
+      "id": "CS-STOP-01",
+      "pages": [3, 4, 5],
+      "class": "protocol",
+      "status": "qualified",
+      "statement": "The gate uses a central 90% latent mean-response interval with 8% Pcv and 5% Lm thresholds and a maximum of 25 measurements.",
+      "qualification": "The PDF calls this posterior-predictive, but observation noise was not included in the interval.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/default.toml", "selector": "eig,stop_rule"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/audit_findings/stopping_interval_includes_observation_noise"},
+        {"path": "ERRATA.md", "selector": "item 3"}
+      ]
+    },
+    {
+      "id": "CS-REP-01",
+      "pages": [3],
+      "class": "reproducibility",
+      "status": "qualified",
+      "statement": "The historical results have fixed artifact, configuration, source revision, dependency and data hashes.",
+      "qualification": "The exact TeX source of the visible conference PDF build was not recovered.",
+      "evidence": [
+        {"path": "results.lock.yaml", "selector": "historical_git_revision"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/lineage/source_artifact_index.json", "selector": "/inputs"},
+        {"path": "ERRATA.md", "selector": "item 5"}
+      ]
+    },
+    {
+      "id": "CS-RES-FISH-01",
+      "pages": [3, 4],
+      "class": "quantitative_result",
+      "status": "supported",
+      "statement": "The 6 by 6 Fisher matrix has rank 6, eigenvalues 124.0723869965179 to 2912512.6754742926, and condition number 23474.30194565397.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/fisher"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/synthetic_results.pdf", "selector": "panel a"}
+      ]
+    },
+    {
+      "id": "CS-RES-REC-01",
+      "pages": [1, 3, 4, 5],
+      "class": "quantitative_result",
+      "status": "supported",
+      "statement": "Across seeds 42 to 46, parameter-median errors are 5.85%, 0.27%, 0.36%, 0.38%, 0.87%, and 0.62%, with 28 of 30 generating values in 90% model-conditional intervals.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/recovery,/recovery_interval_inclusion_total"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/frozen_results.tex", "selector": "recovery table"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/synthetic_results.pdf", "selector": "panel b"}
+      ]
+    },
+    {
+      "id": "CS-RES-EIG-01",
+      "pages": [1, 3, 4, 5],
+      "class": "quantitative_result",
+      "status": "supported_historical",
+      "currency": "superseded_by_current_30_seed_benchmark",
+      "statement": "For five paired seeds, EIG counts are [5,6,5,5,6], baseline counts are [9,9,9,9,9], EIG wins 5 of 5, and mean paired count reduction is 40.0%.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/eig"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/acquisition_measured_results.pdf", "selector": "panel a"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/lineage/source_artifact_index.json", "selector": "/inputs/0:5"}
+      ]
+    },
+    {
+      "id": "CS-RES-MU-01",
+      "pages": [1, 4, 5],
+      "class": "quantitative_result",
+      "status": "supported",
+      "statement": "Accepted N87 mu-real/mu-imag RRMSEs are 9.33%/52.42% (n=80), and N95 values are 6.89%/36.77% (n=1640).",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/measured_permeability"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/acquisition_measured_results.pdf", "selector": "panel b"}
+      ]
+    },
+    {
+      "id": "CS-RES-MU-EXCL-01",
+      "pages": [4, 5],
+      "class": "selection_result",
+      "status": "supported",
+      "statement": "N87 MagNet and 3C95 MagNet permeability records are excluded from aggregate numeric claims by validity gates.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/excluded_measured_permeability"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/measured_cohorts/permeability"}
+      ]
+    },
+    {
+      "id": "CS-RES-PCV-01",
+      "pages": [1, 4, 5],
+      "class": "quantitative_result",
+      "status": "supported",
+      "statement": "Core-loss in-sample RRMSEs are 8.79% N87, 12.55% N49, 13.40% 3C95, and 18.21% N95.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/measured_pcv"},
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/figures/acquisition_measured_results.pdf", "selector": "panel b"}
+      ]
+    },
+    {
+      "id": "CS-INT-01",
+      "pages": [1, 4, 5],
+      "class": "interpretation",
+      "status": "qualified",
+      "statement": "The much larger mu-imag residuals are evidence of inadequacy of the tested one-pole model for the accepted records.",
+      "qualification": "This is a model-adequacy interpretation, not proof of a unique missing physical mechanism.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/measured_permeability"}
+      ]
+    },
+    {
+      "id": "CS-LIM-01",
+      "pages": [4, 5],
+      "class": "limitation",
+      "status": "supported",
+      "statement": "Measured residuals are in-sample and do not establish held-out predictive performance.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/lineage/source_artifact_index.json", "selector": "/aggregation/measured_error"}
+      ]
+    },
+    {
+      "id": "CS-LIM-02",
+      "pages": [5],
+      "class": "limitation",
+      "status": "supported",
+      "statement": "Five seeds and one finite nested-Monte-Carlo estimate per candidate are insufficient for a general coverage or ranking-stability claim.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/tables/paper_summary.json", "selector": "/eig/seeds"},
+        {"path": "references.bib", "selector": "rainforth2018"}
+      ]
+    },
+    {
+      "id": "CS-LIM-03",
+      "pages": [5],
+      "class": "limitation",
+      "status": "supported",
+      "statement": "The reported measurement-count reduction is not measured laboratory-time savings.",
+      "evidence": [
+        {"path": "../../results/historical/20260806T112202Z_9a37bcc67637/protocol/protocol_audit.json", "selector": "/synthetic_protocol/measurement_cost_seconds"}
+      ]
+    },
+    {
+      "id": "CS-LIT-01-05",
+      "pages": [1, 2, 6],
+      "class": "literature",
+      "status": "cited",
+      "statement": "Background claims on magnetic models, Bayesian calibration, design, MCMC diagnostics, Fisher information, and sloppiness map to the snapshot bibliography.",
+      "evidence": [
+        {"path": "references.bib", "selector": "all 35 bibliography entries"}
+      ]
+    }
+  ]
+}

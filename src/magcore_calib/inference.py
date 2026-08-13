@@ -1,0 +1,139 @@
+"""Six-dimensional posterior inference with prior-center initialization."""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+
+import numpy as np
+
+from .diagnostics import diagnostic_report
+from .forward import MU0
+from .models import Channel, Geometry, MagneticParams, Observation
+from .prior import DatasheetPrior, log_prior_active, prior_center_vector
+
+
+@dataclass(frozen=True)
+class PreparedLikelihood:
+    channel: np.ndarray
+    frequency_hz: np.ndarray
+    flux_t: np.ndarray
+    values: np.ndarray
+    sigma: np.ndarray
+    geometry: Geometry | None
+
+
+def prepare_likelihood(observations: list[Observation],
+                       geometry: Geometry | None = None) -> PreparedLikelihood:
+    if not observations:
+        raise ValueError("posterior likelihood requires at least one observation")
+    temperatures = np.array([o.design.temperature_c for o in observations])
+    if np.ptp(temperatures) > 2.0:
+        raise ValueError("likelihood cannot mix temperature cohorts")
+    channel_codes = {channel: index for index, channel in enumerate(Channel)}
+    return PreparedLikelihood(
+        channel=np.array([channel_codes[o.design.channel] for o in observations], dtype=np.int8),
+        frequency_hz=np.array([o.design.f_hz for o in observations]),
+        flux_t=np.array([o.design.b_pk_t for o in observations]),
+        values=np.array([o.value for o in observations]),
+        sigma=np.array([o.sigma for o in observations]),
+        geometry=geometry,
+    )
+
+
+def log_likelihood_prepared(x: np.ndarray, data: PreparedLikelihood) -> float:
+    params = MagneticParams.from_active(np.asarray(x))
+    prediction = np.empty_like(data.values)
+    channel_codes = {channel: index for index, channel in enumerate(Channel)}
+    pcv = data.channel == channel_codes[Channel.PCV]
+    prediction[pcv] = (params.k * data.frequency_hz[pcv] ** params.alpha
+                       * data.flux_t[pcv] ** params.beta)
+    permeability = ~pcv
+    if np.any(permeability):
+        frequency = data.frequency_hz[permeability]
+        exponent = 1.0 - params.alpha_cc
+        magnitude = (frequency / params.f_rel_hz) ** exponent
+        angle = exponent * math.pi / 2.0
+        den_real = 1.0 + magnitude * math.cos(angle)
+        den_imag = magnitude * math.sin(angle)
+        denominator = den_real ** 2 + den_imag ** 2
+        mu_real = 1.0 + (params.mu_s - 1.0) * den_real / denominator
+        mu_imag = (params.mu_s - 1.0) * den_imag / denominator
+        subchannels = data.channel[permeability]
+        values = np.empty_like(frequency)
+        values[subchannels == channel_codes[Channel.MU_REAL]] = mu_real[subchannels == channel_codes[Channel.MU_REAL]]
+        values[subchannels == channel_codes[Channel.MU_IMAG]] = mu_imag[subchannels == channel_codes[Channel.MU_IMAG]]
+        lm = subchannels == channel_codes[Channel.LM]
+        if np.any(lm):
+            if data.geometry is None:
+                raise ValueError("Geometry is required for the Lm channel")
+            scale = MU0 * data.geometry.turns ** 2 * data.geometry.area_m2 / data.geometry.path_m
+            values[lm] = mu_real[lm] * scale
+        prediction[permeability] = values
+    residual = (data.values - prediction) / data.sigma
+    return float(np.sum(-0.5 * residual ** 2 - np.log(data.sigma) - 0.5 * math.log(2.0 * math.pi)))
+
+
+def log_likelihood_active(x: np.ndarray, observations: list[Observation],
+                          geometry: Geometry | None = None) -> float:
+    return log_likelihood_prepared(x, prepare_likelihood(observations, geometry))
+
+
+def log_posterior_active(x: np.ndarray, observations: list[Observation],
+                         spec: DatasheetPrior, geometry: Geometry | None = None) -> float:
+    prior = log_prior_active(x, spec)
+    if not math.isfinite(prior):
+        return -math.inf
+    return prior + log_likelihood_active(x, observations, geometry)
+
+
+def _log_posterior_prepared(x: np.ndarray, data: PreparedLikelihood,
+                            spec: DatasheetPrior) -> float:
+    prior = log_prior_active(x, spec)
+    return -math.inf if not math.isfinite(prior) else prior + log_likelihood_prepared(x, data)
+
+
+@dataclass
+class PosteriorResult:
+    chain: np.ndarray
+    samples: np.ndarray
+    log_probabilities: np.ndarray
+    diagnostics: dict
+
+
+def sample_emcee(observations: list[Observation], spec: DatasheetPrior,
+                 geometry: Geometry | None = None, *, n_walkers: int = 48,
+                 n_steps: int = 5000, burn: int = 1000, seed: int = 0,
+                 pool=None) -> PosteriorResult:
+    """Heavy sampler. Entrypoints, not this reusable function, enforce SLURM."""
+    import emcee
+
+    if n_walkers < 12:
+        raise ValueError("six-dimensional affine-invariant sampling needs at least 12 walkers")
+    rng = np.random.default_rng(seed)
+    center = prior_center_vector(spec)
+    scales = np.array([0.05, 0.02, 0.02, 0.05, 0.05, 0.02])
+    initial = center + rng.normal(size=(n_walkers, 6)) * scales
+    prepared = prepare_likelihood(observations, geometry)
+    sampler = emcee.EnsembleSampler(
+        n_walkers, 6, _log_posterior_prepared, args=(prepared, spec), pool=pool,
+    )
+    # emcee maintains its own legacy RandomState for proposals.  Seeding only
+    # NumPy's Generator above makes initialization repeatable but leaves the
+    # Markov transition sequence nondeterministic across SLURM runs.
+    proposal_rng = np.random.RandomState(seed)
+    sampler.random_state = proposal_rng.get_state()
+    sampler.run_mcmc(initial, burn + n_steps, progress=False)
+    chain = sampler.get_chain(discard=burn, flat=False)
+    flat = chain.reshape((-1, 6))
+    log_prob = sampler.get_log_prob(discard=burn, flat=True)
+    try:
+        tau = np.asarray(sampler.get_autocorr_time(discard=burn, tol=0), dtype=float)
+    except Exception:
+        tau = np.full(6, np.nan)
+    diagnostics = diagnostic_report(chain, sampler.acceptance_fraction, tau)
+    diagnostics["finite_log_probability_fraction"] = float(np.mean(np.isfinite(log_prob)))
+    diagnostics["valid"] = bool(
+        diagnostics["valid"] and diagnostics["finite_log_probability_fraction"] == 1.0
+    )
+    return PosteriorResult(chain, flat, log_prob, diagnostics)

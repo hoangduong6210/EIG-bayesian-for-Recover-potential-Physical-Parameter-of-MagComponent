@@ -1,0 +1,25 @@
+/runs/
+*.partial
+__pycache__/
+.pytest_cache/
+.coverage
+*.py[cod]
+.venv/
+
+# Raw or locally staged third-party data are not redistributed.
+/data/external/
+/data/processed/*
+!/data/processed/README.md
+
+# Runtime provenance may contain local paths and cluster metadata.
+**/logs/
+**/provenance/
+
+# LaTeX intermediates; keep source and final PDFs.
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+/paper/current_state/source/build/
