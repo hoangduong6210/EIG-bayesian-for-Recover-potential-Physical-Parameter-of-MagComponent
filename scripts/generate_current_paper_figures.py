@@ -74,14 +74,16 @@ def _save(fig: plt.Figure, destination: Path, title: str, release_id: str) -> No
 
 
 def _box(ax: plt.Axes, xy: tuple[float, float], width: float, height: float,
-         text: str, *, hatch: str = "") -> None:
+         text: str, *, facecolor: str = "white", hatch: str = "",
+         linestyle: str = "-", fontsize: float = 7.4) -> None:
     box = FancyBboxPatch(
         xy, width, height, boxstyle="round,pad=0.015",
-        facecolor="white", edgecolor="black", linewidth=0.9, hatch=hatch,
+        facecolor=facecolor, edgecolor="black", linewidth=0.9,
+        linestyle=linestyle, hatch=hatch,
     )
     ax.add_patch(box)
     ax.text(xy[0] + width / 2, xy[1] + height / 2, text,
-            ha="center", va="center", fontsize=7.4)
+            ha="center", va="center", fontsize=fontsize)
 
 
 def _arrow(ax: plt.Axes, start: tuple[float, float], end: tuple[float, float],
@@ -93,15 +95,15 @@ def _arrow(ax: plt.Axes, start: tuple[float, float], end: tuple[float, float],
 
 
 def render_workflow(summary: dict[str, Any], output_dir: Path) -> Path:
-    fig, ax = plt.subplots(figsize=(7.2, 4.35))
+    fig, ax = plt.subplots(figsize=(7.2, 4.55))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
     ax.text(0.01, 0.96, "(a) Evidence branches", weight="bold", fontsize=9)
-    _box(ax, (0.02, 0.68), 0.18, 0.17, "Declared model, prior,\nnoise, and geometry")
-    _box(ax, (0.29, 0.72), 0.18, 0.12, "Matched-model\nrecovery", hatch="//")
-    _box(ax, (0.52, 0.72), 0.18, 0.12, "Paired sequential\nacquisition", hatch="xx")
-    _box(ax, (0.77, 0.72), 0.20, 0.12, "Measured-data\nmodel adequacy", hatch="..")
+    _box(ax, (0.02, 0.69), 0.18, 0.15, "Declared model, prior,\nnoise, and geometry")
+    _box(ax, (0.29, 0.72), 0.18, 0.12, "Matched-model\nrecovery", facecolor="0.96")
+    _box(ax, (0.52, 0.72), 0.18, 0.12, "Paired sequential\nacquisition", facecolor="0.90")
+    _box(ax, (0.77, 0.72), 0.20, 0.12, "Measured-data\nmodel adequacy", facecolor="0.82")
     ax.plot((0.20, 0.245), (0.765, 0.765), color="black", linewidth=0.8)
     ax.plot((0.245, 0.245), (0.765, 0.89), color="black", linewidth=0.8)
     ax.plot((0.245, 0.87), (0.89, 0.89), color="black", linewidth=0.8)
@@ -119,14 +121,22 @@ def render_workflow(summary: dict[str, Any], output_dir: Path) -> Path:
         _box(ax, (x, 0.36), width, 0.13, label)
     for index in range(len(labels) - 1):
         _arrow(ax, (starts[index] + widths[index], 0.425), (starts[index + 1], 0.425))
-    _arrow(ax, (0.89, 0.36), (0.285, 0.29), style="--")
-    ax.text(0.58, 0.27, "if gate is not reached: append observation and refit",
+    ax.plot((0.89, 0.89, 0.285), (0.36, 0.29, 0.29), color="black",
+            linewidth=0.75, linestyle="--")
+    _arrow(ax, (0.285, 0.29), (0.285, 0.36), style="--")
+    ax.text(0.58, 0.255, "if gate is not reached: append observation and refit",
             fontsize=6.8, ha="center")
     ax.text(0.01, 0.19, "(c) Claim boundary", weight="bold", fontsize=9)
-    _box(ax, (0.02, 0.015), 0.44, 0.135,
-         "Supported here\nmodel-conditional recovery and\nlocal precision efficiency", hatch="//")
-    _box(ax, (0.54, 0.015), 0.43, 0.135,
-         "Not established\nreal-material optimality, global accuracy,\nor laboratory-time savings", hatch="xx")
+    _box(ax, (0.02, 0.015), 0.44, 0.135, "", facecolor="0.92")
+    ax.text(0.24, 0.112, "SUPPORTED BY FROZEN EVIDENCE",
+            ha="center", va="center", fontsize=6.7, weight="bold")
+    ax.text(0.24, 0.063, "model-conditional recovery and\nlocal precision efficiency",
+            ha="center", va="center", fontsize=7.2)
+    _box(ax, (0.54, 0.015), 0.43, 0.135, "", linestyle="--")
+    ax.text(0.755, 0.112, "NOT ESTABLISHED",
+            ha="center", va="center", fontsize=6.7, weight="bold")
+    ax.text(0.755, 0.063, "real-material optimality, global accuracy,\nor laboratory-time savings",
+            ha="center", va="center", fontsize=7.2)
     destination = output_dir / FIGURE_NAMES[0]
     _save(fig, destination, "Study design and interpretation boundary", summary["release_id"])
     return destination
@@ -181,7 +191,8 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
     cost = np.asarray(eig["per_cost_modeled_costs"], dtype=float)
     fixed_cost = np.asarray(eig["fixed_modeled_costs"], dtype=float)
     differences = fixed - raw
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.8), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 3.05))
+    fig.subplots_adjust(left=0.075, right=0.99, bottom=0.20, top=0.88, wspace=0.38)
 
     axes[0].plot(seeds, raw, color="black", linewidth=0.9, marker="o",
                  markersize=3.1, markerfacecolor="white", label="Raw EIG")
@@ -189,8 +200,14 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
                  marker="x", markersize=3.4, label="Fixed traversal")
     axes[0].set(xlabel="Paired seed", ylabel="Measurements to gate",
                 title="(a) Count endpoint")
-    axes[0].tick_params(axis="x", labelrotation=55)
-    axes[0].legend(frameon=False, loc="lower right")
+    seed_ticks = (seeds[0], seeds[9], seeds[19], seeds[-1])
+    axes[0].set_xticks(seed_ticks)
+    axes[0].tick_params(axis="x", labelrotation=35)
+    axes[0].set_ylim(min(raw) - 0.5, max(fixed) + 0.5)
+    axes[0].legend(
+        frameon=True, facecolor="white", edgecolor="0.7", framealpha=1.0,
+        loc="center", fontsize=6.6,
+    )
     axes[0].grid(True, axis="y", color="0.86", linewidth=0.4, linestyle=":")
 
     values, counts = np.unique(differences, return_counts=True)
@@ -201,16 +218,22 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
     axes[1].set(xlabel="Fixed minus raw-EIG count",
                 ylabel="Number of paired seeds", title="(b) Paired count gain")
     axes[1].set_xticks(values)
+    axes[1].set_ylim(0, max(counts) * 1.14)
     axes[1].grid(True, axis="y", color="0.86", linewidth=0.4, linestyle=":")
 
-    order = np.arange(len(seeds))
+    order = np.arange(1, len(seeds) + 1)
     axes[2].plot(order, cost, color="black", linewidth=0.9, marker="o",
                  markersize=3.1, markerfacecolor="white", label="EIG / cost")
     axes[2].plot(order, fixed_cost, color="0.35", linewidth=1.0, linestyle="--",
                  marker="x", markersize=3.4, label="Fixed traversal")
-    axes[2].set(xlabel="Paired run (seed order)", ylabel="Modeled acquisition cost",
+    axes[2].set(xlabel="Paired run (ordered seed)", ylabel="Modeled acquisition cost",
                 title="(c) Prespecified cost endpoint")
-    axes[2].legend(frameon=False, loc="lower right")
+    axes[2].set_xticks((1, 10, 20, 30))
+    axes[2].set_ylim(min(cost) - 10, max(fixed_cost) + 10)
+    axes[2].legend(
+        frameon=True, facecolor="white", edgecolor="0.7", framealpha=1.0,
+        loc="center", fontsize=6.6,
+    )
     axes[2].grid(True, axis="y", color="0.86", linewidth=0.4, linestyle=":")
     destination = output_dir / FIGURE_NAMES[2]
     _save(fig, destination, "Expanded paired acquisition diagnostics", summary["release_id"])

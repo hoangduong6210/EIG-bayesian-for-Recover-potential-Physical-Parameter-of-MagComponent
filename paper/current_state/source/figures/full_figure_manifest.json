@@ -5,9 +5,9 @@
   },
   "outputs": [
     {
-      "bytes": 38840,
+      "bytes": 28835,
       "path": "study_workflow_full.pdf",
-      "sha256": "46308b558c19ab0955ca1d46d44426ba9548e7fb31023b4fe8b087ad42395a2b"
+      "sha256": "9cbf127e79446d9ac2e1c7b14288d041291d7b3ce08e68ba86aea182541d2091"
     },
     {
       "bytes": 30486,
@@ -15,9 +15,9 @@
       "sha256": "a481b4bc013763c96e5ca617f0570c102f08cae02eedd0857b12740b5c0ef4cf"
     },
     {
-      "bytes": 22546,
+      "bytes": 22778,
       "path": "acquisition_diagnostics_full.pdf",
-      "sha256": "2cc4420cdc901db273986879c50eb756323b8f17886f0d88ec11696f690e5060"
+      "sha256": "782b52f9e34e00e881040430157083624c5da786315bc763fd7f49956c76c810"
     },
     {
       "bytes": 24123,
