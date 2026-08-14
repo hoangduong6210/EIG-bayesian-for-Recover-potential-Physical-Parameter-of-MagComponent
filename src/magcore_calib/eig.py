@@ -105,19 +105,48 @@ def estimate_eig(design: DesignPoint, samples: np.ndarray, *, seed: int,
     if isinstance(n_inner, bool) or not isinstance(n_inner, (int, np.integer)) or n_inner < 1:
         raise ValueError("n_inner must be a positive integer")
 
+    predictions = predict_active_batch(samples, design, geometry)
+    return estimate_eig_from_predictions(
+        predictions, design.channel, seed=seed, n_outer=n_outer, n_inner=n_inner
+    )
+
+
+def estimate_eig_from_predictions(
+    predictions: np.ndarray,
+    channel: Channel,
+    *,
+    seed: int,
+    n_outer: int = 300,
+    n_inner: int = 100,
+) -> float:
+    """Estimate EIG from one cached posterior-prediction vector.
+
+    Candidate ranking reuses this vector across estimator replicates, avoiding
+    repeated forward-model evaluation without changing any Monte Carlo stream.
+    """
+
+    mu_posterior = np.asarray(predictions, dtype=float)
+    if mu_posterior.ndim != 1 or len(mu_posterior) == 0:
+        raise ValueError("predictions must be a nonempty one-dimensional array")
+    if not np.all(np.isfinite(mu_posterior)):
+        raise ValueError("predictions must contain only finite values")
+    if isinstance(n_outer, bool) or not isinstance(n_outer, (int, np.integer)) or n_outer < 1:
+        raise ValueError("n_outer must be a positive integer")
+    if isinstance(n_inner, bool) or not isinstance(n_inner, (int, np.integer)) or n_inner < 1:
+        raise ValueError("n_inner must be a positive integer")
+
     outer_seed, inner_seed, noise_seed = np.random.SeedSequence(seed).spawn(3)
     outer_rng = np.random.default_rng(outer_seed)
     inner_rng = np.random.default_rng(inner_seed)
     noise_rng = np.random.default_rng(noise_seed)
-    outer_indices = outer_rng.choice(len(samples), size=n_outer, replace=True)
-    inner_indices = inner_rng.choice(len(samples), size=n_inner, replace=True)
+    outer_indices = outer_rng.choice(len(mu_posterior), size=n_outer, replace=True)
+    inner_indices = inner_rng.choice(len(mu_posterior), size=n_inner, replace=True)
 
     # Predict once for the complete posterior. Besides fixing sigma, indexing
     # this array avoids repeating the forward model for duplicate MC draws.
-    mu_posterior = predict_active_batch(samples, design, geometry)
     mu_outer = mu_posterior[outer_indices]
     mu_inner = mu_posterior[inner_indices]
-    sigma = _noise_sigma_from_predictions(mu_posterior, design.channel)
+    sigma = _noise_sigma_from_predictions(mu_posterior, channel)
     y = mu_outer + noise_rng.normal(0.0, sigma, n_outer)
     constant = -math.log(sigma) - 0.5 * math.log(2.0 * math.pi)
     conditional = -0.5 * ((y - mu_outer) / sigma) ** 2 + constant
@@ -141,10 +170,12 @@ def rank_candidates_with_uncertainty(
 
     estimates = np.empty((len(library), n_replicates), dtype=float)
     for candidate_index, design in enumerate(library):
+        predictions = predict_active_batch(samples, design, geometry)
         for replicate in range(n_replicates):
-            estimates[candidate_index, replicate] = estimate_eig(
-                design, samples, seed=stable_design_seed(seed, design, replicate),
-                geometry=geometry, n_outer=n_outer, n_inner=n_inner,
+            estimates[candidate_index, replicate] = estimate_eig_from_predictions(
+                predictions, design.channel,
+                seed=stable_design_seed(seed, design, replicate),
+                n_outer=n_outer, n_inner=n_inner,
             )
 
     utilities = np.array([
@@ -197,7 +228,8 @@ def rank_candidates(
 
 def reveal(outcomes: dict[str, Observation], design: DesignPoint) -> Observation:
     """Reveal the common-random-number observation assigned to a design."""
-    try:
-        return outcomes[design.key()]
-    except KeyError as error:
-        raise KeyError(f"design {design.key()} has no pre-generated outcome") from error
+
+    for identity in (design.exact_key(), design.key()):
+        if identity in outcomes:
+            return outcomes[identity]
+    raise KeyError(f"design {design.exact_key()} has no pre-generated outcome")

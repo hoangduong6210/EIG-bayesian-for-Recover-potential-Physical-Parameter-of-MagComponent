@@ -24,7 +24,10 @@ def main() -> None:
     parser.add_argument("--n-steps", type=int, default=5000)
     parser.add_argument("--burn", type=int, default=1000)
     parser.add_argument("--workers", type=int, default=1)
-    parser.add_argument("--misspec", type=float, default=0.0)
+    parser.add_argument(
+        "--prior-offset", dest="prior_offset", type=float, default=0.0,
+        help="Offset the inference prior center; this is not structural model mismatch.",
+    )
     parser.add_argument("--out")
     parser.add_argument("--artifacts", default="artifacts")
     args = parser.parse_args()
@@ -33,14 +36,14 @@ def main() -> None:
     rng = np.random.default_rng(args.seed)
     spec = DatasheetPrior()
     truth = draw_prior_predictive(spec, rng)
-    if args.misspec:
+    if args.prior_offset:
         spec = DatasheetPrior(
-            log10_k_nom=spec.log10_k_nom + args.misspec,
-            alpha_nom=spec.alpha_nom + 0.5 * args.misspec,
-            beta_nom=spec.beta_nom + 0.5 * args.misspec,
-            ln_mu_s_nom=spec.ln_mu_s_nom + args.misspec,
-            ln_f_rel_hz_nom=spec.ln_f_rel_hz_nom + args.misspec,
-            alpha_cc_nom=min(0.80, spec.alpha_cc_nom + 0.25 * args.misspec),
+            log10_k_nom=spec.log10_k_nom + args.prior_offset,
+            alpha_nom=spec.alpha_nom + 0.5 * args.prior_offset,
+            beta_nom=spec.beta_nom + 0.5 * args.prior_offset,
+            ln_mu_s_nom=spec.ln_mu_s_nom + args.prior_offset,
+            ln_f_rel_hz_nom=spec.ln_f_rel_hz_nom + args.prior_offset,
+            alpha_cc_nom=min(0.80, spec.alpha_cc_nom + 0.25 * args.prior_offset),
         )
     geometry = Geometry()
     library = default_library(25.0)
@@ -86,16 +89,16 @@ def main() -> None:
         "design": {"experiment": "prior_predictive_recovery"},
         "claim_context": {
             "synthetic": True, "matched_model": True,
-            "prior_predictive_truth": args.misspec == 0.0,
+            "prior_predictive_truth": args.prior_offset == 0.0,
             "datasheet_centered_on_realized_truth": False, "oracle_initialized": False,
-            "measured_data": False,
+            "measured_data": False, "structural_model_mismatch": False,
         },
         "validity": {
             "convergence_valid": result.diagnostics["valid"],
             "alpha_cc_boundary_flag": posterior["alpha_cc"]["boundary_flag"],
         },
     }
-    record["design"]["prior_misspecification"] = args.misspec
+    record["design"]["prior_center_offset"] = args.prior_offset
     output = write_result(record, args.out) if args.out else write_immutable(record, args.artifacts)
     print(output)
 

@@ -26,7 +26,19 @@ class DesignPoint:
     temperature_c: float = 25.0
 
     def key(self) -> str:
+        """Return a compact display key retained for backward compatibility."""
+
         return f"{self.channel.value}|{self.f_hz:.12g}|{self.b_pk_t:.12g}|{self.temperature_c:.6g}"
+
+    def exact_key(self) -> str:
+        """Return a collision-resistant identity using exact float encodings."""
+
+        return "|".join((
+            self.channel.value,
+            float(self.f_hz).hex(),
+            float(self.b_pk_t).hex(),
+            float(self.temperature_c).hex(),
+        ))
 
 
 @dataclass(frozen=True)

@@ -13,13 +13,13 @@ source "$ROOT/slurm/common.sh"
 load_run "$1"
 IDX="$SLURM_ARRAY_TASK_ID"
 if (( IDX < 15 )); then
-    MISSPEC_INDEX=$((IDX / 5))
+    OFFSET_INDEX=$((IDX / 5))
     SEED=$((42 + IDX % 5))
-    MISSPECS=(0.0 0.15 0.30)
-    MISSPEC="${MISSPECS[$MISSPEC_INDEX]}"
-    init_task robustness "misspec${MISSPEC}_seed${SEED}"
-    OUT="$RESULT_DIR/misspec_${MISSPEC}_seed${SEED}.json"
-    run_experiment misspec posterior_recovery.py --seed "$SEED" --misspec "$MISSPEC" \
+    OFFSETS=(0.0 0.15 0.30)
+    OFFSET="${OFFSETS[$OFFSET_INDEX]}"
+    init_task robustness "prior_offset${OFFSET}_seed${SEED}"
+    OUT="$RESULT_DIR/prior_offset_${OFFSET}_seed${SEED}.json"
+    run_experiment prior_offset posterior_recovery.py --seed "$SEED" --prior-offset "$OFFSET" \
         --n-walkers 48 --n-steps 5000 --burn 1000 --workers "$SLURM_CPUS_PER_TASK" --out "$OUT.partial"
 else
     SEED=$((42 + IDX - 15))

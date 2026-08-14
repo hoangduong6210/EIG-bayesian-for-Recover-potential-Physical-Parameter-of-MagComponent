@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+import tomllib
+
 import numpy as np
 import pytest
 
@@ -16,6 +19,7 @@ from magcore_calib.eig_convergence import (
 )
 from magcore_calib.models import Channel, DesignPoint, Geometry
 from magcore_calib.prior import DatasheetPrior, prior_center_vector
+from magcore_calib.results import BENCHMARK_V4_POLICY_OBJECTIVES
 
 
 def posterior_samples() -> np.ndarray:
@@ -68,17 +72,43 @@ def test_candidate_scores_and_ranking_are_permutation_invariant():
 def test_raw_and_per_cost_objectives_can_select_different_candidates(monkeypatch):
     points = [DesignPoint(Channel.PCV, 1e5, 0.1), DesignPoint(Channel.LM, 1e5, 0.0)]
 
-    def fake_estimate(design, samples, **kwargs):
-        return 2.0 if design.channel is Channel.PCV else 1.0
+    def fake_estimate(predictions, channel, **kwargs):
+        return 2.0 if channel is Channel.PCV else 1.0
 
-    monkeypatch.setattr(eig, "estimate_eig", fake_estimate)
+    monkeypatch.setattr(eig, "estimate_eig_from_predictions", fake_estimate)
     samples = posterior_samples()
-    raw = eig.rank_candidates(points, samples, seed=1, n_replicates=3, objective="raw")
+    raw = eig.rank_candidates(
+        points, samples, seed=1, geometry=Geometry(), n_replicates=3, objective="raw"
+    )
     per_cost = eig.rank_candidates(
-        points, samples, seed=1, n_replicates=3, objective="per_cost"
+        points,
+        samples,
+        seed=1,
+        geometry=Geometry(),
+        n_replicates=3,
+        objective="per_cost",
     )
     assert raw[0][0].channel is Channel.PCV
     assert per_cost[0][0].channel is Channel.LM
+
+
+def test_modeled_cost_configuration_matches_runtime_policy_table():
+    root = Path(__file__).resolve().parents[1]
+    with (root / "configs" / "default.toml").open("rb") as stream:
+        configured = tomllib.load(stream)["eig"]["modeled_cost_seconds"]
+    assert configured == {
+        channel.value: cost for channel, cost in eig.CHANNEL_COST_S.items()
+    }
+
+
+def test_preregistered_v4_policy_registry_matches_result_schema():
+    root = Path(__file__).resolve().parents[1]
+    with (root / "configs" / "default.toml").open("rb") as stream:
+        configured = tomllib.load(stream)["study"]["comparator_benchmark"]
+    assert configured["version"] == 4
+    assert set(configured["policies"]) == set(BENCHMARK_V4_POLICY_OBJECTIVES)
+    assert configured["reference_policy"] == "fixed_channel_balanced"
+    assert configured["secondary_validation_used_for_stopping"] is False
 
 
 @pytest.mark.parametrize("objective", ["unknown", "count"])

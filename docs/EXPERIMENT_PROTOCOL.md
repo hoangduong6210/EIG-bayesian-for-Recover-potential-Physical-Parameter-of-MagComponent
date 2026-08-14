@@ -71,9 +71,43 @@ $L_m(100\,\mathrm{kHz},25\,^{\circ}\mathrm C)\leq5\%$. It is a local precision
 rule, not evidence of truth proximity, parameter recovery, global prediction,
 model adequacy, or frequentist coverage.
 
-## E4 — Prior misspecification
+### E3-v4 — preregistered comparator extension (not in the current frozen result)
 
-Run declared 0%, 15%, and 30% prior-center offsets. Record exactly which physical/transformed parameters are shifted. Report recovery and predictive performance separately; a precision gate reached around a biased posterior does not establish accuracy.
+The next confirmatory release uses the same 30 acquisition seeds and adds five
+declared policy variants to the three-policy comparison: a seeded random
+channel-balanced traversal, raw and cost-normalized greedy predictive variance,
+and raw and cost-normalized local Laplace D-optimality. Every policy uses the
+same truth, exact-identity outcome table, initial observations, candidate set,
+gate, count budget, and modeled-cost table. Randomization has a policy-specific
+SHA-256 seed namespace independent of the outcome stream. Greedy score records
+must retain every candidate score and exact design identity at every decision.
+
+Primary comparisons remain paired against the fixed channel-balanced reference:
+count-targeting policies use measurements-to-gate and cost-targeting policies
+use modeled cost-to-gate. Random and fixed traversals are descriptive controls.
+The benchmark supports pairwise conclusions for these declared policies; it
+does not establish global optimality over all acquisition methods.
+
+At the final state of every policy, the pipeline also records six-parameter
+truth recovery and per-channel latent-mean error and 90% interval coverage on a
+prespecified 23-point grid disjoint from all acquisition candidates. These are
+secondary diagnostics and are prohibited from acquisition and stopping. They
+test for a narrow-but-wrong posterior within the matched-model simulation; they
+do not remove structural-model dependence or establish real-material accuracy.
+
+This section preregisters code and endpoints only. Until a new checksum-locked
+release contains all 30 valid v4 records, the repository makes no numerical
+claim for any added comparator or secondary validation endpoint.
+
+## E4 — Prior-center offset sensitivity
+
+Run declared dimensionless prior-center offset levels 0.00, 0.15, and 0.30.
+These are labels for the explicitly coded coordinate shifts, not uniform
+percentage perturbations of every physical parameter. Record exactly which
+physical/transformed parameters are shifted. Report recovery and predictive
+performance separately; a precision gate reached around a biased posterior
+does not establish accuracy. This study is prior sensitivity, not structural
+forward-model misspecification.
 
 ## E5 — Public measured complex permeability
 

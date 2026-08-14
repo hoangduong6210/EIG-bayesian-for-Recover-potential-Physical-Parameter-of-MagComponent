@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import os
 from collections.abc import Iterable
 from pathlib import Path
@@ -69,6 +70,28 @@ def default_library(temperature_c: float = 25.0) -> list[DesignPoint]:
     return points
 
 
+def validation_library(temperature_c: float = 25.0) -> list[DesignPoint]:
+    """Return a prespecified latent-response grid disjoint from acquisition.
+
+    The intermediate frequencies and flux densities prevent a policy from
+    improving this diagnostic merely by selecting the evaluated design. This
+    grid is an evaluation endpoint, never an acquisition candidate.
+    """
+
+    points: list[DesignPoint] = []
+    for f_hz in (2e4, 7e4, 2e5, 7e5, 1.5e6, 2.5e6):
+        points.extend([
+            DesignPoint(Channel.MU_REAL, f_hz, 0.0, temperature_c),
+            DesignPoint(Channel.MU_IMAG, f_hz, 0.0, temperature_c),
+        ])
+    for f_hz in (4e4, 7.5e4, 1.5e5, 4e5):
+        for b_pk_t in (0.075, 0.15):
+            points.append(DesignPoint(Channel.PCV, f_hz, b_pk_t, temperature_c))
+    for f_hz in (5e4, 4e5, 1.5e6):
+        points.append(DesignPoint(Channel.LM, f_hz, 0.0, temperature_c))
+    return points
+
+
 def observation_for(params: MagneticParams, design: DesignPoint, rng: np.random.Generator,
                     geometry: Geometry | None = None) -> Observation:
     mean = predict_one(params, design, geometry)
@@ -81,6 +104,37 @@ def common_random_outcomes(params: MagneticParams, library: Iterable[DesignPoint
     """One immutable outcome per candidate, shared by all acquisition policies."""
     rng = np.random.default_rng(seed)
     return {d.key(): observation_for(params, d, rng, geometry) for d in library}
+
+
+def stable_common_random_outcomes(
+    params: MagneticParams,
+    library: Iterable[DesignPoint],
+    *,
+    seed: int,
+    geometry: Geometry | None = None,
+) -> dict[str, Observation]:
+    """Generate order-invariant outcomes from exact candidate identities.
+
+    Each candidate receives an independent deterministic RNG stream derived
+    from the scenario seed and exact IEEE-754 design tuple. This preserves the
+    same outcome if the input library is reordered and prevents compact display
+    key collisions from silently replacing a candidate.
+    """
+
+    points = list(library)
+    identities = [point.exact_key() for point in points]
+    if len(set(identities)) != len(points):
+        raise ValueError("candidate library contains duplicate exact design identities")
+    outcomes: dict[str, Observation] = {}
+    for point, identity in zip(points, identities):
+        payload = f"magcore-outcome-v1|{seed}|{identity}".encode("utf-8")
+        candidate_seed = int.from_bytes(
+            hashlib.sha256(payload).digest()[:8], "big", signed=False
+        )
+        outcomes[identity] = observation_for(
+            params, point, np.random.default_rng(candidate_seed), geometry
+        )
+    return outcomes
 
 
 def load_material_csv(path: str, *, target_temperature_c: float = 25.0,

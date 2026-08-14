@@ -3,7 +3,10 @@ import csv
 import numpy as np
 import pytest
 
-from magcore_calib.data import common_random_outcomes, default_library, load_material_csv
+from magcore_calib.data import (
+    common_random_outcomes, default_library, load_material_csv,
+    stable_common_random_outcomes, validation_library,
+)
 from magcore_calib.forward import predict
 from magcore_calib.models import Channel, DesignPoint, Geometry, MagneticParams
 from magcore_calib.inference import log_likelihood_active, log_likelihood_prepared, prepare_likelihood
@@ -20,6 +23,14 @@ def test_default_library_is_isothermal_and_magnetic_only():
     assert {point.channel for point in library} == {
         Channel.PCV, Channel.MU_REAL, Channel.MU_IMAG, Channel.LM,
     }
+
+
+def test_validation_library_is_disjoint_from_acquisition_library():
+    acquisition = {point.exact_key() for point in default_library()}
+    holdout = validation_library()
+    assert holdout
+    assert not acquisition.intersection(point.exact_key() for point in holdout)
+    assert {point.channel for point in holdout} == set(Channel)
 
 
 def test_forward_rejects_mixed_temperature():
@@ -59,6 +70,25 @@ def test_common_random_outcomes_are_reproducible():
     second = common_random_outcomes(params(), library, seed=8, geometry=Geometry())
     assert first == second
     assert set(first) == {point.key() for point in library}
+
+
+def test_stable_outcomes_are_permutation_invariant_and_use_exact_identities():
+    library = default_library()[:4]
+    first = stable_common_random_outcomes(params(), library, seed=8, geometry=Geometry())
+    reversed_outcomes = stable_common_random_outcomes(
+        params(), list(reversed(library)), seed=8, geometry=Geometry()
+    )
+    assert first == reversed_outcomes
+    assert set(first) == {point.exact_key() for point in library}
+
+
+def test_stable_outcomes_do_not_collapse_display_key_collision():
+    first = DesignPoint(Channel.PCV, 1.0e5, 0.1)
+    second = DesignPoint(Channel.PCV, np.nextafter(1.0e5, np.inf), 0.1)
+    assert first.key() == second.key()
+    outcomes = stable_common_random_outcomes(params(), [first, second], seed=9)
+    assert len(outcomes) == 2
+    assert set(outcomes) == {first.exact_key(), second.exact_key()}
 
 
 def test_inference_accepts_a_non_25c_isothermal_cohort():

@@ -19,7 +19,7 @@ Login nodes coordinate research; compute nodes perform research solves. A comman
 - Synthetic or measured-data fitting.
 - EIG estimation over candidate libraries or sequential acquisition.
 - Fisher-information sweeps and multi-seed analyses.
-- Prior-misspecification and lot-sensitivity experiment matrices.
+- Prior-center-offset and lot-sensitivity experiment matrices.
 - Full integration/scientific test suites.
 - Production aggregation, release freezing, and paper figure generation.
 - End-to-end reproduction.
@@ -39,4 +39,3 @@ Every SLURM-only command must fail before loading data when scheduler provenance
 `preflight -> smoke -> experiment arrays -> aggregate/validate -> freeze -> tables/figures -> paper build`
 
 Dependent jobs use `afterok`. A freeze job must not run after `afterany`.
-

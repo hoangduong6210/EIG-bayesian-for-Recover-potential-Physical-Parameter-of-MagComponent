@@ -29,7 +29,10 @@ HEAVY_ARGUMENTS = {
     "aggregate_eig_convergence.py": ["--run-dir", "/does/not/exist", "--out", "/tmp/never.json"],
     "aggregate_results.py": ["--run-dir", "/does/not/exist", "--out", "/tmp/never.json"],
     "d5_identifiability_demo.py": ["--out", "/tmp/never.json"],
-    "eig_efficiency.py": ["--seed", "42", "--out", "/tmp/never.json"],
+    "eig_efficiency.py": [
+        "--seed", "42", "--selection-file", "/does/not/exist",
+        "--out", "/tmp/never.json",
+    ],
     "eig_convergence_downstream.py": [
         "--seed", "7200", "--selection", "/does/not/exist", "--workers", "1",
         "--max-meas", "25", "--n-walkers", "48", "--n-steps", "5000",
@@ -490,6 +493,28 @@ def test_current_manuscript_has_no_legacy_result_inputs():
     current = ROOT / "paper" / "current_state" / "source"
     for relative in ("tables/result_values.tex", "tables/recovery_table.tex"):
         assert not (current / relative).exists()
+
+
+def test_current_manuscript_scope_contract_is_explicit():
+    source = (ROOT / "paper" / "current_state" / "source" / "main.tex").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    evidence_readme = (ROOT / "results" / "README.md").read_text(encoding="utf-8")
+    required_manuscript_phrases = (
+        "greedy one-step EIG over a finite library",
+        "not a globally optimal sequential policy",
+        "conditional on the retained posterior draws and model",
+        "only the stopping and",
+        "does not establish dominance over randomized balanced",
+        "not total physical-uncertainty intervals",
+    )
+    for phrase in required_manuscript_phrases:
+        assert phrase in source
+    assert "matched-model" in readme
+    assert "raw-to-aggregate" in readme
+    assert "does not by itself reconstruct" in evidence_readme
+    assert "optimal experimental design" not in source.lower()
 
 
 def test_prespecified_seed_namespaces_are_disjoint_and_complete():

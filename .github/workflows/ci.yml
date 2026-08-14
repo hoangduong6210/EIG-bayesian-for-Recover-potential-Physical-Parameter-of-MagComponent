@@ -14,8 +14,8 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -32,3 +32,23 @@ jobs:
         env:
           SLURM_JOB_ID: ci
           SLURM_JOB_NODELIST: localhost
+
+  paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install LaTeX and PDF inspection tools
+        run: >-
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends
+          latexmk texlive-latex-extra texlive-fonts-recommended poppler-utils
+      - name: Build current manuscript
+        working-directory: paper/current_state/source
+        env:
+          SOURCE_DATE_EPOCH: "1786507200"
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: Verify manuscript layout and references
+        working-directory: paper/current_state/source
+        run: |
+          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" = "6"
+          test "$(pdfinfo main.pdf | awk '/^Page size:/ {print $3, $5}')" = "595.276 841.89"
+          ! grep -Eiq 'undefined references|citation.*undefined|reference.*undefined' main.log

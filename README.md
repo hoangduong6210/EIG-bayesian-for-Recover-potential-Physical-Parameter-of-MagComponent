@@ -49,6 +49,11 @@ All values above are generated from immutable release
 [`paper_summary.json`](results/frozen/20260812T035654Z_a0703698ace9/tables/paper_summary.json),
 and their permitted interpretation is defined in the
 [`claims-to-evidence register`](docs/CLAIMS_EVIDENCE.md).
+The compact frozen subset authenticates claim-to-summary consistency; the
+sanitized campaign-record projection and its stronger raw-to-aggregate checks
+are specified in [`docs/PUBLIC_AUDIT_BUNDLE.md`](docs/PUBLIC_AUDIT_BUNDLE.md).
+The published audit asset is cryptographically described by
+[`results/audit/20260812T035654Z_a0703698ace9/asset.json`](results/audit/20260812T035654Z_a0703698ace9/asset.json).
 
 ## What was compared
 
@@ -72,6 +77,8 @@ response**, divided by its posterior median, at exactly two targets:
 This gate measures local posterior precision. It does not test truth proximity,
 six-parameter recovery, prediction over the full frequency/flux domain,
 uncertainty calibration, or robustness to model misspecification.
+Candidate EIG nevertheless integrates over the joint six-parameter posterior;
+only the stopping and evaluation endpoint is restricted to the two responses.
 
 ## Benchmark design
 
@@ -99,6 +106,14 @@ The comparison uses the following controls:
    30-seed confirmatory comparison. A doubled-budget comparison and ten downstream
    seeds preserved both policy endpoints.
 
+The code now also implements a preregistered v4 extension with seeded random
+channel-balanced, greedy predictive-variance, and local Laplace D-optimal
+comparators, each in count- and cost-aligned forms where applicable. It records
+six-parameter recovery and a disjoint 23-point latent holdout grid at each
+policy's final state. These additions are **not present in the current frozen
+release**, so this README reports no new comparator or holdout result. See the
+[`E3-v4 protocol`](docs/EXPERIMENT_PROTOCOL.md#e3-v4--preregistered-comparator-extension-not-in-the-current-frozen-result).
+
 The full controls and prespecified thresholds are in
 [`docs/EXPERIMENT_PROTOCOL.md`](docs/EXPERIMENT_PROTOCOL.md).
 
@@ -121,6 +136,8 @@ The full controls and prespecified thresholds are in
 - Temperature-dependent prediction from the temperature-independent Steinmetz
   implementation.
 - Stable measured-data EIG rankings or a validated optimal laboratory plan.
+- Dominance over randomized balanced, predictive-variance, Fisher-greedy, or
+  D-optimal acquisition policies.
 - Measured laboratory-time, schedule, qualification, or physical-testing
   savings.
 

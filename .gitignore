@@ -17,9 +17,11 @@ __pycache__/
 
 # LaTeX intermediates; keep source and final PDFs.
 *.aux
+*.bbl
 *.blg
 *.fdb_latexmk
 *.fls
 *.log
 *.out
 /paper/current_state/source/build/
+/paper/current_state/source/main.pdf

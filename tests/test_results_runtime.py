@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import pytest
 
 from magcore_calib.results import SCHEMA_VERSION, validate_result
@@ -14,6 +16,162 @@ def valid_record():
     }
 
 
+V4_OBJECTIVES = {
+    "eig_raw": "raw",
+    "eig_per_cost": "per_cost",
+    "fixed_channel_balanced": "fixed_channel_balanced_traversal",
+    "random_channel_balanced": "random_channel_balanced_traversal",
+    "predictive_variance_raw": "raw",
+    "predictive_variance_per_cost": "per_cost",
+    "laplace_d_opt_raw": "raw",
+    "laplace_d_opt_per_cost": "per_cost",
+}
+
+
+def complete_provenance(record):
+    digest = "a" * 64
+    record["provenance"] = {
+        "started_at_utc": "2026-08-14T00:00:00Z",
+        "ended_at_utc": "2026-08-14T00:01:00Z",
+        "git_commit": "b" * 40,
+        "seed": 7300,
+        "command": ["experiment"],
+        "configuration_sha256": digest,
+        "data_sha256": {"synthetic://test": digest},
+        "dependency_lock_sha256": digest,
+        "python": "3.12.0",
+        "slurm": {
+            "job_id": "123", "array_job_id": "123", "array_task_id": "0",
+            "node_list": "node001", "partition": "test",
+        },
+    }
+    return record
+
+
+def v4_policy(name, objective):
+    acquisition = {
+        "objective": objective,
+        "selected_key": "candidate-c",
+        "selected_identity": "exact-c",
+    }
+    if name in ("eig_raw", "eig_per_cost"):
+        acquisition["candidate_scores"] = [{
+            "design_key": "candidate-c", "design_identity": "exact-c",
+            "channel": "pcv",
+            "eig_mean_nats": 1.0, "eig_sd_nats": 0.1, "eig_se_nats": 0.07,
+            "eig_ci95_nats": [0.86, 1.14], "top_selection_rate": 1.0,
+            "utility_mean": 1.0,
+            "replicate_scores_nats": [0.9, 1.1],
+        }]
+    elif name.startswith("predictive_variance") or name.startswith("laplace_d_opt"):
+        method = "predictive_variance" if name.startswith("predictive") else "laplace_d_opt"
+        acquisition.update({
+            "method": method,
+            "selected_identity": "exact-c",
+            "candidate_scores": [{
+                "design_key": "candidate-c", "design_identity": "exact-c",
+                "channel": "pcv", "method": method, "objective": objective,
+                "score": 1.0,
+                "score_units": "dimensionless_ratio" if method == "predictive_variance" else "nats",
+                "utility": 1.0, "noise_sigma": 0.1,
+            }],
+        })
+    elif name == "random_channel_balanced":
+        acquisition.update({
+            "selected_identity": "exact-c",
+            "seed_namespace": "random_channel_balanced/v1", "seed": 12345,
+        })
+    recovery = {
+        parameter: {
+            "truth": 1.0, "median": 1.0, "p05": 0.9, "p95": 1.1,
+            "absolute_error_pct": 0.0, "truth_in_ci90": True,
+        }
+        for parameter in ("k", "alpha", "beta", "mu_s", "f_rel_hz", "alpha_cc")
+    }
+    holdout = {
+        channel: {
+            "n_points": 2, "relative_rmse_pct": 1.0,
+            "median_absolute_relative_error_pct": 0.5,
+            "latent_ci90_coverage_fraction": 1.0,
+        }
+        for channel in ("pcv", "mu_real", "mu_imag", "lm")
+    }
+    return {
+        "policy": name,
+        "objective": objective,
+        "reached": True,
+        "n_measurements_to_gate": 3,
+        "modeled_cost_to_gate": 100.0,
+        "validation_endpoints": {
+            "used_for_acquisition_or_stopping": False,
+            "evaluated_at_measurement_count": 3,
+            "parameter_truth_in_ci90_count": 6,
+            "parameter_recovery": recovery,
+            "holdout_latent_mean": holdout,
+        },
+        "trajectory": [
+            {
+                "n_measurements": 2, "selected_keys": ["initial-a", "initial-b"],
+                "selected_identities": ["exact-a", "exact-b"],
+                "reached": False, "modeled_cost_units": 80.0,
+                "acquisition": acquisition,
+            },
+            {
+                "n_measurements": 3,
+                "selected_keys": ["initial-a", "initial-b", "candidate-c"],
+                "selected_identities": ["exact-a", "exact-b", "exact-c"],
+                "reached": True, "modeled_cost_units": 100.0,
+            },
+        ],
+    }
+
+
+def valid_v4_record():
+    record = complete_provenance(valid_record())
+    digest = "a" * 64
+    policies = {name: v4_policy(name, objective) for name, objective in V4_OBJECTIVES.items()}
+    endpoint = {
+        "both_reached_gate": True,
+        "measurement_count_difference": 0,
+        "measurement_count_reduction_pct": 0.0,
+        "modeled_cost_difference": 0.0,
+        "modeled_cost_reduction_pct": 0.0,
+    }
+    record["data"] = {
+        "common_random_outcomes": True,
+        "truth_sha256": digest,
+        "outcome_manifest_sha256": digest,
+        "holdout_manifest_sha256": digest,
+        "holdout_count": 8,
+    }
+    record["sampler"] = {"policy_diagnostics": {name: {} for name in policies}}
+    record["design"] = {
+        "benchmark_version": 4,
+        "policies": policies,
+        "paired_endpoints": {
+            f"{name}_vs_fixed": deepcopy(endpoint)
+            for name in policies if name != "fixed_channel_balanced"
+        },
+        "eig_estimator_replicates": 2,
+        "eig_estimator_setting": {"n_outer": 10, "n_inner": 5, "n_replicates": 2},
+        "estimator_decision_sha256": digest,
+        "primary_endpoints": {name: "declared" for name in policies},
+        "modeled_cost_seconds": {
+            "pcv": 60.0, "mu_real": 20.0, "mu_imag": 20.0, "lm": 15.0,
+        },
+        "modeled_cost_interpretation": "prespecified assumption, not laboratory time",
+        "secondary_validation_endpoints": {
+            "used_for_acquisition_or_stopping": False,
+            "parameter_recovery": "declared",
+            "holdout_prediction": "declared",
+        },
+    }
+    record["validity"] = {
+        f"{name}_convergence_valid": True for name in policies
+    }
+    return record
+
+
 def test_schema_rejects_five_dimensional_result():
     record = valid_record()
     record["posterior"].pop("alpha_cc")
@@ -25,6 +183,47 @@ def test_schema_rejects_incomplete_benchmark_v2():
     record = valid_record()
     record["design"] = {"benchmark_version": 2, "policies": {}}
     with pytest.raises(ValueError, match="benchmark v2"):
+        validate_result(record)
+
+
+def test_schema_accepts_complete_benchmark_v4():
+    validate_result(valid_v4_record())
+
+
+@pytest.mark.parametrize("mutation", ["missing_policy", "extra_policy", "missing_endpoint"])
+def test_schema_v4_requires_exact_dynamic_policy_and_endpoint_sets(mutation):
+    record = valid_v4_record()
+    if mutation == "missing_policy":
+        record["design"]["policies"].pop("laplace_d_opt_per_cost")
+    elif mutation == "extra_policy":
+        record["design"]["policies"]["unexpected"] = deepcopy(
+            record["design"]["policies"]["fixed_channel_balanced"]
+        )
+    else:
+        record["design"]["paired_endpoints"].pop("random_channel_balanced_vs_fixed")
+    with pytest.raises(ValueError, match="benchmark v4"):
+        validate_result(record)
+
+
+def test_schema_v4_rejects_comparator_that_did_not_select_top_rank():
+    record = valid_v4_record()
+    acquisition = record["design"]["policies"]["predictive_variance_raw"] \
+        ["trajectory"][0]["acquisition"]
+    acquisition["selected_key"] = "not-the-top-candidate"
+    with pytest.raises(ValueError, match="top-ranked"):
+        validate_result(record)
+
+
+def test_schema_v4_requires_shared_initial_observations_and_random_seed_namespace():
+    record = valid_v4_record()
+    random_policy = record["design"]["policies"]["random_channel_balanced"]
+    random_policy["trajectory"][0]["selected_keys"] = ["different-a", "different-b"]
+    with pytest.raises(ValueError, match="same initial"):
+        validate_result(record)
+    record = valid_v4_record()
+    random_policy = record["design"]["policies"]["random_channel_balanced"]
+    random_policy["trajectory"][0]["acquisition"]["seed_namespace"] = "outcome_rng"
+    with pytest.raises(ValueError, match="independent seed"):
         validate_result(record)
 
 

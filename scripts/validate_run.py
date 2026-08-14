@@ -40,7 +40,7 @@ def expected_tasks(config_root: Path) -> dict[str, list[str]]:
     "smoke": ["0"],
     "posterior": [f"seed{seed}" for seed in plan.recovery_seeds],
     "robustness": [
-        *(f"misspec{level}_seed{seed}" for level in ("0.0", "0.15", "0.30") for seed in plan.recovery_seeds),
+        *(f"prior_offset{level}_seed{seed}" for level in ("0.0", "0.15", "0.30") for seed in plan.recovery_seeds),
         *(f"lot_seed{seed}" for seed in plan.recovery_seeds),
     ],
     "eig": [f"seed{seed}" for seed in plan.acquisition_seeds],

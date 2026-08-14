@@ -34,6 +34,13 @@ two-target precision gate; they are not laboratory-efficiency claims.
 
 ## Evidence release
 
+The tracked frozen subset provides checksum integrity and
+manuscript-to-summary traceability. Raw trajectory-to-acquisition-summary
+reconstruction is a separate audit level, defined by
+[`PUBLIC_AUDIT_BUNDLE.md`](PUBLIC_AUDIT_BUNDLE.md). The versioned audit asset is
+published separately from Git history; the compact subset must still not be
+described as a complete campaign-record archive.
+
 Locked evidence-manifest SHA-256:
 `c5a6b05e1ab84b3f8b72a40be1480148c360889b6142884c44cf9e35df219dc0`.
 

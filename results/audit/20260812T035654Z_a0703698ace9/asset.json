@@ -1,0 +1,14 @@
+{
+  "schema_version": "magnetic-public-audit-asset/1.0",
+  "source_release_id": "20260812T035654Z_a0703698ace9",
+  "asset_name": "magcore-public-audit-20260812-v1.tar.zst",
+  "asset_url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/download/evidence-20260812-audit-v1/magcore-public-audit-20260812-v1.tar.zst",
+  "asset_bytes": 72861353,
+  "asset_sha256": "3262cb25aa8f694a86eb0734eb898c59279994b846712a42a068f9fc1653b355",
+  "root_manifest_sha256": "7da2ad0eb13e1a23663823df409932423e75db10443923fe0b21e5a3627a2013",
+  "verified_file_count_including_root_manifest": 191,
+  "acquisition_seed_count": 30,
+  "contains_flattened_posterior_samples": true,
+  "contains_raw_walker_iteration_chains": false,
+  "raw_to_aggregate_match": true
+}

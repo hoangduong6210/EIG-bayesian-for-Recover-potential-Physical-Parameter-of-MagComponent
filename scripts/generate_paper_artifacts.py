@@ -141,7 +141,7 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
 
     def policies(record: dict[str, Any]) -> tuple[dict, dict, dict]:
         design = record["design"]
-        if design.get("benchmark_version") in (2, 3):
+        if design.get("benchmark_version") in (2, 3, 4):
             available = design["policies"]
             return (
                 available["eig_raw"], available["eig_per_cost"],
@@ -190,6 +190,95 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
         for cost, fixed, success in zip(per_cost_costs, fixed_costs, cost_success)
         if success
     ]
+    comparator_names = (
+        "random_channel_balanced",
+        "predictive_variance_raw", "predictive_variance_per_cost",
+        "laplace_d_opt_raw", "laplace_d_opt_per_cost",
+    )
+    comparator_summary: dict[str, Any] = {}
+    secondary_validation_summary: dict[str, Any] = {}
+    if all(record["design"].get("benchmark_version") == 4 for record in eig_records):
+        for name in comparator_names:
+            comparator_policies = [record["design"]["policies"][name] for record in eig_records]
+            counts = [policy["n_measurements_to_gate"] for policy in comparator_policies]
+            costs = [modeled_cost(policy) for policy in comparator_policies]
+            count_success = [
+                count is not None and fixed is not None
+                for count, fixed in zip(counts, fixed_counts)
+            ]
+            modeled_cost_success = [
+                cost is not None and fixed is not None
+                for cost, fixed in zip(costs, fixed_costs)
+            ]
+            count_differences = [
+                fixed - count
+                for count, fixed, success in zip(counts, fixed_counts, count_success)
+                if success
+            ]
+            modeled_cost_differences = [
+                fixed - cost
+                for cost, fixed, success in zip(costs, fixed_costs, modeled_cost_success)
+                if success
+            ]
+            comparator_summary[name] = {
+                "counts": counts,
+                "modeled_costs": costs,
+                "gate_failure_count": sum(count is None for count in counts),
+                "count_complete_pair_count": sum(count_success),
+                "cost_complete_pair_count": sum(modeled_cost_success),
+                "count_paired_difference": (
+                    paired_descriptive(count_differences, seed=20260900 + len(comparator_summary))
+                    if count_differences else None
+                ),
+                "cost_paired_difference": (
+                    paired_descriptive(
+                        modeled_cost_differences, seed=20261000 + len(comparator_summary)
+                    )
+                    if modeled_cost_differences else None
+                ),
+                "count_paired_win_rate": (
+                    sum(difference > 0 for difference in count_differences)
+                    / len(count_differences)
+                    if count_differences else None
+                ),
+                "cost_paired_win_rate": (
+                    sum(difference > 0 for difference in modeled_cost_differences)
+                    / len(modeled_cost_differences)
+                    if modeled_cost_differences else None
+                ),
+            }
+        for name in eig_records[0]["design"]["policies"]:
+            endpoints = [
+                record["design"]["policies"][name]["validation_endpoints"]
+                for record in eig_records
+            ]
+            coverage_counts = [
+                endpoint["parameter_truth_in_ci90_count"] for endpoint in endpoints
+            ]
+            channel_summary: dict[str, Any] = {}
+            for channel in ("pcv", "mu_real", "mu_imag", "lm"):
+                rrmse = [
+                    endpoint["holdout_latent_mean"][channel]["relative_rmse_pct"]
+                    for endpoint in endpoints
+                ]
+                coverage = [
+                    endpoint["holdout_latent_mean"][channel]
+                    ["latent_ci90_coverage_fraction"]
+                    for endpoint in endpoints
+                ]
+                channel_summary[channel] = {
+                    "relative_rmse_pct": rrmse,
+                    "relative_rmse_pct_summary": paired_descriptive(
+                        rrmse, seed=20261100 + len(channel_summary)
+                    ),
+                    "latent_ci90_coverage_fraction": coverage,
+                    "mean_latent_ci90_coverage_fraction": mean(coverage),
+                }
+            secondary_validation_summary[name] = {
+                "parameter_truth_in_ci90_counts": coverage_counts,
+                "mean_parameter_truth_in_ci90_count": mean(coverage_counts),
+                "holdout_latent_mean": channel_summary,
+            }
 
     pcv: dict[str, Any] = {}
     for material in PCV_ORDER:
@@ -266,6 +355,8 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
                 cost < fixed for cost, fixed in zip(per_cost_costs, fixed_costs)
                 if cost is not None and fixed is not None
             ) / sum(cost_success),
+            "strong_comparators": comparator_summary,
+            "secondary_validation": secondary_validation_summary,
             # Compatibility aliases used by the current table/figure writer.
             "counts": raw_counts,
             "uniform_counts": fixed_counts,

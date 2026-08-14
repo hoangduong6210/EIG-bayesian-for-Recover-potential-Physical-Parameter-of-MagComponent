@@ -20,6 +20,14 @@ replicates = 20
 objectives = ["raw", "per_cost"]
 max_measurements = 25
 
+# Assumed acquisition durations used only for modeled-cost objectives. They are
+# not measured laboratory times.
+[eig.modeled_cost_seconds]
+pcv = 60.0
+mu_real = 20.0
+mu_imag = 20.0
+lm = 15.0
+
 # Seed namespaces are intentionally disjoint. Recovery seeds remain a compact
 # implementation check; acquisition seeds define the 30-pair benchmark.
 [study.seeds]
@@ -44,6 +52,29 @@ min_rank_correlation = 0.95
 min_interval_overlap_rate = 0.80
 max_relative_reference_regret = 0.01
 endpoint_atol = 0
+
+# Exact registry for the next confirmatory benchmark. These policies are
+# implemented and preregistered here but have no result in the current frozen
+# release; no comparative claim may be made until a new release is validated.
+[study.comparator_benchmark]
+version = 4
+policies = [
+  "eig_raw",
+  "eig_per_cost",
+  "fixed_channel_balanced",
+  "random_channel_balanced",
+  "predictive_variance_raw",
+  "predictive_variance_per_cost",
+  "laplace_d_opt_raw",
+  "laplace_d_opt_per_cost",
+]
+reference_policy = "fixed_channel_balanced"
+secondary_validation_used_for_stopping = false
+
+[study.prior_center_offset]
+levels = [0.00, 0.15, 0.30]
+interpretation = "dimensionless coordinate shifts, not percentage perturbations"
+structural_model_mismatch = false
 
 [stop_rule]
 quantity = "latent_mean_response"
