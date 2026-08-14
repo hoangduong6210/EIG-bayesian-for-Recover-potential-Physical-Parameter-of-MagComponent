@@ -1,0 +1,31 @@
+{
+  "input": {
+    "path": "paper_summary.json",
+    "sha256": "9e1dc314ea22c0da17a48b19a8f9333a876be3064de80af63fbc2bb5e20570e6"
+  },
+  "outputs": [
+    {
+      "bytes": 38840,
+      "path": "study_workflow_full.pdf",
+      "sha256": "46308b558c19ab0955ca1d46d44426ba9548e7fb31023b4fe8b087ad42395a2b"
+    },
+    {
+      "bytes": 30486,
+      "path": "synthetic_diagnostics_full.pdf",
+      "sha256": "a481b4bc013763c96e5ca617f0570c102f08cae02eedd0857b12740b5c0ef4cf"
+    },
+    {
+      "bytes": 22546,
+      "path": "acquisition_diagnostics_full.pdf",
+      "sha256": "2cc4420cdc901db273986879c50eb756323b8f17886f0d88ec11696f690e5060"
+    },
+    {
+      "bytes": 24123,
+      "path": "measured_adequacy_full.pdf",
+      "sha256": "c2fe69570f5410ce218bc5f54f261d1362427add10da8cd1cd7a72ca72bad5e6"
+    }
+  ],
+  "release_id": "20260812T035654Z_a0703698ace9",
+  "schema_version": "current-paper-figures/1.0",
+  "style": "grayscale only; distinctions use marker, line style, fill, and hatch"
+}

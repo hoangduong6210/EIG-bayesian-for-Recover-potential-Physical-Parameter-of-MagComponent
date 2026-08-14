@@ -23,6 +23,12 @@ if figures.get("freeze_id") != release["release_id"] or \
 PY
 MAIN_TEX="$MAGCORE_CODE_ROOT/paper/current_state/source/main.tex"
 [[ -f "$MAIN_TEX" ]] || { echo "FATAL: missing paper entry point $MAIN_TEX" >&2; exit 67; }
+run_python "$MAGCORE_CODE_ROOT/scripts/check_current_manuscript.py" \
+    --source "$MAIN_TEX" \
+    --bibliography "$(dirname "$MAIN_TEX")/refs.bib"
+run_python "$MAGCORE_CODE_ROOT/scripts/generate_current_paper_figures.py" verify \
+    --summary "$MAGCORE_CODE_ROOT/results/frozen/20260812T035654Z_a0703698ace9/tables/paper_summary.json" \
+    --output-dir "$(dirname "$MAIN_TEX")/figures"
 BUILD_DIR="$MAGCORE_RUN_DIR/paper"
 mkdir -p "$BUILD_DIR"
 cd "$(dirname "$MAIN_TEX")"
@@ -32,7 +38,11 @@ PDF="$BUILD_DIR/$(basename "${MAIN_TEX%.tex}.pdf")"
 [[ -s "$PDF" ]]
 if command -v pdfinfo >/dev/null 2>&1; then
     PAGES="$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')"
-    [[ "$PAGES" == "6" ]] || { echo "FATAL: conference paper must be exactly six pages" >&2; exit 68; }
+    (( PAGES > 6 )) || { echo "FATAL: full current paper must exceed the six-page snapshot" >&2; exit 68; }
+    [[ "$(pdfinfo "$PDF" | awk '/^Page size:/ {print $3, $5}')" == "595.276 841.89" ]] || {
+        echo "FATAL: current paper must remain A4" >&2
+        exit 68
+    }
 fi
 # latexmk keeps BibTeX's .bbl beside the source when the entry point is built
 # from its source directory, even though PDF/aux/log outputs use -outdir.
@@ -53,8 +63,8 @@ if grep -Eq 'INPUT (\./)?tables/(result_values|recovery_table)\.tex' "$FLS"; the
     exit 69
 fi
 [[ -s "$BBL" ]] || { echo "FATAL: missing generated bibliography $BBL" >&2; exit 69; }
-[[ "$(grep -c '^\\bibitem' "$BBL")" == "35" ]] || {
-    echo "FATAL: paper must contain exactly 35 bibliography items" >&2
+(( $(grep -c '^\\bibitem' "$BBL") >= 45 )) || {
+    echo "FATAL: full current paper must contain at least 45 bibliography items" >&2
     exit 69
 }
 if grep -Eq 'LaTeX Warning:.*undefined|Citation.*undefined|Reference.*undefined|Overfull|Fatal error|Emergency stop' "$LOG"; then

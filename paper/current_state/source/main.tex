@@ -109,16 +109,60 @@ not merely occupy an unmeasured location in a frequency--flux grid.
 This work contributes (1) a reproducible posterior formulation for Steinmetz
 and Cole--Cole parameters, (2) a Fisher-spectrum diagnosis of locally
 constrained parameter combinations, and (3) a paired comparison of EIG
-acquisition with a fixed channel-balanced grid traversal. These elements address
-distinct questions: matched-model recovery checks inference against known
-synthetic truth, Fisher analysis assesses local identifiability under the
-specified experiment, and measured-data residuals assess model adequacy.
-Success in the first two does not establish the third.
+acquisition with a fixed channel-balanced grid traversal. The full current
+version additionally exposes the estimator-convergence campaign, paired
+outcome construction, modeled-cost endpoint, measured-data acceptance gates,
+and the acquisition raw-to-aggregate evidence chain. These elements address distinct
+questions: matched-model recovery checks inference against known synthetic
+truth, Fisher analysis assesses local identifiability under the specified
+experiment, acquisition experiments compare policies under common outcomes,
+and measured-data residuals assess model adequacy. Success in any one branch
+does not establish the others.
 
 The remainder of the paper reviews magnetic and Bayesian design literature,
 defines the forward and statistical models, documents the reproducible
 protocol, and then reports synthetic and measured-data results from one
 prespecified evaluation.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.98\textwidth]{study_workflow_full.pdf}
+  \caption{Study architecture and interpretation boundary. The three evidence
+  branches share declared model and data contracts but answer different
+  questions. In the sequential branch, every policy begins from the same two
+  observations and reveals a pre-generated candidate-indexed outcome. The
+  dashed return arrow denotes refitting when the local precision gate is not
+  reached. Hatch patterns and line styles are used so the figure remains
+  interpretable in grayscale.}
+  \label{fig:study-workflow}
+\end{figure*}
+
+\section{Research Questions and Evidence Scope}
+The study is organized around four research questions. \emph{RQ1} asks whether
+the implemented six-coordinate inference problem is locally sensitive in all
+active directions and whether the posterior computation can recover known
+matched-model parameters. \emph{RQ2} asks whether greedy raw EIG reaches one
+declared local precision gate with fewer measurements than the fixed traversal
+when both policies see identical candidate outcomes. \emph{RQ3} asks the
+corresponding question for EIG per prespecified modeled cost, evaluated by
+total modeled acquisition cost rather than count. \emph{RQ4} asks how well the
+low-order forward laws describe accepted public measured records in sample.
+
+The evidence ladder in Fig.~\ref{fig:study-workflow} prevents answers from
+being combined beyond their design. Local Fisher rank is not global
+identifiability; matched-model recovery is not validation on real ferrites;
+posterior precision is not truth proximity; and in-sample measured residuals
+are not held-out predictive accuracy. The acquisition result is therefore an
+algorithmic, model-conditional comparison under a finite library and a local
+gate. This explicit estimand is narrower than ``optimal magnetic-component
+identification,'' but it is reproducible and falsifiable.
+
+The current frozen evidence reports the three-policy comparison that was run:
+raw EIG, EIG divided by modeled cost, and a deterministic fixed
+channel-balanced traversal. Randomized balanced, predictive-variance, and
+Laplace/D-optimal comparators are implemented in the subsequent protocol but
+have no frozen numerical result in this paper. They are consequently discussed
+as planned extensions, not as observed outcomes.
 
 \section{Related Work}
 \subsection{Magnetic loss and permeability models}
@@ -127,7 +171,10 @@ sinusoidal loss, while loss-separation and hysteresis models provide more
 physical decompositions~\cite{steinmetz1892,bertotti1988,jiles1986}.
 Converter waveforms motivated modified and generalized Steinmetz relations
 that integrate the instantaneous flux-density trajectory or use waveform
-correction factors~\cite{reinert2001,li2001,venkatachalam2002}.
+correction factors~\cite{reinert2001,li2001,venkatachalam2002}. Measurement-led
+and loss-separation approaches further show why coefficients fitted under one
+waveform or operating window need not transfer unchanged to another
+~\cite{vandenbossche2004,roshen2007}.
 Subsequent work improved practical loss calculation and reviewed the physical
 contributions to loss in soft ferrites~\cite{muehlethaler2012,dobak2022}.
 Textbook treatments emphasize that material law, geometry, winding, and
@@ -138,9 +185,10 @@ Frequency-dispersive permeability is commonly described through relaxation
 or resonance spectra. The Cole--Cole law introduced a broadened relaxation
 distribution~\cite{cole1941}; applying its algebraic form to permeability is
 an engineering adaptation rather than a claim that ferrite magnetization is a
-dielectric process. Measurements of Mn--Zn and Ni--Zn ferrites show that
+dielectric process. Classical ferrite dispersion theory and measurements of
+Mn--Zn and Ni--Zn ferrites show that
 domain-wall motion, rotational processes, resonance, and relaxation can all
-shape $\mu'$ and $\mu''$~\cite{tsutaoka2003}. The single-pole model used here
+shape $\mu'$ and $\mu''$~\cite{snoek1948,tsutaoka2003}. The single-pole model used here
 is therefore intentionally diagnostic: a large loss-component residual is
 evidence for missing dynamics, not a parameter-estimation failure alone.
 
@@ -160,6 +208,11 @@ Validation frameworks consequently compare predictions with observations
 rather than treating posterior concentration as proof of physical validity
 ~\cite{bayarri2007}. Ignoring discrepancy can bias inferred physical
 parameters and produce overconfident extrapolation~\cite{brynjarsdottir2014}.
+Calibration theory for imperfect simulators also demonstrates that the
+physical parameter and discrepancy can be confounded unless additional
+structure is imposed~\cite{tuo2015,plumlee2017}. We do not introduce an
+unidentified discrepancy process into the present six-parameter fit; instead,
+measured residuals are reported as a separate adequacy diagnostic.
 
 Bayesian experimental design formalizes the value of a proposed observation
 through expected utility. Lindley's information criterion
@@ -168,11 +221,19 @@ classical optimum-design methods~\cite{atkinson2007} motivate the EIG
 criterion used here. Estimation remains challenging because the predictive
 density is generally unavailable; relevant strategies include Laplace and
 MCMC approximations~\cite{ryan2003}, nested Monte Carlo
-~\cite{rainforth2018}, stochastic simulation-based optimization
+~\cite{rainforth2018}, multilevel estimators~\cite{goda2020}, stochastic simulation-based optimization
 ~\cite{huan2013}, and variational bounds~\cite{foster2019}. Adaptive-policy
 amortization offers a scalable direction for longer experimental sequences
 ~\cite{foster2021}, but the present work deliberately uses a transparent
 one-step ranking over a finite candidate library.
+
+Information-based acquisition connects Shannon entropy and
+Kullback--Leibler divergence to active data selection
+~\cite{shannon1948,kullback1951,mackay1992}. Classical D-optimal design instead
+optimizes a determinant of an information matrix and is linked to equivalence
+theorems~\cite{kiefer1960,atkinson2007}. These criteria coincide only under
+particular approximations; the fixed traversal used in the reported benchmark
+is neither of them.
 
 \section{Magnetic-Core Models}
 \subsection{Core loss}
@@ -228,6 +289,24 @@ N95, and $100\pm0.5\,^{\circ}\mathrm C$ for 3C95.
 These restrictions prevent an apparently precise posterior from silently
 extrapolating across temperature, waveform, or excitation regime.
 
+\begin{table*}[t]
+\caption{Active parameters, roles, transformations, and principal channels.}
+\label{tab:parameters}
+\centering\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Physical parameter & Active coordinate & Role & Principal response & Main limitation \\
+\midrule
+$k$ & $\log k$ & core-loss scale & $P_v$ & units follow the declared convention \\
+$\alpha$ & $\alpha$ & frequency exponent & $P_v$ & local to sinusoidal, isothermal data \\
+$\beta$ & $\beta$ & flux-density exponent & $P_v$ & no waveform or DC-bias dependence \\
+$\mu_s$ & $\log\mu_s$ & low-frequency permeability & $\mu',L_m$ & fixed rather than inferred geometry \\
+$f_{\mathrm{rel}}$ & $\log f_{\mathrm{rel}}$ & relaxation frequency & $\mu',\mu''$ & one effective relaxation only \\
+$a_{\mathrm{cc}}$ & $a_{\mathrm{cc}}$ & relaxation broadening & $\mu',\mu''$ & no multiple resonances \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 \section{Bayesian Calibration and Design}
 Let $\theta=(\log k,\alpha,\beta,\log\mu_s,\log f_{\mathrm{rel}},
 a_{\mathrm{cc}})$ denote the active transformed parameters. Log coordinates
@@ -250,6 +329,23 @@ no inverse-transform Jacobian is added to this active-coordinate density.
 Bounds encode physically admissible numerical domains, not empirical proof
 that the chosen model is correct.
 
+The six coordinates divide into two response blocks in the likelihood but are
+sampled jointly. Core-loss observations directly update
+$(\log k,\alpha,\beta)$, while permeability and inductance observations update
+$(\log\mu_s,\log f_{\mathrm{rel}},a_{\mathrm{cc}})$. Joint sampling retains a
+single posterior contract and permits one acquisition library to contain all
+channels; it does not create physical coupling absent from the forward laws.
+Table~\ref{tab:parameters} makes this structural separation explicit.
+
+Four uncertainty sources must be distinguished. \emph{Parameter uncertainty}
+is represented by posterior draws conditional on the chosen model and fixed
+geometry. \emph{Observation uncertainty} enters through the declared Gaussian
+scale. \emph{Monte Carlo uncertainty} arises because posterior and EIG
+integrals are approximated by finite samples. \emph{Structural uncertainty}
+is exposed by measured residuals but is not parameterized in the likelihood.
+Only the first three are quantified in parts of the present workflow; an EIG
+score interval is therefore not a total physical-uncertainty interval.
+
 \subsection{Posterior computation and diagnostics}
 Posterior sampling uses the affine-invariant ensemble construction
 ~\cite{goodman2010} implemented by \texttt{emcee}~\cite{foreman2013}. Each
@@ -268,6 +364,15 @@ as independent chains. Accordingly, the paper does not report a conventional
 $\widehat R$ for the ensemble. Diagnostic failure invalidates a measured fit
 for quantitative publication rather than being repaired by discarding an
 unfavorable seed.
+
+Matched-model recovery also exercises the complete forward--likelihood--
+sampler--summary path against known generating values. It is an implementation
+check related to posterior-quantile validation~\cite{cook2006}, but five
+independent fits do not constitute simulation-based calibration
+~\cite{talts2018}. A calibrated rank experiment would require many more
+prior-predictive replications and a uniform-rank diagnostic. Posterior and
+residual graphics are interpreted as part of a Bayesian workflow rather than
+as substitutes for numerical diagnostics~\cite{gelman1996,gabry2019}.
 
 The local Fisher approximation~\cite{fisher1922} is
 \begin{equation}
@@ -301,7 +406,24 @@ where
  \int p(y\mid\vartheta,d)
  p(\vartheta\mid\mathcal D_t)\,d\vartheta .
 \end{equation}
-The nested Monte Carlo estimator draws \EIGOuter{} outer parameter--observation pairs
+For outer draws $(\theta_i,y_i)$ and inner posterior draws $\vartheta_{ij}$,
+the implemented nested estimator is
+\begin{equation}
+ \begin{aligned}
+ \widehat U(d)=\frac{1}{N}\sum_{i=1}^{N}\bigg[&
+ \log p(y_i\mid\theta_i,d)\\[-0.2ex]
+ &-\log\!\left\{\frac{1}{M}\sum_{j=1}^{M}
+ p(y_i\mid\vartheta_{ij},d)\right\}\bigg].
+ \end{aligned}
+ \label{eq:nmc}
+\end{equation}
+Finite inner budgets introduce bias through the logarithm and finite outer
+budgets introduce variance; close candidates can therefore exchange rank
+~\cite{rainforth2018,goda2020}. The convergence campaign described below
+tests ranking and downstream endpoint stability rather than assuming one
+budget is sufficient.
+
+The reported estimator draws \EIGOuter{} outer parameter--observation pairs
 and uses \EIGInner{} inner posterior draws to approximate the posterior-predictive
 density~\cite{ryan2003,rainforth2018}. Each score is repeated
 \EIGReplicates{} times;
@@ -339,12 +461,33 @@ threshold is recorded as a failure at the maximum budget. Candidate EIG
 integrates over the joint six-parameter posterior; only the stopping and
 evaluation endpoint is restricted to these two responses.
 
+\begin{table*}[t]
+\caption{Finite synthetic acquisition library and declared channel assumptions.}
+\label{tab:candidate-library}
+\centering\small
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Channel & Frequencies (kHz) & $B_{\mathrm{pk}}$ (T) & Points & Relative noise & Modeled cost \\
+\midrule
+$P_v$ & 30, 50, 100, 200, 300, 500 & 0.05, 0.10, 0.20 & 18 & 3\% & 60 \\
+$\mu'$ & 10, 30, 100, 300, 500, 1000, 2000, 3000 & 0 & 8 & 2\% & 20 \\
+$\mu''$ & 10, 30, 100, 300, 500, 1000, 2000, 3000 & 0 & 8 & 5\% & 20 \\
+$L_m$ & 10, 100, 1000 & 0 & 3 & 1\% & 15 \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.96\textwidth}\footnotesize
+All 37 candidates are at $25\,^{\circ}\mathrm C$. Modeled costs are positive
+prespecified units used only for the EIG/cost endpoint; they are not measured
+instrument or laboratory durations. The two initial observations belong to
+the same library and count toward the stopping total.
+\end{minipage}
+\end{table*}
+
 \section{Computational Reproducibility}
 All experiments use fixed software versions, specified model and inference
 settings, explicit data selections, and deterministic random seeds. Results
 are retained at the individual-seed level and are accepted for aggregation
-only when the prespecified convergence, validity, and completeness criteria
-are satisfied.
+only when all prespecified validity gates pass.
 
 \begin{table}[t]
 \caption{Computational settings used for the reported experiments.}
@@ -372,6 +515,53 @@ before evaluation. Numerical statements, tables, and figures are generated
 programmatically from the same complete set of accepted records, avoiding
 manual transcription or selective replacement of outcomes.
 
+\subsection{Estimator-budget qualification}
+The nested estimator was qualified before the 30-seed acquisition campaign.
+Twelve posterior states were formed from four seeds (7100--7103) after 2, 4,
+and 6 observations. At each state, 27 candidate settings crossed outer budgets
+$\{100,300,900\}$, inner budgets $\{50,100,300\}$, and replicate counts
+$\{5,10,20\}$. Every setting was compared with a 1200-outer, 400-inner,
+40-replicate reference. Two sentinel states were additionally recomputed at
+2400 outer and 800 inner draws with 40 replicates. Prefix-nested random streams
+made the lower-budget samples literal prefixes of the larger calculations,
+reducing irrelevant differences between settings.
+
+The acceptance decision combined the stable top candidate, Spearman rank
+correlation, score-interval overlap, relative reference regret, and exact
+agreement of downstream count and modeled-cost endpoints. Ten disjoint seeds
+(7200--7209) supplied that downstream check. The selected setting was then
+locked before the confirmatory acquisition seeds 7300--7329 were evaluated.
+This separation prevents selecting an estimator budget because it happened to
+produce the most favorable headline comparison.
+
+\begin{table*}[t]
+\caption{Evidence layers retained for the current frozen release.}
+\label{tab:evidence-layers}
+\centering\footnotesize
+\begin{tabular}{@{}p{0.17\textwidth}p{0.22\textwidth}p{0.32\textwidth}p{0.20\textwidth}@{}}
+\toprule
+Layer & Prespecified cases & Retained public evidence & Scientific role \\
+\midrule
+Matched recovery & 5 generating seeds & seed-level parameter summaries & implementation check \\
+Estimator states & $4\times3=12$ & state records and flattened posterior samples & budget qualification \\
+Estimator grid & 27 budget combinations across 12 states & 108 candidate-score records plus 12 references & ranking stability \\
+Doubled-budget audit & 2 sentinel states & 2 doubled-budget score records & reference sensitivity \\
+Downstream validation & 10 seeds & 10 policy endpoint records & endpoint stability \\
+Confirmatory acquisition & 30 paired seeds & 30 complete policy trajectories & count and cost endpoints \\
+Measured adequacy & declared material/source pairs & aggregate metrics and disclosed exclusions & model discrepancy diagnostic \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The public audit projection retains the campaign records needed to reconstruct
+the acquisition endpoints and estimator decision while removing machine paths
+and scheduler metadata. Posterior arrays are retained flattened over sampling
+draws; because walker and iteration indices are not present, they are not
+described as raw MCMC chains. The compact frozen summary authenticates the
+reported measured-fit aggregates and exclusions, but the audit projection does
+not independently reconstruct those fits. Raw upstream measured curves remain
+governed by their source repositories and are not redistributed here.
+
 \section{Evaluation Protocol}
 Five fixed seeds are used for matched-model recovery. A disjoint, prespecified
 set of \EIGSeedCount{} seeds is used for the paired acquisition comparison only
@@ -387,13 +577,29 @@ of two latent mean responses and is not an accuracy or coverage guarantee.
 
 For recovery, observations are generated from the same six-parameter forward
 family used in inference. A parameter vector is drawn independently for each
-seed before observation noise is generated. The reported error is the absolute
+seed from a datasheet prior fixed before that draw; the prior is never rebuilt
+from the realized truth. Sampler walkers are initialized around the fixed
+prior center, not around the hidden generating vector. Observation noise is
+then generated independently. This is a prior-predictive matched-model design:
+it removes oracle centering while retaining favorable equality between the
+data-generating and inference model families. The reported error is the absolute
 relative difference between posterior median and the generating value. The
 interval statistic counts whether that value falls within the equal-tailed
 90\% model-conditional posterior credible interval. With only five seeds, the
 count is a descriptive implementation check, not a coverage experiment.
 The Fisher matrix is evaluated in the exact transformed coordinate system used
 by sampling.
+
+For the paired acquisition analysis, a stable design-keyed seed generates one
+noisy observation for every candidate before any policy is run. A policy
+reveals the already generated value when it selects that design. Thus policy
+order cannot change the noise attached to a candidate, and all policies in a
+seed share the same latent truth and candidate outcome map. The 30 paired
+differences are the unit of analysis. Descriptive means, medians, standard
+deviations, win and failure rates, and percentile intervals are computed from
+those differences. The reported confidence interval uses 10,000 deterministic
+paired bootstrap resamples. It quantifies between-seed variation in this
+matched-model experiment and is not a population-wide material claim.
 
 The measured evaluation uses public complex-permeability curves for specified
 N95, N87, and 3C95 source/material pairs and datasheet core-loss curves for
@@ -432,16 +638,29 @@ Table~\ref{tab:recovery} reports the same matched-model recovery check.
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=\textwidth]{synthetic_results.pdf}
+  \includegraphics[width=\textwidth]{synthetic_diagnostics_full.pdf}
   \caption{Synthetic local identifiability and matched-model recovery. (a)
   Fisher eigenvalues in ascending order. (b) Absolute posterior-median errors
   across five seeds; circles are horizontally
-  offset for visibility and horizontal ticks mark medians.}
+  offset for visibility and horizontal ticks mark medians. (c) Number of the
+  five generating values inside each equal-tailed 90\% model-conditional
+  posterior interval. The five-seed inclusion count is descriptive and is not
+  a coverage estimate.}
   \label{fig:synthetic-results}
 \end{figure*}
 
+\subsection{Nested-estimator qualification}
+The conservative reference setting of 1200 outer draws, 400 inner draws, and
+40 score replicates was selected by the prespecified convergence decision.
+The doubled-budget sentinels preserved the required selector behavior, and the
+ten downstream validation seeds preserved both count and modeled-cost
+endpoints. This result qualifies the numerical setting for the subsequent
+campaign; it does not make each finite EIG score exact. In particular, the
+reported score intervals remain conditional on the retained posterior and
+forward model.
+
 \subsection{Paired synthetic acquisition}
-Fig.~\ref{fig:acquisition-measured}(a) makes the paired outcome structure
+Fig.~\ref{fig:acquisition-results} makes the paired outcome structure
 explicit. Raw EIG reached the two-target latent mean-response precision gate
 with \EIGRange{} measurements, while the fixed channel-balanced grid traversal
 required \UniformRange{}. Raw EIG used fewer measurements in every paired run,
@@ -451,6 +670,8 @@ experiment. The mean paired count difference has a bootstrap 95\% interval of
 \EIGCountDifferenceCILow--\EIGCountDifferenceCIHigh{} measurements; the paired
 win rate is \EIGCountWinRate\% and the raw-EIG gate-failure rate is
 \EIGRawFailureRate\%.
+The seed-level distribution is concentrated rather than hidden by the mean:
+29 pairs favor raw EIG by four measurements and one pair favors it by five.
 \ifdefined\EIGCostReduction
 For the separate modeled-cost endpoint, EIG/cost gave a descriptive mean paired
 reduction of \EIGCostReduction\%; neither policy comparison had a gate failure.
@@ -460,8 +681,20 @@ EIG/cost is evaluated separately against total modeled acquisition cost; no
 claim of measured laboratory-time savings is made.
 \fi
 
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{acquisition_diagnostics_full.pdf}
+  \caption{Thirty-seed paired matched-model acquisition results. (a) Raw-EIG
+  and fixed-traversal measurement counts at the common two-target precision
+  gate. (b) Distribution of paired count gains, defined as fixed minus raw
+  EIG. (c) Total prespecified modeled cost for EIG/cost and the fixed traversal.
+  Candidate-indexed outcomes are identical across policies within each seed;
+  modeled cost is an assumed endpoint, not observed laboratory duration.}
+  \label{fig:acquisition-results}
+\end{figure*}
+
 \subsection{Measured-data model adequacy}
-Fig.~\ref{fig:acquisition-measured}(b) compares the in-sample relative
+Fig.~\ref{fig:measured-results} compares the in-sample relative
 root-mean-square errors (RRMSEs) of the accepted measured-data fits. For
 LEA Material Database permeability records that satisfied the convergence
 criteria, RRMSEs were
@@ -477,19 +710,19 @@ held-out errors.
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=\textwidth]{acquisition_measured_results.pdf}
-  \caption{Paired synthetic acquisition and measured-data model adequacy. (a)
-  Measurements required to reach the two-target latent mean-response precision
-  gate; each
-  label lists seeds sharing the same paired outcome, and line styles expose
-  coincident endpoints. (b) Measured-data in-sample RRMSE; fill and hatch
-  distinguish core loss, $\mu'$, and $\mu''$. Excluded MagNet fits are not
-  plotted.}
-  \label{fig:acquisition-measured}
+  \includegraphics[width=\textwidth]{measured_adequacy_full.pdf}
+  \caption{Measured-data in-sample model adequacy for accepted fits. (a)
+  Isothermal Steinmetz core-loss RRMSE. (b) Separate storage and loss
+  permeability RRMSE for accepted LEA records. The much larger $\mu''$ error
+  is not absorbed into a combined complex-valued metric. Convergence-invalid
+  or boundary-active MagNet fits are excluded from these numerical bars and
+  disclosed in the text.}
+  \label{fig:measured-results}
 \end{figure*}
 
 All numerical results in this section, including
-Figs.~\ref{fig:synthetic-results} and~\ref{fig:acquisition-measured}, use the
+Figs.~\ref{fig:synthetic-results}, \ref{fig:acquisition-results},
+and~\ref{fig:measured-results}, use the
 same prespecified models, data filters, random seeds, and evaluation criteria.
 
 \section{Discussion and Limitations}
@@ -553,7 +786,7 @@ candidate outcomes between policies. A prespecified convergence study compares
 candidate ranks and downstream endpoints against a higher-budget reference;
 finite nested Monte Carlo variance nevertheless remains. Synthetic recovery is
 matched-model, and the observed interval-inclusion count is too small to
-establish calibrated frequentist coverage.
+establish calibrated coverage.
 
 The policy comparison is against one fixed channel-balanced traversal; it
 does not establish dominance over randomized balanced, predictive-variance,
@@ -580,6 +813,27 @@ switching-waveform experiments, or component qualification. Those extensions
 require new experimental evidence rather than broader interpretation of the
 present results.
 
+\subsection{Evidence required for broader claims}
+Three additions would materially change the evidential scope. First, a new
+checksum-locked paired campaign must compare EIG with randomized balanced,
+predictive-variance, and Fisher/Laplace D-optimal policies under the same
+outcome table, count budget, and cost table. The implemented follow-on protocol
+declares these methods but the current release contains no outcome from it.
+Second, a disjoint latent-response grid must test truth error and interval
+inclusion away from both acquisition candidates and stopping targets. Such a
+test can detect a narrow-but-wrong matched-model posterior, although it still
+cannot diagnose structural discrepancy. Third, a laboratory study needs
+independently calibrated noise, measured acquisition durations, multiple lots,
+and held-out temperature/frequency/flux regions. Only that third layer could
+support claims about real-material measurement or time savings.
+
+This hierarchy also defines negative results that would revise the conclusion:
+unstable EIG rankings under increased Monte Carlo budgets, loss against stronger
+paired comparators, poor disjoint-grid prediction despite reaching the gate,
+or failure of real-data residual and coverage criteria. Publishing these
+decision boundaries makes the present positive result testable rather than
+open ended.
+
 \section{Conclusion}
 Bayesian calibration recovered the six active Steinmetz and Cole--Cole
 parameters with per-parameter median absolute relative errors of
@@ -599,6 +853,73 @@ inadequate permeability law. The workflow links inference, local
 identifiability, measurement selection,
 model-adequacy checks, and traceable evidence within the tested models,
 public data records, and operating ranges.
+
+\appendix
+\section{Exact Sequential Evaluation Logic}
+For each confirmatory seed, the synthetic truth is drawn once from the fixed
+prior. One outcome per exact candidate identity is then generated and stored.
+Each policy is evaluated by the following logic:
+
+\begin{enumerate}
+  \item Start with the same declared $P_v$ and $\mu'$ observations.
+  \item Fit the six-coordinate posterior and require all sampler gates.
+  \item If both target intervals satisfy the precision gate, retain count and
+        modeled cost and stop successfully.
+  \item Otherwise score or traverse only unrevealed candidates. Raw EIG uses
+        $\widehat U(d)$; EIG/cost uses $\widehat U(d)/c(d)$; the fixed policy
+        uses its deterministic channel-balanced order.
+  \item Break deterministic ties by exact design identity, reveal the stored
+        outcome for the selected identity, append it, and return to step 2.
+  \item If the 25-measurement budget is exhausted, retain the trajectory as a
+        failure rather than imputing a stopping count.
+\end{enumerate}
+
+This logic separates three random objects: the prior-predictive truth, the
+candidate-indexed outcome table, and the policy's numerical scoring stream.
+Changing policy order changes neither the truth nor any candidate outcome.
+Stable design identities also make EIG scores invariant to permutation of the
+input library.
+
+\section{Endpoint and Uncertainty Definitions}
+For a latent target $g(\theta)$, the reported precision statistic is
+\begin{equation}
+ h_g=100\,\frac{q_{0.95}[g(\theta)]-q_{0.05}[g(\theta)]}
+ {2\,|q_{0.50}[g(\theta)]|}.
+\end{equation}
+The gate requires $h_{P_v}\leq8$ and $h_{L_m}\leq5$. The measurement-count
+endpoint is the number of revealed observations, including the two initial
+points, at the first satisfied gate. The cost endpoint is the sum of declared
+channel costs through that same step. Because the cost constants were not
+measured, the endpoint is dimensionless modeled burden even though the
+configuration names them as seconds for engineering convenience.
+
+For paired seed $s$, count gain is
+$\Delta_s=n_{\mathrm{fixed},s}-n_{\mathrm{rawEIG},s}$; modeled-cost gain is
+defined analogously for EIG/cost. Resampling is performed over complete paired
+seeds, never over unpaired policy outcomes. Monte Carlo score intervals come
+from repeated estimates of Eq.~\eqref{eq:nmc}; posterior intervals come from
+retained sampler draws; paired bootstrap intervals come from the 30 seed-level
+differences. These three intervals answer different questions and are not
+interchangeable.
+
+\section{Evidence, Software, and Version Boundary}
+The current manuscript is tied to frozen release
+\texttt{20260812T035654Z\_a0703698ace9} through a machine-readable result lock.
+Generated tables, macros, figures, and the summary are checksum verified before
+paper compilation. A separate sanitized audit asset contains the 30 policy
+trajectories, estimator states and scores, downstream validation records, and
+retained flattened posterior matrices needed to reconstruct the acquisition
+and estimator-selection claims. Its scope and digest are recorded in the
+repository. Raw measured curves are obtained from the cited upstream sources
+and are not redistributed as if they were produced by this study.
+
+The six-page conference snapshot is an immutable historical record associated
+with its own earlier release and claim ledger. This full current version keeps
+the same A4 two-column visual convention but has no page ceiling, includes the
+30-seed confirmatory evidence and estimator qualification, and must not be
+used to retroactively reinterpret the snapshot. Source, protocols, result
+locks, and verification commands are available in the accompanying public
+repository.
 
 \let\standardthebibliography\thebibliography
 \renewcommand{\thebibliography}[1]{%

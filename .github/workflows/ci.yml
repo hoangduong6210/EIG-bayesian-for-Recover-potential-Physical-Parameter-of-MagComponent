@@ -41,6 +41,11 @@ jobs:
         run: >-
           sudo apt-get update && sudo apt-get install -y --no-install-recommends
           latexmk texlive-latex-extra texlive-fonts-recommended poppler-utils
+      - name: Audit current manuscript source and citation graph
+        run: >-
+          python scripts/check_current_manuscript.py
+          --source paper/current_state/source/main.tex
+          --bibliography paper/current_state/source/refs.bib
       - name: Build current manuscript
         working-directory: paper/current_state/source
         env:
@@ -49,6 +54,6 @@ jobs:
       - name: Verify manuscript layout and references
         working-directory: paper/current_state/source
         run: |
-          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" = "6"
+          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" -gt "6"
           test "$(pdfinfo main.pdf | awk '/^Page size:/ {print $3, $5}')" = "595.276 841.89"
           ! grep -Eiq 'undefined references|citation.*undefined|reference.*undefined' main.log

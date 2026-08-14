@@ -668,7 +668,7 @@ def test_publication_figure_styles_are_monochrome_and_redundant():
     assert len({(style["facecolor"], style["hatch"]) for style in bars.values()}) == 3
 
 
-def test_full_paper_cites_exactly_35_declared_references():
+def test_full_paper_cites_every_declared_reference():
     paper = ROOT / "paper" / "current_state" / "source"
     source = (paper / "main.tex").read_text(encoding="utf-8")
     bibliography = (paper / "refs.bib").read_text(encoding="utf-8")
@@ -678,5 +678,6 @@ def test_full_paper_cites_exactly_35_declared_references():
         for group in re.findall(r"\\cite\{([^}]+)\}", source)
         for key in group.split(",")
     }
-    assert len(declared) == len(set(declared)) == 35
+    assert len(declared) == len(set(declared))
+    assert len(declared) >= 45
     assert cited == set(declared), "every bibliography entry must be cited and every citation declared"

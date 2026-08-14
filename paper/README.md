@@ -2,8 +2,8 @@
 
 | Version | Description | Evidence |
 |---|---|---|
-| [`current_state/`](current_state/) | Current manuscript and source | Frozen release `20260812T035654Z_a0703698ace9` |
-| [`conference_snapshot/`](conference_snapshot/) | Immutable conference record with claim ledger and errata | Historical release `20260806T112202Z_9a37bcc67637` |
+| [`current_state/`](current_state/) | Full current manuscript; same A4 two-column format, no page ceiling | Frozen release `20260812T035654Z_a0703698ace9` |
+| [`conference_snapshot/`](conference_snapshot/) | Immutable six-page conference record with claim ledger and errata | Historical release `20260806T112202Z_9a37bcc67637` |
 
 Use the [`current manuscript`](current_state/manuscript.pdf) for review and
 citation.

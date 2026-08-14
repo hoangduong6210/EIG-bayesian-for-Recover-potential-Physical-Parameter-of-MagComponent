@@ -1,10 +1,12 @@
 # Expected-information-gain-guided Bayesian calibration of magnetic-core models
 
-This repository accompanies a six-page conference study of Bayesian calibration
-and sequential measurement selection for Steinmetz core-loss and Cole--Cole
-complex-permeability models. It contains the manuscript, implementation,
-prespecified protocol, and checksum-locked evidence for the **magnetic-component
-case study only**.
+This repository accompanies the full current study of Bayesian calibration and
+sequential measurement selection for Steinmetz core-loss and Cole--Cole
+complex-permeability models. The current manuscript preserves the A4,
+two-column conference layout without a page ceiling; the original six-page
+conference snapshot remains immutable in a separate folder. The repository
+contains both manuscripts, implementation, prespecified protocol, and
+checksum-locked evidence for the **magnetic-component case study only**.
 
 [Read the current paper (PDF)](paper/current_state/manuscript.pdf) ·
 [Browse manuscript versions](paper/README.md) ·
