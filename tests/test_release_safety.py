@@ -593,10 +593,12 @@ def test_v4_study_plan_serializes_the_exact_confirmatory_contract():
     assert (plan.max_measurements, plan.n_walkers, plan.n_steps, plan.burn) == (
         25, 48, 20000, 4000,
     )
+    assert (plan.max_sampler_steps, plan.sampler_check_interval) == (80000, 10000)
     acquisition_stage = (ROOT / "slurm" / "12_eig.sbatch").read_text(
         encoding="utf-8"
     )
     assert "--n-walkers 48 --n-steps 20000 --burn 4000" in acquisition_stage
+    assert "--max-sampler-steps 80000 --sampler-check-interval 10000" in acquisition_stage
 
 
 def test_submit_requires_clean_source_and_validation_before_acquisition():

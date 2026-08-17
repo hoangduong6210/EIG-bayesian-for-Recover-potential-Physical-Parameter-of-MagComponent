@@ -96,14 +96,16 @@ Random and fixed channel-balanced traversals remain descriptive controls, not th
 strong-comparator reference. Pairwise conclusions apply only to the exact
 policy/endpoint pairs above and do not establish global acquisition optimality.
 
-The acquisition benchmark uses 48 walkers, 20,000 retained steps, and 4,000
-burn-in steps at every decision state. This acquisition-only budget is a
-prospective amendment following a fail-closed computational pilot: the former
-5,000-step budget exceeded the ESS threshold but did not supply 50 steps per
-autocorrelation time in weak early states. That pilot was rejected before
-aggregation and contributes no claim-bearing result. The policies, paired seed
-set, common outcomes, primary contrasts, endpoints, and stopping rule are
-unchanged.
+The acquisition benchmark uses 48 walkers, at least 20,000 retained steps, and
+4,000 burn-in steps at every decision state. A state that has not passed all
+sampler gates is extended on the same chain in 10,000-step blocks, up to 80,000
+retained steps; acquisition proceeds only from the converged state. This
+acquisition-only budget is a prospective amendment following two fail-closed
+computational pilots: fixed 5,000- and 20,000-step budgets exceeded the ESS
+threshold but did not supply 50 steps per autocorrelation time in every weak
+early state. Both campaigns were rejected before aggregation and contribute no
+claim-bearing result. The policies, paired seed set, common outcomes, primary
+contrasts, endpoints, and stopping rule are unchanged.
 
 At the final state of every policy, the pipeline also records six-parameter
 truth recovery and per-channel latent-mean error and 90% interval coverage on a

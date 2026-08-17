@@ -245,7 +245,8 @@ def _validate_benchmark_v4(record: dict, design: dict) -> None:
     runtime = design.get("runtime_contract")
     if runtime != {
         "max_measurements": 25, "n_walkers": 48, "n_steps": 20000,
-        "burn": 4000, "objectives": ["raw", "per_cost"],
+        "burn": 4000, "max_sampler_steps": 80000,
+        "sampler_check_interval": 10000, "objectives": ["raw", "per_cost"],
     }:
         raise ValueError("benchmark v4 runtime contract differs from preregistration")
     secondary = design.get("secondary_validation_endpoints")
@@ -337,6 +338,21 @@ def _validate_benchmark_v4(record: dict, design: dict) -> None:
                     or not isinstance(state["sampler_diagnostics"].get("valid"), bool) \
                     or state.get("valid") != state["sampler_diagnostics"]["valid"]:
                 raise ValueError("benchmark v4 decision-state audit is malformed")
+            adaptive = state["sampler_diagnostics"].get("adaptive_sampling")
+            if not isinstance(adaptive, dict) or adaptive.get("minimum_retained_steps") != 20000 \
+                    or adaptive.get("maximum_retained_steps") != 80000 \
+                    or adaptive.get("check_interval_steps") != 10000 \
+                    or isinstance(adaptive.get("actual_retained_steps"), bool) \
+                    or not isinstance(adaptive.get("actual_retained_steps"), int) \
+                    or not 20000 <= adaptive["actual_retained_steps"] <= 80000 \
+                    or (adaptive["actual_retained_steps"] - 20000) % 10000 != 0 \
+                    or adaptive.get("extension_count") != (
+                        adaptive["actual_retained_steps"] - 20000
+                    ) // 10000 \
+                    or adaptive.get("stopped_reason") != (
+                        "converged" if state["valid"] else "maximum_steps"
+                    ):
+                raise ValueError("benchmark v4 adaptive MCMC audit is malformed")
             state_signature = (state_key, state["mcmc_seed"], state["sampler_diagnostics"])
             prior_signature = state_audit.setdefault(state["state_identity_sha256"], state_signature)
             if prior_signature != state_signature:

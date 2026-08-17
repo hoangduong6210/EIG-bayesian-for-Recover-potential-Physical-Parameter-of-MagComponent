@@ -157,7 +157,17 @@ def v4_policy(name, objective):
         digest = hashlib.sha256(json.dumps(
             ordered, sort_keys=True, separators=(",", ":")
         ).encode()).hexdigest()
-        diagnostics = {"valid": True}
+        diagnostics = {
+            "valid": True,
+            "adaptive_sampling": {
+                "minimum_retained_steps": 20000,
+                "maximum_retained_steps": 80000,
+                "check_interval_steps": 10000,
+                "actual_retained_steps": 20000,
+                "extension_count": 0,
+                "stopped_reason": "converged",
+            },
+        }
         seed_payload = json.dumps({
             "namespace": "magcore-posterior-state-v1",
             "base_seed": 7300,
@@ -248,7 +258,8 @@ def valid_v4_record():
         "benchmark_version": 4,
         "runtime_contract": {
             "max_measurements": 25, "n_walkers": 48, "n_steps": 20000,
-            "burn": 4000, "objectives": ["raw", "per_cost"],
+            "burn": 4000, "max_sampler_steps": 80000,
+            "sampler_check_interval": 10000, "objectives": ["raw", "per_cost"],
         },
         "policies": policies,
         "comparator_registry": deepcopy(BENCHMARK_V4_POLICY_REGISTRY),

@@ -104,12 +104,22 @@ class PosteriorResult:
 def sample_emcee(observations: list[Observation], spec: DatasheetPrior,
                  geometry: Geometry | None = None, *, n_walkers: int = 48,
                  n_steps: int = 5000, burn: int = 1000, seed: int = 0,
-                 pool=None) -> PosteriorResult:
+                 pool=None, max_steps: int | None = None,
+                 check_interval: int | None = None) -> PosteriorResult:
     """Heavy sampler. Entrypoints, not this reusable function, enforce SLURM."""
     import emcee
 
     if n_walkers < 12:
         raise ValueError("six-dimensional affine-invariant sampling needs at least 12 walkers")
+    max_steps = n_steps if max_steps is None else max_steps
+    check_interval = n_steps if check_interval is None else check_interval
+    if any(isinstance(value, bool) or not isinstance(value, int) or value < 1
+           for value in (n_steps, max_steps, check_interval)):
+        raise ValueError("sampler step counts must be positive integers")
+    if isinstance(burn, bool) or not isinstance(burn, int) or burn < 0:
+        raise ValueError("sampler burn must be a nonnegative integer")
+    if max_steps < n_steps:
+        raise ValueError("adaptive sampler max_steps cannot be below n_steps")
     rng = np.random.default_rng(seed)
     center = prior_center_vector(spec)
     scales = np.array([0.05, 0.02, 0.02, 0.05, 0.05, 0.02])
@@ -124,16 +134,42 @@ def sample_emcee(observations: list[Observation], spec: DatasheetPrior,
     proposal_rng = np.random.RandomState(seed)
     sampler.random_state = proposal_rng.get_state()
     sampler.run_mcmc(initial, burn + n_steps, progress=False)
-    chain = sampler.get_chain(discard=burn, flat=False)
+
+    def current_result() -> tuple[np.ndarray, np.ndarray, dict]:
+        chain_now = sampler.get_chain(discard=burn, flat=False)
+        log_prob_now = sampler.get_log_prob(discard=burn, flat=True)
+        try:
+            tau_now = np.asarray(
+                sampler.get_autocorr_time(discard=burn, tol=0), dtype=float
+            )
+        except Exception:
+            tau_now = np.full(6, np.nan)
+        report = diagnostic_report(
+            chain_now, sampler.acceptance_fraction, tau_now
+        )
+        report["finite_log_probability_fraction"] = float(
+            np.mean(np.isfinite(log_prob_now))
+        )
+        report["valid"] = bool(
+            report["valid"]
+            and report["finite_log_probability_fraction"] == 1.0
+        )
+        return chain_now, log_prob_now, report
+
+    chain, log_prob, diagnostics = current_result()
+    extension_count = 0
+    while not diagnostics["valid"] and chain.shape[0] < max_steps:
+        extension = min(check_interval, max_steps - chain.shape[0])
+        sampler.run_mcmc(None, extension, progress=False)
+        extension_count += 1
+        chain, log_prob, diagnostics = current_result()
+    diagnostics["adaptive_sampling"] = {
+        "minimum_retained_steps": n_steps,
+        "maximum_retained_steps": max_steps,
+        "check_interval_steps": check_interval,
+        "actual_retained_steps": int(chain.shape[0]),
+        "extension_count": extension_count,
+        "stopped_reason": "converged" if diagnostics["valid"] else "maximum_steps",
+    }
     flat = chain.reshape((-1, 6))
-    log_prob = sampler.get_log_prob(discard=burn, flat=True)
-    try:
-        tau = np.asarray(sampler.get_autocorr_time(discard=burn, tol=0), dtype=float)
-    except Exception:
-        tau = np.full(6, np.nan)
-    diagnostics = diagnostic_report(chain, sampler.acceptance_fraction, tau)
-    diagnostics["finite_log_probability_fraction"] = float(np.mean(np.isfinite(log_prob)))
-    diagnostics["valid"] = bool(
-        diagnostics["valid"] and diagnostics["finite_log_probability_fraction"] == 1.0
-    )
     return PosteriorResult(chain, flat, log_prob, diagnostics)

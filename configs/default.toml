@@ -111,13 +111,15 @@ oracle_initialized = false
 measured_data = false
 scope = "algorithmic matched-model synthetic benchmark; not validated laboratory efficiency"
 
-# Acquisition-only amendment after a fail-closed computational pilot: 5,000
-# retained steps yielded adequate ESS but fewer than 50 steps/tau in weak early
-# states. No campaign aggregate was produced from that invalid pilot.
+# Acquisition-only amendment after fail-closed computational pilots: fixed
+# 5,000- and 20,000-step budgets yielded adequate ESS but fewer than 50
+# steps/tau in some weak early states. Neither invalid campaign was aggregated.
 [study.comparator_benchmark.sampler]
 n_walkers = 48
 n_steps = 20000
 burn = 4000
+max_steps = 80000
+check_interval = 10000
 
 [study.prior_center_offset]
 levels = [0.00, 0.15, 0.30]

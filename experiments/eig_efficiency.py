@@ -167,6 +167,8 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
                objective: AcquisitionObjective, pool=None,
                fit_cache: dict[tuple[str, ...], PosteriorResult] | None = None,
                pcv_gate_pct: float = 8.0, lm_gate_pct: float = 5.0,
+               max_sampler_steps: int | None = None,
+               sampler_check_interval: int | None = None,
                ) -> tuple[dict, np.ndarray, dict]:
     method_by_policy = {
         "eig": "eig",
@@ -211,6 +213,8 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
             fit = sample_emcee(
                 ordered_observations, spec, geometry, n_walkers=n_walkers,
                 n_steps=n_steps, burn=burn, seed=fit_seed, pool=pool,
+                max_steps=max_sampler_steps,
+                check_interval=sampler_check_interval,
             )
             if fit_cache is not None:
                 fit_cache[state_key] = fit
@@ -328,6 +332,8 @@ def main() -> None:
     parser.add_argument("--n-walkers", type=int, default=48)
     parser.add_argument("--n-steps", type=int, default=1200)
     parser.add_argument("--burn", type=int, default=400)
+    parser.add_argument("--max-sampler-steps", type=int)
+    parser.add_argument("--sampler-check-interval", type=int)
     parser.add_argument("--n-outer", type=int, default=300)
     parser.add_argument("--n-inner", type=int, default=100)
     parser.add_argument("--eig-replicates", type=int, default=20)
@@ -365,6 +371,8 @@ def main() -> None:
         "n_walkers": args.n_walkers,
         "n_steps": args.n_steps,
         "burn": args.burn,
+        "max_sampler_steps": args.max_sampler_steps,
+        "sampler_check_interval": args.sampler_check_interval,
         "objectives": tuple(args.eig_objectives),
     }
     configured_contract = {
@@ -372,6 +380,8 @@ def main() -> None:
         "n_walkers": plan.n_walkers,
         "n_steps": plan.n_steps,
         "burn": plan.burn,
+        "max_sampler_steps": plan.max_sampler_steps,
+        "sampler_check_interval": plan.sampler_check_interval,
         "objectives": plan.eig_objectives,
     }
     if runtime_contract != configured_contract:
@@ -396,6 +406,8 @@ def main() -> None:
     common = dict(
         seed=args.seed, max_measurements=args.max_measurements,
         n_walkers=args.n_walkers, n_steps=args.n_steps, burn=args.burn,
+        max_sampler_steps=args.max_sampler_steps,
+        sampler_check_interval=args.sampler_check_interval,
         n_outer=args.n_outer, n_inner=args.n_inner,
         eig_replicates=args.eig_replicates,
         pcv_gate_pct=plan.stop_rule.pcv_ci_half_width_pct,

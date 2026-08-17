@@ -197,6 +197,8 @@ class StudyPlan:
     n_walkers: int
     n_steps: int
     burn: int
+    max_sampler_steps: int
+    sampler_check_interval: int
 
     @property
     def validation_state_task_count(self) -> int:
@@ -316,6 +318,8 @@ class StudyPlan:
                 "n_walkers": self.n_walkers,
                 "n_steps": self.n_steps,
                 "burn": self.burn,
+                "max_steps": self.max_sampler_steps,
+                "check_interval": self.sampler_check_interval,
             },
         }
 
@@ -546,6 +550,12 @@ def load_study_plan(path: str | Path) -> StudyPlan:
             n_walkers=_positive_int(sampler["n_walkers"], "walker count"),
             n_steps=_positive_int(sampler["n_steps"], "MCMC steps"),
             burn=_positive_int(sampler["burn"], "MCMC burn"),
+            max_sampler_steps=_positive_int(
+                sampler["max_steps"], "maximum MCMC steps"
+            ),
+            sampler_check_interval=_positive_int(
+                sampler["check_interval"], "MCMC check interval"
+            ),
         )
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError(f"invalid study plan in {config_path}: {exc}") from exc
@@ -576,7 +586,10 @@ def load_study_plan(path: str | Path) -> StudyPlan:
         for value in (
             plan.max_measurements, plan.n_walkers, plan.n_steps, plan.burn,
         )
-    ) or plan.burn >= plan.n_steps or plan.max_measurements > plan.comparator_benchmark.candidate_count:
+    ) or plan.burn >= plan.n_steps \
+            or plan.max_sampler_steps < plan.n_steps \
+            or plan.sampler_check_interval > plan.max_sampler_steps - plan.n_steps \
+            or plan.max_measurements > plan.comparator_benchmark.candidate_count:
         raise ValueError("benchmark runtime counts are outside their valid domain")
     expected_stop = {
         "quantity": "latent_mean_response",
