@@ -19,6 +19,7 @@ MANIFEST_PATH = WIKI_ROOT / "manuscript.toml"
 REQUIRED_PAGES = {
     "README.md",
     "Home.md",
+    "Wiki-Index.md",
     "Project-Status.md",
     "Full-Manuscript.md",
     "Claims-and-Limits.md",
@@ -200,6 +201,11 @@ def check() -> dict:
     ):
         if "Evidence-Sources.md#e" not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} has no source-bound quantitative result")
+    index_text = texts[WIKI_ROOT / "Wiki-Index.md"]
+    indexed_pages = REQUIRED_PAGES - {"README.md", "_Sidebar.md", "Wiki-Index.md"}
+    for page in sorted(indexed_pages):
+        if f"]({page})" not in index_text and f"]({page}#" not in index_text:
+            raise WikiError(f"Wiki-Index.md does not index {page}")
     for page in ("Full-Manuscript.md", "Project-Status.md"):
         if release_id not in texts[WIKI_ROOT / page] or release_digest not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} is not bound to the declared evidence release")

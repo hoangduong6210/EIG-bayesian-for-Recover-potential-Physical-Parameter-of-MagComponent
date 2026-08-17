@@ -1,6 +1,7 @@
 # Living scientific wiki
 
-Start with [Home](Home.md) for the rapid scientific summary or open the
+Start with the [Wiki Index](Wiki-Index.md) if you are new to the project. Use
+[Home](Home.md) for the rapid scientific summary or open the
 [Full Manuscript](Full-Manuscript.md) for the complete paper-style narrative.
 The [Scientific Job Results](Scientific-Job-Results.md) ledger accounts for
 the complete result campaign, while [Evidence Sources](Evidence-Sources.md)

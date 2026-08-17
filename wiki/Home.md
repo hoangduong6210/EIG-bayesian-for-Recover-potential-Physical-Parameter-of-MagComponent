@@ -27,20 +27,20 @@ that EIG is better than the strong acquisition comparators.
 The trajectory-level reason for the tie and loss is documented in
 [Why EIG did not beat the strong comparators](Scientific-Job-Results.md#why-eig-did-not-beat-the-strong-comparators).
 
-## How to read the project
+## How to find information
 
-1. [Project Status](Project-Status.md) gives the current evidence and open work.
-2. [Full Manuscript](Full-Manuscript.md) is the canonical paper narrative.
-3. [Claims and Limits](Claims-and-Limits.md) separates supported statements
-   from prohibited interpretations.
-4. [Reproduce and Audit](Reproduce-and-Audit.md) explains the evidence chain.
-5. [Scientific Job Results](Scientific-Job-Results.md) accounts for every
-   result artifact and explains the comparator outcome.
-6. [Evidence Sources](Evidence-Sources.md) maps every result family to its
-   machine-readable source.
-7. [References](References.md) lists the scientific sources.
-8. [Authoring and Snapshots](Authoring-and-Snapshots.md) defines how wiki
-   changes become a two-column paper snapshot.
+| If you want to... | Open | You will find |
+|---|---|---|
+| Understand the result quickly | [Project Status](Project-Status.md) | Current evidence, numerical endpoints, and next work |
+| Read the paper argument | [Full Manuscript](Full-Manuscript.md) | Methods, equations, citations, results, and limitations |
+| Check what can be claimed | [Claims and Limits](Claims-and-Limits.md) | Supported wording and prohibited interpretations |
+| See every completed result family | [Scientific Job Results](Scientific-Job-Results.md) | Complete artifact ledger and comparator explanation |
+| Verify a reported number | [Evidence Sources](Evidence-Sources.md) | Evidence label, JSON pointer, scope, and checksum |
+| Reproduce the evidence chain | [Reproduce and Audit](Reproduce-and-Audit.md) | Configuration-to-freeze verification workflow |
+
+The [complete Wiki Index](Wiki-Index.md) also provides reading paths by
+reader type, a question-to-answer lookup table, a page directory, and a
+step-by-step procedure for verifying any number.
 
 ## Version boundary
 

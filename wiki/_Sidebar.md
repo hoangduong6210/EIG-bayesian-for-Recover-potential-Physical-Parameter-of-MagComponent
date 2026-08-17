@@ -1,6 +1,7 @@
 ## Living manuscript
 
 - [Home](Home.md)
+- [Wiki Index](Wiki-Index.md)
 - [Project Status](Project-Status.md)
 - [Full Manuscript](Full-Manuscript.md)
 - [Claims and Limits](Claims-and-Limits.md)

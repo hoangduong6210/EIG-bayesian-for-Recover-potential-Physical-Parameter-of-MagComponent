@@ -65,6 +65,15 @@ def test_comparator_explanation_is_source_bound():
         ).read_text(encoding="utf-8")
 
 
+def test_new_reader_index_covers_public_pages_and_evidence_lookup():
+    index = (WIKI / "Wiki-Index.md").read_text(encoding="utf-8")
+    for page in MODULE.REQUIRED_PAGES - {"README.md", "_Sidebar.md", "Wiki-Index.md"}:
+        assert f"]({page})" in index or f"]({page}#" in index
+    assert "How to verify a number" in index
+    for source_id in range(1, 9):
+        assert f"Evidence-Sources.md#e{source_id}" in index
+
+
 def test_acquisition_figure_is_bound_to_evidence_projection():
     evidence = WIKI / "evidence" / "results.json"
     manifest = json.loads(
