@@ -58,9 +58,26 @@ def latent_holdout_summary(
     generating mean, not future noisy observations.
     """
 
+    return latent_holdout_evaluation(samples, truth, points, geometry)["summary"]
+
+
+def latent_holdout_evaluation(
+    samples: np.ndarray,
+    truth: MagneticParams,
+    points: list[DesignPoint],
+    geometry: Geometry | None = None,
+) -> dict:
+    """Return reconstructable point rows together with channel summaries.
+
+    The point records are deliberately sufficient to recompute every published
+    channel RMSE, median absolute error, and interval-coverage value without
+    exposing posterior matrices.
+    """
+
     if not points:
         raise ValueError("holdout grid must be nonempty")
     output: dict[str, dict[str, float | int]] = {}
+    point_rows: list[dict[str, float | str | bool]] = []
     for channel in Channel:
         channel_points = [point for point in points if point.channel is channel]
         if not channel_points:
@@ -73,12 +90,28 @@ def latent_holdout_summary(
             expected = predict_one(truth, point, geometry)
             if expected == 0.0:
                 raise ValueError("holdout truth must be nonzero for relative metrics")
-            relative_errors.append(float((median - expected) / expected))
-            covered += int(
+            relative_error = float((median - expected) / expected)
+            is_covered = bool(
                 p05 <= expected <= p95
                 or np.isclose(expected, p05, rtol=1e-12, atol=0.0)
                 or np.isclose(expected, p95, rtol=1e-12, atol=0.0)
             )
+            relative_errors.append(relative_error)
+            covered += int(is_covered)
+            point_rows.append({
+                "design_key": point.key(),
+                "design_identity": point.exact_key(),
+                "channel": channel.value,
+                "frequency_hz": float(point.f_hz),
+                "b_pk_t": float(point.b_pk_t),
+                "temperature_c": float(point.temperature_c),
+                "truth": float(expected),
+                "posterior_median": float(median),
+                "posterior_p05": float(p05),
+                "posterior_p95": float(p95),
+                "covered_by_latent_ci90": is_covered,
+                "relative_error": relative_error,
+            })
         errors = np.asarray(relative_errors, dtype=float)
         output[channel.value] = {
             "n_points": len(channel_points),
@@ -88,4 +121,4 @@ def latent_holdout_summary(
             ),
             "latent_ci90_coverage_fraction": float(covered / len(channel_points)),
         }
-    return output
+    return {"summary": output, "points": point_rows}

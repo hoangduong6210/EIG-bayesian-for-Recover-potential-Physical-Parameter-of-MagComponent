@@ -67,6 +67,92 @@ def paired_descriptive(values: list[float], *, seed: int) -> dict[str, float]:
     }
 
 
+def _bootstrap_seed(contrast_name: str) -> int:
+    """Derive a stable bootstrap stream from the preregistered contrast key."""
+    digest = hashlib.sha256(f"paper-bootstrap:{contrast_name}".encode()).digest()
+    return int.from_bytes(digest[:4], byteorder="big", signed=False)
+
+
+def paired_policy_contrast(
+    eig_values: list[int | float | None],
+    comparator_values: list[int | float | None],
+    *,
+    eig_policy: str,
+    comparator_policy: str,
+    endpoint: str,
+    bootstrap_seed: int,
+) -> dict[str, Any]:
+    """Summarize one preregistered paired contrast without hiding failures.
+
+    The signed difference is always comparator minus EIG.  A positive value
+    therefore has one interpretation across count and modeled-cost endpoints:
+    the EIG policy used less of the declared endpoint.
+    """
+    if len(eig_values) != len(comparator_values):
+        raise ValueError("paired policy endpoints must have equal lengths")
+    if not eig_values:
+        raise ValueError("paired policy contrast requires at least one seed")
+    for value in (*eig_values, *comparator_values):
+        if value is not None and not np.isfinite(float(value)):
+            raise ValueError("paired policy endpoint contains a nonfinite value")
+
+    complete = [
+        (float(eig), float(comparator))
+        for eig, comparator in zip(eig_values, comparator_values)
+        if eig is not None and comparator is not None
+    ]
+    differences = [comparator - eig for eig, comparator in complete]
+    tied = [
+        bool(np.isclose(value, 0.0, rtol=1e-12, atol=1e-9))
+        for value in differences
+    ]
+    wins = sum(
+        value > 0.0 and not is_tied
+        for value, is_tied in zip(differences, tied)
+    )
+    ties = sum(tied)
+    losses = sum(
+        value < 0.0 and not is_tied
+        for value, is_tied in zip(differences, tied)
+    )
+    eig_failures = [value is None for value in eig_values]
+    comparator_failures = [value is None for value in comparator_values]
+    return {
+        "eig_policy": eig_policy,
+        "comparator_policy": comparator_policy,
+        "endpoint": endpoint,
+        "difference_definition": "comparator_minus_eig",
+        "positive_difference_favors": eig_policy,
+        "total_pair_count": len(eig_values),
+        "complete_pair_count": len(complete),
+        "incomplete_pair_count": len(eig_values) - len(complete),
+        "eig_gate_failure_count": sum(eig_failures),
+        "comparator_gate_failure_count": sum(comparator_failures),
+        "both_gate_failure_count": sum(
+            eig_failed and comparator_failed
+            for eig_failed, comparator_failed in zip(
+                eig_failures, comparator_failures
+            )
+        ),
+        "paired_differences": differences,
+        "paired_difference": (
+            paired_descriptive(differences, seed=bootstrap_seed)
+            if differences else {
+                "mean": None,
+                "median": None,
+                "sample_sd": None,
+                "bootstrap_mean_ci95_low": None,
+                "bootstrap_mean_ci95_high": None,
+            }
+        ),
+        "wins": wins,
+        "ties": ties,
+        "losses": losses,
+        "wtl_denominator": len(complete),
+        "win_rate_complete_pairs": wins / len(complete) if complete else None,
+    }
+
+
 def group_paired_outcomes(
     seeds: list[int], eig_counts: list[int], uniform_counts: list[int],
 ) -> list[tuple[int, int, tuple[int, ...]]]:
@@ -196,10 +282,37 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
         "laplace_d_opt_raw", "laplace_d_opt_per_cost",
     )
     comparator_summary: dict[str, Any] = {}
+    primary_contrasts: dict[str, Any] = {}
     secondary_validation_summary: dict[str, Any] = {}
-    if all(record["design"].get("benchmark_version") == 4 for record in eig_records):
+    benchmark_versions = {
+        record["design"].get("benchmark_version") for record in eig_records
+    }
+    if len(benchmark_versions) != 1:
+        raise ValueError("acquisition records mix incompatible benchmark versions")
+    if benchmark_versions == {4}:
+        policies_by_name = {
+            name: [record["design"]["policies"][name] for record in eig_records]
+            for name in eig_records[0]["design"]["policies"]
+        }
+        endpoint_values: dict[tuple[str, str], list[int | float | None]] = {}
+        for name, policy_records in policies_by_name.items():
+            endpoint_values[(name, "measurement_count_to_gate")] = [
+                policy["n_measurements_to_gate"] for policy in policy_records
+            ]
+            endpoint_values[(name, "modeled_cost_to_gate")] = [
+                modeled_cost(policy) for policy in policy_records
+            ]
+        for spec in plan.comparator_benchmark.direct_contrasts:
+            primary_contrasts[spec.name] = paired_policy_contrast(
+                endpoint_values[(spec.policy, spec.endpoint)],
+                endpoint_values[(spec.comparator, spec.endpoint)],
+                eig_policy=spec.policy,
+                comparator_policy=spec.comparator,
+                endpoint=spec.endpoint,
+                bootstrap_seed=_bootstrap_seed(spec.name),
+            )
         for name in comparator_names:
-            comparator_policies = [record["design"]["policies"][name] for record in eig_records]
+            comparator_policies = policies_by_name[name]
             counts = [policy["n_measurements_to_gate"] for policy in comparator_policies]
             costs = [modeled_cost(policy) for policy in comparator_policies]
             count_success = [
@@ -227,12 +340,16 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
                 "count_complete_pair_count": sum(count_success),
                 "cost_complete_pair_count": sum(modeled_cost_success),
                 "count_paired_difference": (
-                    paired_descriptive(count_differences, seed=20260900 + len(comparator_summary))
+                    paired_descriptive(
+                        count_differences,
+                        seed=_bootstrap_seed(f"fixed-count:{name}"),
+                    )
                     if count_differences else None
                 ),
                 "cost_paired_difference": (
                     paired_descriptive(
-                        modeled_cost_differences, seed=20261000 + len(comparator_summary)
+                        modeled_cost_differences,
+                        seed=_bootstrap_seed(f"fixed-cost:{name}"),
                     )
                     if modeled_cost_differences else None
                 ),
@@ -355,6 +472,11 @@ def summarize(run_dir: Path) -> tuple[dict[str, Any], list[Path]]:
                 cost < fixed for cost, fixed in zip(per_cost_costs, fixed_costs)
                 if cost is not None and fixed is not None
             ) / sum(cost_success),
+            "primary_contrasts": primary_contrasts,
+            "preregistered_contrasts": [
+                contrast.as_dict()
+                for contrast in plan.comparator_benchmark.direct_contrasts
+            ],
             "strong_comparators": comparator_summary,
             "secondary_validation": secondary_validation_summary,
             # Compatibility aliases used by the current table/figure writer.

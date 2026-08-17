@@ -11,6 +11,14 @@ ROOT="$(cd "$1/source" && pwd -P)"
 source "$ROOT/slurm/common.sh"
 load_run "$1"
 init_task preflight 0
+[[ -n "${MAGCORE_SUBMIT_PARTITION:-}" ]] || {
+    echo "FATAL: submit partition is absent from run provenance" >&2
+    exit 66
+}
+[[ "${SLURM_JOB_PARTITION:-}" == "$MAGCORE_SUBMIT_PARTITION" ]] || {
+    echo "FATAL: preflight ran on ${SLURM_JOB_PARTITION:-unknown}, expected $MAGCORE_SUBMIT_PARTITION" >&2
+    exit 68
+}
 [[ "$(sha256sum "$MAGCORE_RUN_DIR/provenance/source-tree.tar.gz" | awk '{print $1}')" == \
     "$MAGCORE_SOURCE_ARCHIVE_SHA256" ]] || {
     echo "FATAL: standalone source archive hash mismatch" >&2
@@ -24,7 +32,10 @@ for entrypoint in posterior_recovery.py eig_efficiency.py lot_variation.py d5_id
     }
 done
 [[ -f "$MAGCORE_CODE_ROOT/scripts/generate_paper_artifacts.py" ]]
-(cd "$PROJECT_ROOT/../.." && sha256sum --check "$MAGCORE_CODE_ROOT/data/checksums.sha256")
+run_python "$MAGCORE_CODE_ROOT/scripts/validate_run.py" \
+    --run-dir "$MAGCORE_RUN_DIR" --mode verify-data \
+    --data-manifest "$MAGCORE_CODE_ROOT/data/checksums.sha256" \
+    --data-root "$MAGCORE_DATA_ROOT"
 run_python - "$MAGCORE_CODE_ROOT/configs/default.toml" <<'PY'
 import sys, tomllib
 with open(sys.argv[1], "rb") as handle:
@@ -75,8 +86,12 @@ mkdir -p "$MAGCORE_RUN_DIR/tmp/preflight-paper"
         -outdir="$MAGCORE_RUN_DIR/tmp/preflight-paper" main.tex
 )
 [[ -s "$MAGCORE_RUN_DIR/tmp/preflight-paper/main.pdf" ]]
-run_python -m pip freeze > "$MAGCORE_RUN_DIR/provenance/pip-freeze.txt.partial"
-mv "$MAGCORE_RUN_DIR/provenance/pip-freeze.txt.partial" "$MAGCORE_RUN_DIR/provenance/pip-freeze.txt"
+# Capture resolved distributions through the standard library.  A valid
+# environment need not install the pip command/module merely for provenance.
+run_python -c 'import importlib.metadata as m; print("\n".join(sorted(f"{d.metadata.get('\''Name'\'', d.name)}=={d.version}" for d in m.distributions())))' \
+    > "$MAGCORE_RUN_DIR/provenance/python-packages.txt.partial"
+mv "$MAGCORE_RUN_DIR/provenance/python-packages.txt.partial" \
+    "$MAGCORE_RUN_DIR/provenance/python-packages.txt"
 module list 2> "$MAGCORE_RUN_DIR/provenance/modules.txt.partial"
 mv "$MAGCORE_RUN_DIR/provenance/modules.txt.partial" "$MAGCORE_RUN_DIR/provenance/modules.txt"
 task_done

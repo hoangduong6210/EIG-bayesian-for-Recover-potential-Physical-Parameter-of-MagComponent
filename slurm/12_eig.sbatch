@@ -24,6 +24,7 @@ SELECTION="$MAGCORE_RUN_DIR/summary/eig_convergence/final_decision.json"
 run_experiment eig eig_efficiency.py --seed "$SEED" --workers "$SLURM_CPUS_PER_TASK" \
     --max-meas 25 --n-walkers 48 --n-steps 5000 --burn 1000 \
     --eig-objectives raw per_cost \
+    --config "$MAGCORE_RUN_DIR/config/default.toml" \
     --selection-file "$SELECTION" \
     --out "$OUT.partial"
 validate_json "$OUT.partial"

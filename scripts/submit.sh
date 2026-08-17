@@ -57,10 +57,11 @@ fi
 mkdir -p "$RUN_DIR"/{config,figures,freeze,logs,paper,provenance/jobs,results,source,status,summary,tmp}
 cp "$PROJECT_ROOT/configs/default.toml" "$RUN_DIR/config/default.toml"
 cp "$PROJECT_ROOT/data/checksums.sha256" "$RUN_DIR/provenance/input-data-sha256.txt"
-(cd "$PROJECT_ROOT" && tar \
-    --exclude='./runs' --exclude='./results/frozen' --exclude='./paper/current_state/source/build' \
-    --exclude='./.pytest_cache' --exclude='*/__pycache__' --exclude='*.pyc' \
-    -czf "$RUN_DIR/provenance/source-tree.tar.gz" .)
+# Snapshot exactly the committed tree.  Unlike archiving the working directory,
+# git archive cannot include .git, virtual environments, ignored staged data,
+# caches, or other local-only files.
+git -C "$PROJECT_ROOT" archive --format=tar.gz \
+    --output="$RUN_DIR/provenance/source-tree.tar.gz" "$REVISION"
 SOURCE_ARCHIVE_SHA256="$(sha256sum "$RUN_DIR/provenance/source-tree.tar.gz" | awk '{print $1}')"
 tar -xzf "$RUN_DIR/provenance/source-tree.tar.gz" -C "$RUN_DIR/source"
 CONFIG_SHA256="$(sha256sum "$RUN_DIR/config/default.toml" | awk '{print $1}')"
@@ -77,11 +78,18 @@ MAGCORE_DATA_ROOT_RESOLVED="${MAGCORE_DATA_ROOT:-$PROJECT_ROOT/data/external/mat
     echo "missing staged material database: $MAGCORE_DATA_ROOT_RESOLVED" >&2
     exit 69
 }
+MAGCORE_DATA_ROOT_RESOLVED="$(cd "$MAGCORE_DATA_ROOT_RESOLVED" && pwd -P)"
+MAGCORE_PARTITION_RESOLVED="${MAGCORE_PARTITION:-nextgen}"
+[[ "$MAGCORE_PARTITION_RESOLVED" =~ ^[A-Za-z0-9._-]+$ ]] || {
+    echo "invalid scheduler partition: $MAGCORE_PARTITION_RESOLVED" >&2
+    exit 64
+}
 {
     printf 'MAGCORE_RUN_ID=%q\n' "$MAGCORE_RUN_ID"
     printf 'MAGCORE_PROJECT_ROOT=%q\n' "$PROJECT_ROOT"
     printf 'MAGCORE_CODE_ROOT=%q\n' "$RUN_DIR/source"
     printf 'MAGCORE_DATA_ROOT=%q\n' "$MAGCORE_DATA_ROOT_RESOLVED"
+    printf 'MAGCORE_SUBMIT_PARTITION=%q\n' "$MAGCORE_PARTITION_RESOLVED"
     printf 'MAGCORE_GIT_REVISION=%q\n' "$REVISION"
     printf 'MAGCORE_SOURCE_STATUS_SHA256=%q\n' "$SOURCE_DIRTY"
     printf 'MAGCORE_SOURCE_ARCHIVE_SHA256=%q\n' "$SOURCE_ARCHIVE_SHA256"
@@ -94,8 +102,29 @@ MAGCORE_DATA_ROOT_RESOLVED="${MAGCORE_DATA_ROOT:-$PROJECT_ROOT/data/external/mat
 } > "$RUN_DIR/provenance/run.env"
 git -C "$PROJECT_ROOT" status --short -- . > "$RUN_DIR/provenance/git-status.txt"
 git -C "$PROJECT_ROOT" diff --binary -- . > "$RUN_DIR/provenance/source.patch"
-find "$PROJECT_ROOT/data" -type f -print0 | sort -z | xargs -0 -r sha256sum \
-    > "$RUN_DIR/provenance/data-sha256.txt"
+# Record only the declared scientific inputs.  Machine-specific source paths
+# remain in the private production provenance and are excluded from the public
+# projection.
+while read -r expected relative; do
+    [[ -n "$expected" && -n "$relative" ]] || continue
+    case "$relative" in
+        data/external/materialdatabase/data/*)
+            relative="${relative#data/external/materialdatabase/data/}"
+            ;;
+        *)
+            echo "unsupported input-data manifest path: $relative" >&2
+            exit 65
+            ;;
+    esac
+    candidate="$MAGCORE_DATA_ROOT_RESOLVED/$relative"
+    [[ -f "$candidate" ]] || { echo "missing declared input: $candidate" >&2; exit 66; }
+    actual="$(sha256sum "$candidate" | awk '{print $1}')"
+    [[ "$actual" == "$expected" ]] || {
+        echo "input checksum mismatch: $relative" >&2
+        exit 68
+    }
+    printf '%s  %s\n' "$actual" "$candidate"
+done < "$PROJECT_ROOT/data/checksums.sha256" > "$RUN_DIR/provenance/data-sha256.txt"
 
 if [[ "$PREPARE_ONLY" == true ]]; then
     printf '%s\n' "$MAGCORE_RUN_ID" > "$PROJECT_ROOT/runs/LATEST"
@@ -115,7 +144,8 @@ trap submission_failed ERR
 
 submit() {
     local dependency="$1" script="$2"
-    local -a options=(--parsable --output="$RUN_DIR/logs/%x_%A_%a.out")
+    local -a options=(--parsable --partition="$MAGCORE_PARTITION_RESOLVED"
+        --output="$RUN_DIR/logs/%x_%A_%a.out")
     local response
     [[ -z "$dependency" ]] || options+=(--dependency="$dependency")
     response="$(sbatch "${options[@]}" "$RUN_DIR/source/slurm/$script" "$RUN_DIR")"

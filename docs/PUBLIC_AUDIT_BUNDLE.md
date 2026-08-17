@@ -8,12 +8,13 @@ that are neither scientific inputs nor appropriate public material.
 
 ## Audit scope
 
-The projection contains the scientific dependency graph for the reported
-acquisition endpoint and EIG-estimator validation:
+The v2 projection contains the scientific dependency graph for the reported
+acquisition endpoints, direct comparator contrasts, secondary validation, and
+EIG-estimator validation:
 
 | Record class | Count | Purpose |
 |---|---:|---|
-| Paired acquisition trajectories | 30 | Reconstruct count, modeled cost, win, failure, reduction, and paired-bootstrap summaries |
+| Paired acquisition trajectories | 30 | Reconstruct all eight policies, direct contrasts, count/cost endpoints, and point-level secondary validation |
 | Estimator posterior states | 12 | Identify the fixed posterior states used in convergence testing |
 | Candidate-score records | 108 | Inspect the 27 estimator settings across 12 states |
 | Reference-score records | 12 | Compare candidate settings with the prespecified reference |
@@ -22,6 +23,11 @@ acquisition endpoint and EIG-estimator validation:
 | Estimator decisions | 2 | Trace score inputs to the selected setting and downstream decision |
 | Retained posterior-sample matrices | 12 | Recompute estimator scores from the retained flattened samples |
 | Published aggregate | 1 | Compare reconstructed acquisition statistics with the manuscript input |
+
+Each v4 trajectory record also retains the 23 prespecified holdout point rows
+for every policy. Verification recomputes per-channel point counts, relative
+RMSE, median absolute relative error, and latent 90% interval coverage from
+those rows before comparing the per-seed summaries and cross-seed aggregate.
 
 The retained sample matrices have shape `240000 × 6`. They are flattened
 posterior draws used by the estimator study, not walker- and iteration-indexed
@@ -50,8 +56,12 @@ static estimator decision
 10 downstream validations --> final estimator decision
                                       |
                                       v
-                         30 acquisition trajectories
-                                      |
+                   30 eight-policy acquisition trajectories
+                         /             |              \
+                        v              v               v
+              primary EIG      direct comparator   point-level
+                endpoints         contrasts       secondary checks
+                         \             |              /
                                       v
                           published acquisition summary
 ```
@@ -88,11 +98,17 @@ python scripts/public_audit_bundle.py verify \
   --bundle /path/to/public-audit-release
 ```
 
+New exports use `magnetic-public-audit/2.0`. The verifier remains compatible
+with the already published `magnetic-public-audit/1.0` asset; v1 is verify-only
+and is never emitted by a new export.
+
 Verification fails closed on undeclared or escaping paths, source or public
 checksum mismatches, nonfinite JSON values, malformed posterior archives,
 machine-identifying material, broken state-to-score-to-decision references,
-broken downstream references, incomplete common-outcome pairing, or any
-difference between reconstructed and published acquisition statistics.
+broken downstream references, incomplete common-outcome pairing, a mixed or
+incomplete v4 seed/policy registry, stale point-level holdout summaries, stale
+paired endpoints, or any difference between reconstructed primary, direct
+comparator, secondary-validation, and published acquisition statistics.
 
 ## Publication policy
 

@@ -36,6 +36,12 @@ FIGURE_NAMES = (
     "measured_adequacy_full.pdf",
 )
 FIXED_CREATION_TIME = datetime(2026, 8, 12, tzinfo=timezone.utc)
+V4_PRIMARY_CONTRASTS = (
+    "eig_raw_vs_predictive_variance_raw",
+    "eig_raw_vs_laplace_d_opt_raw",
+    "eig_per_cost_vs_predictive_variance_per_cost",
+    "eig_per_cost_vs_laplace_d_opt_per_cost",
+)
 
 
 def sha256(path: Path) -> str:
@@ -183,7 +189,39 @@ def render_synthetic(summary: dict[str, Any], output_dir: Path) -> Path:
     return destination
 
 
-def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
+def acquisition_figure_mode(summary: dict[str, Any]) -> str:
+    """Select the acquisition panel contract, rejecting partial v4 evidence."""
+    contrasts = summary.get("eig", {}).get("primary_contrasts", {})
+    present = set(contrasts)
+    required = set(V4_PRIMARY_CONTRASTS)
+    if not present:
+        return "legacy"
+    if present != required:
+        missing = sorted(required - present)
+        unexpected = sorted(present - required)
+        raise ValueError(
+            f"incomplete v4 primary contrasts: missing={missing}, unexpected={unexpected}"
+        )
+    return "v4_direct"
+
+
+def _finite_limits(*series: np.ndarray, padding: float) -> tuple[float, float]:
+    finite = np.concatenate([values[np.isfinite(values)] for values in series])
+    if finite.size == 0:
+        raise ValueError("acquisition figure has no finite endpoint values")
+    lower = float(finite.min())
+    upper = float(finite.max())
+    if upper == lower:
+        padding = max(padding, abs(lower) * 0.05, 0.5)
+    return lower - padding, upper + padding
+
+
+def _seed_ticks(seeds: np.ndarray) -> np.ndarray:
+    indices = np.unique(np.linspace(0, len(seeds) - 1, 4, dtype=int))
+    return seeds[indices]
+
+
+def _render_acquisition_legacy(summary: dict[str, Any], output_dir: Path) -> Path:
     eig = summary["eig"]
     seeds = np.asarray(eig["seeds"], dtype=int)
     raw = np.asarray(eig["raw_counts"], dtype=float)
@@ -200,10 +238,9 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
                  marker="x", markersize=3.4, label="Fixed traversal")
     axes[0].set(xlabel="Paired seed", ylabel="Measurements to gate",
                 title="(a) Count endpoint")
-    seed_ticks = (seeds[0], seeds[9], seeds[19], seeds[-1])
-    axes[0].set_xticks(seed_ticks)
+    axes[0].set_xticks(_seed_ticks(seeds))
     axes[0].tick_params(axis="x", labelrotation=35)
-    axes[0].set_ylim(min(raw) - 0.5, max(fixed) + 0.5)
+    axes[0].set_ylim(*_finite_limits(raw, fixed, padding=0.5))
     axes[0].legend(
         frameon=True, facecolor="white", edgecolor="0.7", framealpha=1.0,
         loc="center", fontsize=6.6,
@@ -228,8 +265,8 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
                  marker="x", markersize=3.4, label="Fixed traversal")
     axes[2].set(xlabel="Paired run (ordered seed)", ylabel="Modeled acquisition cost",
                 title="(c) Prespecified cost endpoint")
-    axes[2].set_xticks((1, 10, 20, 30))
-    axes[2].set_ylim(min(cost) - 10, max(fixed_cost) + 10)
+    axes[2].set_xticks(_seed_ticks(order))
+    axes[2].set_ylim(*_finite_limits(cost, fixed_cost, padding=10.0))
     axes[2].legend(
         frameon=True, facecolor="white", edgecolor="0.7", framealpha=1.0,
         loc="center", fontsize=6.6,
@@ -238,6 +275,121 @@ def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
     destination = output_dir / FIGURE_NAMES[2]
     _save(fig, destination, "Expanded paired acquisition diagnostics", summary["release_id"])
     return destination
+
+
+def _render_acquisition_v4(summary: dict[str, Any], output_dir: Path) -> Path:
+    eig = summary["eig"]
+    comparators = eig["strong_comparators"]
+    contrasts = eig["primary_contrasts"]
+    seeds = np.asarray(eig["seeds"], dtype=int)
+    raw_series = (
+        ("Raw EIG", np.asarray(eig["raw_counts"], dtype=float), "-", "o"),
+        (
+            "Predictive variance",
+            np.asarray(comparators["predictive_variance_raw"]["counts"], dtype=float),
+            "--", "x",
+        ),
+        (
+            "Laplace D-optimal",
+            np.asarray(comparators["laplace_d_opt_raw"]["counts"], dtype=float),
+            ":", "s",
+        ),
+    )
+    cost_series = (
+        ("EIG / cost", np.asarray(eig["per_cost_modeled_costs"], dtype=float), "-", "o"),
+        (
+            "Predictive variance / cost",
+            np.asarray(
+                comparators["predictive_variance_per_cost"]["modeled_costs"],
+                dtype=float,
+            ),
+            "--", "x",
+        ),
+        (
+            "Laplace D-optimal / cost",
+            np.asarray(
+                comparators["laplace_d_opt_per_cost"]["modeled_costs"],
+                dtype=float,
+            ),
+            ":", "s",
+        ),
+    )
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 3.25))
+    fig.subplots_adjust(left=0.07, right=0.99, bottom=0.23, top=0.88, wspace=0.43)
+
+    for index, (label, values, linestyle, marker) in enumerate(raw_series):
+        axes[0].plot(
+            seeds, values, color=str(0.08 + 0.24 * index), linewidth=0.95,
+            linestyle=linestyle, marker=marker, markersize=3.0,
+            markerfacecolor="white", label=label,
+        )
+    axes[0].set(
+        xlabel="Paired seed", ylabel="Measurements to gate",
+        title="(a) Count-targeting policies",
+    )
+    axes[0].set_xticks(_seed_ticks(seeds))
+    axes[0].tick_params(axis="x", labelrotation=35)
+    axes[0].set_ylim(*_finite_limits(*(row[1] for row in raw_series), padding=0.5))
+    axes[0].legend(frameon=False, fontsize=6.1, loc="best")
+    axes[0].grid(True, axis="y", color="0.86", linewidth=0.4, linestyle=":")
+
+    labels = ("PV count", "D-opt count", "PV cost", "D-opt cost")
+    records = [contrasts[key] for key in V4_PRIMARY_CONTRASTS]
+    y = np.arange(len(records))
+    wins = np.asarray([record["wins"] for record in records], dtype=float)
+    ties = np.asarray([record["ties"] for record in records], dtype=float)
+    losses = np.asarray([record["losses"] for record in records], dtype=float)
+    axes[1].barh(y, wins, color="white", edgecolor="black", hatch="///", label="EIG win")
+    axes[1].barh(
+        y, ties, left=wins, color="0.72", edgecolor="black", hatch="...", label="Tie",
+    )
+    axes[1].barh(
+        y, losses, left=wins + ties, color="0.38", edgecolor="black", hatch="xx",
+        label="EIG loss",
+    )
+    for index, record in enumerate(records):
+        axes[1].text(
+            record["complete_pair_count"] + 0.3, index,
+            f"{record['complete_pair_count']}/{record['total_pair_count']}",
+            va="center", fontsize=6.1,
+        )
+    axes[1].set_yticks(y, labels)
+    axes[1].invert_yaxis()
+    axes[1].set(
+        xlabel="Complete paired seeds",
+        title="(b) Win / tie / loss",
+        xlim=(0, max(record["total_pair_count"] for record in records) + 4),
+    )
+    axes[1].legend(frameon=False, fontsize=5.9, loc="lower right")
+    axes[1].grid(True, axis="x", color="0.88", linewidth=0.4, linestyle=":")
+
+    order = np.arange(1, len(seeds) + 1)
+    for index, (label, values, linestyle, marker) in enumerate(cost_series):
+        axes[2].plot(
+            order, values, color=str(0.08 + 0.24 * index), linewidth=0.95,
+            linestyle=linestyle, marker=marker, markersize=3.0,
+            markerfacecolor="white", label=label,
+        )
+    axes[2].set(
+        xlabel="Paired run (ordered seed)", ylabel="Modeled acquisition cost",
+        title="(c) Cost-targeting policies",
+    )
+    axes[2].set_xticks(_seed_ticks(order))
+    axes[2].set_ylim(*_finite_limits(*(row[1] for row in cost_series), padding=10.0))
+    axes[2].legend(frameon=False, fontsize=5.9, loc="best")
+    axes[2].grid(True, axis="y", color="0.86", linewidth=0.4, linestyle=":")
+    destination = output_dir / FIGURE_NAMES[2]
+    _save(
+        fig, destination, "Preregistered direct acquisition contrasts",
+        summary["release_id"],
+    )
+    return destination
+
+
+def render_acquisition(summary: dict[str, Any], output_dir: Path) -> Path:
+    if acquisition_figure_mode(summary) == "v4_direct":
+        return _render_acquisition_v4(summary, output_dir)
+    return _render_acquisition_legacy(summary, output_dir)
 
 
 def render_measured(summary: dict[str, Any], output_dir: Path) -> Path:

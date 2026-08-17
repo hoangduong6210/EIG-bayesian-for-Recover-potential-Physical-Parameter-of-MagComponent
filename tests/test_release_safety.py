@@ -31,6 +31,7 @@ HEAVY_ARGUMENTS = {
     "d5_identifiability_demo.py": ["--out", "/tmp/never.json"],
     "eig_efficiency.py": [
         "--seed", "42", "--selection-file", "/does/not/exist",
+        "--config", "/does/not/exist",
         "--out", "/tmp/never.json",
     ],
     "eig_convergence_downstream.py": [
@@ -257,6 +258,7 @@ def test_freeze_is_immutable_and_fails_closed(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("MAGCORE_DATA_MANIFEST_SHA256", "4" * 64)
     monkeypatch.setenv("MAGCORE_DEPENDENCY_LOCK_SHA256", "5" * 64)
     monkeypatch.setenv("MAGCORE_CONFIG_MODE", "test_snapshot")
+    monkeypatch.setenv("MAGCORE_SUBMIT_PARTITION", "nextgen")
     audit_payload = {
         "expected_task_count": sum(map(len, module.EXPECTED_TASKS.values())),
         "expected_result_artifact_count": 1,
@@ -300,6 +302,19 @@ def test_paper_job_requires_locked_release_and_never_uses_current_pointer():
     assert "validate_run.py" in source
     assert "--mode verify-lock" in source
     assert "results/CURRENT" not in source
+    assert "freeze/release.json" in source
+    assert 'SUMMARY="$RELEASE_DIR/tables/paper_summary.json"' in source
+    assert "20260812T035654Z_a0703698ace9" not in source
+
+
+def test_figure_job_regenerates_and_verifies_full_figures_from_frozen_summary():
+    source = (ROOT / "slurm" / "90_figures.sbatch").read_text(encoding="utf-8")
+    assert "freeze/release.json" in source
+    assert 'SUMMARY="$RELEASE_DIR/tables/paper_summary.json"' in source
+    assert "generate_current_paper_figures.py\" generate" in source
+    assert source.count("generate_current_paper_figures.py\" verify") == 2
+    assert 'PROJECT_FULL_FIGURE_DIR="$MAGCORE_PROJECT_ROOT/' in source
+    assert "full_figure_manifest.json" in source
 
 
 def test_all_shell_entry_points_pass_bash_syntax_check():
@@ -549,6 +564,34 @@ def test_estimator_validation_uses_prefix_grid_and_prespecified_sentinels():
     assert [
         plan.validation_audit_task(index).n_observations for index in range(2)
     ] == [2, 6]
+
+
+def test_v4_study_plan_serializes_the_exact_confirmatory_contract():
+    plan = load_study_plan(ROOT)
+    benchmark = plan.comparator_benchmark
+    assert benchmark.version == 4
+    assert benchmark.candidate_count == 37
+    assert tuple(
+        (item.name, item.policy, item.comparator, item.endpoint)
+        for item in benchmark.direct_contrasts
+    ) == (
+        ("eig_raw_vs_predictive_variance_raw", "eig_raw", "predictive_variance_raw", "measurement_count_to_gate"),
+        ("eig_raw_vs_laplace_d_opt_raw", "eig_raw", "laplace_d_opt_raw", "measurement_count_to_gate"),
+        ("eig_per_cost_vs_predictive_variance_per_cost", "eig_per_cost", "predictive_variance_per_cost", "modeled_cost_to_gate"),
+        ("eig_per_cost_vs_laplace_d_opt_per_cost", "eig_per_cost", "laplace_d_opt_per_cost", "modeled_cost_to_gate"),
+    )
+    assert benchmark.holdout_contract.as_dict() == {
+        "total_points": 23,
+        "channel_counts": {"pcv": 8, "mu_real": 6, "mu_imag": 6, "lm": 3},
+        "used_for_acquisition_or_stopping": False,
+    }
+    assert dict(plan.modeled_cost_seconds) == {
+        "pcv": 60.0, "mu_real": 20.0, "mu_imag": 20.0, "lm": 15.0,
+    }
+    assert plan.eig_objectives == ("raw", "per_cost")
+    assert (plan.max_measurements, plan.n_walkers, plan.n_steps, plan.burn) == (
+        25, 48, 5000, 1000,
+    )
 
 
 def test_submit_requires_clean_source_and_validation_before_acquisition():

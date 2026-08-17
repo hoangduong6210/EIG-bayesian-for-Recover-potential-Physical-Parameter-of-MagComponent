@@ -82,11 +82,19 @@ gate, count budget, and modeled-cost table. Randomization has a policy-specific
 SHA-256 seed namespace independent of the outcome stream. Greedy score records
 must retain every candidate score and exact design identity at every decision.
 
-Primary comparisons remain paired against the fixed channel-balanced reference:
-count-targeting policies use measurements-to-gate and cost-targeting policies
-use modeled cost-to-gate. Random and fixed traversals are descriptive controls.
-The benchmark supports pairwise conclusions for these declared policies; it
-does not establish global optimality over all acquisition methods.
+The four preregistered primary contrasts align policy objective and evaluation
+endpoint exactly: raw EIG versus raw predictive variance and raw Laplace
+D-optimality on measurements-to-gate; cost-normalized EIG versus
+cost-normalized predictive variance and cost-normalized Laplace D-optimality on
+modeled cost-to-gate. For every contrast, the signed paired difference is
+comparator minus EIG, so a positive value favors EIG. Report mean, median,
+sample standard deviation, and a deterministic 95% bootstrap interval for the
+mean using 10,000 paired-seed resamples and a stream derived from the stable
+contrast key. Also report win/tie/loss counts, the complete-pair denominator,
+and each policy's gate failure count; never silently discard failed seeds.
+Random and fixed channel-balanced traversals remain descriptive controls, not the primary
+strong-comparator reference. Pairwise conclusions apply only to the exact
+policy/endpoint pairs above and do not establish global acquisition optimality.
 
 At the final state of every policy, the pipeline also records six-parameter
 truth recovery and per-channel latent-mean error and 90% interval coverage on a

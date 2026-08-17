@@ -27,7 +27,9 @@ from typing import Any, Iterable
 import numpy as np
 
 
-BUNDLE_SCHEMA = "magnetic-public-audit/1.0"
+BUNDLE_SCHEMA = "magnetic-public-audit/2.0"
+LEGACY_BUNDLE_SCHEMA = "magnetic-public-audit/1.0"
+SUPPORTED_BUNDLE_SCHEMAS = {LEGACY_BUNDLE_SCHEMA, BUNDLE_SCHEMA}
 RELEASE_ID_RE = re.compile(r"^\d{8}T\d{6}Z_[0-9a-f]{12}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 LEGACY_PHASE_PREFIX = "p" + "2_"
@@ -51,30 +53,92 @@ FORBIDDEN_TEXT = re.compile(
 class Projection:
     """One source subtree and its public semantic destination."""
 
-    source: PurePosixPath
+    sources: tuple[PurePosixPath, ...]
     destination: PurePosixPath
     record_class: str
     pattern: str = "*.json"
 
 
 PROJECTIONS = (
-    Projection(PurePosixPath("metrics/eig"), PurePosixPath("acquisition"),
+    Projection((PurePosixPath("metrics/eig"),), PurePosixPath("acquisition"),
                "acquisition_trajectory"),
-    Projection(PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}states",
+    Projection((
+        PurePosixPath("metrics/eig_validation_states"),
+        PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}states",
+    ),
                PurePosixPath("estimator_validation/states"),
                "estimator_state", pattern="state.json"),
-    Projection(PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}grid",
+    Projection((
+        PurePosixPath("metrics/eig_validation_grid"),
+        PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}grid",
+    ),
                PurePosixPath("estimator_validation/grid"),
                "estimator_grid_score", pattern="score.json"),
-    Projection(PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}reference",
+    Projection((
+        PurePosixPath("metrics/eig_validation_reference"),
+        PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}reference",
+    ),
                PurePosixPath("estimator_validation/reference"),
                "estimator_reference_score", pattern="score.json"),
-    Projection(PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}audit",
+    Projection((
+        PurePosixPath("metrics/eig_validation_audit"),
+        PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}audit",
+    ),
                PurePosixPath("estimator_validation/doubled_budget"),
                "estimator_doubled_budget_score", pattern="score.json"),
-    Projection(PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}downstream",
+    Projection((
+        PurePosixPath("metrics/eig_validation_downstream"),
+        PurePosixPath("metrics") / f"{LEGACY_PHASE_PREFIX}downstream",
+    ),
                PurePosixPath("estimator_validation/downstream"),
                "estimator_downstream", pattern="downstream.json"),
+)
+
+V4_POLICY_OBJECTIVES = {
+    "eig_raw": "raw",
+    "eig_per_cost": "per_cost",
+    "fixed_channel_balanced": "fixed_channel_balanced_traversal",
+    "random_channel_balanced": "random_channel_balanced_traversal",
+    "predictive_variance_raw": "raw",
+    "predictive_variance_per_cost": "per_cost",
+    "laplace_d_opt_raw": "raw",
+    "laplace_d_opt_per_cost": "per_cost",
+}
+V4_PRIMARY_ENDPOINTS = {
+    "eig_raw": "measurement_count_to_gate",
+    "eig_per_cost": "modeled_cost_to_gate",
+    "predictive_variance_raw": "measurement_count_to_gate",
+    "predictive_variance_per_cost": "modeled_cost_to_gate",
+    "laplace_d_opt_raw": "measurement_count_to_gate",
+    "laplace_d_opt_per_cost": "modeled_cost_to_gate",
+    "fixed_channel_balanced": "descriptive_count_and_modeled_cost",
+    "random_channel_balanced": "descriptive_count_and_modeled_cost",
+}
+V4_POLICY_METHODS = {
+    "eig_raw": "eig", "eig_per_cost": "eig",
+    "fixed_channel_balanced": "fixed_channel_balanced",
+    "random_channel_balanced": "random_channel_balanced",
+    "predictive_variance_raw": "predictive_variance",
+    "predictive_variance_per_cost": "predictive_variance",
+    "laplace_d_opt_raw": "laplace_d_opt",
+    "laplace_d_opt_per_cost": "laplace_d_opt",
+}
+V4_HOLDOUT_COUNTS = {"pcv": 8, "mu_real": 6, "mu_imag": 6, "lm": 3}
+V4_ACQUISITION_SEEDS = tuple(range(7300, 7330))
+V4_COMPARATOR_NAMES = (
+    "random_channel_balanced",
+    "predictive_variance_raw", "predictive_variance_per_cost",
+    "laplace_d_opt_raw", "laplace_d_opt_per_cost",
+)
+V4_PRIMARY_CONTRAST_SPECS = (
+    ("eig_raw_vs_predictive_variance_raw", "eig_raw",
+     "predictive_variance_raw", "measurement_count_to_gate"),
+    ("eig_raw_vs_laplace_d_opt_raw", "eig_raw",
+     "laplace_d_opt_raw", "measurement_count_to_gate"),
+    ("eig_per_cost_vs_predictive_variance_per_cost", "eig_per_cost",
+     "predictive_variance_per_cost", "modeled_cost_to_gate"),
+    ("eig_per_cost_vs_laplace_d_opt_per_cost", "eig_per_cost",
+     "laplace_d_opt_per_cost", "modeled_cost_to_gate"),
 )
 
 EXPECTED_COUNTS = {
@@ -147,18 +211,23 @@ def _rewrite_path(value: str) -> str:
 
     normalized = value.replace("\\", "/")
     mappings = (
-        (f"/results/{LEGACY_PHASE_PREFIX}states/", "/estimator_validation/states/"),
-        (f"/results/{LEGACY_PHASE_PREFIX}grid/", "/estimator_validation/grid/"),
-        (f"/results/{LEGACY_PHASE_PREFIX}reference/", "/estimator_validation/reference/"),
-        (f"/results/{LEGACY_PHASE_PREFIX}audit/", "/estimator_validation/doubled_budget/"),
-        (f"/results/{LEGACY_PHASE_PREFIX}downstream/", "/estimator_validation/downstream/"),
-        ("/summary/eig_convergence/", "/estimator_validation/decisions/"),
+        (f"results/{LEGACY_PHASE_PREFIX}states/", "estimator_validation/states/"),
+        ("results/eig_validation_states/", "estimator_validation/states/"),
+        (f"results/{LEGACY_PHASE_PREFIX}grid/", "estimator_validation/grid/"),
+        ("results/eig_validation_grid/", "estimator_validation/grid/"),
+        (f"results/{LEGACY_PHASE_PREFIX}reference/", "estimator_validation/reference/"),
+        ("results/eig_validation_reference/", "estimator_validation/reference/"),
+        (f"results/{LEGACY_PHASE_PREFIX}audit/", "estimator_validation/doubled_budget/"),
+        ("results/eig_validation_audit/", "estimator_validation/doubled_budget/"),
+        (f"results/{LEGACY_PHASE_PREFIX}downstream/", "estimator_validation/downstream/"),
+        ("results/eig_validation_downstream/", "estimator_validation/downstream/"),
+        ("summary/eig_convergence/", "estimator_validation/decisions/"),
     )
     for marker, replacement in mappings:
         if marker in normalized:
             suffix = normalized.split(marker, 1)[1]
             suffix = suffix.replace(".partial.npz", ".npz").replace(".json.partial", ".json")
-            return replacement.lstrip("/") + suffix
+            return replacement + suffix
     if normalized.startswith(("synthetic://", "sha256:")):
         return normalized
     if normalized.startswith("/"):
@@ -203,9 +272,7 @@ def _copy_projected_json(
     projection: Projection,
     source_inventory: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    source_root = source / projection.source
-    if not source_root.is_dir():
-        raise FileNotFoundError(source_root)
+    source_root = _resolve_projection_source(source, projection.sources)
     entries: list[dict[str, Any]] = []
     for source_path in sorted(source_root.rglob(projection.pattern)):
         _verify_source_file(source, source_path, source_inventory)
@@ -220,6 +287,22 @@ def _copy_projected_json(
             "source_sha256": sha256_file(source_path),
         })
     return entries
+
+
+def _resolve_projection_source(
+    release: Path, candidates: tuple[PurePosixPath, ...],
+) -> Path:
+    """Resolve exactly one supported production-stage spelling."""
+
+    existing = [release / candidate for candidate in candidates if (release / candidate).is_dir()]
+    if not existing:
+        raise FileNotFoundError(
+            "none of the supported source roots exists: "
+            + ", ".join(str(release / candidate) for candidate in candidates)
+        )
+    if len(existing) > 1:
+        raise ValueError(f"ambiguous duplicate production-stage roots: {existing}")
+    return existing[0]
 
 
 def _validate_samples(path: Path, expected_shape: tuple[int, int] = (240_000, 6)) -> None:
@@ -240,7 +323,7 @@ def _copy_samples(
     destination: Path,
     source_inventory: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    source_root = source / "metrics" / f"{LEGACY_PHASE_PREFIX}states"
+    source_root = _resolve_projection_source(source, PROJECTIONS[1].sources)
     entries: list[dict[str, Any]] = []
     for source_path in sorted(source_root.rglob("samples.npz")):
         _verify_source_file(source, source_path, source_inventory)
@@ -464,6 +547,8 @@ def export_bundle(source: Path, destination: Path, *, include_samples: bool = Tr
                 "contains_posterior_samples": include_samples,
                 "supports": [
                     "raw acquisition trajectory to published aggregate audit",
+                    "v4 direct comparator aggregate reconstruction",
+                    "v4 secondary validation aggregate reconstruction",
                     "EIG estimator score-to-decision traceability",
                 ],
                 "does_not_support": [
@@ -473,7 +558,7 @@ def export_bundle(source: Path, destination: Path, *, include_samples: bool = Tr
             },
             "transformation": {
                 "name": "public scientific-record projection",
-                "version": 1,
+                "version": 2,
                 "source_manifest_sha256": sha256_file(source / "manifest.json"),
                 "removed": [
                     "scheduler logs", "machine paths", "environment dumps",
@@ -608,6 +693,386 @@ def _headline_from_trajectories(records: Iterable[dict[str, Any]]) -> dict[str, 
     }
 
 
+def _modeled_cost(policy: dict[str, Any]) -> float | None:
+    direct = policy.get("modeled_cost_to_gate")
+    if direct is not None:
+        return float(direct)
+    if not policy.get("reached") or not policy.get("trajectory"):
+        return None
+    final = policy["trajectory"][-1]
+    value = final.get("modeled_cost_units", final.get("cost_s"))
+    return None if value is None else float(value)
+
+
+def _reconstruct_holdout_summary(
+    validation: dict[str, Any], *, label: str,
+) -> dict[str, dict[str, Any]]:
+    """Rebuild channel metrics from the persisted point-level holdout evidence."""
+
+    points = validation.get("holdout_point_records")
+    if not isinstance(points, list) or len(points) != 23:
+        raise ValueError(f"{label} requires exactly 23 holdout point records")
+    grouped: dict[str, list[dict[str, Any]]] = {
+        channel: [] for channel in V4_HOLDOUT_COUNTS
+    }
+    identities: set[str] = set()
+    for row in points:
+        if not isinstance(row, dict) or set(row) != {
+            "design_key", "design_identity", "channel", "frequency_hz", "b_pk_t",
+            "temperature_c", "truth", "posterior_median", "posterior_p05",
+            "posterior_p95", "covered_by_latent_ci90", "relative_error",
+        }:
+            raise ValueError(f"{label} has a malformed holdout point row")
+        identity = row["design_identity"]
+        channel = row["channel"]
+        if not isinstance(identity, str) or identity in identities or channel not in grouped:
+            raise ValueError(f"{label} has a duplicate identity or invalid channel")
+        truth = row["truth"]
+        median = row["posterior_median"]
+        p05 = row["posterior_p05"]
+        p95 = row["posterior_p95"]
+        relative_error = row["relative_error"]
+        numeric = (
+            row["frequency_hz"], row["b_pk_t"], row["temperature_c"],
+            truth, median, p05, p95, relative_error,
+        )
+        if any(isinstance(value, bool) or not isinstance(value, (int, float))
+               or not math.isfinite(float(value)) for value in numeric) \
+                or float(truth) == 0.0:
+            raise ValueError(f"{label} has a nonfinite or zero-truth holdout row")
+        expected_identity = "|".join((
+            channel, float(row["frequency_hz"]).hex(), float(row["b_pk_t"]).hex(),
+            float(row["temperature_c"]).hex(),
+        ))
+        if identity != expected_identity:
+            raise ValueError(f"{label} has a stale exact design identity")
+        expected_error = (float(median) - float(truth)) / float(truth)
+        if not math.isclose(float(relative_error), expected_error,
+                            rel_tol=1.0e-12, abs_tol=1.0e-12):
+            raise ValueError(f"{label} has a stale point relative error")
+        expected_covered = (
+            float(p05) <= float(truth) <= float(p95)
+            or math.isclose(float(truth), float(p05), rel_tol=1.0e-12, abs_tol=0.0)
+            or math.isclose(float(truth), float(p95), rel_tol=1.0e-12, abs_tol=0.0)
+        )
+        if row["covered_by_latent_ci90"] is not expected_covered:
+            raise ValueError(f"{label} has a stale point coverage flag")
+        identities.add(identity)
+        grouped[channel].append(row)
+    if {channel: len(rows) for channel, rows in grouped.items()} != V4_HOLDOUT_COUNTS:
+        raise ValueError(f"{label} holdout channel counts differ from the contract")
+    reconstructed = {}
+    for channel, rows in grouped.items():
+        errors = np.asarray([float(row["relative_error"]) for row in rows], dtype=float)
+        reconstructed[channel] = {
+            "n_points": len(rows),
+            "relative_rmse_pct": float(np.sqrt(np.mean(errors ** 2)) * 100.0),
+            "median_absolute_relative_error_pct": float(np.median(np.abs(errors)) * 100.0),
+            "latent_ci90_coverage_fraction": float(
+                sum(bool(row["covered_by_latent_ci90"]) for row in rows) / len(rows)
+            ),
+        }
+    reported = validation.get("holdout_latent_mean")
+    if not isinstance(reported, dict):
+        raise ValueError(f"{label} lacks a holdout summary")
+    _assert_equivalent(reconstructed, reported, f"{label}.holdout_latent_mean")
+    return reconstructed
+
+
+def _paired_policy_contrast(
+    eig_values: list[int | float | None],
+    comparator_values: list[int | float | None],
+    *, eig_policy: str, comparator_policy: str, endpoint: str,
+    bootstrap_seed: int,
+) -> dict[str, Any]:
+    if len(eig_values) != len(comparator_values) or not eig_values:
+        raise ValueError("v4 paired policy inputs are empty or misaligned")
+    complete = [
+        (float(eig), float(comparator))
+        for eig, comparator in zip(eig_values, comparator_values)
+        if eig is not None and comparator is not None
+    ]
+    differences = [comparator - eig for eig, comparator in complete]
+    tied = [bool(np.isclose(value, 0.0, rtol=1.0e-12, atol=1.0e-9))
+            for value in differences]
+    eig_failures = [value is None for value in eig_values]
+    comparator_failures = [value is None for value in comparator_values]
+    wins = sum(value > 0.0 and not is_tied for value, is_tied in zip(differences, tied))
+    ties = sum(tied)
+    losses = sum(value < 0.0 and not is_tied for value, is_tied in zip(differences, tied))
+    return {
+        "eig_policy": eig_policy,
+        "comparator_policy": comparator_policy,
+        "endpoint": endpoint,
+        "difference_definition": "comparator_minus_eig",
+        "positive_difference_favors": eig_policy,
+        "total_pair_count": len(eig_values),
+        "complete_pair_count": len(complete),
+        "incomplete_pair_count": len(eig_values) - len(complete),
+        "eig_gate_failure_count": sum(eig_failures),
+        "comparator_gate_failure_count": sum(comparator_failures),
+        "both_gate_failure_count": sum(
+            left and right for left, right in zip(eig_failures, comparator_failures)
+        ),
+        "paired_differences": differences,
+        "paired_difference": (
+            _paired_descriptive(differences, seed=bootstrap_seed)
+            if differences else {
+                "mean": None, "median": None, "sample_sd": None,
+                "bootstrap_mean_ci95_low": None,
+                "bootstrap_mean_ci95_high": None,
+            }
+        ),
+        "wins": wins,
+        "ties": ties,
+        "losses": losses,
+        "wtl_denominator": len(complete),
+        "win_rate_complete_pairs": wins / len(complete) if complete else None,
+    }
+
+
+def _bootstrap_seed(name: str) -> int:
+    digest = hashlib.sha256(f"paper-bootstrap:{name}".encode()).digest()
+    return int.from_bytes(digest[:4], byteorder="big", signed=False)
+
+
+def _v4_aggregates(records: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Independently reconstruct every v4 comparator and secondary aggregate."""
+
+    ordered = sorted(records, key=lambda item: int(item["provenance"]["seed"]))
+    policies_by_name = {
+        name: [record["design"]["policies"][name] for record in ordered]
+        for name in ordered[0]["design"]["policies"]
+    }
+    fixed_policies = policies_by_name["fixed_channel_balanced"]
+    fixed_counts = [policy["n_measurements_to_gate"] for policy in fixed_policies]
+    fixed_costs = [_modeled_cost(policy) for policy in fixed_policies]
+    endpoint_values: dict[tuple[str, str], list[int | float | None]] = {}
+    for name, policies in policies_by_name.items():
+        endpoint_values[(name, "measurement_count_to_gate")] = [
+            policy["n_measurements_to_gate"] for policy in policies
+        ]
+        endpoint_values[(name, "modeled_cost_to_gate")] = [
+            _modeled_cost(policy) for policy in policies
+        ]
+
+    primary_contrasts = {}
+    for contrast_id, eig_name, comparator_name, endpoint \
+            in V4_PRIMARY_CONTRAST_SPECS:
+        primary_contrasts[contrast_id] = _paired_policy_contrast(
+            endpoint_values[(eig_name, endpoint)],
+            endpoint_values[(comparator_name, endpoint)],
+            eig_policy=eig_name, comparator_policy=comparator_name,
+            endpoint=endpoint, bootstrap_seed=_bootstrap_seed(contrast_id),
+        )
+
+    comparators: dict[str, Any] = {}
+    for name in V4_COMPARATOR_NAMES:
+        policies = policies_by_name[name]
+        counts = [policy["n_measurements_to_gate"] for policy in policies]
+        costs = [_modeled_cost(policy) for policy in policies]
+        count_success = [
+            count is not None and fixed is not None
+            for count, fixed in zip(counts, fixed_counts)
+        ]
+        cost_success = [
+            cost is not None and fixed is not None
+            for cost, fixed in zip(costs, fixed_costs)
+        ]
+        count_differences = [
+            fixed - count
+            for count, fixed, success in zip(counts, fixed_counts, count_success)
+            if success
+        ]
+        cost_differences = [
+            fixed - cost
+            for cost, fixed, success in zip(costs, fixed_costs, cost_success)
+            if success
+        ]
+        comparators[name] = {
+            "counts": counts,
+            "modeled_costs": costs,
+            "gate_failure_count": sum(count is None for count in counts),
+            "count_complete_pair_count": sum(count_success),
+            "cost_complete_pair_count": sum(cost_success),
+            "count_paired_difference": (
+                _paired_descriptive(
+                    [float(value) for value in count_differences],
+                    seed=_bootstrap_seed(f"fixed-count:{name}"),
+                ) if count_differences else None
+            ),
+            "cost_paired_difference": (
+                _paired_descriptive(
+                    [float(value) for value in cost_differences],
+                    seed=_bootstrap_seed(f"fixed-cost:{name}"),
+                ) if cost_differences else None
+            ),
+            "count_paired_win_rate": (
+                sum(value > 0 for value in count_differences) / len(count_differences)
+                if count_differences else None
+            ),
+            "cost_paired_win_rate": (
+                sum(value > 0 for value in cost_differences) / len(cost_differences)
+                if cost_differences else None
+            ),
+        }
+
+    secondary: dict[str, Any] = {}
+    for name, policies in policies_by_name.items():
+        endpoints = [policy["validation_endpoints"] for policy in policies]
+        reconstructed_endpoints = [
+            _reconstruct_holdout_summary(
+                endpoint, label=f"{name}.seed{ordered[index]['provenance']['seed']}",
+            )
+            for index, endpoint in enumerate(endpoints)
+        ]
+        coverage_counts = [
+            endpoint["parameter_truth_in_ci90_count"] for endpoint in endpoints
+        ]
+        channels: dict[str, Any] = {}
+        for channel in ("pcv", "mu_real", "mu_imag", "lm"):
+            rrmse = [
+                endpoint[channel]["relative_rmse_pct"]
+                for endpoint in reconstructed_endpoints
+            ]
+            coverage = [
+                endpoint[channel]["latent_ci90_coverage_fraction"]
+                for endpoint in reconstructed_endpoints
+            ]
+            channels[channel] = {
+                "relative_rmse_pct": rrmse,
+                "relative_rmse_pct_summary": _paired_descriptive(
+                    [float(value) for value in rrmse],
+                    seed=20261100 + len(channels),
+                ),
+                "latent_ci90_coverage_fraction": coverage,
+                "mean_latent_ci90_coverage_fraction": sum(coverage) / len(coverage),
+            }
+        secondary[name] = {
+            "parameter_truth_in_ci90_counts": coverage_counts,
+            "mean_parameter_truth_in_ci90_count": sum(coverage_counts) / len(coverage_counts),
+            "holdout_latent_mean": channels,
+        }
+    return {
+        "primary_contrasts": primary_contrasts,
+        "preregistered_contrasts": [
+            {"name": name, "policy": policy, "comparator": comparator,
+             "endpoint": endpoint}
+            for name, policy, comparator, endpoint in V4_PRIMARY_CONTRAST_SPECS
+        ],
+        "strong_comparators": comparators,
+        "secondary_validation": secondary,
+    }
+
+
+def _validate_v4_acquisitions(records: list[dict[str, Any]]) -> None:
+    """Validate the public v4 campaign contract independently of private logs."""
+
+    seeds = sorted(int(record.get("provenance", {}).get("seed", -1)) for record in records)
+    if seeds != list(V4_ACQUISITION_SEEDS):
+        raise ValueError("v4 public audit requires exactly the 30 preregistered seeds")
+    holdout_hashes: set[str] = set()
+    truth_hashes: set[str] = set()
+    outcome_hashes: set[str] = set()
+    for record in records:
+        design = record.get("design", {})
+        data = record.get("data", {})
+        if design.get("benchmark_version") != 4:
+            raise ValueError("mixed or non-v4 acquisition record in v4 public bundle")
+        policies = design.get("policies", {})
+        if set(policies) != set(V4_POLICY_OBJECTIVES):
+            raise ValueError("v4 public policy registry mismatch")
+        if design.get("primary_endpoints") != V4_PRIMARY_ENDPOINTS:
+            raise ValueError("v4 public primary endpoint registry mismatch")
+        expected_registry = [
+            {"policy": name, "method": V4_POLICY_METHODS[name],
+             "objective": V4_POLICY_OBJECTIVES[name],
+             "primary_endpoint": V4_PRIMARY_ENDPOINTS[name]}
+            for name in V4_POLICY_OBJECTIVES
+        ]
+        expected_contrasts = [
+            {"name": name, "policy": policy, "comparator": comparator,
+             "endpoint": endpoint}
+            for name, policy, comparator, endpoint in V4_PRIMARY_CONTRAST_SPECS
+        ]
+        if design.get("comparator_registry") != expected_registry \
+                or design.get("direct_contrasts") != expected_contrasts:
+            raise ValueError("v4 public comparator/contrast registry mismatch")
+        if data.get("common_random_outcomes") is not True or data.get("holdout_count") != 23:
+            raise ValueError("v4 public common-outcome/holdout contract mismatch")
+        fixed = policies["fixed_channel_balanced"]
+        policy_holdout_grids: set[tuple[str, ...]] = set()
+        for name, policy in policies.items():
+            if policy.get("policy") != name or policy.get("objective") != V4_POLICY_OBJECTIVES[name]:
+                raise ValueError("v4 public policy identity/objective mismatch")
+            if record.get("validity", {}).get(f"{name}_convergence_valid") is not True:
+                raise ValueError("v4 public policy convergence gate failed")
+            validation = policy.get("validation_endpoints", {})
+            if validation.get("used_for_acquisition_or_stopping") is not False:
+                raise ValueError("v4 secondary endpoint entered the decision path")
+            _reconstruct_holdout_summary(
+                validation,
+                label=f"{name}.seed{record.get('provenance', {}).get('seed')}",
+            )
+            policy_holdout_grids.add(tuple(sorted(
+                row["design_identity"] for row in validation["holdout_point_records"]
+            )))
+            if name == "fixed_channel_balanced":
+                continue
+            endpoint = design.get("paired_endpoints", {}).get(f"{name}_vs_fixed")
+            if not isinstance(endpoint, dict):
+                raise ValueError("v4 public paired endpoint is missing")
+            both = bool(policy.get("reached") and fixed.get("reached"))
+            if endpoint.get("both_reached_gate") is not both:
+                raise ValueError("v4 public paired endpoint gate status is stale")
+            pairs = (
+                ("measurement_count_difference", policy.get("n_measurements_to_gate"),
+                 fixed.get("n_measurements_to_gate"), False),
+                ("measurement_count_reduction_pct", policy.get("n_measurements_to_gate"),
+                 fixed.get("n_measurements_to_gate"), True),
+                ("modeled_cost_difference", policy.get("modeled_cost_to_gate"),
+                 fixed.get("modeled_cost_to_gate"), False),
+                ("modeled_cost_reduction_pct", policy.get("modeled_cost_to_gate"),
+                 fixed.get("modeled_cost_to_gate"), True),
+            )
+            for key, policy_value, fixed_value, reduction in pairs:
+                expected = None
+                if policy_value is not None and fixed_value is not None:
+                    expected = fixed_value - policy_value
+                    if reduction:
+                        expected = None if not policy_value or not fixed_value \
+                            else expected / fixed_value * 100.0
+                actual = endpoint.get(key)
+                if expected is None:
+                    if actual is not None:
+                        raise ValueError("v4 public paired endpoint nullability mismatch")
+                elif not isinstance(actual, (int, float)) or isinstance(actual, bool) \
+                        or not math.isclose(float(actual), float(expected),
+                                            rel_tol=1.0e-12, abs_tol=1.0e-12):
+                    raise ValueError("v4 public paired endpoint value is stale")
+        if len(policy_holdout_grids) != 1:
+            raise ValueError("v4 public policies use different holdout grids")
+        payload = json.dumps(
+            list(next(iter(policy_holdout_grids))),
+            sort_keys=True, separators=(",", ":"),
+        ).encode("utf-8")
+        if hashlib.sha256(payload).hexdigest() != data.get("holdout_manifest_sha256"):
+            raise ValueError("v4 public holdout manifest is not point-derived")
+        for key, target in (
+            ("holdout_manifest_sha256", holdout_hashes),
+            ("truth_sha256", truth_hashes),
+            ("outcome_manifest_sha256", outcome_hashes),
+        ):
+            value = data.get(key)
+            if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
+                raise ValueError(f"v4 public acquisition lacks {key}")
+            target.add(value)
+    if len(holdout_hashes) != 1:
+        raise ValueError("v4 public acquisitions do not share one holdout grid")
+    if len(truth_hashes) != 30 or len(outcome_hashes) != 30:
+        raise ValueError("v4 public acquisitions repeat truth or outcome manifests")
+
+
 def _assert_equivalent(actual: Any, expected: Any, label: str) -> None:
     if isinstance(actual, dict) and isinstance(expected, dict):
         if set(actual) != set(expected):
@@ -635,7 +1100,7 @@ def verify_bundle(bundle: Path) -> dict[str, Any]:
     bundle = bundle.resolve()
     manifest_path = bundle / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("schema_version") != BUNDLE_SCHEMA:
+    if manifest.get("schema_version") not in SUPPORTED_BUNDLE_SCHEMAS:
         raise ValueError("wrong public audit bundle schema")
     if not RELEASE_ID_RE.fullmatch(str(manifest.get("release_id", ""))):
         raise ValueError("invalid public audit release ID")
@@ -714,11 +1179,28 @@ def verify_bundle(bundle: Path) -> dict[str, Any]:
     published = summary["eig"]
     comparisons = {key: published[key] for key in headline}
     _assert_equivalent(headline, comparisons, "eig")
+    versions = {record.get("design", {}).get("benchmark_version") for record in acquisitions}
+    v4 = 4 in versions
+    if v4:
+        if versions != {4}:
+            raise ValueError("public acquisition bundle mixes benchmark versions")
+        _validate_v4_acquisitions(acquisitions)
+        reconstructed_v4 = _v4_aggregates(acquisitions)
+        for key, expected in reconstructed_v4.items():
+            if key not in published:
+                raise ValueError(f"published v4 aggregate is missing {key}")
+            _assert_equivalent(expected, published[key], f"eig.{key}")
     return {
         "release_id": manifest["release_id"],
         "verified_file_count": len(declared) + 1,
         "acquisition_seed_count": len(acquisitions),
         "raw_to_aggregate_match": True,
+        "benchmark_version": 4 if v4 else None,
+        "policy_count": len(V4_POLICY_OBJECTIVES) if v4 else 3,
+        "primary_eig_match": True,
+        "comparator_aggregate_match": v4,
+        "secondary_validation_match": v4,
+        "estimator_score_decision_traceable": True,
         "manifest_sha256": sha256_file(manifest_path),
     }
 

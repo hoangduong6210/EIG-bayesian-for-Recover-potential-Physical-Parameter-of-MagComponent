@@ -21,13 +21,26 @@ if figures.get("freeze_id") != release["release_id"] or \
         figures.get("release_manifest_sha256") != release["manifest_sha256"]:
     raise SystemExit("paper figure provenance does not match locked release")
 PY
+RELEASE_DIR="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["release_dir"])' "$MAGCORE_RUN_DIR/freeze/release.json")"
+SUMMARY="$RELEASE_DIR/tables/paper_summary.json"
+[[ -s "$SUMMARY" ]] || { echo "FATAL: frozen paper summary is missing" >&2; exit 67; }
+run_python - "$SUMMARY" "$MAGCORE_RUN_DIR/freeze/release.json" <<'PY'
+import json, pathlib, sys
+summary = json.load(open(sys.argv[1], encoding="utf-8"))
+release = json.load(open(sys.argv[2], encoding="utf-8"))
+release_dir = pathlib.Path(release["release_dir"])
+if release_dir.name != release["release_id"]:
+    raise SystemExit("frozen release directory/ID mismatch")
+if summary.get("release_id") != release["release_id"]:
+    raise SystemExit("paper summary does not belong to the just-frozen release")
+PY
 MAIN_TEX="$MAGCORE_CODE_ROOT/paper/current_state/source/main.tex"
 [[ -f "$MAIN_TEX" ]] || { echo "FATAL: missing paper entry point $MAIN_TEX" >&2; exit 67; }
 run_python "$MAGCORE_CODE_ROOT/scripts/check_current_manuscript.py" \
     --source "$MAIN_TEX" \
     --bibliography "$(dirname "$MAIN_TEX")/refs.bib"
 run_python "$MAGCORE_CODE_ROOT/scripts/generate_current_paper_figures.py" verify \
-    --summary "$MAGCORE_CODE_ROOT/results/frozen/20260812T035654Z_a0703698ace9/tables/paper_summary.json" \
+    --summary "$SUMMARY" \
     --output-dir "$(dirname "$MAIN_TEX")/figures"
 BUILD_DIR="$MAGCORE_RUN_DIR/paper"
 mkdir -p "$BUILD_DIR"

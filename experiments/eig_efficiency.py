@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 from collections import defaultdict
+from pathlib import Path
 
 import numpy as np
 
@@ -27,7 +28,7 @@ from magcore_calib.eig import (
     rank_candidates_with_uncertainty, reveal,
 )
 from magcore_calib.evaluation import (
-    latent_holdout_summary, latent_mean_ci_half_width_pct, recovery_summary,
+    latent_holdout_evaluation, latent_mean_ci_half_width_pct, recovery_summary,
 )
 from magcore_calib.inference import PosteriorResult, sample_emcee
 from magcore_calib.models import Channel, DesignPoint, Geometry, Observation
@@ -37,6 +38,7 @@ from magcore_calib.results import (
     write_immutable, write_result,
 )
 from magcore_calib.runtime import require_slurm, sampling_pool
+from magcore_calib.study_plan import load_study_plan
 
 
 BENCHMARK_V4_POLICIES = tuple(BENCHMARK_V4_POLICY_OBJECTIVES)
@@ -63,7 +65,7 @@ def _namespaced_seed(base_seed: int, namespace: str) -> int:
     return int.from_bytes(hashlib.sha256(payload).digest()[:8], "big", signed=False)
 
 
-def load_locked_selection(path: str) -> tuple[dict, str]:
+def load_locked_selection(path: str) -> tuple[dict, str, dict]:
     """Load the preregistered estimator decision used by the acquisition job."""
     with open(path, encoding="utf-8") as stream:
         decision = json.load(stream)
@@ -73,11 +75,45 @@ def load_locked_selection(path: str) -> tuple[dict, str]:
         raise ValueError("acquisition cannot run without a valid estimator decision")
     setting = decision.get("selected_setting")
     required = {"n_outer", "n_inner", "n_replicates"}
-    if not isinstance(setting, dict) or required - setting.keys():
+    if not isinstance(setting, dict) or set(setting) != required:
         raise ValueError("estimator decision has no complete selected_setting")
-    if any(not isinstance(setting[key], int) or setting[key] < 1 for key in required):
+    if any(
+        isinstance(setting[key], bool) or not isinstance(setting[key], int)
+        or setting[key] < 1 for key in required
+    ):
         raise ValueError("selected estimator setting is malformed")
-    return setting, _sha256(path)
+    if decision.get("raw_claim_gate_passed") is not True \
+            or decision.get("per_cost_claim_gate_passed") is not True:
+        raise ValueError("estimator decision did not pass both objective gates")
+    if not isinstance(decision.get("selection_mode"), str) \
+            or not decision["selection_mode"]:
+        raise ValueError("estimator decision lacks a selection mode")
+    decision_contents = {
+        "schema_version": decision["schema_version"],
+        "selected_setting": dict(setting),
+        "selection_mode": decision.get("selection_mode"),
+        "raw_claim_gate_passed": True,
+        "per_cost_claim_gate_passed": True,
+        "valid": True,
+    }
+    return setting, _sha256(path), decision_contents
+
+
+def _posterior_state_seed(base_seed: int, state_key: tuple[str, ...]) -> int:
+    """Bind MCMC draws to the observed state, independent of policy order."""
+
+    ordered_state = tuple(sorted(state_key))
+    payload = json.dumps(
+        {
+            "namespace": "magcore-posterior-state-v1",
+            "base_seed": int(base_seed),
+            "observed_design_identities": list(ordered_state),
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    # emcee's compatibility RandomState accepts only unsigned 32-bit seeds.
+    return int.from_bytes(hashlib.sha256(payload).digest()[:4], "big", signed=False)
 
 
 def fixed_channel_balanced_order(library: list[DesignPoint]) -> list[DesignPoint]:
@@ -130,6 +166,7 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
                n_outer: int, n_inner: int, eig_replicates: int,
                objective: AcquisitionObjective, pool=None,
                fit_cache: dict[tuple[str, ...], PosteriorResult] | None = None,
+               pcv_gate_pct: float = 8.0, lm_gate_pct: float = 5.0,
                ) -> tuple[dict, np.ndarray, dict]:
     method_by_policy = {
         "eig": "eig",
@@ -165,13 +202,15 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
     for step in range(max_measurements - 1):
         state_key = tuple(sorted(point.exact_key() for point in selected))
         fit = fit_cache.get(state_key) if fit_cache is not None else None
+        fit_cache_reused = fit is not None
+        fit_seed = _posterior_state_seed(seed, state_key)
         if fit is None:
             ordered_observations = sorted(
                 observations, key=lambda item: item.design.exact_key()
             )
             fit = sample_emcee(
                 ordered_observations, spec, geometry, n_walkers=n_walkers,
-                n_steps=n_steps, burn=burn, seed=seed * 1000 + step, pool=pool,
+                n_steps=n_steps, burn=burn, seed=fit_seed, pool=pool,
             )
             if fit_cache is not None:
                 fit_cache[state_key] = fit
@@ -182,7 +221,7 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
         lm_ci = latent_mean_ci_half_width_pct(
             fit.samples, DesignPoint(Channel.LM, 1e5, 0.0, 25.0), geometry
         )
-        reached = pcv_ci <= 8.0 and lm_ci <= 5.0
+        reached = pcv_ci <= pcv_gate_pct and lm_ci <= lm_gate_pct
         trajectory.append({
             "n_measurements": len(selected),
             "pcv_latent_mean_ci90_half_width_pct": pcv_ci,
@@ -191,6 +230,16 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
             "modeled_cost_units": sum(CHANNEL_COST_S[p.channel] for p in selected),
             "selected_keys": [p.key() for p in selected],
             "selected_identities": [p.exact_key() for p in selected],
+            "decision_state": {
+                "state_identity_sha256": _payload_sha256(list(state_key)),
+                "observed_design_identities": list(state_key),
+                "n_observations": len(state_key),
+                "mcmc_seed_namespace": "magcore-posterior-state-v1",
+                "mcmc_seed": fit_seed,
+                "fit_cache_reused": fit_cache_reused,
+                "sampler_diagnostics": fit.diagnostics,
+                "valid": bool(fit.diagnostics.get("valid", False)),
+            },
         })
         if reached or len(selected) >= max_measurements:
             break
@@ -241,7 +290,7 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
         elif method == "random_channel_balanced":
             next_point = next(point for point in random_order if point not in selected)
             trajectory[-1]["acquisition"] = {
-                "objective": "random_channel_balanced",
+                "objective": "random_channel_balanced_traversal",
                 "selected_key": next_point.key(),
                 "selected_identity": exact_design_identity(next_point),
                 "seed_namespace": RANDOM_POLICY_NAMESPACE,
@@ -283,6 +332,7 @@ def main() -> None:
     parser.add_argument("--n-inner", type=int, default=100)
     parser.add_argument("--eig-replicates", type=int, default=20)
     parser.add_argument("--selection-file", required=True)
+    parser.add_argument("--config", type=Path, required=True)
     parser.add_argument(
         "--eig-objectives", nargs="+", choices=("raw", "per_cost"),
         default=("raw", "per_cost"),
@@ -295,14 +345,43 @@ def main() -> None:
         parser.error("benchmark v4 requires both raw and per_cost EIG objectives")
     require_slurm()
 
-    selected, selection_sha256 = load_locked_selection(args.selection_file)
+    selected, selection_sha256, selection_contents = load_locked_selection(
+        args.selection_file
+    )
     args.n_outer = selected["n_outer"]
     args.n_inner = selected["n_inner"]
     args.eig_replicates = selected["n_replicates"]
 
+    plan = load_study_plan(args.config)
+    benchmark = plan.comparator_benchmark
+    if benchmark.policies != BENCHMARK_V4_POLICIES:
+        raise ValueError("runtime policy order differs from the preregistered registry")
+    if dict(plan.modeled_cost_seconds) != {
+        channel.value: CHANNEL_COST_S[channel] for channel in Channel
+    }:
+        raise ValueError("runtime acquisition costs differ from the frozen study plan")
+    runtime_contract = {
+        "max_measurements": args.max_measurements,
+        "n_walkers": args.n_walkers,
+        "n_steps": args.n_steps,
+        "burn": args.burn,
+        "objectives": tuple(args.eig_objectives),
+    }
+    configured_contract = {
+        "max_measurements": plan.max_measurements,
+        "n_walkers": plan.n_walkers,
+        "n_steps": plan.n_steps,
+        "burn": plan.burn,
+        "objectives": plan.eig_objectives,
+    }
+    if runtime_contract != configured_contract:
+        raise ValueError("runtime CLI differs from the frozen study plan")
+
     spec, geometry = DatasheetPrior(), Geometry()
     truth = draw_prior_predictive(spec, np.random.default_rng(args.seed))
     library = default_library(25.0)
+    if len(library) != benchmark.candidate_count:
+        raise ValueError("candidate library differs from the frozen study contract")
     outcomes = stable_common_random_outcomes(
         truth, library, seed=args.seed + 1_000_003, geometry=geometry
     )
@@ -319,6 +398,8 @@ def main() -> None:
         n_walkers=args.n_walkers, n_steps=args.n_steps, burn=args.burn,
         n_outer=args.n_outer, n_inner=args.n_inner,
         eig_replicates=args.eig_replicates,
+        pcv_gate_pct=plan.stop_rule.pcv_ci_half_width_pct,
+        lm_gate_pct=plan.stop_rule.lm_ci_half_width_pct,
     )
     policy_objectives: dict[str, AcquisitionObjective] = {
         "eig_raw": "raw",
@@ -374,6 +455,9 @@ def main() -> None:
     for policy, result in policy_results.items():
         samples = policy_runs[policy][1]
         parameter_recovery = recovery_summary(samples, truth)
+        holdout_evaluation = latent_holdout_evaluation(
+            samples, truth, holdout, geometry
+        )
         result["validation_endpoints"] = {
             "used_for_acquisition_or_stopping": False,
             "evaluated_at_measurement_count": len(
@@ -384,9 +468,8 @@ def main() -> None:
                 for entry in parameter_recovery.values()
             ),
             "parameter_recovery": parameter_recovery,
-            "holdout_latent_mean": latent_holdout_summary(
-                samples, truth, holdout, geometry
-            ),
+            "holdout_latent_mean": holdout_evaluation["summary"],
+            "holdout_point_records": holdout_evaluation["points"],
         }
     paired_endpoints = {
         f"{policy}_vs_fixed": paired_endpoint(run[0])
@@ -407,9 +490,7 @@ def main() -> None:
                  "outcome_manifest_sha256": outcome_manifest_sha256},
         "model": {"name": "isothermal_steinmetz_cole_cole", "prior": spec.as_dict()},
         "sampler": {
-            "policy_diagnostics": {
-                policy: run[2] for policy, run in policy_runs.items()
-            },
+            "policy_diagnostics": {policy: run[2] for policy, run in policy_runs.items()},
         },
         "posterior": posterior,
         "predictive": {
@@ -423,7 +504,17 @@ def main() -> None:
         },
         "design": {
             "benchmark_version": 4,
+            "runtime_contract": {
+                **{key: value for key, value in runtime_contract.items() if key != "objectives"},
+                "objectives": list(runtime_contract["objectives"]),
+            },
             "policies": policy_results,
+            "comparator_registry": [
+                entry.as_dict() for entry in benchmark.policy_registry
+            ],
+            "direct_contrasts": [
+                entry.as_dict() for entry in benchmark.direct_contrasts
+            ],
             "paired_endpoints": paired_endpoints,
             "candidate_seed_scheme": "sha256(base_seed, replicate, exact_design_tuple)",
             "random_policy_seed_scheme": (
@@ -444,16 +535,10 @@ def main() -> None:
                 "n_replicates": args.eig_replicates,
             },
             "estimator_decision_sha256": selection_sha256,
-            "primary_endpoints": {
-                "eig_raw": "measurement_count_to_gate",
-                "eig_per_cost": "modeled_cost_to_gate",
-                "predictive_variance_raw": "measurement_count_to_gate",
-                "predictive_variance_per_cost": "modeled_cost_to_gate",
-                "laplace_d_opt_raw": "measurement_count_to_gate",
-                "laplace_d_opt_per_cost": "modeled_cost_to_gate",
-                "fixed_channel_balanced": "descriptive_count_and_modeled_cost",
-                "random_channel_balanced": "descriptive_count_and_modeled_cost",
-            },
+            "estimator_decision": selection_contents,
+            "primary_endpoints": benchmark.primary_endpoints,
+            "gate_contract": plan.stop_rule.as_dict(),
+            "holdout_contract": benchmark.holdout_contract.as_dict(),
             "secondary_validation_endpoints": {
                 "used_for_acquisition_or_stopping": False,
                 "parameter_recovery": (
@@ -465,14 +550,13 @@ def main() -> None:
                 ),
             },
         },
-        "claim_context": {
-            "synthetic": True, "matched_model": True, "prior_predictive_truth": True,
-            "datasheet_centered_on_realized_truth": False, "oracle_initialized": False,
-            "measured_data": False,
-        },
+        "claim_context": dict(benchmark.claim_context),
         "validity": {
             **{
-                f"{policy}_convergence_valid": run[2].get("valid", False)
+                f"{policy}_convergence_valid": all(
+                    row["decision_state"]["valid"]
+                    for row in run[0]["trajectory"]
+                )
                 for policy, run in policy_runs.items()
             },
         },

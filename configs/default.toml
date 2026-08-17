@@ -58,6 +58,7 @@ endpoint_atol = 0
 # release; no comparative claim may be made until a new release is validated.
 [study.comparator_benchmark]
 version = 4
+candidate_count = 37
 policies = [
   "eig_raw",
   "eig_per_cost",
@@ -70,6 +71,45 @@ policies = [
 ]
 reference_policy = "fixed_channel_balanced"
 secondary_validation_used_for_stopping = false
+
+# Exact policy semantics and primary estimands.  These rows are serialized into
+# every seed record so that a label cannot silently change meaning at runtime.
+policy_registry = [
+  { policy = "eig_raw", method = "eig", objective = "raw", primary_endpoint = "measurement_count_to_gate" },
+  { policy = "eig_per_cost", method = "eig", objective = "per_cost", primary_endpoint = "modeled_cost_to_gate" },
+  { policy = "fixed_channel_balanced", method = "fixed_channel_balanced", objective = "fixed_channel_balanced_traversal", primary_endpoint = "descriptive_count_and_modeled_cost" },
+  { policy = "random_channel_balanced", method = "random_channel_balanced", objective = "random_channel_balanced_traversal", primary_endpoint = "descriptive_count_and_modeled_cost" },
+  { policy = "predictive_variance_raw", method = "predictive_variance", objective = "raw", primary_endpoint = "measurement_count_to_gate" },
+  { policy = "predictive_variance_per_cost", method = "predictive_variance", objective = "per_cost", primary_endpoint = "modeled_cost_to_gate" },
+  { policy = "laplace_d_opt_raw", method = "laplace_d_opt", objective = "raw", primary_endpoint = "measurement_count_to_gate" },
+  { policy = "laplace_d_opt_per_cost", method = "laplace_d_opt", objective = "per_cost", primary_endpoint = "modeled_cost_to_gate" },
+]
+
+# Confirmatory EIG-versus-strong-comparator contrasts.  Fixed and randomized
+# balanced traversals remain reference/descriptive controls.
+direct_contrasts = [
+  { name = "eig_raw_vs_predictive_variance_raw", policy = "eig_raw", comparator = "predictive_variance_raw", endpoint = "measurement_count_to_gate" },
+  { name = "eig_raw_vs_laplace_d_opt_raw", policy = "eig_raw", comparator = "laplace_d_opt_raw", endpoint = "measurement_count_to_gate" },
+  { name = "eig_per_cost_vs_predictive_variance_per_cost", policy = "eig_per_cost", comparator = "predictive_variance_per_cost", endpoint = "modeled_cost_to_gate" },
+  { name = "eig_per_cost_vs_laplace_d_opt_per_cost", policy = "eig_per_cost", comparator = "laplace_d_opt_per_cost", endpoint = "modeled_cost_to_gate" },
+]
+
+[study.comparator_benchmark.holdout_contract]
+total_points = 23
+used_for_acquisition_or_stopping = false
+pcv = 8
+mu_real = 6
+mu_imag = 6
+lm = 3
+
+[study.comparator_benchmark.claim_context]
+synthetic = true
+matched_model = true
+prior_predictive_truth = true
+datasheet_centered_on_realized_truth = false
+oracle_initialized = false
+measured_data = false
+scope = "algorithmic matched-model synthetic benchmark; not validated laboratory efficiency"
 
 [study.prior_center_offset]
 levels = [0.00, 0.15, 0.30]
