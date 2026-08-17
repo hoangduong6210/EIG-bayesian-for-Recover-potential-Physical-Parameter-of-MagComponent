@@ -244,8 +244,8 @@ def _validate_benchmark_v4(record: dict, design: dict) -> None:
         raise ValueError("benchmark v4 gate or holdout contract is not exact")
     runtime = design.get("runtime_contract")
     if runtime != {
-        "max_measurements": 25, "n_walkers": 48, "n_steps": 5000,
-        "burn": 1000, "objectives": ["raw", "per_cost"],
+        "max_measurements": 25, "n_walkers": 48, "n_steps": 20000,
+        "burn": 4000, "objectives": ["raw", "per_cost"],
     }:
         raise ValueError("benchmark v4 runtime contract differs from preregistration")
     secondary = design.get("secondary_validation_endpoints")

@@ -111,6 +111,14 @@ oracle_initialized = false
 measured_data = false
 scope = "algorithmic matched-model synthetic benchmark; not validated laboratory efficiency"
 
+# Acquisition-only amendment after a fail-closed computational pilot: 5,000
+# retained steps yielded adequate ESS but fewer than 50 steps/tau in weak early
+# states. No campaign aggregate was produced from that invalid pilot.
+[study.comparator_benchmark.sampler]
+n_walkers = 48
+n_steps = 20000
+burn = 4000
+
 [study.prior_center_offset]
 levels = [0.00, 0.15, 0.30]
 interpretation = "dimensionless coordinate shifts, not percentage perturbations"

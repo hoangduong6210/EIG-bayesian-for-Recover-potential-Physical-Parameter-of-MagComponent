@@ -591,8 +591,12 @@ def test_v4_study_plan_serializes_the_exact_confirmatory_contract():
     }
     assert plan.eig_objectives == ("raw", "per_cost")
     assert (plan.max_measurements, plan.n_walkers, plan.n_steps, plan.burn) == (
-        25, 48, 5000, 1000,
+        25, 48, 20000, 4000,
     )
+    acquisition_stage = (ROOT / "slurm" / "12_eig.sbatch").read_text(
+        encoding="utf-8"
+    )
+    assert "--n-walkers 48 --n-steps 20000 --burn 4000" in acquisition_stage
 
 
 def test_submit_requires_clean_source_and_validation_before_acquisition():

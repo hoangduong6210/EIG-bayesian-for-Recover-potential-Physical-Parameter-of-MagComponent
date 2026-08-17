@@ -488,7 +488,7 @@ def load_study_plan(path: str | Path) -> StudyPlan:
         comparator = raw["study"]["comparator_benchmark"]
         costs = raw["eig"]["modeled_cost_seconds"]
         eig = raw["eig"]
-        sampler = raw["sampler"]
+        sampler = comparator["sampler"]
         stop = raw["stop_rule"]
         if set(costs) != {"pcv", "mu_real", "mu_imag", "lm"}:
             raise ValueError("modeled cost contract must contain exactly four channels")

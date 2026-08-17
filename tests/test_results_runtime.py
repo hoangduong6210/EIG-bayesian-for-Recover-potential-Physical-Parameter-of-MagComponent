@@ -247,8 +247,8 @@ def valid_v4_record():
     record["design"] = {
         "benchmark_version": 4,
         "runtime_contract": {
-            "max_measurements": 25, "n_walkers": 48, "n_steps": 5000,
-            "burn": 1000, "objectives": ["raw", "per_cost"],
+            "max_measurements": 25, "n_walkers": 48, "n_steps": 20000,
+            "burn": 4000, "objectives": ["raw", "per_cost"],
         },
         "policies": policies,
         "comparator_registry": deepcopy(BENCHMARK_V4_POLICY_REGISTRY),
