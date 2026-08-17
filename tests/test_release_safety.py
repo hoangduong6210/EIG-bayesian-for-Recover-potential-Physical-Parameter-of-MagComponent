@@ -258,6 +258,7 @@ def test_freeze_is_immutable_and_fails_closed(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("MAGCORE_DATA_MANIFEST_SHA256", "4" * 64)
     monkeypatch.setenv("MAGCORE_DEPENDENCY_LOCK_SHA256", "5" * 64)
     monkeypatch.setenv("MAGCORE_CONFIG_MODE", "test_snapshot")
+    monkeypatch.setenv("MAGCORE_SUBMIT_ACCOUNT", "pgs0407")
     monkeypatch.setenv("MAGCORE_SUBMIT_PARTITION", "nextgen")
     audit_payload = {
         "expected_task_count": sum(map(len, module.EXPECTED_TASKS.values())),

@@ -80,8 +80,13 @@ MAGCORE_DATA_ROOT_RESOLVED="${MAGCORE_DATA_ROOT:-$PROJECT_ROOT/data/external/mat
 }
 MAGCORE_DATA_ROOT_RESOLVED="$(cd "$MAGCORE_DATA_ROOT_RESOLVED" && pwd -P)"
 MAGCORE_PARTITION_RESOLVED="${MAGCORE_PARTITION:-nextgen}"
+MAGCORE_ACCOUNT_RESOLVED="${MAGCORE_ACCOUNT:-pgs0407}"
 [[ "$MAGCORE_PARTITION_RESOLVED" =~ ^[A-Za-z0-9._-]+$ ]] || {
     echo "invalid scheduler partition: $MAGCORE_PARTITION_RESOLVED" >&2
+    exit 64
+}
+[[ "$MAGCORE_ACCOUNT_RESOLVED" =~ ^[A-Za-z0-9._-]+$ ]] || {
+    echo "invalid scheduler account: $MAGCORE_ACCOUNT_RESOLVED" >&2
     exit 64
 }
 {
@@ -90,6 +95,7 @@ MAGCORE_PARTITION_RESOLVED="${MAGCORE_PARTITION:-nextgen}"
     printf 'MAGCORE_CODE_ROOT=%q\n' "$RUN_DIR/source"
     printf 'MAGCORE_DATA_ROOT=%q\n' "$MAGCORE_DATA_ROOT_RESOLVED"
     printf 'MAGCORE_SUBMIT_PARTITION=%q\n' "$MAGCORE_PARTITION_RESOLVED"
+    printf 'MAGCORE_SUBMIT_ACCOUNT=%q\n' "$MAGCORE_ACCOUNT_RESOLVED"
     printf 'MAGCORE_GIT_REVISION=%q\n' "$REVISION"
     printf 'MAGCORE_SOURCE_STATUS_SHA256=%q\n' "$SOURCE_DIRTY"
     printf 'MAGCORE_SOURCE_ARCHIVE_SHA256=%q\n' "$SOURCE_ARCHIVE_SHA256"
@@ -144,7 +150,8 @@ trap submission_failed ERR
 
 submit() {
     local dependency="$1" script="$2"
-    local -a options=(--parsable --partition="$MAGCORE_PARTITION_RESOLVED"
+    local -a options=(--parsable --account="$MAGCORE_ACCOUNT_RESOLVED"
+        --partition="$MAGCORE_PARTITION_RESOLVED"
         --output="$RUN_DIR/logs/%x_%A_%a.out")
     local response
     [[ -z "$dependency" ]] || options+=(--dependency="$dependency")

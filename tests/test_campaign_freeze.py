@@ -203,7 +203,10 @@ def test_submit_records_and_enforces_scoped_partition_and_git_archive():
     common = (ROOT / "slurm" / "common.sh").read_text(encoding="utf-8")
     preflight = (ROOT / "slurm" / "00_preflight.sbatch").read_text(encoding="utf-8")
     assert 'MAGCORE_PARTITION_RESOLVED="${MAGCORE_PARTITION:-nextgen}"' in submit
+    assert 'MAGCORE_ACCOUNT_RESOLVED="${MAGCORE_ACCOUNT:-pgs0407}"' in submit
+    assert '--account="$MAGCORE_ACCOUNT_RESOLVED"' in submit
     assert '--partition="$MAGCORE_PARTITION_RESOLVED"' in submit
+    assert "MAGCORE_SUBMIT_ACCOUNT" in common
     assert "MAGCORE_SUBMIT_PARTITION" in common
     assert 'SLURM_JOB_PARTITION:-}" == "$MAGCORE_SUBMIT_PARTITION"' in preflight
     assert 'git -C "$PROJECT_ROOT" archive' in submit

@@ -567,12 +567,13 @@ def audit(run_dir: Path) -> dict[str, Any]:
         "source_archive_sha256": os.environ.get("MAGCORE_SOURCE_ARCHIVE_SHA256"),
         "configuration_sha256": os.environ.get("MAGCORE_CONFIG_SHA256"),
         "configuration_mode": os.environ.get("MAGCORE_CONFIG_MODE"),
+        "submit_account": os.environ.get("MAGCORE_SUBMIT_ACCOUNT"),
         "submit_partition": os.environ.get("MAGCORE_SUBMIT_PARTITION"),
         "data_manifest_sha256": os.environ.get("MAGCORE_DATA_MANIFEST_SHA256"),
         "dependency_lock_sha256": os.environ.get("MAGCORE_DEPENDENCY_LOCK_SHA256"),
     }
     for key, value in run_metadata.items():
-        if key in {"configuration_mode", "submit_partition"}:
+        if key in {"configuration_mode", "submit_account", "submit_partition"}:
             if not value:
                 raise ValueError(f"missing run provenance: {key}")
         elif key == "git_revision":
@@ -666,6 +667,7 @@ def freeze(run_dir: Path, audit_payload: dict[str, Any]) -> Path:
             "source_archive_sha256": os.environ.get("MAGCORE_SOURCE_ARCHIVE_SHA256"),
             "configuration_sha256": os.environ.get("MAGCORE_CONFIG_SHA256"),
             "configuration_mode": os.environ.get("MAGCORE_CONFIG_MODE"),
+            "submit_account": os.environ.get("MAGCORE_SUBMIT_ACCOUNT"),
             "submit_partition": os.environ.get("MAGCORE_SUBMIT_PARTITION"),
             "data_manifest_sha256": os.environ.get("MAGCORE_DATA_MANIFEST_SHA256"),
             "dependency_lock_sha256": os.environ.get("MAGCORE_DEPENDENCY_LOCK_SHA256"),
