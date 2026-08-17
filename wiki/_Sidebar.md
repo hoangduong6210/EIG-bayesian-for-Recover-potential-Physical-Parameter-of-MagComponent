@@ -1,4 +1,4 @@
-## Living manuscript
+## Research navigation
 
 - [Home](Home.md)
 - [Wiki Index](Wiki-Index.md)

@@ -1,4 +1,4 @@
-# Living scientific wiki
+# Scientific manuscript and evidence index
 
 Start with the [Wiki Index](Wiki-Index.md) if you are new to the project. Use
 [Home](Home.md) for the rapid scientific summary or open the
@@ -7,5 +7,5 @@ The [Scientific Job Results](Scientific-Job-Results.md) ledger accounts for
 the complete result campaign, while [Evidence Sources](Evidence-Sources.md)
 binds quantitative claims to a disclosure-safe machine-readable projection.
 
-This directory is canonical. A hosted GitHub Wiki is a one-way mirror, while
-the files under `paper/` are explicit versioned snapshots.
+Scientific results are linked to the frozen evidence through source labels
+E1--E8. PDF versions under `paper/` are produced only for named releases.

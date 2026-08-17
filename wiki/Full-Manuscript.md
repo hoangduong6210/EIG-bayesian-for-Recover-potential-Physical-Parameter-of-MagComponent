@@ -4,10 +4,6 @@ Viet Hoang Duong¹, Viet Huy Duong², and Lun-Min Shih¹
 ¹ Department of Computer Science, Da-Yeh University, Taiwan  
 ² Department of Computer Science, Kent State University, United States of America
 
-> **Living manuscript.** This page is the current scientific narrative. The
-> PDFs under `paper/` are versioned snapshots and can lag this page until an
-> explicit snapshot is approved.
-
 ## Abstract
 
 Magnetic-core models used in power-converter design are commonly fitted to
@@ -893,9 +889,9 @@ posterior intervals come from retained sampler draws; paired bootstrap
 intervals come from the 30 seed-level differences. These three intervals
 answer different questions and are not interchangeable.
 
-# Evidence, Software, and Version Boundary
+# Evidence and software availability
 
-This living manuscript is bound to validated scientific freeze
+Numerical results are bound to validated scientific freeze
 `20260817T072230Z_401e3030fe13`, manifest SHA-256
 `85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7`.
 The freeze contains the 30 complete eight-policy trajectories, estimator
@@ -911,9 +907,6 @@ result artifact in the release, and [Evidence Sources](Evidence-Sources.md)
 maps each quantitative result family to an exact pointer in the
 disclosure-safe projection.
 
-The six-page conference snapshot is an immutable historical record
-associated with its own earlier release and claim ledger. The next full paper
-snapshot will be rendered from this wiki, retain the same A4 two-column visual
-convention, and have no page ceiling. Until that explicit snapshot is made,
-the wiki is newer than the current PDF snapshot; neither version may be used
-to retroactively reinterpret the conference snapshot.
+The conference paper reports an earlier release and has its own claim ledger.
+It should be cited as submitted; later results are reported here under the
+release identifier above.

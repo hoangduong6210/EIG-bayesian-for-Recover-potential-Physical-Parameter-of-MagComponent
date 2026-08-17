@@ -70,13 +70,12 @@ permeability fits have 6.89%--9.33% RRMSE for \(\mu'\), but
 evidence that the one-pole Cole--Cole family is inadequate for those records.
 [Source E7](Evidence-Sources.md#e7)
 
-## Publication state
+## Evidence availability
 
-The scientific evidence freeze is valid and its disclosure-safe aggregate
-projection is part of this wiki. The wiki is the living manuscript, so no
-replacement paper is published automatically. A complete raw public audit
-bundle and an explicit wiki-derived paper snapshot remain separate release
-tasks. [Source E8](Evidence-Sources.md#e8)
+The validated aggregate projection is available with its release and source
+hashes. A complete raw public audit bundle has not been released; independent
+audit below the aggregate level therefore requires rerunning the declared
+campaign. [Source E8](Evidence-Sources.md#e8)
 
 ## Next scientific experiments
 

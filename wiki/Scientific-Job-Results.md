@@ -1,10 +1,9 @@
 # Scientific job results
 
-This page is the public job ledger for the current evidence release. It lists
-every scientific result family, including diagnostics that do not support a
-headline claim. The release declares 213 tasks and 222 result artifacts. The
-rows below account for all 222 artifacts exactly; three orchestration tasks
-produce no result artifact. [Source E1](Evidence-Sources.md#e1)
+The job ledger lists every scientific result family, including diagnostics
+that do not support a headline claim. The release declares 213 tasks and 222
+result artifacts. The rows below account for all 222 artifacts exactly; three
+orchestration tasks produce no result artifact. [Source E1](Evidence-Sources.md#e1)
 
 ## Complete result-artifact registry
 

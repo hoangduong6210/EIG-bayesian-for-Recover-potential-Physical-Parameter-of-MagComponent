@@ -1,9 +1,9 @@
 # Magnetic-core Bayesian calibration and sequential design
 
-This wiki is the living scientific manuscript for the Magnetic part of the
-project. It is written for rapid technical review: the abstract and current
-result are below, while the [full manuscript](Full-Manuscript.md) retains the
-paper's complete methods, equations, citations, results, and limitations.
+This study evaluates Bayesian calibration and sequential measurement selection
+for Steinmetz core-loss and Cole--Cole permeability models. The
+[full manuscript](Full-Manuscript.md) gives the methods, equations, citations,
+results, and limitations.
 
 Authors: Viet Hoang Duong, Viet Huy Duong, and Lun-Min Shih.
 
@@ -42,9 +42,5 @@ The [complete Wiki Index](Wiki-Index.md) also provides reading paths by
 reader type, a question-to-answer lookup table, a page directory, and a
 step-by-step procedure for verifying any number.
 
-## Version boundary
-
-The conference PDF is an immutable historical snapshot. The current PDF is
-also a snapshot and may lag this wiki. Normal scientific-writing commits
-modify only the wiki directory; the paper directory is regenerated only for
-an explicit snapshot.
+Paper-version history and rendering instructions are kept separately in
+[Authoring and Snapshots](Authoring-and-Snapshots.md).

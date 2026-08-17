@@ -14,7 +14,7 @@ evidence record.
 | Inspect completed computations | [Scientific Job Results](Scientific-Job-Results.md) | [Evidence Sources](Evidence-Sources.md) | Complete result-artifact ledger and source pointer for every reported result family |
 | Reproduce or audit a result | [Reproduce and Audit](Reproduce-and-Audit.md) | [`evidence/results.json`](evidence/results.json) | Evidence chain, release identity, hashes, and machine-readable values |
 | Create a paper version | [Authoring and Snapshots](Authoring-and-Snapshots.md) | [Full Manuscript](Full-Manuscript.md) | Rules for producing an explicit two-column snapshot without changing the historical conference version |
-| Check literature support | [References](References.md) | [`bibliography/references.bib`](bibliography/references.bib) | Human-readable references and the canonical bibliography records |
+| Check literature support | [References](References.md) | [`bibliography/references.bib`](bibliography/references.bib) | Human-readable references and the bibliography records used in the manuscript |
 
 ## Find an answer by scientific question
 
@@ -37,7 +37,7 @@ evidence record.
 |---|---|---|
 | [Home](Home.md) | Executive scientific summary | You need the main result without reading methods |
 | [Project Status](Project-Status.md) | Current research state | You need completed work, numerical endpoints, or next experiments |
-| [Full Manuscript](Full-Manuscript.md) | Canonical paper narrative | You need the full methods, equations, literature, results, and discussion |
+| [Full Manuscript](Full-Manuscript.md) | Complete paper narrative | You need the full methods, equations, literature, results, and discussion |
 | [Claims and Limits](Claims-and-Limits.md) | Claim-control ledger | You need to decide whether a proposed sentence is supported |
 | [Scientific Job Results](Scientific-Job-Results.md) | Computation and result ledger | You need job-family status, artifact accounting, or comparator interpretation |
 | [Evidence Sources](Evidence-Sources.md) | Evidence map | You need a JSON pointer, checksum, or source scope for a number |

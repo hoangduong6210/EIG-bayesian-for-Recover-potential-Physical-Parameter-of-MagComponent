@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the living manuscript and create explicit paper snapshots."""
+"""Validate the scientific manuscript and create named paper releases."""
 
 from __future__ import annotations
 
@@ -40,6 +40,12 @@ BANNED_PUBLIC_PATTERNS = {
     ),
     "internal presentation note": re.compile(
         r"\b(?:Current Presen" + r"tation|no running hea" + r"der|reviewer res" + r"ponse)\b",
+        re.IGNORECASE,
+    ),
+    "editorial process narration": re.compile(
+        r"\b(?:current manuscript preser" + r"ves|one-way mir" + r"ror|"
+        r"this wiki is the liv" + r"ing|may lag this (?:page|wiki)|"
+        r"wiki is ne" + r"wer than|explicit snap" + r"shot is approved)\b",
         re.IGNORECASE,
     ),
 }
@@ -137,6 +143,12 @@ def check() -> dict:
                         f"broken local link in {path.relative_to(WIKI_ROOT)}: {target}"
                     )
 
+    landing_page = WIKI_ROOT.parent / "README.md"
+    landing_text = landing_page.read_text(encoding="utf-8")
+    for label, pattern in BANNED_PUBLIC_PATTERNS.items():
+        if pattern.search(landing_text):
+            raise WikiError(f"{label} found in repository README.md")
+
     canonical_text = texts[canonical]
     abstract, body = split_manuscript(canonical_text)
     cited = citation_keys(canonical_text)
@@ -230,6 +242,7 @@ def check() -> dict:
         "scientific_job_count": len(jobs),
         "result_artifact_count": declared_artifacts,
         "acquisition_figure_sha256": figure_manifest["figure_sha256"],
+        "repository_readme_sha256": sha256(landing_page),
         "wiki_inputs": {
             str(path.relative_to(WIKI_ROOT)): sha256(path)
             for path in sorted(

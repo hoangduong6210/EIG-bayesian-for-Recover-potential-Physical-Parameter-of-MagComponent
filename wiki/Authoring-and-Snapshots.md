@@ -1,13 +1,10 @@
 # Authoring and Paper Snapshots
 
-## Source-of-truth rule
+## Editing rule
 
-The wiki directory is the living manuscript. Scientific-writing commits
-normally change only files under this directory. Generated LaTeX and PDF files
-are not updated for every prose edit.
-
-The GitHub Wiki, once initialized, is a one-way mirror of this directory. It
-must not become a second authoring source.
+Edit manuscript text under `wiki/`. Do not update generated LaTeX or PDF files
+for ordinary prose changes. If the hosted GitHub Wiki is enabled, publish from
+this directory and do not edit the hosted copy independently.
 
 ## Normal edit
 
@@ -16,7 +13,7 @@ must not become a second authoring source.
 3. Review the diff for claim scope, citations, and internal disclosure.
 4. Commit only the wiki directory.
 
-## Explicit snapshot
+## Paper release
 
 Only when a version is approved for circulation:
 
@@ -28,5 +25,6 @@ Only when a version is approved for circulation:
 5. Copy the approved staged artifact into the current paper snapshot in a
    dedicated snapshot commit.
 
-The build never writes into the paper directory unless a human explicitly
-performs the final snapshot step. The conference snapshot remains immutable.
+The build stages output outside the paper directory. Copy an approved PDF and
+its manifest into `paper/` only as a named release. Do not alter the submitted
+conference record.

@@ -1,8 +1,7 @@
 # References
 
-This human-readable list is rendered from the single BibTeX bibliography in
-the bibliography directory. Citation keys in the living manuscript are
-resolved from that file during a paper snapshot.
+This list is rendered from [`bibliography/references.bib`](bibliography/references.bib).
+The same citation keys are checked when the manuscript is built.
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
