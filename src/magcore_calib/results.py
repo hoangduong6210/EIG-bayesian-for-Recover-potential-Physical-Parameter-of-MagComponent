@@ -193,8 +193,8 @@ def _validate_benchmark_v4(record: dict, design: dict) -> None:
     """Fail closed on the exact v4 protocol and every auditable state transition."""
 
     policies = design.get("policies")
-    if not isinstance(policies, dict) or tuple(policies) != tuple(BENCHMARK_V4_POLICY_OBJECTIVES):
-        raise ValueError("benchmark v4 has an incomplete, reordered, or unexpected policy set")
+    if not isinstance(policies, dict) or set(policies) != set(BENCHMARK_V4_POLICY_OBJECTIVES):
+        raise ValueError("benchmark v4 has an incomplete or unexpected policy set")
     if design.get("comparator_registry") != BENCHMARK_V4_POLICY_REGISTRY \
             or design.get("direct_contrasts") != BENCHMARK_V4_DIRECT_CONTRASTS \
             or design.get("primary_endpoints") != BENCHMARK_V4_PRIMARY_ENDPOINTS:

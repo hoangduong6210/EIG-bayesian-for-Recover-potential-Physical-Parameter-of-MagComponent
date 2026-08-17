@@ -352,6 +352,13 @@ def test_schema_accepts_complete_benchmark_v4():
     validate_result(valid_v4_record())
 
 
+def test_schema_accepts_canonical_json_key_order_for_benchmark_v4():
+    """Canonical ``sort_keys`` serialization must not change policy semantics."""
+
+    canonical = json.loads(json.dumps(valid_v4_record(), sort_keys=True))
+    validate_result(canonical)
+
+
 @pytest.mark.parametrize("mutation", ["missing_policy", "extra_policy", "missing_endpoint"])
 def test_schema_v4_requires_exact_dynamic_policy_and_endpoint_sets(mutation):
     record = valid_v4_record()
