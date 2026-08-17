@@ -1,0 +1,17 @@
+schema_version = "magnetic-living-manuscript/1.0"
+title = "Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters"
+authors = ["Viet Hoang Duong", "Viet Huy Duong", "Lun-Min Shih"]
+canonical_page = "Full-Manuscript.md"
+bibliography = "bibliography/references.bib"
+template = "paper-template.tex"
+pandoc_version = "2.14.0.3"
+
+[evidence]
+release_id = "20260817T072230Z_401e3030fe13"
+manifest_sha256 = "85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7"
+scope = "matched-model synthetic acquisition and accepted in-sample measured-data adequacy"
+
+[snapshot]
+format = "A4, 10 point, two column"
+minimum_bibliography_items = 45
+paper_output_is_explicit = true

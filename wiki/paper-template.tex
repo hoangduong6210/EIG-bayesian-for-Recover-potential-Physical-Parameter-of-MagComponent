@@ -1,0 +1,49 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+\usepackage[top=21mm,bottom=21mm,left=18mm,right=18mm,columnsep=7.5mm]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype,url,caption,natbib}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{assets/}}
+\hypersetup{
+  pdftitle={Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters},
+  pdfauthor={Viet Hoang Duong, Viet Huy Duong, Lun-Min Shih}
+}
+\pagestyle{plain}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\captionsetup[figure]{name=Fig.,labelsep=period}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\begin{center}
+{\fontsize{14}{16}\selectfont\bfseries
+Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss
+and Permeability Models for Power Converters\par}
+\vspace{4pt}
+{\fontsize{12}{14}\selectfont
+Viet Hoang Duong\textsuperscript{1,*},
+Viet Huy Duong\textsuperscript{2},
+Lun-Min Shih\textsuperscript{1}\par}
+{\fontsize{10}{12}\selectfont
+\textsuperscript{1}Department of Computer Science, Da-Yeh University, Taiwan\par
+\textsuperscript{2}Department of Computer Science, Kent State University, United States of America\par}
+\end{center}
+\begin{abstract}
+\input{abstract.tex}
+\end{abstract}
+\par\smallskip
+\noindent\textit{Keywords:} Bayesian calibration; magnetic core; core loss;
+complex permeability; sequential experimental design; expected information gain.
+\vspace{4pt}
+\end{@twocolumnfalse}]
+
+\input{body.tex}
+
+{\fontsize{8}{8.5}\selectfont
+\bibliographystyle{ieeetr}
+\bibliography{references}
+}
+\end{document}
