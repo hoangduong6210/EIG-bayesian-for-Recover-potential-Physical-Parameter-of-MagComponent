@@ -23,8 +23,8 @@ prespecified two-target latent-response precision gate in five measurements,
 compared with nine for a deterministic fixed channel-balanced traversal.
 Against stronger comparators, however, raw EIG tied predictive variance and
 Laplace D-optimality on measurement count in all 30 pairs. EIG per modeled
-cost tied Laplace D-optimality but required a mean 15.17 more modeled seconds
-than predictive variance (95% paired-bootstrap interval 15.00--15.50 seconds
+cost tied Laplace D-optimality but required a mean 15.17 more modeled-cost units
+than predictive variance (95% paired-bootstrap interval 15.00--15.50 units
 in favor of predictive variance). No policy failed the gate. On accepted
 public measured records, in-sample RRMSE was 8.79%--18.21% for core loss,
 6.89%--9.33% for $\mu'$, and 36.77%--52.42% for $\mu''$; the loss-component
@@ -32,6 +32,8 @@ residuals expose substantial one-pole model discrepancy. The evidence supports
 a reproducible, model-conditional acquisition benchmark. It does not show EIG
 superiority over strong comparators, measured laboratory-time savings, global
 six-parameter identification, or a validated optimal laboratory plan.
+[Evidence E2](Evidence-Sources.md#e2), [E4](Evidence-Sources.md#e4), and
+[E7](Evidence-Sources.md#e7)
 
 *Keywords:* Bayesian calibration; magnetic core; core loss; complex
 permeability; sequential experimental design; expected information gain.
@@ -107,6 +109,7 @@ comparator contrasts were declared before the confirmatory seed results were
 aggregated. The fixed and randomized traversals remain useful contextual
 baselines, but they are not evidence that EIG dominates modern acquisition
 heuristics.
+[Campaign source E1](Evidence-Sources.md#e1)
 
 # Related Work
 
@@ -569,6 +572,7 @@ the per-parameter median absolute relative errors ranged from 0.27% to 5.85%.
 The known values fell within 28 of 30 equal-tailed 90% model-conditional
 posterior credible intervals. This observed inclusion count is descriptive,
 not a coverage estimate.
+[Result source E2](Evidence-Sources.md#e2)
 
 | Parameter | Mean error | Median error | SD | Truth in 90% CI |
 |---|---:|---:|---:|---:|
@@ -578,6 +582,8 @@ not a coverage estimate.
 | $\mu_s$ | 0.35% | 0.38% | 0.17% | 5/5 |
 | $f_{\mathrm{rel}}$ | 0.91% | 0.87% | 0.55% | 5/5 |
 | $a_{\mathrm{cc}}$ | 0.91% | 0.62% | 0.79% | 5/5 |
+
+[Table source E2](Evidence-Sources.md#e2)
 
 ![Local Fisher spectrum and five-seed matched-model recovery.](assets/synthetic-diagnostics.png)
 
@@ -592,6 +598,7 @@ and maximum relative regret was zero. Ten downstream validation seeds
 reproduced the reference count and modeled-cost endpoints. This qualifies the
 numerical setting for the campaign; it does not make each finite EIG score
 exact or incorporate structural-model uncertainty.
+[Result source E3](Evidence-Sources.md#e3)
 
 ## Paired synthetic acquisition
 
@@ -601,6 +608,7 @@ while the deterministic fixed channel-balanced traversal required nine in all
 a bootstrap 95% interval of 4.00--4.00 measurements. This 44.4% reduction is a
 valid comparison with that specified baseline, but the strong-comparator
 results materially narrow its interpretation.
+[Result source E4](Evidence-Sources.md#e4)
 
 | Preregistered direct contrast | Endpoint | Mean difference, comparator $-$ EIG | Bootstrap 95% CI | EIG W/T/L |
 |---|---|---:|---:|---:|
@@ -609,12 +617,15 @@ results materially narrow its interpretation.
 | EIG/cost vs predictive variance/cost | modeled cost | -15.17 | [-15.50, -15.00] | 0/0/30 |
 | EIG/cost vs Laplace D-optimality/cost | modeled cost | 0.00 | [0.00, 0.00] | 0/30/0 |
 
+[Table source E4](Evidence-Sources.md#e4)
+
 All eight policies reached the gate in all 30 seeds. Thus the experiment gives
 no evidence that raw EIG outperforms predictive variance or Laplace
 D-optimality on measurement count. Under the cost objective, predictive
 variance reached the gate at modeled cost 175 in every seed, whereas EIG/cost
 used 190 in 29 seeds and 195 once. The cost constants are prespecified model
 inputs, not measured laboratory durations.
+[Result source E4](Evidence-Sources.md#e4)
 
 ![Eight-policy paired acquisition results and four direct strong-comparator contrasts.](assets/acquisition-diagnostics.png)
 
@@ -628,12 +639,14 @@ RRMSE 3.15%, 0.95%, 2.78%, and 0.85%, with coverage 85.0%, 93.3%, 89.4%, and
 93.3%. These secondary endpoints do not rescue an acquisition-superiority
 claim: predictive-variance and Laplace policies had comparable holdout
 performance, while the fixed and randomized traversals were often worse.
+[Result source E6](Evidence-Sources.md#e6)
 
 Final 90% parameter intervals contained a mean 5.13 of six generating
 parameters for both EIG objectives. Across policies, however, mean absolute
 error for $k$ remained approximately 25.1%--30.7%. Posterior interval inclusion
 must therefore not be described as uniformly precise global six-parameter
 recovery.
+[Result source E6](Evidence-Sources.md#e6)
 
 ## Measured-data model adequacy
 
@@ -645,6 +658,7 @@ were excluded from numerical claims [@magnet2022]. Measured Steinmetz
 fits produced in-sample RRMSEs of 8.79% (N87), 12.55% (N49), 13.40% (3C95),
 and 18.21% (N95) within their specified temperature cohorts. These are fit
 residuals, not held-out errors.
+[Result source E7](Evidence-Sources.md#e7)
 
 ![In-sample measured-data adequacy, with storage and loss permeability reported separately.](assets/measured-adequacy.png)
 
@@ -683,6 +697,38 @@ that these policies narrow two specified latent-response intervals efficiently
 inside the matched model. It does not establish accurate recovery of a
 physical component, global predictive accuracy, or robustness to model
 misspecification.
+[Contrast source E4](Evidence-Sources.md#e4)
+
+## Why the strong comparators tie or win
+
+The raw count tie is a resolution property of the declared stopping endpoint,
+not proof that the acquisition rules rank candidates identically. After four
+total measurements, no paired seed under any of the three raw policies had
+passed both gates. Raw EIG still failed the $L_m$ gate in 28 of 30 seeds;
+predictive variance still failed core loss in 16 and $L_m$ in 14; Laplace
+D-optimality still failed core loss in 21 and $L_m$ in 9. Each policy then
+completed the complementary response information at measurement five, so the
+integer count endpoint collapsed their different paths to the same value.
+Their ordered sequences confirm the distinction: EIG and predictive variance
+match in only 11 of 30 seeds, while EIG and Laplace D-optimality match in only
+2 of 30. [Trajectory source E5](Evidence-Sources.md#e5)
+
+The per-cost loss has a different mechanism. At the shared four-measurement
+state available in 22 paired seeds, the mean core-loss interval half-width is
+26.03%, above its 8% gate, while the mean $L_m$ half-width is 2.78%, below
+its 5% gate. EIG/cost nevertheless ranks an additional 10 kHz $L_m$
+measurement first in 21 of those states because its mean joint
+information-per-cost utility is 0.05282, compared with 0.04390 for the
+high-leverage core-loss point. Predictive variance/cost ranks that core-loss
+point first in all 22 states and crosses both gates one measurement earlier.
+[Trajectory source E5](Evidence-Sources.md#e5)
+
+Thus EIG/cost behaves consistently with its own objective, but that objective
+is not expected cost-to-gate. The experiment asks whether a global parameter-
+information utility is efficient for reaching two local predictive-width
+thresholds; it is not guaranteed to be. A gate-aligned utility must be
+preregistered and evaluated as a new experiment rather than substituted into
+this frozen result after observing the comparison.
 
 ## Implications for converter modeling
 
@@ -776,6 +822,7 @@ EIG did not beat either strong raw policy and lost the per-cost comparison
 with predictive variance. Publishing this outcome prevents the favorable
 fixed-traversal comparison from being generalized beyond its actual
 comparator.
+[Sources E4](Evidence-Sources.md#e4) and [E5](Evidence-Sources.md#e5)
 
 # Conclusion
 
@@ -786,12 +833,14 @@ model-conditional 90% credible intervals. Raw EIG reached the two-target
 precision gate in five measurements rather than nine for the fixed traversal,
 but it tied predictive variance and Laplace D-optimality in all 30 direct
 count comparisons. EIG/cost tied Laplace D-optimality and lost to predictive
-variance/cost by a mean modeled 15.17 seconds. The accepted measured records
+variance/cost by a mean 15.17 modeled-cost units. The accepted measured records
 produced substantially larger RRMSE for $\mu''$ than for $\mu'$, showing that
 posterior concentration cannot compensate for an inadequate permeability law.
 The defensible conclusion is therefore a reproducible model-conditional
 benchmark with informative positive and negative results, not proof of EIG
 superiority or laboratory efficiency.
+[Evidence E2](Evidence-Sources.md#e2), [E4](Evidence-Sources.md#e4), and
+[E7](Evidence-Sources.md#e7)
 
 # Exact Sequential Evaluation Logic
 
@@ -855,6 +904,12 @@ and reconstructed endpoints. A sanitized public audit bundle for this freeze
 must pass the disclosure gate before it is published; the private production
 tree is not a public artifact. Raw measured curves remain governed by the
 cited upstream sources and are not redistributed as if produced by this study.
+[Release source E8](Evidence-Sources.md#e8)
+
+The [scientific job ledger](Scientific-Job-Results.md) accounts for every
+result artifact in the release, and [Evidence Sources](Evidence-Sources.md)
+maps each quantitative result family to an exact pointer in the
+disclosure-safe projection.
 
 The six-page conference snapshot is an immutable historical record
 associated with its own earlier release and claim ledger. The next full paper

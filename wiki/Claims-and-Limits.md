@@ -2,14 +2,14 @@
 
 ## Supported now
 
-| Claim | Scope |
-|---|---|
-| Prior-predictive matched-model recovery exercises the six-coordinate inference pipeline without oracle centering | Five synthetic recovery seeds |
-| Raw EIG uses fewer measurements than the deterministic fixed channel-balanced traversal | 30 paired seeds; local two-target gate |
-| Raw EIG ties predictive variance and Laplace D-optimality on measurement count | Four preregistered direct contrasts; 30 paired seeds |
-| EIG/cost ties Laplace D-optimality and loses to predictive variance/cost | Prespecified modeled-cost table, not measured time |
-| Secondary holdout error and six-parameter interval inclusion are reconstructable | Disjoint 23-point latent holdout; matched model |
-| Measured fits expose substantial \(\mu''\) model discrepancy | Accepted public records; in-sample RRMSE |
+| Claim | Scope | Source |
+|---|---|---|
+| Prior-predictive matched-model recovery exercises the six-coordinate inference pipeline without oracle centering | Five synthetic recovery seeds | [E2](Evidence-Sources.md#e2) |
+| Raw EIG uses fewer measurements than the deterministic fixed channel-balanced traversal | 30 paired seeds; local two-target gate | [E4](Evidence-Sources.md#e4) |
+| Raw EIG ties predictive variance and Laplace D-optimality on measurement count | Four preregistered direct contrasts; 30 paired seeds | [E4](Evidence-Sources.md#e4) |
+| EIG/cost ties Laplace D-optimality and loses to predictive variance/cost | Prespecified modeled-cost table, not measured time | [E4](Evidence-Sources.md#e4) |
+| Secondary holdout error and six-parameter interval inclusion are reconstructable | Disjoint 23-point latent holdout; matched model | [E6](Evidence-Sources.md#e6) |
+| Measured fits expose substantial \(\mu''\) model discrepancy | Accepted public records; in-sample RRMSE | [E7](Evidence-Sources.md#e7) |
 
 ## Not supported
 

@@ -23,6 +23,8 @@ REQUIRED_PAGES = {
     "Full-Manuscript.md",
     "Claims-and-Limits.md",
     "Reproduce-and-Audit.md",
+    "Scientific-Job-Results.md",
+    "Evidence-Sources.md",
     "References.md",
     "Authoring-and-Snapshots.md",
     "_Sidebar.md",
@@ -111,18 +113,28 @@ def check() -> dict:
             raise WikiError(f"missing declared manuscript input: {path.relative_to(WIKI_ROOT)}")
 
     texts: dict[Path, str] = {}
-    for path in sorted(WIKI_ROOT.glob("*.md")):
+    public_text_suffixes = {".md", ".json", ".toml", ".py", ".tex", ".bib"}
+    for path in sorted(
+        item
+        for item in WIKI_ROOT.rglob("*")
+        if item.is_file() and item.suffix.lower() in public_text_suffixes
+    ):
         text = path.read_text(encoding="utf-8")
         texts[path] = text
         for label, pattern in BANNED_PUBLIC_PATTERNS.items():
             if pattern.search(text):
-                raise WikiError(f"{label} found in {path.name}")
-        for target in local_markdown_targets(text):
-            resolved = (path.parent / target).resolve()
-            if WIKI_ROOT.resolve() not in (resolved, *resolved.parents):
-                raise WikiError(f"link escapes wiki root in {path.name}: {target}")
-            if not resolved.exists():
-                raise WikiError(f"broken local link in {path.name}: {target}")
+                raise WikiError(f"{label} found in {path.relative_to(WIKI_ROOT)}")
+        if path.suffix.lower() == ".md":
+            for target in local_markdown_targets(text):
+                resolved = (path.parent / target).resolve()
+                if WIKI_ROOT.resolve() not in (resolved, *resolved.parents):
+                    raise WikiError(
+                        f"link escapes wiki root in {path.relative_to(WIKI_ROOT)}: {target}"
+                    )
+                if not resolved.exists():
+                    raise WikiError(
+                        f"broken local link in {path.relative_to(WIKI_ROOT)}: {target}"
+                    )
 
     canonical_text = texts[canonical]
     abstract, body = split_manuscript(canonical_text)
@@ -137,10 +149,57 @@ def check() -> dict:
 
     release_id = manifest["evidence"]["release_id"]
     release_digest = manifest["evidence"]["manifest_sha256"]
+    projection_path = WIKI_ROOT / manifest["evidence"]["projection"]
+    projection_digest = manifest["evidence"]["projection_sha256"]
     if not re.fullmatch(r"\d{8}T\d{6}Z_[0-9a-f]{12}", release_id):
         raise WikiError("invalid evidence release ID")
     if not re.fullmatch(r"[0-9a-f]{64}", release_digest):
         raise WikiError("invalid evidence manifest SHA-256")
+    if not projection_path.is_file():
+        raise WikiError("missing disclosure-safe evidence projection")
+    if not re.fullmatch(r"[0-9a-f]{64}", projection_digest):
+        raise WikiError("invalid evidence projection SHA-256")
+    if sha256(projection_path) != projection_digest:
+        raise WikiError("evidence projection SHA-256 mismatch")
+    projection = json.loads(projection_path.read_text(encoding="utf-8"))
+    if projection.get("schema_version") != "magnetic-wiki-evidence/1.0":
+        raise WikiError("unsupported evidence projection schema")
+    if projection["release"]["id"] != release_id:
+        raise WikiError("evidence projection release ID mismatch")
+    if projection["release"]["manifest_sha256"] != release_digest:
+        raise WikiError("evidence projection manifest SHA-256 mismatch")
+    jobs = projection["scientific_jobs"]
+    declared_artifacts = projection["campaign"]["result_artifact_count"]
+    if sum(job["artifacts"] for job in jobs) != declared_artifacts:
+        raise WikiError("scientific job registry does not cover every artifact")
+    if declared_artifacts != 222:
+        raise WikiError("unexpected result-artifact count")
+    record_set = projection["sources"]["acquisition_record_set"]
+    if record_set["record_count"] != 30:
+        raise WikiError("unexpected paired acquisition-record count")
+    figure_manifest_path = WIKI_ROOT / "assets" / "acquisition-diagnostics.json"
+    figure_manifest = json.loads(figure_manifest_path.read_text(encoding="utf-8"))
+    if figure_manifest["evidence_projection_sha256"] != projection_digest:
+        raise WikiError("acquisition figure is not bound to current evidence")
+    figure_path = WIKI_ROOT / "assets" / figure_manifest["figure"]
+    if sha256(figure_path) != figure_manifest["figure_sha256"]:
+        raise WikiError("acquisition figure SHA-256 mismatch")
+    if figure_manifest["evidence_sources"] != ["E4", "E5"]:
+        raise WikiError("acquisition figure has unexpected evidence sources")
+    source_page = texts[WIKI_ROOT / "Evidence-Sources.md"]
+    for source_id in range(1, 9):
+        anchor = f'<a id="e{source_id}"></a>'
+        if anchor not in source_page:
+            raise WikiError(f"missing evidence source anchor E{source_id}")
+    for page in (
+        "Home.md",
+        "Project-Status.md",
+        "Full-Manuscript.md",
+        "Claims-and-Limits.md",
+        "Scientific-Job-Results.md",
+    ):
+        if "Evidence-Sources.md#e" not in texts[WIKI_ROOT / page]:
+            raise WikiError(f"{page} has no source-bound quantitative result")
     for page in ("Full-Manuscript.md", "Project-Status.md"):
         if release_id not in texts[WIKI_ROOT / page] or release_digest not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} is not bound to the declared evidence release")
@@ -161,6 +220,10 @@ def check() -> dict:
         "citation_count": len(cited),
         "bibliography_count": len(available),
         "evidence_release_id": release_id,
+        "evidence_projection_sha256": projection_digest,
+        "scientific_job_count": len(jobs),
+        "result_artifact_count": declared_artifacts,
+        "acquisition_figure_sha256": figure_manifest["figure_sha256"],
         "wiki_inputs": {
             str(path.relative_to(WIKI_ROOT)): sha256(path)
             for path in sorted(

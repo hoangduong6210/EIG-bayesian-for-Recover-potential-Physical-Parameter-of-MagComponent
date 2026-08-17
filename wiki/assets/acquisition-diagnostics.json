@@ -1,0 +1,12 @@
+{
+  "evidence_projection": "evidence/results.json",
+  "evidence_projection_sha256": "60036e144daf64ad8220377ff7eabc3dbba80afe33ff9c57e3b71ab95162a388",
+  "evidence_sources": [
+    "E4",
+    "E5"
+  ],
+  "figure": "acquisition-diagnostics.png",
+  "figure_sha256": "a99d366ac03a62d5bbe9f354b7b38e246c1ce2036e27fc26eaaeccf997458c14",
+  "release_id": "20260817T072230Z_401e3030fe13",
+  "schema_version": "magnetic-wiki-figure/1.0"
+}

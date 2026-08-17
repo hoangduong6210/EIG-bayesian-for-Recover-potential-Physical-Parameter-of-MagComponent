@@ -14,12 +14,18 @@ that EIG is better than the strong acquisition comparators.
 
 - Raw EIG, predictive variance, and Laplace D-optimality all reached the local
   two-target precision gate in five measurements in every paired seed.
+  [Source E4](Evidence-Sources.md#e4)
 - EIG per modeled cost tied Laplace D-optimality, but predictive variance was
-  better in all 30 seeds by a mean modeled cost of 15.17.
+  better in all 30 seeds by a mean modeled cost of 15.17 units.
+  [Source E4](Evidence-Sources.md#e4)
 - Raw EIG still improved over the specified deterministic fixed traversal
   (five versus nine measurements), but that is a baseline-specific result.
+  [Source E4](Evidence-Sources.md#e4)
 - No result is a measured laboratory-time saving or validation on a real
   magnetic component.
+
+The trajectory-level reason for the tie and loss is documented in
+[Why EIG did not beat the strong comparators](Scientific-Job-Results.md#why-eig-did-not-beat-the-strong-comparators).
 
 ## How to read the project
 
@@ -28,8 +34,12 @@ that EIG is better than the strong acquisition comparators.
 3. [Claims and Limits](Claims-and-Limits.md) separates supported statements
    from prohibited interpretations.
 4. [Reproduce and Audit](Reproduce-and-Audit.md) explains the evidence chain.
-5. [References](References.md) lists the scientific sources.
-6. [Authoring and Snapshots](Authoring-and-Snapshots.md) defines how wiki
+5. [Scientific Job Results](Scientific-Job-Results.md) accounts for every
+   result artifact and explains the comparator outcome.
+6. [Evidence Sources](Evidence-Sources.md) maps every result family to its
+   machine-readable source.
+7. [References](References.md) lists the scientific sources.
+8. [Authoring and Snapshots](Authoring-and-Snapshots.md) defines how wiki
    changes become a two-column paper snapshot.
 
 ## Version boundary

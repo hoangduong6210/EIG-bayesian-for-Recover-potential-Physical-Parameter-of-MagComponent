@@ -3,31 +3,79 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-POLICY_COUNTS = (
-    ("Raw EIG", 5.0, 5.0, 5.0, "o"),
-    ("Predictive variance", 5.0, 5.0, 5.0, "x"),
-    ("Laplace D-optimal", 5.0, 5.0, 5.0, "s"),
-    ("Random balanced", 7.8, 5.0, 13.0, "^"),
-    ("Fixed traversal", 9.0, 9.0, 9.0, "D"),
-)
+ASSET_ROOT = Path(__file__).resolve().parent
+WIKI_ROOT = ASSET_ROOT.parent
+EVIDENCE_PATH = WIKI_ROOT / "evidence" / "results.json"
 
-DIRECT_CONTRASTS = (
-    ("Raw EIG vs PV", 0, 30, 0),
-    ("Raw EIG vs D-opt", 0, 30, 0),
-    ("EIG/cost vs PV/cost", 0, 0, 30),
-    ("EIG/cost vs D-opt/cost", 0, 30, 0),
-)
 
-POLICY_COSTS = (
-    ("EIG / cost", 190.17, 190.0, 195.0, "o"),
-    ("PV / cost", 175.0, 175.0, 175.0, "x"),
-    ("D-opt / cost", 190.17, 190.0, 195.0, "s"),
-    ("Fixed traversal", 290.0, 290.0, 290.0, "D"),
-)
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def load_rows():
+    evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
+    endpoints = evidence["results"]["policy_endpoints"]
+    contrasts = evidence["results"]["primary_contrasts"]
+
+    count_specs = (
+        ("Raw EIG", "eig_raw", "o"),
+        ("Predictive variance", "predictive_variance_raw", "x"),
+        ("Laplace D-optimal", "laplace_d_opt_raw", "s"),
+        ("Random balanced", "random_channel_balanced", "^"),
+        ("Fixed traversal", "fixed_channel_balanced", "D"),
+    )
+    policy_counts = tuple(
+        (
+            label,
+            endpoints[key]["measurement_count"]["mean"],
+            endpoints[key]["measurement_count"]["minimum"],
+            endpoints[key]["measurement_count"]["maximum"],
+            marker,
+        )
+        for label, key, marker in count_specs
+    )
+
+    contrast_specs = (
+        ("Raw EIG vs PV", "eig_raw_vs_predictive_variance_raw"),
+        ("Raw EIG vs D-opt", "eig_raw_vs_laplace_d_opt_raw"),
+        ("EIG/cost vs PV/cost", "eig_per_cost_vs_predictive_variance_per_cost"),
+        ("EIG/cost vs D-opt/cost", "eig_per_cost_vs_laplace_d_opt_per_cost"),
+    )
+    direct_contrasts = tuple(
+        (
+            label,
+            contrasts[key]["wins"],
+            contrasts[key]["ties"],
+            contrasts[key]["losses"],
+        )
+        for label, key in contrast_specs
+    )
+
+    cost_specs = (
+        ("EIG / cost", "eig_per_cost", "o"),
+        ("PV / cost", "predictive_variance_per_cost", "x"),
+        ("D-opt / cost", "laplace_d_opt_per_cost", "s"),
+        ("Fixed traversal", "fixed_channel_balanced", "D"),
+    )
+    policy_costs = tuple(
+        (
+            label,
+            endpoints[key]["modeled_cost"]["mean"],
+            endpoints[key]["modeled_cost"]["minimum"],
+            endpoints[key]["modeled_cost"]["maximum"],
+            marker,
+        )
+        for label, key, marker in cost_specs
+    )
+    return evidence, policy_counts, direct_contrasts, policy_costs
 
 
 def dot_range(ax, rows, xlabel):
@@ -51,6 +99,7 @@ def dot_range(ax, rows, xlabel):
 
 
 def main():
+    evidence, policy_counts, direct_contrasts, policy_costs = load_rows()
     plt.rcParams.update(
         {
             "font.family": "serif",
@@ -61,14 +110,14 @@ def main():
     )
     figure, axes = plt.subplots(1, 3, figsize=(12.0, 3.6), constrained_layout=True)
 
-    dot_range(axes[0], POLICY_COUNTS, "Measurements to gate")
+    dot_range(axes[0], policy_counts, "Measurements to gate")
     axes[0].set_xlim(4.2, 13.8)
     axes[0].set_title("(a) Count endpoint")
 
-    labels = [row[0] for row in DIRECT_CONTRASTS]
-    wins = np.asarray([row[1] for row in DIRECT_CONTRASTS])
-    ties = np.asarray([row[2] for row in DIRECT_CONTRASTS])
-    losses = np.asarray([row[3] for row in DIRECT_CONTRASTS])
+    labels = [row[0] for row in direct_contrasts]
+    wins = np.asarray([row[1] for row in direct_contrasts])
+    ties = np.asarray([row[2] for row in direct_contrasts])
+    losses = np.asarray([row[3] for row in direct_contrasts])
     y = np.arange(len(labels))[::-1]
     axes[1].barh(y, wins, color="white", edgecolor="black", hatch="//", label="EIG win")
     axes[1].barh(
@@ -97,7 +146,7 @@ def main():
     )
     axes[1].spines[["top", "right"]].set_visible(False)
 
-    dot_range(axes[2], POLICY_COSTS, "Modeled acquisition cost")
+    dot_range(axes[2], policy_costs, "Modeled acquisition cost")
     axes[2].set_xlim(160, 305)
     axes[2].set_title("(c) Cost endpoint")
     axes[2].text(
@@ -110,9 +159,29 @@ def main():
         fontsize=7.5,
     )
 
-    output = __file__.replace("generate_figures.py", "acquisition-diagnostics.png")
-    figure.savefig(output, bbox_inches="tight", facecolor="white")
+    output = ASSET_ROOT / "acquisition-diagnostics.png"
+    figure.savefig(
+        output,
+        bbox_inches="tight",
+        facecolor="white",
+        metadata={
+            "Title": "Paired acquisition endpoints",
+            "Description": f"Evidence projection SHA-256 {sha256(EVIDENCE_PATH)}",
+        },
+    )
     plt.close(figure)
+    manifest = {
+        "schema_version": "magnetic-wiki-figure/1.0",
+        "figure": output.name,
+        "figure_sha256": sha256(output),
+        "evidence_projection": str(EVIDENCE_PATH.relative_to(WIKI_ROOT)),
+        "evidence_projection_sha256": sha256(EVIDENCE_PATH),
+        "evidence_sources": ["E4", "E5"],
+        "release_id": evidence["release"]["id"],
+    }
+    (ASSET_ROOT / "acquisition-diagnostics.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":

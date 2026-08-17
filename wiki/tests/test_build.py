@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -41,6 +42,41 @@ def test_snapshot_refuses_existing_output(tmp_path: Path):
     output.mkdir()
     with pytest.raises(MODULE.WikiError, match="already exists"):
         MODULE.snapshot(output)
+
+
+def test_scientific_job_registry_covers_declared_artifacts():
+    evidence = json.loads(
+        (WIKI / "evidence" / "results.json").read_text(encoding="utf-8")
+    )
+    assert len(evidence["scientific_jobs"]) == 13
+    assert sum(job["artifacts"] for job in evidence["scientific_jobs"]) == 222
+    assert evidence["campaign"]["result_artifact_count"] == 222
+    assert evidence["sources"]["acquisition_record_set"]["record_count"] == 30
+
+
+def test_comparator_explanation_is_source_bound():
+    page = (WIKI / "Scientific-Job-Results.md").read_text(encoding="utf-8")
+    assert "Why EIG did not beat the strong comparators" in page
+    assert "Evidence-Sources.md#e4" in page
+    assert "Evidence-Sources.md#e5" in page
+    for source_id in range(1, 9):
+        assert f'<a id="e{source_id}"></a>' in (
+            WIKI / "Evidence-Sources.md"
+        ).read_text(encoding="utf-8")
+
+
+def test_acquisition_figure_is_bound_to_evidence_projection():
+    evidence = WIKI / "evidence" / "results.json"
+    manifest = json.loads(
+        (WIKI / "assets" / "acquisition-diagnostics.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifest["evidence_projection_sha256"] == MODULE.sha256(evidence)
+    assert manifest["figure_sha256"] == MODULE.sha256(
+        WIKI / "assets" / manifest["figure"]
+    )
+    assert manifest["evidence_sources"] == ["E4", "E5"]
 
 
 @pytest.mark.parametrize(
