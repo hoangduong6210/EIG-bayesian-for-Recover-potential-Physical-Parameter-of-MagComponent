@@ -57,9 +57,10 @@ if command -v pdfinfo >/dev/null 2>&1; then
         exit 68
     }
 fi
-# latexmk keeps BibTeX's .bbl beside the source when the entry point is built
-# from its source directory, even though PDF/aux/log outputs use -outdir.
-BBL="$(dirname "$MAIN_TEX")/main.bbl"
+# With ``-outdir``, latexmk places BibTeX output beside the other build
+# artifacts.  Validate that exact staged file so the publication gate does not
+# depend on (or accidentally accept) a stale bibliography in the source tree.
+BBL="$BUILD_DIR/main.bbl"
 LOG="$BUILD_DIR/main.log"
 FLS="$BUILD_DIR/main.fls"
 [[ -s "$FLS" ]] || { echo "FATAL: missing LaTeX recorder output" >&2; exit 69; }

@@ -308,6 +308,19 @@ def test_paper_job_requires_locked_release_and_never_uses_current_pointer():
     assert "20260812T035654Z_a0703698ace9" not in source
 
 
+def test_paper_job_validates_bibliography_from_staged_build_directory():
+    source = (ROOT / "slurm" / "95_paper.sbatch").read_text(encoding="utf-8")
+    assert 'BBL="$BUILD_DIR/main.bbl"' in source
+    assert 'BBL="$(dirname "$MAIN_TEX")/main.bbl"' not in source
+
+
+def test_final_job_replaces_stale_terminal_markers_before_retry():
+    source = (ROOT / "slurm" / "99_finalize.sbatch").read_text(encoding="utf-8")
+    cleanup = 'rm -f "$MAGCORE_RUN_DIR/status/SUCCESS" "$MAGCORE_RUN_DIR/status/FAILED"'
+    assert cleanup in source
+    assert source.index(cleanup) < source.index('touch "$MAGCORE_RUN_DIR/status/SUCCESS"')
+
+
 def test_figure_job_regenerates_and_verifies_full_figures_from_frozen_summary():
     source = (ROOT / "slurm" / "90_figures.sbatch").read_text(encoding="utf-8")
     assert "freeze/release.json" in source
