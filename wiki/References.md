@@ -1,3 +1,10 @@
+---
+title: References
+status: bibliography annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # References
 
 This list is rendered from [`bibliography/references.bib`](bibliography/references.bib).

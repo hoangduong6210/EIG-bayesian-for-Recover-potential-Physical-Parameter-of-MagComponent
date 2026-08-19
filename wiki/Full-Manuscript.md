@@ -1,3 +1,12 @@
+---
+title: Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters
+status: canonical manuscript source
+last_updated: 2026-08-19
+paper_source: true
+prose_reviewed: true
+claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-ADEQ-001
+---
+
 # Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters
 
 Viet Hoang Duong¹, Viet Huy Duong², and Lun-Min Shih¹  

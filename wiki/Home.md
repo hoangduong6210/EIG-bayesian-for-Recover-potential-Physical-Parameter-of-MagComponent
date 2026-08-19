@@ -1,3 +1,10 @@
+---
+title: GitHub Wiki Home
+status: compatibility entry point
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Magnetic-core Bayesian calibration and sequential design
 
 This study evaluates Bayesian calibration and sequential measurement selection

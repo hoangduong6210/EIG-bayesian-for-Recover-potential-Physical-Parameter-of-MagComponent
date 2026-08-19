@@ -1,3 +1,10 @@
+---
+title: Claims and Limits
+status: claim summary annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Claims and Limits
 
 ## Supported now

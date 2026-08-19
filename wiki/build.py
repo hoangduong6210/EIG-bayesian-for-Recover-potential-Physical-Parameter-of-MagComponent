@@ -30,6 +30,28 @@ REQUIRED_PAGES = {
     "Authoring-and-Snapshots.md",
     "_Sidebar.md",
 }
+REQUIRED_CANONICAL_PAGES = {
+    "START-HERE.md",
+    "INDEX.md",
+    "CONTRIBUTING.md",
+    "GLOSSARY.md",
+    "LIMITATIONS.md",
+    "REPRODUCIBILITY.md",
+    "architecture/Research-System-Map.md",
+    "claims/Current-Claim-Language.md",
+    "claims/Historical-Claim-Ledger.md",
+    "datasets/Dataset-Registry.md",
+    "decisions/0001-gate-aligned-objective.md",
+    "evidence/Evidence-Ledger.md",
+    "governance/License-and-Assets.md",
+    "manuscript/Paper-Export-Contract.md",
+    "methods/Sequential-Design-Method.md",
+    "operations/Research-Workflow.md",
+    "references/Technical-Source-Map.md",
+    "results/Scientific-Results.md",
+    "status/Project-Status.md",
+}
+FRONT_MATTER = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
 BANNED_PUBLIC_PATTERNS = {
     "credential": re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b"),
     "machine path": re.compile(r"/(?:users|home|scratch|tmp)/[A-Za-z0-9_.-]+/"),
@@ -111,6 +133,11 @@ def check() -> dict:
     missing_pages = sorted(name for name in REQUIRED_PAGES if not (WIKI_ROOT / name).is_file())
     if missing_pages:
         raise WikiError(f"missing wiki pages: {missing_pages}")
+    missing_canonical = sorted(
+        name for name in REQUIRED_CANONICAL_PAGES if not (WIKI_ROOT / name).is_file()
+    )
+    if missing_canonical:
+        raise WikiError(f"missing categorized wiki pages: {missing_canonical}")
 
     canonical = WIKI_ROOT / manifest["canonical_page"]
     bibliography = WIKI_ROOT / manifest["bibliography"]
@@ -132,6 +159,21 @@ def check() -> dict:
             if pattern.search(text):
                 raise WikiError(f"{label} found in {path.relative_to(WIKI_ROOT)}")
         if path.suffix.lower() == ".md":
+            front = FRONT_MATTER.match(text)
+            if front is None:
+                raise WikiError(
+                    f"missing YAML front matter in {path.relative_to(WIKI_ROOT)}"
+                )
+            fields = {
+                line.split(":", 1)[0].strip()
+                for line in front.group("body").splitlines()
+                if ":" in line
+            }
+            required_fields = {"title", "status", "paper_source"}
+            if not required_fields <= fields or not ({"last_updated", "date"} & fields):
+                raise WikiError(
+                    f"incomplete YAML front matter in {path.relative_to(WIKI_ROOT)}"
+                )
             for target in local_markdown_targets(text):
                 resolved = (path.parent / target).resolve()
                 if WIKI_ROOT.resolve() not in (resolved, *resolved.parents):
@@ -222,16 +264,6 @@ def check() -> dict:
         if release_id not in texts[WIKI_ROOT / page] or release_digest not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} is not bound to the declared evidence release")
 
-    pandoc = shutil.which("pandoc")
-    latexmk = shutil.which("latexmk")
-    if pandoc is None or latexmk is None:
-        raise WikiError("pandoc and latexmk are required for snapshot capability")
-    version = subprocess.run(
-        [pandoc, "--version"], check=True, capture_output=True, text=True
-    ).stdout.splitlines()[0].removeprefix("pandoc ")
-    if version != manifest["pandoc_version"]:
-        raise WikiError(f"pandoc version mismatch: expected {manifest['pandoc_version']}, got {version}")
-
     return {
         "abstract_words": len(abstract.split()),
         "body_words": len(body.split()),
@@ -253,6 +285,21 @@ def check() -> dict:
     }
 
 
+def require_snapshot_tools() -> tuple[str, str]:
+    """Resolve and verify the optional document toolchain for paper export."""
+    pandoc = shutil.which("pandoc")
+    latexmk = shutil.which("latexmk")
+    if pandoc is None or latexmk is None:
+        raise WikiError("pandoc and latexmk are required for snapshot capability")
+    version = subprocess.run(
+        [pandoc, "--version"], check=True, capture_output=True, text=True
+    ).stdout.splitlines()[0].removeprefix("pandoc ")
+    expected = load_manifest()["pandoc_version"]
+    if version != expected:
+        raise WikiError(f"pandoc version mismatch: expected {expected}, got {version}")
+    return pandoc, latexmk
+
+
 def run_pandoc(source: Path, output: Path) -> None:
     subprocess.run(
         [
@@ -272,9 +319,10 @@ def run_pandoc(source: Path, output: Path) -> None:
 
 
 def snapshot(output: Path) -> Path:
-    report = check()
     if output.exists():
         raise WikiError(f"snapshot output already exists: {output}")
+    require_snapshot_tools()
+    report = check()
     output.mkdir(parents=True)
     try:
         canonical = WIKI_ROOT / load_manifest()["canonical_page"]

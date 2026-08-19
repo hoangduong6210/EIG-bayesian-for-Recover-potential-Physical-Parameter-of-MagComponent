@@ -1,3 +1,10 @@
+---
+title: Evidence Sources
+status: detailed evidence annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Evidence sources
 
 All quantitative result statements in this wiki point to the disclosure-safe

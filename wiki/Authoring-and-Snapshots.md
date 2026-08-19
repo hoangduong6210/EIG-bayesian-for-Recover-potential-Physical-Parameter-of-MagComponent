@@ -1,3 +1,10 @@
+---
+title: Authoring and Paper Snapshots
+status: publication annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Authoring and Paper Snapshots
 
 ## Editing rule

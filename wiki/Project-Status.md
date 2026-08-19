@@ -1,3 +1,10 @@
+---
+title: Project Status Compatibility Page
+status: detailed status annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Project Status
 
 Status date: 2026-08-17.

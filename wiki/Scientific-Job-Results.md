@@ -1,3 +1,10 @@
+---
+title: Scientific Job Results
+status: detailed result annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Scientific job results
 
 The job ledger lists every scientific result family, including diagnostics

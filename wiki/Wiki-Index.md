@@ -1,3 +1,10 @@
+---
+title: Wiki Index Compatibility Page
+status: navigation annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Wiki index
 
 This index is the entry point for readers who did not participate in the

@@ -1,3 +1,10 @@
+---
+title: Reproduce and Audit
+status: operational annex
+last_updated: 2026-08-19
+paper_source: false
+---
+
 # Reproduce and Audit
 
 The evidence chain is:
