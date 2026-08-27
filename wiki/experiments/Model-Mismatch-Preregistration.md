@@ -130,6 +130,23 @@ new release identity. Partial arrays, failed sampler states, and pilot runs are
 diagnostics only. The matched-model release remains unchanged regardless of
 the MM-1 outcome.
 
+## Execution and monitoring
+
+MM-1 is submitted only from an immutable run prepared from a clean commit:
+
+```bash
+bash scripts/submit.sh --prepare-only
+bash scripts/submit_model_mismatch.sh \
+  runs/<prepared-run> <qualified-estimator-decision.json>
+bash scripts/watch_model_mismatch.sh runs/<prepared-run>
+```
+
+The submission wrapper accepts only numeric scheduler job IDs and records the
+array milestone before requesting the dependent aggregate. A scheduler error
+or malformed response creates a failure record rather than a success marker.
+The watcher is read-only and exits only after the aggregate exists or a task,
+submission, or aggregation failure is recorded.
+
 The campaign deliberately does not introduce a gate-aligned utility or
 simulation-based calibration. Those are later experiments and must use their
 own prospective configurations and seed namespaces.

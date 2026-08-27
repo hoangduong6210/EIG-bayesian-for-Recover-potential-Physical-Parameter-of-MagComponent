@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import importlib.util
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -198,6 +201,182 @@ def test_task_cli_is_deterministic():
         "scenario": "permeability_two_pole", "seed": 8101,
         "task_id": "permeability_two_pole_seed8101",
     }
+
+
+def test_submission_wrapper_rejects_missing_or_invalid_scheduler_job_ids():
+    script = (ROOT / "scripts" / "submit_model_mismatch.sh").read_text(
+        encoding="utf-8"
+    )
+    subprocess.run(
+        ["bash", "-n", str(ROOT / "scripts" / "submit_model_mismatch.sh")],
+        check=True,
+    )
+    assert "if response=\"$(sbatch" in script
+    assert "BASH_REMATCH[1]" in script
+    assert "(\\;[A-Za-z0-9._-]+)?$" in script
+    assert "MM1_SUBMISSION_FAILED" in script
+    assert "MM1_ARRAY_SUBMITTED" in script
+    assert script.index("MM1_ARRAY_SUBMITTED") < script.index("AGGREGATE=\"$(submit")
+    assert script.index("AGGREGATE=\"$(submit") < script.rindex("MM1_SUBMITTED")
+
+
+def _submission_harness(tmp_path: Path) -> tuple[Path, Path, dict[str, str]]:
+    project = tmp_path / "project"
+    run = project / "runs" / "run"
+    source = run / "source"
+    for directory in (
+        project / "scripts",
+        run / "provenance",
+        run / "status",
+        source / "scripts",
+        source / "slurm",
+        source / "configs",
+    ):
+        directory.mkdir(parents=True, exist_ok=True)
+    wrapper = project / "scripts" / "submit_model_mismatch.sh"
+    shutil.copy2(ROOT / "scripts" / "submit_model_mismatch.sh", wrapper)
+    wrapper.chmod(0o755)
+    (run / "status" / "PREPARED").write_text("prepared\n", encoding="utf-8")
+    for name in ("22_model_mismatch.sbatch", "23_model_mismatch_aggregate.sbatch"):
+        (source / "slurm" / name).write_text(
+            "#!/usr/bin/env bash\nset -euo pipefail\n", encoding="utf-8"
+        )
+    (source / "configs" / "model_mismatch.toml").write_text(
+        "campaign = 'test'\n", encoding="utf-8"
+    )
+    selection = project / "decision.json"
+    selection.write_text('{"decision":"test"}\n', encoding="utf-8")
+    decision_sha = hashlib.sha256(selection.read_bytes()).hexdigest()
+    plan_script = source / "scripts" / "model_mismatch_plan.py"
+    plan_script.write_text(
+        "import json\n"
+        f"print(json.dumps({{'estimator_decision_sha256': '{decision_sha}', "
+        "'task_count': 120}))\n",
+        encoding="utf-8",
+    )
+    venv = Path(sys.executable).parent.parent
+    (run / "provenance" / "run.env").write_text(
+        f"MAGCORE_VENV={venv}\n"
+        "MAGCORE_SUBMIT_ACCOUNT=test\n"
+        "MAGCORE_SUBMIT_PARTITION=test\n",
+        encoding="utf-8",
+    )
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    fake_sbatch = fake_bin / "sbatch"
+    fake_sbatch.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "count=0\n"
+        "[[ ! -f \"$FAKE_SBATCH_COUNT\" ]] || count=\"$(<\"$FAKE_SBATCH_COUNT\")\"\n"
+        "count=$((count + 1))\n"
+        "printf '%s\\n' \"$count\" > \"$FAKE_SBATCH_COUNT\"\n"
+        "case \"$FAKE_SBATCH_MODE:$count\" in\n"
+        "  failure:1) exit 1 ;;\n"
+        "  empty:1) exit 0 ;;\n"
+        "  malformed:1) printf 'Submitted batch job 123\\n' ;;\n"
+        "  partial:1) printf '123;cluster\\n' ;;\n"
+        "  partial:2) exit 1 ;;\n"
+        "  success:1) printf '123;cluster\\n' ;;\n"
+        "  success:2) printf '456;cluster\\n' ;;\n"
+        "  *) exit 2 ;;\n"
+        "esac\n",
+        encoding="utf-8",
+    )
+    fake_sbatch.chmod(0o755)
+    environment = os.environ.copy()
+    environment["PATH"] = f"{fake_bin}:{environment['PATH']}"
+    environment["FAKE_SBATCH_COUNT"] = str(tmp_path / "sbatch-count")
+    return wrapper, selection, environment
+
+
+@pytest.mark.parametrize(
+    ("mode", "expected_stage", "array_submitted", "success"),
+    [
+        ("failure", "array", False, False),
+        ("empty", "array", False, False),
+        ("malformed", "array", False, False),
+        ("partial", "aggregate", True, False),
+        ("success", None, True, True),
+    ],
+)
+def test_submission_wrapper_is_fail_closed_with_fake_scheduler(
+    tmp_path: Path,
+    mode: str,
+    expected_stage: str | None,
+    array_submitted: bool,
+    success: bool,
+):
+    wrapper, selection, environment = _submission_harness(tmp_path)
+    environment["FAKE_SBATCH_MODE"] = mode
+    run = wrapper.parents[1] / "runs" / "run"
+    completed = subprocess.run(
+        [str(wrapper), str(run), str(selection)],
+        capture_output=True,
+        env=environment,
+        text=True,
+    )
+    assert (completed.returncode == 0) is success
+    assert (run / "status" / "MM1_ARRAY_SUBMITTED").exists() is array_submitted
+    assert (run / "status" / "MM1_SUBMITTED").exists() is success
+    if success:
+        final = json.loads((run / "status" / "MM1_SUBMITTED").read_text())
+        assert final == {
+            "array_job_id": "123",
+            "aggregate_job_id": "456",
+            "task_count": 120,
+        }
+        jobs = (run / "provenance" / "model_mismatch_jobs.tsv").read_text()
+        assert "model_mismatch\t123\t-\t120" in jobs
+        assert "model_mismatch_aggregate\t456\tafterok:123\t1" in jobs
+        assert not (run / "status" / "MM1_SUBMISSION_FAILED").exists()
+    else:
+        failure = json.loads(
+            (run / "status" / "MM1_SUBMISSION_FAILED").read_text()
+        )
+        assert failure["stage"] == expected_stage
+        assert failure["array_job_id"] == ("123" if array_submitted else "")
+        assert failure["aggregate_job_id"] == ""
+        assert failure["exit_status"] != 0
+    assert not list(run.rglob("*.partial"))
+
+
+def test_submission_wrapper_refuses_partial_state_without_calling_scheduler(
+    tmp_path: Path,
+):
+    wrapper, selection, environment = _submission_harness(tmp_path)
+    environment["FAKE_SBATCH_MODE"] = "partial"
+    run = wrapper.parents[1] / "runs" / "run"
+    first = subprocess.run(
+        [str(wrapper), str(run), str(selection)],
+        capture_output=True,
+        env=environment,
+        text=True,
+    )
+    assert first.returncode != 0
+    assert (run / "status" / "MM1_ARRAY_SUBMITTED").exists()
+    count_path = Path(environment["FAKE_SBATCH_COUNT"])
+    assert count_path.read_text().strip() == "2"
+    second = subprocess.run(
+        [str(wrapper), str(run), str(selection)],
+        capture_output=True,
+        env=environment,
+        text=True,
+    )
+    assert second.returncode == 73
+    assert "existing scheduler marker" in second.stderr
+    assert count_path.read_text().strip() == "2"
+
+
+def test_model_mismatch_watcher_validates_job_ids_and_completion_marker():
+    watcher = ROOT / "scripts" / "watch_model_mismatch.sh"
+    script = watcher.read_text(encoding="utf-8")
+    subprocess.run(["bash", "-n", str(watcher)], check=True)
+    assert "MM1_SUBMISSION_FAILED" in script
+    assert "model_mismatch_aggregate_0.done" in script
+    assert "aggregate.json" in script
+    assert 're.fullmatch(r"[1-9][0-9]*", array_job)' in script
+    assert 're.fullmatch(r"[1-9][0-9]*", aggregate_job)' in script
 
 
 def test_aggregation_keeps_failures_out_of_reached_only_summaries():
