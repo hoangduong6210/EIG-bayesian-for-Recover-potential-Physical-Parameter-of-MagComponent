@@ -216,6 +216,7 @@ def test_submission_wrapper_rejects_missing_or_invalid_scheduler_job_ids():
     assert "(\\;[A-Za-z0-9._-]+)?$" in script
     assert "MM1_SUBMISSION_FAILED" in script
     assert "MM1_ARRAY_SUBMITTED" in script
+    assert "compute-node shared filesystem" in script
     assert script.index("MM1_ARRAY_SUBMITTED") < script.index("AGGREGATE=\"$(submit")
     assert script.index("AGGREGATE=\"$(submit") < script.rindex("MM1_SUBMITTED")
 
@@ -287,6 +288,7 @@ def _submission_harness(tmp_path: Path) -> tuple[Path, Path, dict[str, str]]:
     environment = os.environ.copy()
     environment["PATH"] = f"{fake_bin}:{environment['PATH']}"
     environment["FAKE_SBATCH_COUNT"] = str(tmp_path / "sbatch-count")
+    environment["MAGCORE_TEST_ALLOW_EPHEMERAL_RUN_ROOT"] = "1"
     return wrapper, selection, environment
 
 

@@ -132,7 +132,8 @@ the MM-1 outcome.
 
 ## Execution and monitoring
 
-MM-1 is submitted only from an immutable run prepared from a clean commit:
+MM-1 is submitted only from an immutable run prepared from a clean commit on a
+filesystem shared by login and compute nodes:
 
 ```bash
 bash scripts/submit.sh --prepare-only

@@ -15,6 +15,14 @@ case "$RUN_DIR/" in
     "$PROJECT_ROOT/runs/"*) ;;
     *) echo "prepared run is outside $PROJECT_ROOT/runs" >&2; exit 65 ;;
 esac
+case "$RUN_DIR/" in
+    /tmp/*|/var/tmp/*)
+        [[ "${MAGCORE_TEST_ALLOW_EPHEMERAL_RUN_ROOT:-0}" == "1" ]] || {
+            echo "MM-1 run must be on a compute-node shared filesystem" >&2
+            exit 65
+        }
+        ;;
+esac
 [[ -f "$RUN_DIR/status/PREPARED" ]] || {
     echo "run was not created with scripts/submit.sh --prepare-only" >&2
     exit 66
