@@ -22,38 +22,42 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e '.[test]'
       - run: pytest
-      - name: Verify frozen evidence checksums
-        run: sha256sum --check checksums.sha256
-        working-directory: results/frozen/20260812T035654Z_a0703698ace9
-      - run: >-
-          python scripts/validate_run.py
-          --run-dir results/frozen/20260812T035654Z_a0703698ace9
-          --mode verify-lock
-        env:
-          SLURM_JOB_ID: ci
-          SLURM_JOB_NODELIST: localhost
 
-  paper:
+  wiki:
+    name: Wiki manuscript contract
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Install LaTeX and PDF inspection tools
-        run: >-
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends
-          latexmk texlive-latex-extra texlive-fonts-recommended poppler-utils
-      - name: Audit current manuscript source and citation graph
-        run: >-
-          python scripts/check_current_manuscript.py
-          --source paper/current_state/source/main.tex
-          --bibliography paper/current_state/source/refs.bib
-      - name: Build current manuscript
-        working-directory: paper/current_state/source
-        env:
-          SOURCE_DATE_EPOCH: "1786507200"
-        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-      - name: Verify manuscript layout and references
-        working-directory: paper/current_state/source
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[test]'
+      - name: Validate the canonical scientific source
+        run: python wiki/build.py check
+      - name: Test wiki evidence and export contracts
+        run: pytest -q wiki/tests
+
+  archived-document-evidence:
+    name: Archived document evidence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[test]'
+      - name: Verify evidence used by the archived full-paper render
         run: |
-          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" -gt "6"
-          test "$(pdfinfo main.pdf | awk '/^Page size:/ {print $3, $5}')" = "595.276 841.89"
-          ! grep -Eiq 'undefined references|citation.*undefined|reference.*undefined' main.log
+          release_id="$(sed -n 's/^release_id:[[:space:]]*//p' paper/current_state/results.lock.yaml)"
+          test -n "$release_id"
+          (cd "results/frozen/$release_id" && sha256sum --check checksums.sha256)
+          python scripts/validate_run.py \
+            --run-dir "results/frozen/$release_id" \
+            --mode verify-lock
+        env:
+          SLURM_JOB_ID: ci
+          SLURM_JOB_NODELIST: localhost

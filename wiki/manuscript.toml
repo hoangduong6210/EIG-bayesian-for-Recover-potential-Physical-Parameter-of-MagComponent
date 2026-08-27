@@ -17,3 +17,5 @@ scope = "matched-model synthetic acquisition and accepted in-sample measured-dat
 format = "A4, 10 point, two column"
 minimum_bibliography_items = 45
 paper_output_is_explicit = true
+source_direction = "wiki_to_document"
+document_release_types = ["conference", "journal"]

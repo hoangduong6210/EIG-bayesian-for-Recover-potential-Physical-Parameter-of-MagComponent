@@ -1,21 +1,19 @@
-# Current full manuscript
+# Archived full-paper render
 
-[`manuscript.pdf`](manuscript.pdf) is the unrestricted current version. It
-retains the conference snapshot's A4, 10-point, two-column visual format, but
-has no six-page ceiling. The fuller methods, estimator qualification,
-black-and-white explanatory figures, evidence appendices, and expanded
-bibliography all describe completed, checksum-locked work.
+This path predates the wiki publication workflow. Its name is retained to
+avoid breaking historical links; it must not be interpreted as the current
+version of the research.
 
-The paper reports the current 30-paired-seed study. Comparator and holdout
-extensions that are implemented but absent from the frozen release are labeled
-as future confirmatory work; they are not presented as numerical results.
+[`manuscript.pdf`](manuscript.pdf) and [`source/`](source/) are a rendered
+record. They are not edited to follow later wiki changes. The evidence identity
+used by a rendered record belongs in [`results.lock.yaml`](results.lock.yaml),
+while the current scientific manuscript and its active evidence binding are in
+[`wiki/`](../../wiki/).
 
-All numerical results are linked through
-[`results.lock.yaml`](results.lock.yaml) to frozen release
-`20260812T035654Z_a0703698ace9`. The machine-readable summary is
-[`paper_summary.json`](../../results/frozen/20260812T035654Z_a0703698ace9/tables/paper_summary.json),
-and the reproducible LaTeX project is in [`source/`](source/).
+Future conference and journal documents must be generated from a reviewed
+wiki commit with `python wiki/build.py snapshot`. The generated PDF and
+`snapshot.json` are reviewed in staging and enter this directory only through
+an explicit document-release commit.
 
-The immutable historical six-page artifact is the separate
-[`conference snapshot`](../conference_snapshot/README.md), not an alternate
-paper inside this folder.
+The immutable six-page artifact remains separately archived as the
+[`conference snapshot`](../conference_snapshot/README.md).

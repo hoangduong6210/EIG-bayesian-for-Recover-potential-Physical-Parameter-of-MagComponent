@@ -109,7 +109,7 @@ and compute workflow described in [`docs/COMPUTE_POLICY.md`](docs/COMPUTE_POLICY
 | [`results/`](results/) | Published evidence projections and frozen releases |
 | [`tests/`](tests/) | Unit, schema, evidence, and release-contract tests |
 | [`docs/`](docs/) | Protocol, provenance, claim boundaries, and compute policy |
-| [`paper/`](paper/) | Conference record and rendered full-paper snapshot |
+| [`paper/`](paper/) | Immutable conference/journal document snapshots exported from reviewed wiki revisions |
 
 Citation metadata are provided in [`CITATION.cff`](CITATION.cff). Software is
 released under the MIT License; upstream data retain their original licenses

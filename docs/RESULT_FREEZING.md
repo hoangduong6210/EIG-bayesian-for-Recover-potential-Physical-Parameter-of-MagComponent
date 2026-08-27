@@ -39,14 +39,23 @@ metadata API; provenance capture does not require the `pip` command or module.
 
 A frozen release is append-prohibited. Never repair it in place. Any correction or rerun creates a new release ID and a documented supersession relation. `results/CURRENT` is a human convenience, not a data-selection API.
 
-## Paper lock
+## Manuscript and document-release locks
 
-`paper/current_state/results.lock.yaml` selects the release used for manuscript
-inputs. It records the release ID and expected release-manifest digest.
-Table/figure generation fails if the digest differs, the release is
-`UNFROZEN`, or any artifact checksum fails.
+The active scientific manuscript is the wiki. Its
+[`manuscript.toml`](../wiki/manuscript.toml) binds the admitted evidence
+projection to an exact release ID and digest. Normal CI validates that binding
+without compiling or modifying a paper.
 
-Changing the lock requires rerunning generated tables, figures, the paper build, and the claim-to-evidence audit. Manually transcribed numerical tables are prohibited.
+A conference or journal document is a separate, immutable snapshot. The wiki
+export records the document kind, release name, wiki-input hashes, evidence
+identity, bibliography, and generated-file hashes in `snapshot.json`.
+Rendering occurs in staging only after an explicit release request. Once an
+approved snapshot enters `paper/`, later wiki or evidence changes create a new
+document release rather than rewriting it.
+
+The legacy path `paper/current_state/` predates this export contract and is
+retained only as an archived rendered record. Manually transcribed numerical
+tables remain prohibited.
 
 The production freeze intentionally retains machine and scheduler provenance
 and is not a public artifact. Public release uses the allowlisted projection in

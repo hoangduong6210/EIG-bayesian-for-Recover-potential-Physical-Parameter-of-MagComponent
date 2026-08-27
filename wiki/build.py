@@ -71,6 +71,8 @@ BANNED_PUBLIC_PATTERNS = {
         re.IGNORECASE,
     ),
 }
+DOCUMENT_RELEASE_TYPES = {"conference", "journal"}
+DOCUMENT_RELEASE_NAME = re.compile(r"^(conference|journal)-[a-z0-9][a-z0-9.-]{2,63}$")
 
 
 class WikiError(RuntimeError):
@@ -82,6 +84,17 @@ def sha256(path: Path) -> str:
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
+    return digest.hexdigest()
+
+
+def aggregate_digest(entries: dict[str, str]) -> str:
+    """Hash a path-to-digest map without depending on filesystem traversal order."""
+    digest = hashlib.sha256()
+    for relative, value in sorted(entries.items()):
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(value.encode("ascii"))
+        digest.update(b"\n")
     return digest.hexdigest()
 
 
@@ -130,6 +143,13 @@ def split_manuscript(text: str) -> tuple[str, str]:
 
 def check() -> dict:
     manifest = load_manifest()
+    snapshot_policy = manifest.get("snapshot", {})
+    if snapshot_policy.get("source_direction") != "wiki_to_document":
+        raise WikiError("paper export must declare wiki_to_document source direction")
+    if set(snapshot_policy.get("document_release_types", [])) != DOCUMENT_RELEASE_TYPES:
+        raise WikiError("document release types must be conference and journal")
+    if snapshot_policy.get("paper_output_is_explicit") is not True:
+        raise WikiError("paper output must remain an explicit operation")
     missing_pages = sorted(name for name in REQUIRED_PAGES if not (WIKI_ROOT / name).is_file())
     if missing_pages:
         raise WikiError(f"missing wiki pages: {missing_pages}")
@@ -300,6 +320,43 @@ def require_snapshot_tools() -> tuple[str, str]:
     return pandoc, latexmk
 
 
+def validate_document_release(document_kind: str, release_name: str) -> None:
+    """Validate immutable document-release identity before creating output."""
+    if document_kind not in DOCUMENT_RELEASE_TYPES:
+        raise WikiError(f"unsupported document kind: {document_kind}")
+    if not DOCUMENT_RELEASE_NAME.fullmatch(release_name):
+        raise WikiError(
+            "release name must start with conference- or journal- and use "
+            "lowercase letters, digits, dots, or hyphens"
+        )
+    if not release_name.startswith(document_kind + "-"):
+        raise WikiError("release name prefix does not match document kind")
+
+
+def committed_wiki_revision() -> str:
+    """Return the exact committed wiki source and reject uncommitted wiki input."""
+    repository = WIKI_ROOT.parent
+    status = subprocess.run(
+        ["git", "status", "--porcelain", "--", "wiki"],
+        cwd=repository,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if status:
+        raise WikiError("commit reviewed wiki changes before exporting a document")
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repository,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise WikiError("could not resolve a full source wiki commit")
+    return revision
+
+
 def run_pandoc(source: Path, output: Path) -> None:
     subprocess.run(
         [
@@ -318,11 +375,17 @@ def run_pandoc(source: Path, output: Path) -> None:
     )
 
 
-def snapshot(output: Path) -> Path:
+def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
+    validate_document_release(document_kind, release_name)
     if output.exists():
         raise WikiError(f"snapshot output already exists: {output}")
+    resolved_output = output.resolve()
+    repository = WIKI_ROOT.parent.resolve()
+    if resolved_output == repository or repository in resolved_output.parents:
+        raise WikiError("snapshot output must be staged outside the repository")
     require_snapshot_tools()
     report = check()
+    wiki_commit = committed_wiki_revision()
     output.mkdir(parents=True)
     try:
         canonical = WIKI_ROOT / load_manifest()["canonical_page"]
@@ -360,6 +423,15 @@ def snapshot(output: Path) -> Path:
         }
         snapshot_record = {
             "schema_version": "magnetic-paper-snapshot/1.0",
+            "document_release": {
+                "kind": document_kind,
+                "name": release_name,
+                "source_direction": "wiki_to_document",
+            },
+            "source": {
+                "wiki_commit": wiki_commit,
+                "wiki_tree_sha256": aggregate_digest(report["wiki_inputs"]),
+            },
             **report,
             "generated": generated,
         }
@@ -378,15 +450,19 @@ def main() -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("check", help="validate wiki without generating paper artifacts")
     snapshot_parser = subparsers.add_parser(
-        "snapshot", help="explicitly render a staged two-column paper snapshot"
+        "snapshot", help="explicitly render a staged conference or journal snapshot"
     )
     snapshot_parser.add_argument("--output", type=Path, required=True)
+    snapshot_parser.add_argument(
+        "--document-kind", choices=sorted(DOCUMENT_RELEASE_TYPES), required=True
+    )
+    snapshot_parser.add_argument("--release-name", required=True)
     args = parser.parse_args()
     try:
         if args.command == "check":
             print(json.dumps(check(), indent=2, sort_keys=True))
         else:
-            print(snapshot(args.output))
+            print(snapshot(args.output, args.document_kind, args.release_name))
     except (WikiError, OSError, subprocess.CalledProcessError) as exc:
         print(f"wiki build failed: {exc}", file=sys.stderr)
         return 1

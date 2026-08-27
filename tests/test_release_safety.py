@@ -26,6 +26,10 @@ ROOT = Path(__file__).resolve().parents[1]
 _CONFIGURED_DATA_ROOT = os.environ.get("MAGCORE_DATA_ROOT")
 EXPERIMENTS = sorted((ROOT / "experiments").glob("*.py"))
 HEAVY_ARGUMENTS = {
+    "aggregate_model_mismatch.py": [
+        "--input-dir", "/does/not/exist", "--config", "/does/not/exist",
+        "--out", "/tmp/never.json",
+    ],
     "aggregate_eig_convergence.py": ["--run-dir", "/does/not/exist", "--out", "/tmp/never.json"],
     "aggregate_results.py": ["--run-dir", "/does/not/exist", "--out", "/tmp/never.json"],
     "d5_identifiability_demo.py": ["--out", "/tmp/never.json"],
@@ -56,6 +60,11 @@ HEAVY_ARGUMENTS = {
         "--material", "N95", "--source", "LEA_MTB", "--out", "/tmp/never.json",
     ],
     "lot_variation.py": ["--seed", "42", "--out", "/tmp/never.json"],
+    "model_mismatch_campaign.py": [
+        "--seed", "8100", "--scenario", "matched_control",
+        "--config", "/does/not/exist", "--selection-file", "/does/not/exist",
+        "--out", "/tmp/never.json",
+    ],
     "posterior_recovery.py": ["--seed", "42", "--out", "/tmp/never.json"],
     "real_data_pcv.py": ["--material", "N95", "--out", "/tmp/never.json"],
     "real_data_recovery.py": [
@@ -355,18 +364,19 @@ def test_public_markdown_local_links_exist():
             assert resolved.exists(), f"broken link in {source.relative_to(ROOT)}: {raw_target}"
 
 
-def test_current_and_historical_papers_have_explicit_provenance_boundaries():
-    current = ROOT / "paper" / "current_state"
+def test_archived_document_records_have_explicit_provenance_boundaries():
+    archived_full = ROOT / "paper" / "current_state"
     snapshot = ROOT / "paper" / "conference_snapshot"
-    current_source = (current / "source" / "main.tex").read_text(encoding="utf-8")
-    current_readme = (current / "README.md").read_text(encoding="utf-8")
+    archived_source = (archived_full / "source" / "main.tex").read_text(encoding="utf-8")
+    archived_readme = (archived_full / "README.md").read_text(encoding="utf-8")
     snapshot_readme = (snapshot / "README.md").read_text(
         encoding="utf-8"
     )
 
     for author in ("Viet Hoang Duong", "Viet Huy Duong", "Lun-Min Shih"):
-        assert author in current_source
-    assert "20260812T035654Z_a0703698ace9" in current_readme
+        assert author in archived_source
+    assert "must not be interpreted as the current" in archived_readme
+    assert "wiki/" in archived_readme
     assert (snapshot / "manuscript.pdf").is_file()
     assert "05588315a56e6c8460d43f8775d78d367953bde930e3c411c909bf7b8d700db2" in snapshot_readme
     assert "20260806T112202Z_9a37bcc67637" in snapshot_readme
@@ -506,8 +516,14 @@ def test_public_paper_layout_has_exactly_two_version_directories():
     assert not any(paper_root.glob("main.*"))
 
 
-def test_current_source_artifacts_match_frozen_release():
-    release = ROOT / "results" / "frozen" / "20260812T035654Z_a0703698ace9"
+def test_archived_full_paper_sources_match_their_own_evidence_lock():
+    lock_text = (ROOT / "paper" / "current_state" / "results.lock.yaml").read_text(
+        encoding="utf-8"
+    )
+    match = re.search(r"(?m)^release_id:\s*(\S+)\s*$", lock_text)
+    assert match, "archived full-paper record has no evidence release ID"
+    release_id = match.group(1)
+    release = ROOT / "results" / "frozen" / release_id
     source = ROOT / "paper" / "current_state" / "source"
     for relative in (
         "figures/acquisition_measured_results.pdf",
@@ -542,7 +558,7 @@ def test_current_manuscript_scope_contract_is_explicit():
         assert phrase in source
     assert "matched-model" in readme
     assert "raw-to-aggregate" in readme
-    assert "does not by itself reconstruct" in evidence_readme
+    assert "raw-to-aggregate calculation" in evidence_readme
     assert "optimal experimental design" not in source.lower()
 
 

@@ -7,9 +7,9 @@ paper_source: false
 
 # Magnetic-Core Bayesian Design Research Wiki
 
-This wiki is the scientific source of truth for the calibration and sequential
-design study. Computation, evidence admission, claim wording, and publication
-snapshots are separate lifecycle stages.
+This wiki holds the active scientific manuscript for the calibration and
+sequential-design study. Computation, evidence admission, claim wording, wiki
+revision, and conference or journal snapshots are separate lifecycle stages.
 
 | Reader | Begin here | Then read |
 |---|---|---|

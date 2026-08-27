@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -40,7 +41,38 @@ def test_snapshot_refuses_existing_output(tmp_path: Path):
     output = tmp_path / "already-exists"
     output.mkdir()
     with pytest.raises(MODULE.WikiError, match="already exists"):
-        MODULE.snapshot(output)
+        MODULE.snapshot(output, "journal", "journal-example-2026")
+
+
+@pytest.mark.parametrize(
+    ("kind", "name"),
+    [
+        ("conference", "conference-example-2026"),
+        ("journal", "journal-example-2026.1"),
+    ],
+)
+def test_document_release_identity_accepts_named_submission_types(kind: str, name: str):
+    MODULE.validate_document_release(kind, name)
+
+
+@pytest.mark.parametrize(
+    ("kind", "name"),
+    [
+        ("draft", "draft-example-2026"),
+        ("conference", "journal-example-2026"),
+        ("journal", "current_state"),
+    ],
+)
+def test_document_release_identity_rejects_ambiguous_names(kind: str, name: str):
+    with pytest.raises(MODULE.WikiError):
+        MODULE.validate_document_release(kind, name)
+
+
+def test_document_release_output_must_be_staged_outside_repository(monkeypatch):
+    monkeypatch.setattr(MODULE, "require_snapshot_tools", lambda: ("pandoc", "latexmk"))
+    output = WIKI.parent / "paper" / "journal-example-2026"
+    with pytest.raises(MODULE.WikiError, match="outside the repository"):
+        MODULE.snapshot(output, "journal", "journal-example-2026")
 
 
 def test_scientific_job_registry_covers_declared_artifacts():
@@ -114,3 +146,22 @@ def test_repository_landing_page_is_evidence_led():
     assert MODULE.sha256(WIKI.parent / "README.md") == MODULE.check()[
         "repository_readme_sha256"
     ]
+
+
+def test_ci_validates_wiki_without_rendering_a_document_snapshot():
+    workflow = (WIKI.parent / ".github" / "workflows" / "ci.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "python wiki/build.py check" in workflow
+    assert "pytest -q wiki/tests" in workflow
+    assert "latexmk" not in workflow
+    assert "paper/current_state/source" not in workflow
+    assert "20260812T035654Z_a0703698ace9" not in workflow
+    assert "paper/current_state/results.lock.yaml" in workflow
+
+
+def test_compatibility_docs_delegate_claims_and_protocol_to_wiki():
+    for relative in ("docs/CLAIMS_EVIDENCE.md", "docs/EXPERIMENT_PROTOCOL.md"):
+        text = (WIKI.parent / relative).read_text(encoding="utf-8")
+        assert "../wiki/" in text
+        assert not re.search(r"20\d{6}T\d{6}Z_[0-9a-f]{12}", text)
