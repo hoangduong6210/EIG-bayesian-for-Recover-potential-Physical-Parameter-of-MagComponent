@@ -15,6 +15,12 @@ __pycache__/
 **/logs/
 **/provenance/
 
+# Full production freezes remain outside Git. Public scientific projections are
+# published as versioned release assets; only their small descriptors are tracked.
+/results/frozen/*/
+!/results/frozen/20260812T035654Z_a0703698ace9/
+!/results/frozen/20260812T035654Z_a0703698ace9/**
+
 # LaTeX intermediates; keep source and final PDFs.
 *.aux
 *.bbl

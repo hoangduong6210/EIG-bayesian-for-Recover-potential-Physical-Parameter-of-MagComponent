@@ -24,6 +24,29 @@ def load_module():
     return module
 
 
+def test_published_v2_asset_descriptor_is_complete_and_source_bound():
+    path = (
+        ROOT / "results" / "audit" / "20260817T072230Z_401e3030fe13"
+        / "asset.json"
+    )
+    descriptor = json.loads(path.read_text(encoding="utf-8"))
+    assert descriptor["schema_version"] == "magnetic-public-audit-assets/2.0"
+    assert descriptor["source_release_manifest_sha256"] == (
+        "85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7"
+    )
+    assets = {item["scope"]: item for item in descriptor["assets"]}
+    assert set(assets) == {"records_only", "with_samples"}
+    assert assets["records_only"]["root_manifest_sha256"] == (
+        "fa0f25c2d497bdd02445f8bb51a056ba814a231af29981bf39d83fb5c7e6d103"
+    )
+    assert assets["with_samples"]["root_manifest_sha256"] == (
+        "7de184a33e69dd3ecdb58919cbd1a9162626460d4b2bcc678abfa7ff0735b753"
+    )
+    assert all("/releases/download/evidence-20260817-audit-v2/" in item["asset_url"]
+               for item in assets.values())
+    assert descriptor["raw_to_aggregate_match"] is True
+
+
 def test_sanitizer_removes_machine_provenance_and_rewrites_legacy_paths():
     module = load_module()
     phase = "p" + "2_"

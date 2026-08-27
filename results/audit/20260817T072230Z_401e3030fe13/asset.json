@@ -1,0 +1,37 @@
+{
+  "schema_version": "magnetic-public-audit-assets/2.0",
+  "source_release_id": "20260817T072230Z_401e3030fe13",
+  "source_release_manifest_sha256": "85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7",
+  "release_tag": "evidence-20260817-audit-v2",
+  "release_url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/evidence-20260817-audit-v2",
+  "assets": [
+    {
+      "scope": "records_only",
+      "asset_name": "magcore-public-audit-20260817-v2-records-only.tar.zst",
+      "asset_url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/download/evidence-20260817-audit-v2/magcore-public-audit-20260817-v2-records-only.tar.zst",
+      "asset_bytes": 6010990,
+      "asset_sha256": "88f55278ce0760ebc83675358d3dcd3b3b71f62e3690f64615c0b122c974f0ff",
+      "root_manifest_sha256": "fa0f25c2d497bdd02445f8bb51a056ba814a231af29981bf39d83fb5c7e6d103",
+      "verified_file_count_including_root_manifest": 179,
+      "contains_flattened_posterior_samples": false
+    },
+    {
+      "scope": "with_samples",
+      "asset_name": "magcore-public-audit-20260817-v2-with-samples.tar.zst",
+      "asset_url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/download/evidence-20260817-audit-v2/magcore-public-audit-20260817-v2-with-samples.tar.zst",
+      "asset_bytes": 74198364,
+      "asset_sha256": "4a5bf6eb625dfd7ceb88e445020623d8a58eabb65365691cdab32c163ba19f8e",
+      "root_manifest_sha256": "7de184a33e69dd3ecdb58919cbd1a9162626460d4b2bcc678abfa7ff0735b753",
+      "verified_file_count_including_root_manifest": 191,
+      "contains_flattened_posterior_samples": true
+    }
+  ],
+  "acquisition_seed_count": 30,
+  "policy_count": 8,
+  "contains_raw_walker_iteration_chains": false,
+  "raw_to_aggregate_match": true,
+  "primary_eig_match": true,
+  "comparator_aggregate_match": true,
+  "secondary_validation_match": true,
+  "estimator_score_decision_traceable": true
+}

@@ -118,7 +118,12 @@ manifests and digests may be tracked here. A changed transformation profile or
 scientific record creates a new asset version; published assets are never
 overwritten in place.
 
-The complete v1 projection for the current evidence release is published as
-[`magcore-public-audit-20260812-v1.tar.zst`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/download/evidence-20260812-audit-v1/magcore-public-audit-20260812-v1.tar.zst).
-Its archive and root-manifest digests, byte size, and scope flags are locked in
-[`results/audit/20260812T035654Z_a0703698ace9/asset.json`](../results/audit/20260812T035654Z_a0703698ace9/asset.json).
+The v2 projection for evidence release `20260817T072230Z_401e3030fe13` is
+published in two scopes: a records-only archive for ordinary audit work and a
+larger archive containing the twelve retained posterior-sample matrices. The
+release URLs, archive digests, root-manifest digests, byte sizes, and scope
+flags are locked in
+[`results/audit/20260817T072230Z_401e3030fe13/asset.json`](../results/audit/20260817T072230Z_401e3030fe13/asset.json).
+
+The earlier v1 archive remains available as historical evidence. Its descriptor
+is [`results/audit/20260812T035654Z_a0703698ace9/asset.json`](../results/audit/20260812T035654Z_a0703698ace9/asset.json).
