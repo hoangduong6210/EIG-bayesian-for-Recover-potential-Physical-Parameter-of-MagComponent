@@ -6,52 +6,25 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
 import tomllib
+from collections.abc import Callable
 from pathlib import Path
 
 
 WIKI_ROOT = Path(__file__).resolve().parent
 MANIFEST_PATH = WIKI_ROOT / "manuscript.toml"
-REQUIRED_PAGES = {
-    "README.md",
-    "Home.md",
-    "Wiki-Index.md",
-    "Project-Status.md",
-    "Full-Manuscript.md",
-    "Claims-and-Limits.md",
-    "Reproduce-and-Audit.md",
-    "Scientific-Job-Results.md",
-    "Evidence-Sources.md",
-    "References.md",
-    "Authoring-and-Snapshots.md",
-    "_Sidebar.md",
-}
-REQUIRED_CANONICAL_PAGES = {
-    "START-HERE.md",
-    "INDEX.md",
-    "CONTRIBUTING.md",
-    "GLOSSARY.md",
-    "LIMITATIONS.md",
-    "REPRODUCIBILITY.md",
-    "architecture/Research-System-Map.md",
-    "claims/Current-Claim-Language.md",
-    "claims/Historical-Claim-Ledger.md",
-    "datasets/Dataset-Registry.md",
-    "decisions/0001-gate-aligned-objective.md",
-    "evidence/Evidence-Ledger.md",
-    "governance/License-and-Assets.md",
-    "manuscript/Paper-Export-Contract.md",
-    "methods/Sequential-Design-Method.md",
-    "operations/Research-Workflow.md",
-    "references/Technical-Source-Map.md",
-    "results/Scientific-Results.md",
-    "status/Project-Status.md",
-}
 FRONT_MATTER = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
+MARKDOWN_LINK = re.compile(
+    r"(?P<prefix>!?\[[^\]]*\]\()(?P<target>[^)]+)(?P<suffix>\))"
+)
+README_NOTICE = (
+    "<!-- Source: wiki/Home.md; update with `python wiki/build.py write-readme`. -->\n\n"
+)
 BANNED_PUBLIC_PATTERNS = {
     "credential": re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b"),
     "machine path": re.compile(r"/(?:users|home|scratch|tmp)/[A-Za-z0-9_.-]+/"),
@@ -106,6 +79,94 @@ def load_manifest() -> dict:
     return manifest
 
 
+def declared_public_pages(manifest: dict) -> tuple[str, ...]:
+    """Return the ordered, unique allowlist used by checks and publication."""
+    pages = tuple(manifest.get("wiki", {}).get("public_pages", ()))
+    if not pages or len(set(pages)) != len(pages):
+        raise WikiError("wiki public-page allowlist is empty or contains duplicates")
+    roles = {
+        manifest.get("wiki", {}).get("home"),
+        manifest.get("wiki", {}).get("index"),
+        manifest.get("wiki", {}).get("sidebar"),
+        manifest.get("canonical_page"),
+    }
+    if None in roles or not roles <= set(pages):
+        raise WikiError("wiki role pages must be present in the public-page allowlist")
+    slugs = [Path(page).name for page in pages]
+    if len(set(slugs)) != len(slugs):
+        raise WikiError("public Wiki page filenames must be unique after flattening")
+    return pages
+
+
+def strip_front_matter(text: str) -> str:
+    match = FRONT_MATTER.match(text)
+    if match is None:
+        raise WikiError("cannot render a page without YAML front matter")
+    return text[match.end() :].lstrip()
+
+
+def split_local_target(raw: str) -> tuple[str, str] | None:
+    """Split a local Markdown target into path and optional fragment."""
+    target = raw.strip()
+    if not target or target.startswith("#"):
+        return None
+    if re.match(r"^[a-z][a-z0-9+.-]*:", target, re.IGNORECASE):
+        return None
+    path, marker, fragment = target.partition("#")
+    return path, ("#" + fragment if marker else "")
+
+
+def rewrite_markdown_links(
+    text: str, source: Path, resolve_target: Callable[[Path, str], str]
+) -> str:
+    """Rewrite local Markdown targets while leaving external links unchanged."""
+
+    def replace(match: re.Match[str]) -> str:
+        split = split_local_target(match.group("target"))
+        if split is None:
+            return match.group(0)
+        path, fragment = split
+        rewritten = resolve_target(source, path)
+        return (
+            match.group("prefix")
+            + rewritten
+            + fragment
+            + match.group("suffix")
+        )
+
+    return MARKDOWN_LINK.sub(replace, text)
+
+
+def render_repository_readme(manifest: dict | None = None) -> str:
+    """Render the repository landing page from the canonical Wiki home."""
+    manifest = manifest or load_manifest()
+    source = WIKI_ROOT / manifest["readme"]["source"]
+    repository = WIKI_ROOT.parent.resolve()
+
+    def resolve_target(page: Path, raw_path: str) -> str:
+        target = (page.parent / raw_path).resolve()
+        try:
+            relative = target.relative_to(repository)
+        except ValueError as exc:
+            raise WikiError(f"README link escapes repository: {raw_path}") from exc
+        return relative.as_posix()
+
+    body = strip_front_matter(source.read_text(encoding="utf-8"))
+    return README_NOTICE + rewrite_markdown_links(body, source, resolve_target)
+
+
+def write_repository_readme() -> Path:
+    """Atomically refresh README.md from the canonical Wiki home."""
+    manifest = load_manifest()
+    output = (WIKI_ROOT / manifest["readme"]["output"]).resolve()
+    if output != WIKI_ROOT.parent / "README.md":
+        raise WikiError("README output must be the repository landing page")
+    temporary = output.with_name(output.name + ".tmp")
+    temporary.write_text(render_repository_readme(manifest), encoding="utf-8")
+    temporary.replace(output)
+    return output
+
+
 def bibliography_keys(path: Path) -> set[str]:
     text = path.read_text(encoding="utf-8")
     return set(re.findall(r"(?m)^@\w+\s*\{\s*([^,\s]+)\s*,", text))
@@ -123,6 +184,21 @@ def local_markdown_targets(text: str) -> set[str]:
             continue
         targets.add(target)
     return targets
+
+
+def markdown_anchors(text: str) -> set[str]:
+    """Return explicit and GitHub-style heading anchors for a Markdown page."""
+    anchors = set(re.findall(r'<a\s+id=["\']([^"\']+)["\']\s*></a>', text))
+    for heading in re.findall(r"(?m)^#{1,6}\s+(.+?)\s*#*\s*$", text):
+        label = re.sub(r"!?\[([^\]]+)\]\([^)]+\)", r"\1", heading)
+        label = re.sub(r"[`*_{}\\]", "", label).lower()
+        label = "".join(
+            character
+            for character in label
+            if character.isalnum() or character in {" ", "-"}
+        )
+        anchors.add(re.sub(r"-+", "-", re.sub(r"\s+", "-", label)).strip("-"))
+    return anchors
 
 
 def split_manuscript(text: str) -> tuple[str, str]:
@@ -143,6 +219,7 @@ def split_manuscript(text: str) -> tuple[str, str]:
 
 def check() -> dict:
     manifest = load_manifest()
+    public_pages = declared_public_pages(manifest)
     snapshot_policy = manifest.get("snapshot", {})
     if snapshot_policy.get("source_direction") != "wiki_to_document":
         raise WikiError("paper export must declare wiki_to_document source direction")
@@ -150,14 +227,23 @@ def check() -> dict:
         raise WikiError("document release types must be conference and journal")
     if snapshot_policy.get("paper_output_is_explicit") is not True:
         raise WikiError("paper output must remain an explicit operation")
-    missing_pages = sorted(name for name in REQUIRED_PAGES if not (WIKI_ROOT / name).is_file())
+    missing_pages = sorted(name for name in public_pages if not (WIKI_ROOT / name).is_file())
     if missing_pages:
         raise WikiError(f"missing wiki pages: {missing_pages}")
-    missing_canonical = sorted(
-        name for name in REQUIRED_CANONICAL_PAGES if not (WIKI_ROOT / name).is_file()
-    )
-    if missing_canonical:
-        raise WikiError(f"missing categorized wiki pages: {missing_canonical}")
+    declared_markdown = set(public_pages) | {"README.md"}
+    actual_markdown = {
+        str(path.relative_to(WIKI_ROOT)) for path in WIKI_ROOT.rglob("*.md")
+    }
+    if actual_markdown != declared_markdown:
+        missing = sorted(declared_markdown - actual_markdown)
+        undeclared = sorted(actual_markdown - declared_markdown)
+        raise WikiError(
+            f"wiki page inventory mismatch; missing={missing}, undeclared={undeclared}"
+        )
+
+    for relative in manifest["wiki"].get("public_assets", []):
+        if not (WIKI_ROOT / relative).is_file():
+            raise WikiError(f"missing public Wiki asset: {relative}")
 
     canonical = WIKI_ROOT / manifest["canonical_page"]
     bibliography = WIKI_ROOT / manifest["bibliography"]
@@ -168,6 +254,7 @@ def check() -> dict:
 
     texts: dict[Path, str] = {}
     public_text_suffixes = {".md", ".json", ".toml", ".py", ".tex", ".bib"}
+    paper_sources: list[str] = []
     for path in sorted(
         item
         for item in WIKI_ROOT.rglob("*")
@@ -194,6 +281,8 @@ def check() -> dict:
                 raise WikiError(
                     f"incomplete YAML front matter in {path.relative_to(WIKI_ROOT)}"
                 )
+            if re.search(r"(?m)^paper_source:\s*true\s*$", front.group("body")):
+                paper_sources.append(str(path.relative_to(WIKI_ROOT)))
             for target in local_markdown_targets(text):
                 resolved = (path.parent / target).resolve()
                 if WIKI_ROOT.resolve() not in (resolved, *resolved.parents):
@@ -205,11 +294,45 @@ def check() -> dict:
                         f"broken local link in {path.relative_to(WIKI_ROOT)}: {target}"
                     )
 
+    if paper_sources != [manifest["canonical_page"]]:
+        raise WikiError(
+            "paper_source must identify only the canonical full-manuscript page"
+        )
+
+    for path, text in texts.items():
+        if path.suffix.lower() != ".md":
+            continue
+        for match in MARKDOWN_LINK.finditer(text):
+            raw = match.group("target").strip()
+            if raw.startswith("#"):
+                target_path = path
+                fragment = raw[1:]
+            else:
+                split = split_local_target(raw)
+                if split is None:
+                    continue
+                raw_path, marker = split
+                if not marker:
+                    continue
+                target_path = (path.parent / raw_path).resolve()
+                fragment = marker[1:]
+            if target_path.suffix.lower() != ".md":
+                continue
+            if fragment not in markdown_anchors(texts[target_path]):
+                raise WikiError(
+                    f"broken anchor in {path.relative_to(WIKI_ROOT)}: {raw}"
+                )
+
     landing_page = WIKI_ROOT.parent / "README.md"
     landing_text = landing_page.read_text(encoding="utf-8")
     for label, pattern in BANNED_PUBLIC_PATTERNS.items():
         if pattern.search(landing_text):
             raise WikiError(f"{label} found in repository README.md")
+    expected_readme = render_repository_readme(manifest)
+    if landing_text != expected_readme:
+        raise WikiError(
+            "repository README.md is stale; run `python wiki/build.py write-readme`"
+        )
 
     canonical_text = texts[canonical]
     abstract, body = split_manuscript(canonical_text)
@@ -278,26 +401,35 @@ def check() -> dict:
         raise WikiError("acquisition figure SHA-256 mismatch")
     if figure_manifest["evidence_sources"] != ["E4", "E5"]:
         raise WikiError("acquisition figure has unexpected evidence sources")
-    source_page = texts[WIKI_ROOT / "Evidence-Sources.md"]
+    source_page_path = WIKI_ROOT / "evidence" / "Evidence-Sources.md"
+    source_page = texts[source_page_path]
     for source_id in range(1, 10):
         anchor = f'<a id="e{source_id}"></a>'
         if anchor not in source_page:
             raise WikiError(f"missing evidence source anchor E{source_id}")
     for page in (
         "Home.md",
-        "Project-Status.md",
-        "Full-Manuscript.md",
-        "Claims-and-Limits.md",
-        "Scientific-Job-Results.md",
+        "status/Project-Status.md",
+        "manuscript/Full-Manuscript.md",
+        "claims/Claims-and-Limits.md",
+        "results/Scientific-Job-Results.md",
     ):
         if "Evidence-Sources.md#e" not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} has no source-bound quantitative result")
-    index_text = texts[WIKI_ROOT / "Wiki-Index.md"]
-    indexed_pages = REQUIRED_PAGES - {"README.md", "_Sidebar.md", "Wiki-Index.md"}
-    for page in sorted(indexed_pages):
-        if f"]({page})" not in index_text and f"]({page}#" not in index_text:
-            raise WikiError(f"Wiki-Index.md does not index {page}")
-    for page in ("Full-Manuscript.md", "Project-Status.md"):
+    index_path = WIKI_ROOT / manifest["wiki"]["index"]
+    index_targets = {
+        str((index_path.parent / target).resolve().relative_to(WIKI_ROOT))
+        for target in local_markdown_targets(texts[index_path])
+        if (index_path.parent / target).resolve().suffix == ".md"
+    }
+    indexed_pages = set(public_pages) - {
+        manifest["wiki"]["index"],
+        manifest["wiki"]["sidebar"],
+    }
+    omitted = sorted(indexed_pages - index_targets)
+    if omitted:
+        raise WikiError(f"Wiki index omits canonical pages: {omitted}")
+    for page in ("manuscript/Full-Manuscript.md", "status/Project-Status.md"):
         if release_id not in texts[WIKI_ROOT / page] or release_digest not in texts[WIKI_ROOT / page]:
             raise WikiError(f"{page} is not bound to the declared evidence release")
 
@@ -321,6 +453,120 @@ def check() -> dict:
             )
         },
     }
+
+
+def render_public_wiki_page(
+    relative: str, manifest: dict, source_revision: str
+) -> str:
+    """Render one organized source page into the flat hosted-Wiki namespace."""
+    source = WIKI_ROOT / relative
+    pages = declared_public_pages(manifest)
+    slugs = {page: Path(page).name for page in pages}
+    public_assets = set(manifest["wiki"].get("public_assets", []))
+    repository_url = manifest["publication"]["repository_url"].rstrip("/")
+
+    def resolve_target(page: Path, raw_path: str) -> str:
+        target = (page.parent / raw_path).resolve()
+        try:
+            target_relative = target.relative_to(WIKI_ROOT).as_posix()
+        except ValueError as exc:
+            raise WikiError(
+                f"public Wiki link escapes source tree: {relative}: {raw_path}"
+            ) from exc
+        if target_relative in slugs:
+            return slugs[target_relative]
+        if target_relative in public_assets:
+            return target_relative
+        if not target.exists():
+            raise WikiError(f"public Wiki link target does not exist: {target_relative}")
+        return f"{repository_url}/blob/{source_revision}/wiki/{target_relative}"
+
+    body = strip_front_matter(source.read_text(encoding="utf-8"))
+    return rewrite_markdown_links(body, source, resolve_target)
+
+
+def validate_public_wiki_tree(output: Path) -> None:
+    """Reject broken local links and anchors in a staged hosted-Wiki tree."""
+    markdown = {
+        path.resolve(): path.read_text(encoding="utf-8")
+        for path in output.glob("*.md")
+    }
+    for path, text in markdown.items():
+        for match in MARKDOWN_LINK.finditer(text):
+            raw = match.group("target").strip()
+            if raw.startswith("#"):
+                target = path
+                fragment = raw[1:]
+            else:
+                split = split_local_target(raw)
+                if split is None:
+                    continue
+                raw_path, marker = split
+                target = (path.parent / raw_path).resolve()
+                fragment = marker[1:] if marker else ""
+            if not target.exists():
+                raise WikiError(
+                    f"broken staged Wiki link in {path.name}: {raw}"
+                )
+            if fragment and target.suffix.lower() == ".md":
+                target_text = markdown.get(target)
+                if target_text is None or fragment not in markdown_anchors(target_text):
+                    raise WikiError(
+                        f"broken staged Wiki anchor in {path.name}: {raw}"
+                    )
+
+
+def stage_public_wiki(output: Path) -> Path:
+    """Create an allowlisted, flat hosted-Wiki projection outside the repo."""
+    resolved_output = output.resolve()
+    repository = WIKI_ROOT.parent.resolve()
+    if output.exists():
+        raise WikiError(f"Wiki staging output already exists: {output}")
+    if resolved_output == repository or repository in resolved_output.parents:
+        raise WikiError("public Wiki staging output must be outside the repository")
+
+    manifest = load_manifest()
+    report = check()
+    source_revision = committed_wiki_revision()
+    output.mkdir(parents=True)
+    try:
+        rendered: dict[str, str] = {}
+        for relative in declared_public_pages(manifest):
+            slug = Path(relative).name
+            target = output / slug
+            target.write_text(
+                render_public_wiki_page(relative, manifest, source_revision),
+                encoding="utf-8",
+            )
+            rendered[slug] = sha256(target)
+
+        for relative in manifest["wiki"].get("public_assets", []):
+            source = WIKI_ROOT / relative
+            target = output / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            rendered[relative] = sha256(target)
+
+        validate_public_wiki_tree(output)
+
+        record = {
+            "schema_version": "magnetic-public-wiki/1.0",
+            "source_revision": source_revision,
+            "source_tree_sha256": aggregate_digest(report["wiki_inputs"]),
+            "evidence_release_id": report["evidence_release_id"],
+            "evidence_projection_sha256": report["evidence_projection_sha256"],
+            "files": dict(sorted(rendered.items())),
+        }
+        record_path = output / "publish-manifest.json"
+        record_path.write_text(
+            json.dumps(record, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        return record_path
+    except Exception:
+        (output / "WIKI_STAGING_FAILED").write_text(
+            "public Wiki staging failed\n", encoding="utf-8"
+        )
+        raise
 
 
 def require_snapshot_tools() -> tuple[str, str]:
@@ -355,14 +601,14 @@ def committed_wiki_revision() -> str:
     """Return the exact committed wiki source and reject uncommitted wiki input."""
     repository = WIKI_ROOT.parent
     status = subprocess.run(
-        ["git", "status", "--porcelain", "--", "wiki"],
+        ["git", "status", "--porcelain", "--", "wiki", "README.md"],
         cwd=repository,
         check=True,
         capture_output=True,
         text=True,
     ).stdout.strip()
     if status:
-        raise WikiError("commit reviewed wiki changes before exporting a document")
+        raise WikiError("commit the Wiki and README projection before publishing")
     revision = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=repository,
@@ -376,6 +622,7 @@ def committed_wiki_revision() -> str:
 
 
 def run_pandoc(source: Path, output: Path) -> None:
+    canonical_parent = (WIKI_ROOT / load_manifest()["canonical_page"]).parent
     subprocess.run(
         [
             "pandoc",
@@ -385,7 +632,7 @@ def run_pandoc(source: Path, output: Path) -> None:
             "--natbib",
             "--top-level-division=section",
             "--resource-path",
-            str(WIKI_ROOT),
+            os.pathsep.join((str(canonical_parent), str(WIKI_ROOT))),
             "--output",
             str(output),
         ],
@@ -467,6 +714,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("check", help="validate wiki without generating paper artifacts")
+    subparsers.add_parser(
+        "write-readme", help="refresh the repository README from Wiki Home"
+    )
+    wiki_parser = subparsers.add_parser(
+        "stage-wiki", help="create a flat hosted-Wiki projection outside the repository"
+    )
+    wiki_parser.add_argument("--output", type=Path, required=True)
     snapshot_parser = subparsers.add_parser(
         "snapshot", help="explicitly render a staged conference or journal snapshot"
     )
@@ -479,6 +733,10 @@ def main() -> int:
     try:
         if args.command == "check":
             print(json.dumps(check(), indent=2, sort_keys=True))
+        elif args.command == "write-readme":
+            print(write_repository_readme())
+        elif args.command == "stage-wiki":
+            print(stage_public_wiki(args.output))
         else:
             print(snapshot(args.output, args.document_kind, args.release_name))
     except (WikiError, OSError, subprocess.CalledProcessError) as exc:

@@ -2,7 +2,7 @@
 title: Scientific Glossary
 status: canonical terminology
 last_updated: 2026-08-19
-paper_source: true
+paper_source: false
 prose_reviewed: true
 claim_ids: none
 ---

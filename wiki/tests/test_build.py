@@ -24,7 +24,8 @@ def test_living_manuscript_contract_is_complete():
 
 
 def test_split_retains_complete_paper_body():
-    text = (WIKI / "Full-Manuscript.md").read_text(encoding="utf-8")
+    manifest = MODULE.load_manifest()
+    text = (WIKI / manifest["canonical_page"]).read_text(encoding="utf-8")
     abstract, body = MODULE.split_manuscript(text)
     assert abstract.startswith("Magnetic-core models")
     assert body.startswith("# Introduction")
@@ -86,23 +87,34 @@ def test_scientific_job_registry_covers_declared_artifacts():
 
 
 def test_comparator_explanation_is_source_bound():
-    page = (WIKI / "Scientific-Job-Results.md").read_text(encoding="utf-8")
+    page = (WIKI / "results" / "Scientific-Job-Results.md").read_text(
+        encoding="utf-8"
+    )
     assert "Why EIG did not beat the strong comparators" in page
     assert "Evidence-Sources.md#e4" in page
     assert "Evidence-Sources.md#e5" in page
-    for source_id in range(1, 9):
+    for source_id in range(1, 10):
         assert f'<a id="e{source_id}"></a>' in (
-            WIKI / "Evidence-Sources.md"
+            WIKI / "evidence" / "Evidence-Sources.md"
         ).read_text(encoding="utf-8")
 
 
 def test_new_reader_index_covers_public_pages_and_evidence_lookup():
-    index = (WIKI / "Wiki-Index.md").read_text(encoding="utf-8")
-    for page in MODULE.REQUIRED_PAGES - {"README.md", "_Sidebar.md", "Wiki-Index.md"}:
-        assert f"]({page})" in index or f"]({page}#" in index
-    assert "How to verify a number" in index
-    for source_id in range(1, 9):
-        assert f"Evidence-Sources.md#e{source_id}" in index
+    manifest = MODULE.load_manifest()
+    index_path = WIKI / manifest["wiki"]["index"]
+    index = index_path.read_text(encoding="utf-8")
+    targets = {
+        str((index_path.parent / target).resolve().relative_to(WIKI))
+        for target in MODULE.local_markdown_targets(index)
+        if (index_path.parent / target).resolve().suffix == ".md"
+    }
+    expected = set(MODULE.declared_public_pages(manifest)) - {
+        manifest["wiki"]["index"],
+        manifest["wiki"]["sidebar"],
+    }
+    assert expected <= targets
+    assert "Verify a number" in index
+    assert "E1--E9" in index
 
 
 def test_acquisition_figure_is_bound_to_evidence_projection():
@@ -138,14 +150,55 @@ def test_public_disclosure_patterns_are_detected(text: str):
 
 def test_repository_landing_page_is_evidence_led():
     readme = (WIKI.parent / "README.md").read_text(encoding="utf-8")
-    assert "## Main result" in readme
-    assert "wiki/Evidence-Sources.md#e4" in readme
-    assert "wiki/Evidence-Sources.md#e5" in readme
-    assert "wiki/Evidence-Sources.md#e7" in readme
+    assert readme == MODULE.render_repository_readme()
+    assert "## Current result" in readme
+    assert "wiki/evidence/Evidence-Sources.md#e4" in readme
+    assert "wiki/evidence/Evidence-Sources.md#e5" in readme
+    assert "wiki/evidence/Evidence-Sources.md#e7" in readme
+    assert "wiki/evidence/Evidence-Sources.md#e9" in readme
     assert "20260817T072230Z_401e3030fe13" in readme
     assert MODULE.sha256(WIKI.parent / "README.md") == MODULE.check()[
         "repository_readme_sha256"
     ]
+
+
+def test_public_wiki_projection_is_flat_and_rewrites_links():
+    manifest = MODULE.load_manifest()
+    pages = MODULE.declared_public_pages(manifest)
+    assert len({Path(page).name for page in pages}) == len(pages)
+    rendered = MODULE.render_public_wiki_page(
+        "Home.md", manifest, "1" * 40
+    )
+    assert not rendered.startswith("---")
+    assert "](Evidence-Sources.md#e4)" in rendered
+    assert "](Project-Status.md)" in rendered
+    assert "wiki/evidence/Evidence-Sources.md" not in rendered
+
+
+def test_public_wiki_staging_refuses_existing_output(tmp_path: Path):
+    output = tmp_path / "existing"
+    output.mkdir()
+    with pytest.raises(MODULE.WikiError, match="already exists"):
+        MODULE.stage_public_wiki(output)
+
+
+def test_staged_wiki_validation_rejects_broken_anchor(tmp_path: Path):
+    (tmp_path / "Home.md").write_text(
+        "# Home\n\n[Missing](Results.md#missing)\n", encoding="utf-8"
+    )
+    (tmp_path / "Results.md").write_text("# Results\n", encoding="utf-8")
+    with pytest.raises(MODULE.WikiError, match="broken staged Wiki anchor"):
+        MODULE.validate_public_wiki_tree(tmp_path)
+
+
+def test_only_full_manuscript_is_a_paper_source():
+    manifest = MODULE.load_manifest()
+    paper_sources = []
+    for page in MODULE.declared_public_pages(manifest):
+        text = (WIKI / page).read_text(encoding="utf-8")
+        if re.search(r"(?m)^paper_source:\s*true\s*$", text):
+            paper_sources.append(page)
+    assert paper_sources == [manifest["canonical_page"]]
 
 
 def test_ci_validates_wiki_without_rendering_a_document_snapshot():
@@ -153,6 +206,7 @@ def test_ci_validates_wiki_without_rendering_a_document_snapshot():
         encoding="utf-8"
     )
     assert "python wiki/build.py check" in workflow
+    assert "python wiki/build.py stage-wiki" in workflow
     assert "pytest -q wiki/tests" in workflow
     assert "latexmk" not in workflow
     assert "paper/current_state/source" not in workflow

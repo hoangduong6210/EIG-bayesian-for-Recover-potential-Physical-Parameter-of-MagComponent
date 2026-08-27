@@ -123,7 +123,7 @@ hide a failure.
 
 ## Admission rule
 
-An MM-1 result may enter the living manuscript only after all 120 declared
+An MM-1 result may enter the research record only after all 120 declared
 records exist, every posterior state passes the existing convergence gate, the
 aggregate reconstructs from those records, and the campaign is frozen under a
 new release identity. Partial arrays, failed sampler states, and pilot runs are

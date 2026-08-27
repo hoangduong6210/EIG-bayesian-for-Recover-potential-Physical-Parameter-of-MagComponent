@@ -1,17 +1,17 @@
 ---
 title: Evidence Sources
-status: detailed evidence annex
+status: canonical evidence source map
 last_updated: 2026-08-19
 paper_source: false
 ---
 
 # Evidence sources
 
-All quantitative result statements in this wiki point to the disclosure-safe
-projection [`evidence/results.json`](evidence/results.json). The projection is
-generated from the verified frozen release; it contains aggregates and derived
-trajectory audits, not machine paths, scheduler metadata, credentials, or raw
-measured curves.
+Quantitative result statements in this wiki point either to the disclosure-safe
+projection [`evidence/results.json`](results.json) or to a separately hashed
+diagnostic named below. The projection is generated from the verified frozen
+release; it contains aggregates and derived trajectory audits, not machine
+paths, scheduler metadata, credentials, or raw measured curves.
 
 Evidence release: `20260817T072230Z_401e3030fe13`  
 Release-manifest SHA-256:
@@ -88,12 +88,14 @@ source label.
 - Supports: release identifier, source artifact hashes, and the digest over the
   30 acquisition-record path/hash pairs. The production release remains
   separate because its operational provenance is not a public manuscript
-input.
+  input.
+- Public audit v2: [release assets](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/evidence-20260817-audit-v2)
+  and [immutable asset descriptor](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/d9bd14b29b43207038af2cef4d5f14925dee9aef/results/audit/20260817T072230Z_401e3030fe13/asset.json).
 
 <a id="e9"></a>
 ## E9 — Comparator selection-path diagnostic
 
-- Artifact: [`aggregate_summary.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/selection_overlap/20260817T072230Z_401e3030fe13/aggregate_summary.json)
+- Artifact: [`aggregate_summary.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/cf753667c3ac120bd856f0a0f53913a6c5367db4/results/diagnostics/selection_overlap/20260817T072230Z_401e3030fe13/aggregate_summary.json)
 - SHA-256: `cbdfc7f19a707ed9e58d3fb129ddcd314c1b75e1447eaa1ebdf88f75b07b6153`
 - Supports: exact-state score-rank correlations, selected-set and ordered-path
   overlap, per-step candidate frequencies, and realized one-step movement
@@ -106,7 +108,7 @@ input.
 
 ## Verification rule
 
-[`build.py`](build.py) rejects the wiki if the projection hash, release ID,
+[`build.py`](../build.py) rejects the wiki if the projection hash, release ID,
 release-manifest hash, artifact total, acquisition-record count, or source
 labels differ from the declared contract. The exporter can reproduce the
 projection from an independently obtained verified release:

@@ -37,8 +37,8 @@ residuals expose substantial one-pole model discrepancy. The evidence supports
 a reproducible, model-conditional acquisition benchmark. It does not show EIG
 superiority over strong comparators, measured laboratory-time savings, global
 six-parameter identification, or a validated optimal laboratory plan.
-[Evidence E2](Evidence-Sources.md#e2), [E4](Evidence-Sources.md#e4), and
-[E7](Evidence-Sources.md#e7)
+[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4), and
+[E7](../evidence/Evidence-Sources.md#e7)
 
 *Keywords:* Bayesian calibration; magnetic core; core loss; complex
 permeability; sequential experimental design; expected information gain.
@@ -80,7 +80,7 @@ literature, defines the forward and statistical models, documents the
 reproducible protocol, and then reports synthetic and measured-data
 results from one prespecified evaluation.
 
-![Study structure separating matched-model recovery, acquisition-policy comparison, and measured-data adequacy.](assets/study-workflow.png)
+![Study structure separating matched-model recovery, acquisition-policy comparison, and measured-data adequacy.](../assets/study-workflow.png)
 
 # Research Questions and Evidence Scope
 
@@ -114,7 +114,7 @@ comparator contrasts were declared before the confirmatory seed results were
 aggregated. The fixed and randomized traversals remain useful contextual
 baselines, but they are not evidence that EIG dominates modern acquisition
 heuristics.
-[Campaign source E1](Evidence-Sources.md#e1)
+[Campaign source E1](../evidence/Evidence-Sources.md#e1)
 
 # Related Work
 
@@ -577,7 +577,7 @@ the per-parameter median absolute relative errors ranged from 0.27% to 5.85%.
 The known values fell within 28 of 30 equal-tailed 90% model-conditional
 posterior credible intervals. This observed inclusion count is descriptive,
 not a coverage estimate.
-[Result source E2](Evidence-Sources.md#e2)
+[Result source E2](../evidence/Evidence-Sources.md#e2)
 
 | Parameter | Mean error | Median error | SD | Truth in 90% CI |
 |---|---:|---:|---:|---:|
@@ -588,9 +588,9 @@ not a coverage estimate.
 | $f_{\mathrm{rel}}$ | 0.91% | 0.87% | 0.55% | 5/5 |
 | $a_{\mathrm{cc}}$ | 0.91% | 0.62% | 0.79% | 5/5 |
 
-[Table source E2](Evidence-Sources.md#e2)
+[Table source E2](../evidence/Evidence-Sources.md#e2)
 
-![Local Fisher spectrum and five-seed matched-model recovery.](assets/synthetic-diagnostics.png)
+![Local Fisher spectrum and five-seed matched-model recovery.](../assets/synthetic-diagnostics.png)
 
 ## Nested-estimator qualification
 
@@ -603,7 +603,7 @@ and maximum relative regret was zero. Ten downstream validation seeds
 reproduced the reference count and modeled-cost endpoints. This qualifies the
 numerical setting for the campaign; it does not make each finite EIG score
 exact or incorporate structural-model uncertainty.
-[Result source E3](Evidence-Sources.md#e3)
+[Result source E3](../evidence/Evidence-Sources.md#e3)
 
 ## Paired synthetic acquisition
 
@@ -613,7 +613,7 @@ while the deterministic fixed channel-balanced traversal required nine in all
 a bootstrap 95% interval of 4.00--4.00 measurements. This 44.4% reduction is a
 valid comparison with that specified baseline, but the strong-comparator
 results materially narrow its interpretation.
-[Result source E4](Evidence-Sources.md#e4)
+[Result source E4](../evidence/Evidence-Sources.md#e4)
 
 | Preregistered direct contrast | Endpoint | Mean difference, comparator $-$ EIG | Bootstrap 95% CI | EIG W/T/L |
 |---|---|---:|---:|---:|
@@ -622,7 +622,7 @@ results materially narrow its interpretation.
 | EIG/cost vs predictive variance/cost | modeled cost | -15.17 | [-15.50, -15.00] | 0/0/30 |
 | EIG/cost vs Laplace D-optimality/cost | modeled cost | 0.00 | [0.00, 0.00] | 0/30/0 |
 
-[Table source E4](Evidence-Sources.md#e4)
+[Table source E4](../evidence/Evidence-Sources.md#e4)
 
 All eight policies reached the gate in all 30 seeds. Thus the experiment gives
 no evidence that raw EIG outperforms predictive variance or Laplace
@@ -630,7 +630,7 @@ D-optimality on measurement count. Under the cost objective, predictive
 variance reached the gate at modeled cost 175 in every seed, whereas EIG/cost
 used 190 in 29 seeds and 195 once. The cost constants are prespecified model
 inputs, not measured laboratory durations.
-[Result source E4](Evidence-Sources.md#e4)
+[Result source E4](../evidence/Evidence-Sources.md#e4)
 
 ### Descriptive selection-path diagnostic
 
@@ -657,9 +657,9 @@ stopping uncertainty was primarily at the core-loss target. Because this
 diagnostic was defined after the comparator result and uses realized policy
 paths, it does not establish a general causal advantage for predictive
 variance.
-[Diagnostic source E9](Evidence-Sources.md#e9)
+[Diagnostic source E9](../evidence/Evidence-Sources.md#e9)
 
-![Eight-policy paired acquisition results and four direct strong-comparator contrasts.](assets/acquisition-diagnostics.png)
+![Eight-policy paired acquisition results and four direct strong-comparator contrasts.](../assets/acquisition-diagnostics.png)
 
 ## Disjoint holdout and six-parameter endpoints
 
@@ -671,14 +671,14 @@ RRMSE 3.15%, 0.95%, 2.78%, and 0.85%, with coverage 85.0%, 93.3%, 89.4%, and
 93.3%. These secondary endpoints do not rescue an acquisition-superiority
 claim: predictive-variance and Laplace policies had comparable holdout
 performance, while the fixed and randomized traversals were often worse.
-[Result source E6](Evidence-Sources.md#e6)
+[Result source E6](../evidence/Evidence-Sources.md#e6)
 
 Final 90% parameter intervals contained a mean 5.13 of six generating
 parameters for both EIG objectives. Across policies, however, mean absolute
 error for $k$ remained approximately 25.1%--30.7%. Posterior interval inclusion
 must therefore not be described as uniformly precise global six-parameter
 recovery.
-[Result source E6](Evidence-Sources.md#e6)
+[Result source E6](../evidence/Evidence-Sources.md#e6)
 
 ## Measured-data model adequacy
 
@@ -690,9 +690,9 @@ were excluded from numerical claims [@magnet2022]. Measured Steinmetz
 fits produced in-sample RRMSEs of 8.79% (N87), 12.55% (N49), 13.40% (3C95),
 and 18.21% (N95) within their specified temperature cohorts. These are fit
 residuals, not held-out errors.
-[Result source E7](Evidence-Sources.md#e7)
+[Result source E7](../evidence/Evidence-Sources.md#e7)
 
-![In-sample measured-data adequacy, with storage and loss permeability reported separately.](assets/measured-adequacy.png)
+![In-sample measured-data adequacy, with storage and loss permeability reported separately.](../assets/measured-adequacy.png)
 
 All numerical results in this section use the same prespecified models,
 data filters, random seeds, and evaluation criteria.
@@ -729,7 +729,7 @@ that these policies narrow two specified latent-response intervals efficiently
 inside the matched model. It does not establish accurate recovery of a
 physical component, global predictive accuracy, or robustness to model
 misspecification.
-[Contrast source E4](Evidence-Sources.md#e4)
+[Contrast source E4](../evidence/Evidence-Sources.md#e4)
 
 ## Why the strong comparators tie or win
 
@@ -743,7 +743,7 @@ completed the complementary response information at measurement five, so the
 integer count endpoint collapsed their different paths to the same value.
 Their ordered sequences confirm the distinction: EIG and predictive variance
 match in only 11 of 30 seeds, while EIG and Laplace D-optimality match in only
-2 of 30. [Trajectory source E5](Evidence-Sources.md#e5)
+2 of 30. [Trajectory source E5](../evidence/Evidence-Sources.md#e5)
 
 The per-cost loss has a different mechanism. At the shared four-measurement
 state available in 22 paired seeds, the mean core-loss interval half-width is
@@ -753,7 +753,7 @@ measurement first in 21 of those states because its mean joint
 information-per-cost utility is 0.05282, compared with 0.04390 for the
 high-leverage core-loss point. Predictive variance/cost ranks that core-loss
 point first in all 22 states and crosses both gates one measurement earlier.
-[Trajectory source E5](Evidence-Sources.md#e5)
+[Trajectory source E5](../evidence/Evidence-Sources.md#e5)
 
 Thus EIG/cost behaves consistently with its own objective, but that objective
 is not expected cost-to-gate. The experiment asks whether a global parameter-
@@ -854,7 +854,7 @@ EIG did not beat either strong raw policy and lost the per-cost comparison
 with predictive variance. Publishing this outcome prevents the favorable
 fixed-traversal comparison from being generalized beyond its actual
 comparator.
-[Sources E4](Evidence-Sources.md#e4) and [E5](Evidence-Sources.md#e5)
+[Sources E4](../evidence/Evidence-Sources.md#e4) and [E5](../evidence/Evidence-Sources.md#e5)
 
 # Conclusion
 
@@ -871,8 +871,8 @@ posterior concentration cannot compensate for an inadequate permeability law.
 The defensible conclusion is therefore a reproducible model-conditional
 benchmark with informative positive and negative results, not proof of EIG
 superiority or laboratory efficiency.
-[Evidence E2](Evidence-Sources.md#e2), [E4](Evidence-Sources.md#e4), and
-[E7](Evidence-Sources.md#e7)
+[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4), and
+[E7](../evidence/Evidence-Sources.md#e7)
 
 # Exact Sequential Evaluation Logic
 
@@ -936,10 +936,10 @@ and reconstructed endpoints. A sanitized public audit bundle for this freeze
 must pass the disclosure gate before it is published; the private production
 tree is not a public artifact. Raw measured curves remain governed by the
 cited upstream sources and are not redistributed as if produced by this study.
-[Release source E8](Evidence-Sources.md#e8)
+[Release source E8](../evidence/Evidence-Sources.md#e8)
 
-The [scientific job ledger](Scientific-Job-Results.md) accounts for every
-result artifact in the release, and [Evidence Sources](Evidence-Sources.md)
+The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for every
+result artifact in the release, and [Evidence Sources](../evidence/Evidence-Sources.md)
 maps each quantitative result family to an exact pointer in the
 disclosure-safe projection.
 

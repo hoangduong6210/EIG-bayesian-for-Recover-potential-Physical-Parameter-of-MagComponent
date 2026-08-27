@@ -16,5 +16,5 @@ dedicated snapshot commit. Routine wiki changes neither rebuild nor modify an
 existing PDF.
 
 For the current result and argument, use the
-[`full wiki manuscript`](../wiki/Full-Manuscript.md). Historical numbers must
+[`full wiki manuscript`](../wiki/manuscript/Full-Manuscript.md). Historical numbers must
 be interpreted through the metadata stored beside the corresponding PDF.

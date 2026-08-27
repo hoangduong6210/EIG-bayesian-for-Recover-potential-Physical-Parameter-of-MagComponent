@@ -12,9 +12,9 @@ selection for Steinmetz core-loss and Cole--Cole permeability models. The
 validated benchmark has 30 paired seeds, eight policies, and a frozen
 disclosure-safe evidence projection.
 
-Read [Project Status](status/Project-Status.md), [Current Claims](claims/Current-Claim-Language.md),
-[Dataset Registry](datasets/Dataset-Registry.md), [Evidence Ledger](evidence/Evidence-Ledger.md),
-and [Limitations](LIMITATIONS.md). The safe repository check is:
+Read [Project Status](../status/Project-Status.md), [Current Claims](../claims/Current-Claim-Language.md),
+[Dataset Registry](../datasets/Dataset-Registry.md), [Evidence Ledger](../evidence/Evidence-Ledger.md),
+and [Limitations](../claims/Limitations.md). The safe repository check is:
 
 ```bash
 python wiki/build.py check

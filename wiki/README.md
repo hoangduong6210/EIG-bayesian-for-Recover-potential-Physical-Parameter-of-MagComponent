@@ -1,36 +1,38 @@
 ---
-title: Magnetic-Core Bayesian Design Research Wiki
-status: canonical home
-last_updated: 2026-08-19
+title: Research Wiki Source Tree
+status: source-tree guide
+last_updated: 2026-08-26
 paper_source: false
 ---
 
-# Magnetic-Core Bayesian Design Research Wiki
+# Research Wiki source tree
 
-This wiki holds the active scientific manuscript for the calibration and
-sequential-design study. Computation, evidence admission, claim wording, wiki
-revision, and conference or journal snapshots are separate lifecycle stages.
+`Home.md` is the canonical current-research summary and the prose source for
+the repository README. `manuscript/Full-Manuscript.md` is the sole source for
+conference and journal document releases. Other pages own one scientific or
+operational concern each.
 
-| Reader | Begin here | Then read |
-|---|---|---|
-| New contributor | [Start Here](START-HERE.md) | [Research System Map](architecture/Research-System-Map.md) |
-| Research reader | [Current Claims](claims/Current-Claim-Language.md) | [Results](results/Scientific-Results.md) and [Limitations](LIMITATIONS.md) |
-| Auditor | [Reproducibility](REPRODUCIBILITY.md) | [Evidence Ledger](evidence/Evidence-Ledger.md) |
-| Paper editor | [Paper Export Contract](manuscript/Paper-Export-Contract.md) | [Full Manuscript](Full-Manuscript.md) |
+| Directory | Responsibility |
+|---|---|
+| `overview/` | Onboarding, directory, and terminology |
+| `status/` | Current lifecycle state |
+| `architecture/`, `methods/`, `datasets/` | Scientific system, method, and data definitions |
+| `experiments/`, `results/` | Prospective protocols and admitted outcomes |
+| `claims/`, `evidence/` | Defensible language, limitations, source records, and hashes |
+| `decisions/` | Prospective methodological decisions |
+| `operations/` | Reproduction, audit, and compute workflow |
+| `references/` | Literature and technical source mapping |
+| `manuscript/` | Paper source and release contract |
+| `governance/` | Contribution, license, and asset rules |
 
-The [Exhaustive Index](INDEX.md) lists the registries. A completed job does not
-automatically become an admitted claim. A paper release pins the evidence
-release, wiki commit, claim set, figures, bibliography, and hashes.
+Use the [Wiki index](overview/Index.md) to navigate the research. Validate any
+change with:
 
-## Existing manuscript system
+```bash
+python wiki/build.py write-readme
+python wiki/build.py check
+pytest -q wiki/tests
+```
 
-Start with the [Wiki Index](Wiki-Index.md) if you are new to the project. Use
-[Home](Home.md) for the rapid scientific summary or open the
-[Full Manuscript](Full-Manuscript.md) for the complete paper-style narrative.
-The [Scientific Job Results](Scientific-Job-Results.md) ledger accounts for
-the complete result campaign, while [Evidence Sources](Evidence-Sources.md)
-binds quantitative claims to a disclosure-safe machine-readable projection.
-
-Scientific results are linked to the frozen evidence through source labels
-E1--E9. PDF versions under `paper/` are historical document releases exported
-from reviewed wiki revisions; they are not alternate manuscript sources.
+The hosted Wiki, when enabled, is built as a flat allowlisted projection. The
+organized source tree is not mirrored directly.

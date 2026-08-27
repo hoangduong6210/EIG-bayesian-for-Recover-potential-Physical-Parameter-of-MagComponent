@@ -1,13 +1,13 @@
 ---
 title: References
-status: bibliography annex
+status: canonical reference list
 last_updated: 2026-08-19
 paper_source: false
 ---
 
 # References
 
-This list is rendered from [`bibliography/references.bib`](bibliography/references.bib).
+This list is rendered from [`bibliography/references.bib`](../bibliography/references.bib).
 The same citation keys are checked when the manuscript is built.
 
 <div id="refs" class="references csl-bib-body hanging-indent">

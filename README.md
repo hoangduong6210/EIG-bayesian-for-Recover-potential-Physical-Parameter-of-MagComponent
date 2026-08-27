@@ -1,116 +1,142 @@
+<!-- Source: wiki/Home.md; update with `python wiki/build.py write-readme`. -->
+
 # Bayesian calibration and sequential design for magnetic-core models
 
 This repository studies sequential measurement selection for joint Bayesian
 calibration of Steinmetz core-loss and Cole--Cole complex-permeability models.
-The implementation covers posterior inference, expected information gain
-(EIG), paired acquisition-policy benchmarks, estimator qualification, measured-
-data model checks, and frozen evidence.
+It contains posterior inference, expected information gain (EIG), paired
+acquisition-policy benchmarks, estimator qualification, measured-data model
+checks, and frozen evidence for the magnetic-component case study.
 
-The scope is the magnetic-component case study. Results from unrelated device
-domains are not included.
+Authors: Viet Hoang Duong, Viet Huy Duong, and Lun-Min Shih.
 
-## Main result
+## Current result
 
-The 30-paired-seed matched-model benchmark does not show an EIG advantage over
-the two strong acquisition comparators.
+The validated 30-paired-seed matched-model benchmark does not show an EIG
+advantage over the two strong acquisition comparators.
 
-| Comparison | Result | Interpretation | Source |
+| Comparison | Paired result | Defensible interpretation | Evidence |
 |---|---|---|---|
-| Raw EIG vs predictive variance | Both reach the gate in 5 measurements for all 30 pairs | Tie on measurement count | [E4](wiki/Evidence-Sources.md#e4) |
-| Raw EIG vs Laplace D-optimality | Both reach the gate in 5 measurements for all 30 pairs | Tie on measurement count | [E4](wiki/Evidence-Sources.md#e4) |
-| EIG/cost vs predictive variance/cost | Predictive variance uses 15.17 fewer modeled-cost units on average and wins all 30 pairs | EIG/cost loses on the declared cost-to-gate endpoint | [E4](wiki/Evidence-Sources.md#e4) |
-| EIG/cost vs Laplace D-optimality/cost | Equal modeled cost in all 30 pairs | Tie on modeled cost | [E4](wiki/Evidence-Sources.md#e4) |
-| Raw EIG vs fixed channel-balanced traversal | 5 versus 9 measurements | Improvement over this specified traversal only | [E4](wiki/Evidence-Sources.md#e4) |
+| Raw EIG vs predictive variance | Both stop at 5 measurements in all 30 pairs | Tie on measurement count | [E4](wiki/evidence/Evidence-Sources.md#e4) |
+| Raw EIG vs Laplace D-optimality | Both stop at 5 measurements in all 30 pairs | Tie on measurement count | [E4](wiki/evidence/Evidence-Sources.md#e4) |
+| EIG/cost vs predictive variance/cost | Predictive variance uses 15.17 fewer modeled-cost units on average and wins all 30 pairs | EIG/cost loses on cost to gate | [E4](wiki/evidence/Evidence-Sources.md#e4) |
+| EIG/cost vs Laplace D-optimality/cost | Equal modeled cost in all 30 pairs | Tie on modeled cost | [E4](wiki/evidence/Evidence-Sources.md#e4) |
+| Raw EIG vs fixed channel-balanced traversal | 5 versus 9 measurements in all 30 pairs | Improvement over this specified traversal only | [E4](wiki/evidence/Evidence-Sources.md#e4) |
 
-The trajectory audit explains the negative result. Raw policies follow
-different rankings but finish the complementary core-loss and permeability
-measurements at the same discrete gate step. EIG/cost spends an additional
-low-cost measurement on an already-satisfied inductance target before taking
-the core-loss point needed to stop. [Trajectory evidence](wiki/Evidence-Sources.md#e5)
+The recorded paths are consistent with objective--gate misalignment. The three
+raw utilities rank the 37-candidate library similarly and finish the
+complementary core-loss and permeability measurements at the same discrete
+stopping step. Under cost normalization, EIG usually selects an inexpensive
+inductance point before the core-loss point that controls the stopping gate;
+predictive variance selects the gate-relevant core-loss point first. This is a
+post hoc descriptive result for the present benchmark, not a general ordering
+of acquisition methods. [Trajectory evidence E5](wiki/evidence/Evidence-Sources.md#e5)
+and [selection-path evidence E9](wiki/evidence/Evidence-Sources.md#e9)
 
-## Start here
+## Evidence boundary
 
-| Need | Document |
-|---|---|
-| Research overview and navigation | [Wiki index](wiki/Wiki-Index.md) |
-| Full methods and scientific argument | [Full manuscript](wiki/Full-Manuscript.md) |
-| Completed computations and comparator analysis | [Scientific job results](wiki/Scientific-Job-Results.md) |
-| Supported and unsupported claims | [Claims and limits](wiki/Claims-and-Limits.md) |
-| Numerical source map | [Evidence sources](wiki/Evidence-Sources.md) |
-| Reproduction and audit chain | [Reproduce and audit](wiki/Reproduce-and-Audit.md) |
-| Historical and rendered paper versions | [Paper directory](paper/README.md) |
+The current evidence supports:
 
-## Evidence scope
-
-Supported conclusions are limited to:
-
-- matched-model synthetic recovery as an implementation check;
+- matched-model synthetic recovery as an implementation check [E2](wiki/evidence/Evidence-Sources.md#e2);
 - paired policy outcomes under the finite candidate library and local
-  two-target precision gate;
-- modeled acquisition cost using the prespecified cost table;
-- in-sample adequacy of accepted measured-data fits.
+  two-target precision gate [E4](wiki/evidence/Evidence-Sources.md#e4);
+- modeled acquisition cost under the declared cost table [E4](wiki/evidence/Evidence-Sources.md#e4);
+- in-sample adequacy diagnostics for accepted measured-data fits [E7](wiki/evidence/Evidence-Sources.md#e7).
 
-The evidence does not establish laboratory-time savings, global six-parameter
+It does not establish laboratory-time savings, global six-parameter
 identification, calibrated physical uncertainty, robustness under structural
-model mismatch, or a validated optimal laboratory plan. Accepted permeability
-fits retain large loss-component residuals, with \(\mu''\) RRMSE of
-36.77%--52.42%, so measured-data acquisition suggestions remain conditional on
-an inadequate one-pole model. [Measured-data evidence](wiki/Evidence-Sources.md#e7)
+model mismatch, stable measured-data EIG rankings, or a validated optimal
+laboratory plan. These boundaries are maintained in the
+[claim registry](wiki/claims/Claims-and-Limits.md).
 
-## Evidence release
+Accepted measured-data fits retain substantial loss-component discrepancy:
 
-The wiki results are bound to release
-`20260817T072230Z_401e3030fe13`, release-manifest SHA-256
+| Response | Accepted-fit RRMSE | Evidence |
+|---|---:|---|
+| Core-loss density | 8.79%--18.21% | [E7](wiki/evidence/Evidence-Sources.md#e7) |
+| Storage permeability, \(\mu'\) | 6.89%--9.33% | [E7](wiki/evidence/Evidence-Sources.md#e7) |
+| Loss permeability, \(\mu''\) | 36.77%--52.42% | [E7](wiki/evidence/Evidence-Sources.md#e7) |
+
+The one-pole model does not reproduce the retained \(\mu''\) records adequately,
+so measured-data acquisition suggestions remain model-conditional.
+[E7](wiki/evidence/Evidence-Sources.md#e7)
+
+## Research state
+
+| Work product | State | Evidence or protocol |
+|---|---|---|
+| 30-seed, eight-policy matched-model benchmark | Validated | [E1](wiki/evidence/Evidence-Sources.md#e1), [E4](wiki/evidence/Evidence-Sources.md#e4) |
+| Nested-EIG estimator setting | Qualified for the declared benchmark | [E3](wiki/evidence/Evidence-Sources.md#e3) |
+| Public raw-to-aggregate audit bundle v2 | Published and independently verifiable | [E8](wiki/evidence/Evidence-Sources.md#e8) |
+| Comparator selection-path analysis | Post hoc diagnostic complete | [E9](wiki/evidence/Evidence-Sources.md#e9) |
+| Model-mismatch campaign MM-1 | Preregistered; no confirmatory outcome admitted | [MM-1 protocol](wiki/experiments/Model-Mismatch-Preregistration.md) |
+| Gate-aligned utility and simulation-based calibration | Deferred until MM-1 completes | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
+
+The admitted evidence is bound to release
+`20260817T072230Z_401e3030fe13`, manifest SHA-256
 `85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7`.
-The disclosure-safe numerical projection is
-[`wiki/evidence/results.json`](wiki/evidence/results.json); its source map and
-integrity contract are documented in
-[`wiki/Evidence-Sources.md`](wiki/Evidence-Sources.md). [Release evidence](wiki/Evidence-Sources.md#e8)
-The raw-to-aggregate verification steps are listed in
-[`wiki/Reproduce-and-Audit.md`](wiki/Reproduce-and-Audit.md).
+[Release evidence E8](wiki/evidence/Evidence-Sources.md#e8)
+
+## Research record and document releases
+
+The Wiki is the current research source. The repository README is rendered
+from this page and summarizes the same research state. An evidence release is
+a frozen computation record; a document release is an immutable conference or
+journal PDF produced from one reviewed Wiki revision when a submission is
+needed. Routine Wiki updates do not rewrite archived PDFs. See the
+[paper export contract](wiki/manuscript/Paper-Export-Contract.md).
 
 ## Models and measured-data scope
 
-| Response | Forward model | Active parameters | Measured-data records used in aggregate results |
+| Response | Forward model | Active parameters | Measured-data scope |
 |---|---|---|---|
 | Core-loss density | Isothermal Steinmetz law | `k`, `alpha`, `beta` | N49, N87, N95, and 3C95 temperature cohorts |
 | Complex permeability | One-pole Cole--Cole law | `mu_s`, `f_rel`, `alpha_cc` | Accepted N87 and N95 LEA-MTB records |
 
 Raw measured curves are not redistributed. Upstream file identities and
-checksums are declared in [`data/manifest.yaml`](data/manifest.yaml) and
-[`data/checksums.sha256`](data/checksums.sha256).
+checksums are declared in the repository data manifest. The published evidence
+projection contains only disclosure-safe aggregate and audit records.
 
-## Test the repository
+## Read the research
 
-Python 3.11 or newer is required.
+| Need | Canonical page |
+|---|---|
+| Guided entry and complete directory | [Wiki index](wiki/overview/Index.md) |
+| Current lifecycle state | [Project status](wiki/status/Project-Status.md) |
+| Full methods and scientific argument | [Full manuscript](wiki/manuscript/Full-Manuscript.md) |
+| Supported and unsupported claim language | [Claims and limits](wiki/claims/Claims-and-Limits.md) |
+| Completed computations and comparator analysis | [Scientific job results](wiki/results/Scientific-Job-Results.md) |
+| Numerical source map and hashes | [Evidence sources](wiki/evidence/Evidence-Sources.md) |
+| Raw-to-aggregate verification | [Reproduce and audit](wiki/operations/Reproduce-and-Audit.md) |
+| Conference and journal release rules | [Authoring and snapshots](wiki/manuscript/Authoring-and-Snapshots.md) |
+
+## Verify the repository
+
+Python 3.11 or newer is required for the validation environment.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
 python -m pip install -e '.[test]'
 pytest
 python wiki/build.py check
 ```
 
 The validation suite checks implementation contracts, evidence bindings,
-public-disclosure rules, manuscript citations, wiki navigation, and snapshot
-build capability. Full MCMC and EIG campaigns require the pinned environment
-and compute workflow described in [`docs/COMPUTE_POLICY.md`](docs/COMPUTE_POLICY.md).
+public-disclosure rules, navigation, README projection, and document-release
+capability. Full MCMC and EIG campaigns use the pinned compute workflow.
 
 ## Repository map
 
 | Path | Contents |
 |---|---|
-| [`wiki/`](wiki/) | Research narrative, result ledger, evidence map, and paper source |
-| [`src/magcore_calib/`](src/magcore_calib/) | Forward models, priors, inference, EIG, and diagnostics |
-| [`experiments/`](experiments/) | Scientific experiment entry points |
-| [`configs/`](configs/) | Model, sampler, acquisition, dependency, and seed settings |
-| [`results/`](results/) | Published evidence projections and frozen releases |
-| [`tests/`](tests/) | Unit, schema, evidence, and release-contract tests |
-| [`docs/`](docs/) | Protocol, provenance, claim boundaries, and compute policy |
-| [`paper/`](paper/) | Immutable conference/journal document snapshots exported from reviewed wiki revisions |
+| [`wiki/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/wiki) | Canonical research narrative, claims, evidence map, and manuscript source |
+| [`src/magcore_calib/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/src/magcore_calib) | Forward models, priors, inference, EIG, and diagnostics |
+| [`experiments/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/experiments) | Scientific experiment entry points |
+| [`configs/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/configs) | Models, samplers, acquisition policies, and seed contracts |
+| [`results/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/results) | Published evidence projections and frozen releases |
+| [`paper/`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/tree/main/paper) | Immutable conference and journal document releases |
 
-Citation metadata are provided in [`CITATION.cff`](CITATION.cff). Software is
-released under the MIT License; upstream data retain their original licenses
-and attribution requirements.
+Citation metadata are provided in `CITATION.cff`. Software is released under
+the MIT License; upstream datasets retain their original licenses and
+attribution requirements.

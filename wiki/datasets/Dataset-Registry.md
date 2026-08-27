@@ -2,7 +2,7 @@
 title: Dataset Registry
 status: canonical dataset registry
 last_updated: 2026-08-19
-paper_source: true
+paper_source: false
 prose_reviewed: true
 claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-RECOVERY-001, C-ADEQ-001
 ---

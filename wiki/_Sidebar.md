@@ -1,33 +1,27 @@
 ---
 title: Wiki Sidebar
 status: navigation
-last_updated: 2026-08-19
+last_updated: 2026-08-26
 paper_source: false
 ---
 
-## Canonical navigation
-
-- [Wiki Home](README.md)
-- [Start Here](START-HERE.md)
-- [Exhaustive Index](INDEX.md)
-- [Project Status](status/Project-Status.md)
-- [Current Claims](claims/Current-Claim-Language.md)
-- [Scientific Results](results/Scientific-Results.md)
-- [Evidence Ledger](evidence/Evidence-Ledger.md)
-- [Dataset Registry](datasets/Dataset-Registry.md)
-- [Limitations](LIMITATIONS.md)
-- [Reproducibility](REPRODUCIBILITY.md)
-
-## Research navigation
+## Overview
 
 - [Home](Home.md)
-- [Wiki Index](Wiki-Index.md)
-- [Project Status](Project-Status.md)
-- [Full Manuscript](Full-Manuscript.md)
-- [Claims and Limits](Claims-and-Limits.md)
-- [Reproduce and Audit](Reproduce-and-Audit.md)
-- [Scientific Job Results](Scientific-Job-Results.md)
-- [Model-Mismatch Preregistration](experiments/Model-Mismatch-Preregistration.md)
-- [Evidence Sources](Evidence-Sources.md)
-- [References](References.md)
-- [Authoring and Snapshots](Authoring-and-Snapshots.md)
+- [Index](overview/Index.md)
+- [Project status](status/Project-Status.md)
+- [Full manuscript](manuscript/Full-Manuscript.md)
+
+## Evidence
+
+- [Scientific results](results/Scientific-Results.md)
+- [Claims and limits](claims/Claims-and-Limits.md)
+- [Evidence sources](evidence/Evidence-Sources.md)
+- [Reproduce and audit](operations/Reproduce-and-Audit.md)
+
+## Ongoing work and publication
+
+- [MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md)
+- [Method decisions](decisions/0001-gate-aligned-objective.md)
+- [References](references/References.md)
+- [Authoring and snapshots](manuscript/Authoring-and-Snapshots.md)

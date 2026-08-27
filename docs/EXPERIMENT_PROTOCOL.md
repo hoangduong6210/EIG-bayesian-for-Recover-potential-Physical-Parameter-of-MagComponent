@@ -1,11 +1,10 @@
 # Experiment protocol
 
-This file is a compatibility entry point. The active magnetic-core protocol is
-maintained with the research manuscript in the wiki:
+The research Wiki contains the active magnetic-core protocol:
 
 - [`Sequential-Design-Method.md`](../wiki/methods/Sequential-Design-Method.md)
   defines the acquisition method and comparator endpoints;
-- [`Reproducibility.md`](../wiki/REPRODUCIBILITY.md) defines seeds, evidence
+- [`Reproducibility.md`](../wiki/operations/Reproducibility.md) defines seeds, evidence
   admission, and verification;
 - [`Research-Workflow.md`](../wiki/operations/Research-Workflow.md) defines the
   computation-to-claim lifecycle;

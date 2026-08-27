@@ -1,6 +1,6 @@
 ---
 title: Authoring and Paper Snapshots
-status: publication annex
+status: publication guide
 last_updated: 2026-08-19
 paper_source: false
 ---
@@ -20,9 +20,26 @@ and evidence release named in its snapshot record.
 ## Normal edit
 
 1. Edit the relevant wiki page.
-2. Run the wiki build tool in check mode.
-3. Review the diff for claim scope, citations, and internal disclosure.
-4. Commit the wiki change without rebuilding `paper/`.
+2. Run `python wiki/build.py write-readme` to refresh the repository summary.
+3. Run the wiki build tool in check mode.
+4. Review the diff for claim scope, citations, and internal disclosure.
+5. Commit the Wiki and README change without rebuilding `paper/`.
+
+## Hosted Wiki projection
+
+The organized source tree is flattened before publication so page names and
+links remain stable on GitHub Wiki. After committing a reviewed Wiki revision,
+stage the allowlisted projection outside the repository:
+
+```bash
+python wiki/build.py stage-wiki --output /tmp/magnetic-public-wiki
+```
+
+The command strips source metadata, rewrites local links, copies declared
+assets, checks the staged link graph, and writes `publish-manifest.json` with
+the source commit and file hashes. Publish that directory to the separate Wiki
+repository only after the GitHub Wiki has been initialized and the projection
+has been reviewed.
 
 ## Paper release
 

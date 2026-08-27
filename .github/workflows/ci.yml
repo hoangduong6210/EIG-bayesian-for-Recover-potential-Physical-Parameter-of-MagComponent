@@ -38,6 +38,8 @@ jobs:
         run: python wiki/build.py check
       - name: Test wiki evidence and export contracts
         run: pytest -q wiki/tests
+      - name: Stage the hosted Wiki projection
+        run: python wiki/build.py stage-wiki --output "$RUNNER_TEMP/magnetic-public-wiki"
 
   archived-document-evidence:
     name: Archived document evidence

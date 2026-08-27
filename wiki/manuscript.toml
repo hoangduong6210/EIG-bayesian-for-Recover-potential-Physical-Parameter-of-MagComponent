@@ -1,10 +1,61 @@
 schema_version = "magnetic-living-manuscript/1.0"
 title = "Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters"
 authors = ["Viet Hoang Duong", "Viet Huy Duong", "Lun-Min Shih"]
-canonical_page = "Full-Manuscript.md"
+canonical_page = "manuscript/Full-Manuscript.md"
 bibliography = "bibliography/references.bib"
 template = "paper-template.tex"
 pandoc_version = "2.14.0.3"
+
+[wiki]
+home = "Home.md"
+index = "overview/Index.md"
+sidebar = "_Sidebar.md"
+public_pages = [
+  "Home.md",
+  "_Sidebar.md",
+  "overview/Start-Here.md",
+  "overview/Index.md",
+  "overview/Glossary.md",
+  "architecture/Research-System-Map.md",
+  "methods/Sequential-Design-Method.md",
+  "datasets/Dataset-Registry.md",
+  "experiments/Model-Mismatch-Preregistration.md",
+  "results/Scientific-Results.md",
+  "results/Scientific-Job-Results.md",
+  "claims/Current-Claim-Language.md",
+  "claims/Claims-and-Limits.md",
+  "claims/Limitations.md",
+  "claims/Historical-Claim-Ledger.md",
+  "evidence/Evidence-Ledger.md",
+  "evidence/Evidence-Sources.md",
+  "status/Project-Status.md",
+  "decisions/0001-gate-aligned-objective.md",
+  "operations/Reproducibility.md",
+  "operations/Reproduce-and-Audit.md",
+  "operations/Research-Workflow.md",
+  "references/References.md",
+  "references/Technical-Source-Map.md",
+  "manuscript/Full-Manuscript.md",
+  "manuscript/Authoring-and-Snapshots.md",
+  "manuscript/Paper-Export-Contract.md",
+  "governance/Contributing.md",
+  "governance/License-and-Assets.md",
+]
+public_assets = [
+  "assets/acquisition-diagnostics.json",
+  "assets/acquisition-diagnostics.png",
+  "assets/measured-adequacy.png",
+  "assets/study-workflow.png",
+  "assets/synthetic-diagnostics.png",
+  "evidence/results.json",
+]
+
+[readme]
+source = "Home.md"
+output = "../README.md"
+
+[publication]
+repository_url = "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent"
 
 [evidence]
 release_id = "20260817T072230Z_401e3030fe13"

@@ -2,7 +2,7 @@
 title: Scientific Results
 status: canonical result interpretation
 last_updated: 2026-08-19
-paper_source: true
+paper_source: false
 prose_reviewed: true
 claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-RECOVERY-001, C-ADEQ-001
 ---
@@ -27,7 +27,7 @@ selected a 10 kHz inductance measurement in 28/30 seeds, while predictive
 variance/cost selected the 500 kHz, 0.2 T core-loss point in 29/30 and crossed
 the gate in every seed. This post hoc evidence supports objective--gate
 misalignment within the matched-model benchmark; it is not a general ranking
-of acquisition methods. [Source E9](../Evidence-Sources.md#e9)
+of acquisition methods. [Source E9](../evidence/Evidence-Sources.md#e9)
 
 Full trajectory interpretation remains in the
-[job ledger](../Scientific-Job-Results.md).
+[job ledger](Scientific-Job-Results.md).
