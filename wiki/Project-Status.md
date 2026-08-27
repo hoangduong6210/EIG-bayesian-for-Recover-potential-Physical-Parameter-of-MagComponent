@@ -1,13 +1,13 @@
 ---
 title: Project Status Compatibility Page
 status: detailed status annex
-last_updated: 2026-08-19
+last_updated: 2026-08-26
 paper_source: false
 ---
 
 # Project Status
 
-Status date: 2026-08-17.
+Status date: 2026-08-26.
 
 ## Completed scientific work
 
@@ -80,15 +80,20 @@ evidence that the one-pole Cole--Cole family is inadequate for those records.
 ## Evidence availability
 
 The validated aggregate projection is available with its release and source
-hashes. A complete raw public audit bundle has not been released; independent
-audit below the aggregate level therefore requires rerunning the declared
-campaign. [Source E8](Evidence-Sources.md#e8)
+hashes. Public audit release v2 provides all 30 sanitized acquisition
+trajectories and the estimator decision chain; its larger asset also includes
+the twelve flattened posterior-sample matrices. Raw measured curves and
+walker-by-iteration chains are outside that bundle. [Sources E8](Evidence-Sources.md#e8)
+and [E9](Evidence-Sources.md#e9)
 
 ## Next scientific experiments
 
-1. Model-mismatch simulation using higher-order permeability and loss laws.
-2. Larger simulation-based calibration for parameter and predictive coverage.
-3. Controlled laboratory timing and multi-lot measurements before any
+1. Run preregistered model-mismatch campaign MM-1: four fixed scenarios and 30
+   new seeds. No MM-1 result has been admitted yet.
+2. Preregister a gate-aligned utility after MM-1 is complete.
+3. Run larger simulation-based calibration for parameter and predictive
+   coverage.
+4. Controlled laboratory timing and multi-lot measurements before any
    real-world time-saving claim.
-4. Stable measured-data acquisition ranking only after the forward model and
+5. Stable measured-data acquisition ranking only after the forward model and
    observation model pass adequacy checks.

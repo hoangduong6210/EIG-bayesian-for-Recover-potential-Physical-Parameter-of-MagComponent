@@ -27,6 +27,7 @@ paper_source: false
 - [Claims and Limits](Claims-and-Limits.md)
 - [Reproduce and Audit](Reproduce-and-Audit.md)
 - [Scientific Job Results](Scientific-Job-Results.md)
+- [Model-Mismatch Preregistration](experiments/Model-Mismatch-Preregistration.md)
 - [Evidence Sources](Evidence-Sources.md)
 - [References](References.md)
 - [Authoring and Snapshots](Authoring-and-Snapshots.md)

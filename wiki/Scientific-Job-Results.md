@@ -1,7 +1,7 @@
 ---
 title: Scientific Job Results
 status: detailed result annex
-last_updated: 2026-08-19
+last_updated: 2026-08-26
 paper_source: false
 ---
 
@@ -34,6 +34,16 @@ orchestration tasks produce no result artifact. [Source E1](Evidence-Sources.md#
 The three tasks without result artifacts are the smoke check, estimator-setting
 selection, and final decision assembly. Their absence from the artifact total
 is declared rather than silently dropped. [Source E1](Evidence-Sources.md#e1)
+
+## Preregistered work not included in the artifact total
+
+MM-1 declares 120 scenario--seed tasks (four fixed data generators by 30 new
+seeds) followed by one fail-closed aggregate task. These jobs are prospective
+and are not part of the 213 completed tasks or 222 artifacts above. Until all
+120 records pass the sampler and schema gates, the job ledger contains no
+MM-1 numerical result. The fixed scenarios, seeds, endpoints, estimator-file
+digest, and admission rule are recorded in the
+[MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md).
 
 ## Policy endpoints
 

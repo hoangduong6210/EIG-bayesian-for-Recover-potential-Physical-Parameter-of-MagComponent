@@ -30,6 +30,7 @@ evidence record.
 | What is the current defensible conclusion? | [Home — Current conclusion](Home.md#current-conclusion) | [E4 — paired endpoints](Evidence-Sources.md#e4) |
 | Did EIG beat predictive variance or D-optimality? | [Job Results — Why EIG did not beat the strong comparators](Scientific-Job-Results.md#why-eig-did-not-beat-the-strong-comparators) | [E4 — direct contrasts](Evidence-Sources.md#e4), [E5 — trajectories](Evidence-Sources.md#e5) |
 | Why did EIG/cost lose to predictive variance/cost? | [Job Results — Objective–gate mismatch](Scientific-Job-Results.md#dividing-by-cost-exposes-an-objectivegate-mismatch) | [E5 — shared-state utilities](Evidence-Sources.md#e5) |
+| How will structural model mismatch be tested? | [MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md) | `configs/model_mismatch.toml` |
 | Which jobs completed and which are diagnostic only? | [Complete result-artifact registry](Scientific-Job-Results.md#complete-result-artifact-registry) | [E1 — campaign accounting](Evidence-Sources.md#e1) |
 | Is six-parameter identification established? | [Claims and Limits](Claims-and-Limits.md) | [E2 — recovery](Evidence-Sources.md#e2), [E6 — secondary endpoints](Evidence-Sources.md#e6) |
 | How stable is the nested EIG estimator? | [Full Manuscript — Nested-estimator qualification](Full-Manuscript.md#nested-estimator-qualification) | [E3 — estimator qualification](Evidence-Sources.md#e3) |
@@ -51,6 +52,7 @@ evidence record.
 | [Reproduce and Audit](Reproduce-and-Audit.md) | Verification workflow | You need to follow the chain from configuration to frozen aggregate |
 | [References](References.md) | Literature index | You need the scientific source behind a model or method |
 | [Authoring and Snapshots](Authoring-and-Snapshots.md) | Publication workflow | You need to edit the wiki or create a paper snapshot |
+| [MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md) | Prospective experiment protocol | You need the fixed model-mismatch scenarios, seeds, endpoints, or admission rule |
 
 ## How to verify a number
 

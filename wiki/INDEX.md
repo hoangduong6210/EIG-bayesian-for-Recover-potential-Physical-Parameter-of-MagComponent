@@ -15,7 +15,7 @@ paper_source: false
 | Data | [Dataset Registry](datasets/Dataset-Registry.md) |
 | Evidence | [Evidence Ledger](evidence/Evidence-Ledger.md), [Detailed Sources](Evidence-Sources.md) |
 | Methods and results | [Sequential Design Method](methods/Sequential-Design-Method.md), [Scientific Results](results/Scientific-Results.md), [Job Ledger](Scientific-Job-Results.md) |
-| Status and decisions | [Project Status](status/Project-Status.md), [Decision 0001](decisions/0001-gate-aligned-objective.md) |
+| Status and decisions | [Project Status](status/Project-Status.md), [MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md), [Decision 0001](decisions/0001-gate-aligned-objective.md) |
 | Reproduction | [Reproducibility](REPRODUCIBILITY.md), [Research Workflow](operations/Research-Workflow.md) |
 | Publication | [Paper Export Contract](manuscript/Paper-Export-Contract.md), [Full Manuscript](Full-Manuscript.md) |
 | Governance | [Contributing](CONTRIBUTING.md), [License and Assets](governance/License-and-Assets.md) |
