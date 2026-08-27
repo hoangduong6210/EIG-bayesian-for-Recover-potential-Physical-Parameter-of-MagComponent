@@ -11,4 +11,4 @@ paper_source: false
 is the readable rendering. The manuscript covers Bayesian calibration,
 information-based design, nested Monte Carlo, magnetic core-loss laws,
 permeability models, and public magnetic-material data. Literature supports
-methods; `E1`--`E8` support project-specific results.
+methods; `E1`--`E9` support project-specific results.

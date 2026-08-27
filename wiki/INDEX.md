@@ -22,5 +22,5 @@ paper_source: false
 | Scope and sources | [Limitations](LIMITATIONS.md), [Technical Source Map](references/Technical-Source-Map.md), [References](References.md) |
 
 Current claim IDs are `C-EIG-RAW-001`, `C-EIG-COST-001`, `C-FIXED-001`,
-`C-RECOVERY-001`, and `C-ADEQ-001`. Evidence IDs are `E1`--`E8`; decision ID
+`C-RECOVERY-001`, and `C-ADEQ-001`. Evidence IDs are `E1`--`E9`; decision ID
 is `0001`.

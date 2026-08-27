@@ -88,7 +88,21 @@ source label.
 - Supports: release identifier, source artifact hashes, and the digest over the
   30 acquisition-record path/hash pairs. The production release remains
   separate because its operational provenance is not a public manuscript
-  input.
+input.
+
+<a id="e9"></a>
+## E9 — Comparator selection-path diagnostic
+
+- Artifact: [`aggregate_summary.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/selection_overlap/20260817T072230Z_401e3030fe13/aggregate_summary.json)
+- SHA-256: `cbdfc7f19a707ed9e58d3fb129ddcd314c1b75e1447eaa1ebdf88f75b07b6153`
+- Supports: exact-state score-rank correlations, selected-set and ordered-path
+  overlap, per-step candidate frequencies, and realized one-step movement
+  toward the two-target gate.
+- Source records: the 30 benchmark-v4 trajectories published in the
+  [v2 public audit release](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/evidence-20260817-audit-v2).
+- Interpretation: this diagnostic was specified after seeing the primary
+  comparator result. It is descriptive evidence about the observed paths, not
+  a preregistered causal or counterfactual contrast.
 
 ## Verification rule
 

@@ -226,6 +226,8 @@ def check() -> dict:
     release_digest = manifest["evidence"]["manifest_sha256"]
     projection_path = WIKI_ROOT / manifest["evidence"]["projection"]
     projection_digest = manifest["evidence"]["projection_sha256"]
+    overlap_path = WIKI_ROOT.parent / manifest["evidence"]["selection_overlap"]
+    overlap_digest = manifest["evidence"]["selection_overlap_sha256"]
     if not re.fullmatch(r"\d{8}T\d{6}Z_[0-9a-f]{12}", release_id):
         raise WikiError("invalid evidence release ID")
     if not re.fullmatch(r"[0-9a-f]{64}", release_digest):
@@ -236,6 +238,21 @@ def check() -> dict:
         raise WikiError("invalid evidence projection SHA-256")
     if sha256(projection_path) != projection_digest:
         raise WikiError("evidence projection SHA-256 mismatch")
+    if not overlap_path.is_file():
+        raise WikiError("missing selection-overlap diagnostic")
+    if not re.fullmatch(r"[0-9a-f]{64}", overlap_digest):
+        raise WikiError("invalid selection-overlap SHA-256")
+    if sha256(overlap_path) != overlap_digest:
+        raise WikiError("selection-overlap SHA-256 mismatch")
+    overlap = json.loads(overlap_path.read_text(encoding="utf-8"))
+    if overlap.get("schema") != "magcore-selection-overlap/1.0":
+        raise WikiError("unsupported selection-overlap schema")
+    if overlap.get("seed_count") != 30:
+        raise WikiError("unexpected selection-overlap seed count")
+    if overlap.get("source", {}).get("release_id") != release_id:
+        raise WikiError("selection-overlap release ID mismatch")
+    if overlap.get("source", {}).get("release_manifest_sha256") != release_digest:
+        raise WikiError("selection-overlap release manifest mismatch")
     projection = json.loads(projection_path.read_text(encoding="utf-8"))
     if projection.get("schema_version") != "magnetic-wiki-evidence/1.0":
         raise WikiError("unsupported evidence projection schema")
@@ -262,7 +279,7 @@ def check() -> dict:
     if figure_manifest["evidence_sources"] != ["E4", "E5"]:
         raise WikiError("acquisition figure has unexpected evidence sources")
     source_page = texts[WIKI_ROOT / "Evidence-Sources.md"]
-    for source_id in range(1, 9):
+    for source_id in range(1, 10):
         anchor = f'<a id="e{source_id}"></a>'
         if anchor not in source_page:
             raise WikiError(f"missing evidence source anchor E{source_id}")
@@ -291,6 +308,7 @@ def check() -> dict:
         "bibliography_count": len(available),
         "evidence_release_id": release_id,
         "evidence_projection_sha256": projection_digest,
+        "selection_overlap_sha256": overlap_digest,
         "scientific_job_count": len(jobs),
         "result_artifact_count": declared_artifacts,
         "acquisition_figure_sha256": figure_manifest["figure_sha256"],

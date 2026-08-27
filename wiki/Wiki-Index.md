@@ -64,4 +64,4 @@ evidence record.
 
 If a result-bearing statement has no evidence label, treat it as unverified
 until the source is added. Literature citations support scientific background;
-E1--E8 labels support numerical results from this project.
+E1--E9 labels support numerical results from this project.

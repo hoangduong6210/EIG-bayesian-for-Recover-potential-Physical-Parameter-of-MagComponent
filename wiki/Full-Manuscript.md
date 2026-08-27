@@ -632,6 +632,33 @@ used 190 in 29 seeds and 195 once. The cost constants are prespecified model
 inputs, not measured laboratory durations.
 [Result source E4](Evidence-Sources.md#e4)
 
+### Descriptive selection-path diagnostic
+
+A post hoc diagnostic helps locate why the strong comparators tied or beat
+EIG on this gate. On posterior states with identical hashes and candidate
+universes, raw EIG and raw predictive variance had mean Spearman score-rank
+correlation 0.9967 over 57 states; their final selected sets had mean Jaccard
+overlap 0.933, although the complete ordered path matched in only 11 of 30
+seeds. Raw EIG and raw Laplace D-optimality similarly had mean rank correlation
+0.9947 over 36 comparable states and mean selected-set Jaccard overlap 0.867.
+The raw utilities therefore placed nearly the same candidates near the top and
+usually acquired the same set in a different order, leaving no
+measurement-count separation at the common gate.
+
+The cost-normalized comparison diverged at the third acquisition. EIG/cost
+selected $L_m(10\,\mathrm{kHz})$ in 28 of 30 seeds, whereas predictive
+variance/cost selected $P_v(500\,\mathrm{kHz},0.2\,\mathrm T)$ in 29 of 30.
+The mean reduction in the normalized maximum gate ratio was 0.0048 for
+EIG/cost and 2.6174 for predictive variance/cost; zero and 30 seeds,
+respectively, crossed the gate after that acquisition. This pattern supports
+objective--gate misalignment in the present matched-model benchmark: joint
+parameter information favored an inductance measurement while the remaining
+stopping uncertainty was primarily at the core-loss target. Because this
+diagnostic was defined after the comparator result and uses realized policy
+paths, it does not establish a general causal advantage for predictive
+variance.
+[Diagnostic source E9](Evidence-Sources.md#e9)
+
 ![Eight-policy paired acquisition results and four direct strong-comparator contrasts.](assets/acquisition-diagnostics.png)
 
 ## Disjoint holdout and six-parameter endpoints

@@ -11,6 +11,8 @@ release_id = "20260817T072230Z_401e3030fe13"
 manifest_sha256 = "85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7"
 projection = "evidence/results.json"
 projection_sha256 = "60036e144daf64ad8220377ff7eabc3dbba80afe33ff9c57e3b71ab95162a388"
+selection_overlap = "results/diagnostics/selection_overlap/20260817T072230Z_401e3030fe13/aggregate_summary.json"
+selection_overlap_sha256 = "cbdfc7f19a707ed9e58d3fb129ddcd314c1b75e1447eaa1ebdf88f75b07b6153"
 scope = "matched-model synthetic acquisition and accepted in-sample measured-data adequacy"
 
 [snapshot]

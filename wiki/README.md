@@ -32,4 +32,5 @@ the complete result campaign, while [Evidence Sources](Evidence-Sources.md)
 binds quantitative claims to a disclosure-safe machine-readable projection.
 
 Scientific results are linked to the frozen evidence through source labels
-E1--E8. PDF versions under `paper/` are produced only for named releases.
+E1--E9. PDF versions under `paper/` are historical document releases exported
+from reviewed wiki revisions; they are not alternate manuscript sources.
