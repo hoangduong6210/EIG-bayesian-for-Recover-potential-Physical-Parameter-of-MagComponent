@@ -1,0 +1,1009 @@
+{
+  "admission": {
+    "confirmatory_claims_allowed": false,
+    "decision": "not_admitted",
+    "endpoint_aggregation_performed": false,
+    "reason_codes": [
+      "declared_task_failed",
+      "incomplete_result_matrix",
+      "aggregate_not_created"
+    ]
+  },
+  "campaign_id": "MM-1",
+  "disclosure": {
+    "scientific_endpoint_summaries_included": false,
+    "scientific_endpoint_values_included": false
+  },
+  "failed_tasks": [
+    {
+      "marker": {
+        "ended_at": "2026-08-27T07:52:33Z",
+        "exit_code": 1,
+        "path": "status/model_mismatch_permeability_two_pole_seed8108.failed",
+        "sha256": "ae5ae344042efc6477e77cd70e71012d3037ba296e0a6544208e004c8e9e22f2"
+      },
+      "scenario": "permeability_two_pole",
+      "seed": 8108,
+      "task_id": "permeability_two_pole_seed8108"
+    }
+  ],
+  "frozen_contract": {
+    "campaign_source_revision": "e4c674a6ff987264ba857fc6c6e84f9ea2bf741d",
+    "config_sha256": "d23d7ede8666cec399fbcfa955d4e3f91338754f6c7ed1d061343a962ef05799",
+    "estimator_decision_sha256": "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6",
+    "estimator_source_release_id": "20260817T072230Z_401e3030fe13",
+    "source_archive_sha256": "a1c8b8095f748be55b4eb126e109064ea7cb35a31399d57747b9dcb5b90ca690",
+    "source_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "matrix": {
+    "done_marker_count": 119,
+    "expected_task_count": 120,
+    "extra_task_count": 0,
+    "failed_marker_count": 1,
+    "unexplained_missing_task_count": 0,
+    "validated_result_count": 119
+  },
+  "record_class": "diagnostic_campaign_closeout",
+  "run_provenance": {
+    "run_id": "20260827T045036Z_e4c674a6ff98"
+  },
+  "scheduler_submission": {
+    "aggregate_job_id": "7066091",
+    "array_job_id": "7066090"
+  },
+  "schema_version": "magcore-model-mismatch-non-admission/1.0",
+  "validated_results": [
+    {
+      "done_marker_sha256": "da49d666d92770acb64db28a3d9857c5c0cb6635ef84f9b497f0c22d2d081a44",
+      "path": "results/model_mismatch/combined_mismatch_seed8100/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8100,
+      "sha256": "beb1aa81b6a5887429d952f9752cb79a5d90b29f5ead5671b961d3bd56b397b2",
+      "task_id": "combined_mismatch_seed8100"
+    },
+    {
+      "done_marker_sha256": "0081b62d86711f456d4b179469c6397f1bfff110e003748457c4d658e5b22181",
+      "path": "results/model_mismatch/combined_mismatch_seed8101/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8101,
+      "sha256": "cc98f0b43b69152a05af8d08d2bb042c461e5766599e56aba1cd3bda69cc94d5",
+      "task_id": "combined_mismatch_seed8101"
+    },
+    {
+      "done_marker_sha256": "8657d452850f366cbc1f5b971154fd820e40d25db9e912e9c851f39881706fde",
+      "path": "results/model_mismatch/combined_mismatch_seed8102/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8102,
+      "sha256": "36bc4ca83a270e15b01f7259bdbcf319426b3ab278589ec360d35e5f06d9a97e",
+      "task_id": "combined_mismatch_seed8102"
+    },
+    {
+      "done_marker_sha256": "81d29c02d9b6ef675fbd06068f94eb2cec6164381ef5462d49328511ea1ace41",
+      "path": "results/model_mismatch/combined_mismatch_seed8103/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8103,
+      "sha256": "55741a0158e3fb63a59f943f59617a37ca45b085175ebe8183fe61086bc1fa4a",
+      "task_id": "combined_mismatch_seed8103"
+    },
+    {
+      "done_marker_sha256": "ed29a29b98836ad1f096b5425db6a30c19735f18fd6a890ad9642117caaf4db7",
+      "path": "results/model_mismatch/combined_mismatch_seed8104/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8104,
+      "sha256": "63c2838f5ae75d5e2ee2d2726434b3f7aef9e00ed925bc19d5bec7c9f3f9dd1d",
+      "task_id": "combined_mismatch_seed8104"
+    },
+    {
+      "done_marker_sha256": "1c1a863b56178cd58323b13d002153a6a8c2ef6a55b460f00fdeadbdc6e628fd",
+      "path": "results/model_mismatch/combined_mismatch_seed8105/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8105,
+      "sha256": "d583ab283a5885e81d7e72b3d4bd1e1d560e37081f44166a15182de56166bb9a",
+      "task_id": "combined_mismatch_seed8105"
+    },
+    {
+      "done_marker_sha256": "939ddab941c6d9cdd082df12a9765389c2a7610a73c67550f941f8eb9145f76e",
+      "path": "results/model_mismatch/combined_mismatch_seed8106/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8106,
+      "sha256": "a3186a75239d7ad25d3981812786107fe78218bf93e1d1f9f8a2368f9db810c9",
+      "task_id": "combined_mismatch_seed8106"
+    },
+    {
+      "done_marker_sha256": "3fed6edc5dd872dcc5a70d0a02b748e17bc65cb329dcc28c796ccf633338ee6d",
+      "path": "results/model_mismatch/combined_mismatch_seed8107/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8107,
+      "sha256": "f1721acc3417065070364cc7a48677b344c789ff98bd1ca02fe6fab18f307275",
+      "task_id": "combined_mismatch_seed8107"
+    },
+    {
+      "done_marker_sha256": "a56163b5402880aa1536d8ed5649de6f4ef445eeed9576d3d94f65a210e4b832",
+      "path": "results/model_mismatch/combined_mismatch_seed8108/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8108,
+      "sha256": "89de503f465e67753fea37389ca770d94b8aefbf9fe6f26aaa5ecf20dce60bef",
+      "task_id": "combined_mismatch_seed8108"
+    },
+    {
+      "done_marker_sha256": "52af985d8f2f97cd1b8f90c71a1a9ad2ffc8589ba5f659bd1943da0df0d0197f",
+      "path": "results/model_mismatch/combined_mismatch_seed8109/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8109,
+      "sha256": "ae6eaf027a8fd4d8de2841a3b93592fc699d3d0255bcb8a03af3d5905d48767f",
+      "task_id": "combined_mismatch_seed8109"
+    },
+    {
+      "done_marker_sha256": "28498d7f8f9c9c3d64a3e5709202b1a17ce77b1dd2eb2c4307b6e245d1c5097c",
+      "path": "results/model_mismatch/combined_mismatch_seed8110/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8110,
+      "sha256": "80bb5e65cedfdaac8a1518f99b527401242b62d579893ee85abbfe39ad94d523",
+      "task_id": "combined_mismatch_seed8110"
+    },
+    {
+      "done_marker_sha256": "b0ad591ff241798dbbcd5d0f87b56b4d9f294c6313ea0f9198f5ef0c99f9a124",
+      "path": "results/model_mismatch/combined_mismatch_seed8111/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8111,
+      "sha256": "ec11e1e493bb1081457ecc408cef258227b6d73caa2169d71f3466f3cddd919f",
+      "task_id": "combined_mismatch_seed8111"
+    },
+    {
+      "done_marker_sha256": "ee5305e501cab6c8afccc2b0d60b8f79fb8b293feefcfe1fe88ac3267fa98849",
+      "path": "results/model_mismatch/combined_mismatch_seed8112/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8112,
+      "sha256": "57ba3a3e4047de2ba22bd25d44152fba6bc6ad7375ee5506984e6924fed990cd",
+      "task_id": "combined_mismatch_seed8112"
+    },
+    {
+      "done_marker_sha256": "d3e70e0b6d7a565af8e596e66a7be8bd429014f771eb3286cf70ca8481ab2592",
+      "path": "results/model_mismatch/combined_mismatch_seed8113/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8113,
+      "sha256": "89a02336a08be7b6e6d87ba361c0070b994f7942fc16a6f28b1d5e4f2120904a",
+      "task_id": "combined_mismatch_seed8113"
+    },
+    {
+      "done_marker_sha256": "23745dc35f63c4320e6d9e9a30fb76f33368daf61c34975a3d3d976db66d8210",
+      "path": "results/model_mismatch/combined_mismatch_seed8114/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8114,
+      "sha256": "320afa82e600a3100fa9dd9400addcaa88f285c0af26314e792c46b93e5caea1",
+      "task_id": "combined_mismatch_seed8114"
+    },
+    {
+      "done_marker_sha256": "f97f12db8a9b66bfaa55392fe07268187ce6f40df555ccb911e39aeed627d196",
+      "path": "results/model_mismatch/combined_mismatch_seed8115/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8115,
+      "sha256": "14d0b21f4275446e2edf07d13a04bbd090b9ee88cfdbeaa8193883c7347c18c3",
+      "task_id": "combined_mismatch_seed8115"
+    },
+    {
+      "done_marker_sha256": "d859254b678ed6de1c9cb40b49294b2c6ba0788305e50158ce61e817fa715642",
+      "path": "results/model_mismatch/combined_mismatch_seed8116/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8116,
+      "sha256": "ecb16d5939ed14a22e361b28bede1f019ef5481e21d75c2f08902c06ae788765",
+      "task_id": "combined_mismatch_seed8116"
+    },
+    {
+      "done_marker_sha256": "14faf4855fc48ae47c0e5f7625d76226e9fdd7d55335abfdb519879701365323",
+      "path": "results/model_mismatch/combined_mismatch_seed8117/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8117,
+      "sha256": "2af4d8ce7110d65acdcbdb8a140d89531ebc0cb05d2cb0820047799a71a5ef58",
+      "task_id": "combined_mismatch_seed8117"
+    },
+    {
+      "done_marker_sha256": "595811a070e03604db5c922ca8084a1240809d42cbad8d7ab3945f68c9f64972",
+      "path": "results/model_mismatch/combined_mismatch_seed8118/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8118,
+      "sha256": "17bc93e4012f26c7400c81a7ffee74962e6922d573c67908e5b544443b795d56",
+      "task_id": "combined_mismatch_seed8118"
+    },
+    {
+      "done_marker_sha256": "6a776a6d96a277ee7154eed5f2a4d7699de4c90445491123a73f046ca0a3f8b0",
+      "path": "results/model_mismatch/combined_mismatch_seed8119/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8119,
+      "sha256": "702554c81b6a6f0c09b62c8e19efde57eecd728752c5ba51433e6f00e2b1c208",
+      "task_id": "combined_mismatch_seed8119"
+    },
+    {
+      "done_marker_sha256": "3404accb683ded888989f3ee546f321f339859909d6367e830fb43a4887981c2",
+      "path": "results/model_mismatch/combined_mismatch_seed8120/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8120,
+      "sha256": "515a5710f96d41dea0d03364a71e8b99330a840381ed7c8fd88d3a34239092b9",
+      "task_id": "combined_mismatch_seed8120"
+    },
+    {
+      "done_marker_sha256": "4387e9e4d6740929bcb3ee944b5dfa5a55a8581b7a843183d46bff89081304c1",
+      "path": "results/model_mismatch/combined_mismatch_seed8121/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8121,
+      "sha256": "864085eec04cbd5c48672d69e65ed57dd7f2937b04b05727589eff12f8eb4b8a",
+      "task_id": "combined_mismatch_seed8121"
+    },
+    {
+      "done_marker_sha256": "6c6eeab320bbf13eda0fbea8c9f646181e30c900101a533334247de21600248e",
+      "path": "results/model_mismatch/combined_mismatch_seed8122/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8122,
+      "sha256": "5116146413cf7064a0ee7917773f481914433da65c094c96ef518a6e243e93ec",
+      "task_id": "combined_mismatch_seed8122"
+    },
+    {
+      "done_marker_sha256": "76d755ae766122a04a0d907e81432087ad9cd405b52cf972e6bbb92c4d8193e4",
+      "path": "results/model_mismatch/combined_mismatch_seed8123/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8123,
+      "sha256": "03386dfe215202b9352a77e1b187ecd45ae733d4f98fe5fa08c3b16787232008",
+      "task_id": "combined_mismatch_seed8123"
+    },
+    {
+      "done_marker_sha256": "7c05fa6c0c41dc9c13bc20bd40420ada82afecee3d6407d3975402162b976749",
+      "path": "results/model_mismatch/combined_mismatch_seed8124/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8124,
+      "sha256": "6c3fe8d38f3a9495513e9e7d55e5e2655460a096bcad60db92d03e779027c9ea",
+      "task_id": "combined_mismatch_seed8124"
+    },
+    {
+      "done_marker_sha256": "87fa60384c2ee11c8c99122b79920d6c5d1e572a975f1dfa80446cafc7030eb8",
+      "path": "results/model_mismatch/combined_mismatch_seed8125/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8125,
+      "sha256": "d20aff42481b908d98de44d7a2251065e25fdaf590889b842b02f5a9157e4524",
+      "task_id": "combined_mismatch_seed8125"
+    },
+    {
+      "done_marker_sha256": "e7b71fb213b7cf2c7276b2641f40e9535afebb05badbbf3a01544ad5cd600451",
+      "path": "results/model_mismatch/combined_mismatch_seed8126/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8126,
+      "sha256": "4fca704c7d0755916267f3f531572b5d7e8cfea41e05fb7976dc646574fce962",
+      "task_id": "combined_mismatch_seed8126"
+    },
+    {
+      "done_marker_sha256": "5a3603e521488dd9a7d8394cafc03c8535256cbd27cfc1b9e3f7aef6be2296d8",
+      "path": "results/model_mismatch/combined_mismatch_seed8127/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8127,
+      "sha256": "0e3cc20a0eda7d2dea71c3c9c820da11b85fa943916d51119631ac28e387336d",
+      "task_id": "combined_mismatch_seed8127"
+    },
+    {
+      "done_marker_sha256": "5e51cae740b9b1aa7b83ad0114722e98100133f7480bfd36d87b9ae588b396c3",
+      "path": "results/model_mismatch/combined_mismatch_seed8128/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8128,
+      "sha256": "309bfe97683663b6b2d71b53b0d35ab703ef2c535e968498740c7f111aed5108",
+      "task_id": "combined_mismatch_seed8128"
+    },
+    {
+      "done_marker_sha256": "b3adc4fd0af1474f6547f5d996df9cc1fe114fcc530d7afc44e5064e6063088b",
+      "path": "results/model_mismatch/combined_mismatch_seed8129/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 8129,
+      "sha256": "8867a8c8bcbe415da71f4cc342159bbad8f163048c6a62c727f0ab1b91e746c4",
+      "task_id": "combined_mismatch_seed8129"
+    },
+    {
+      "done_marker_sha256": "5ac02bfca80a720b8557c7c2f4b67785ae7c0f2a57557407601f6d2e4b84df9b",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8100/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8100,
+      "sha256": "0f84521288c041d929487e9aa9c4194fa7ca6bf0d1a13ba3df8220cf8ce0a148",
+      "task_id": "core_loss_temperature_curvature_seed8100"
+    },
+    {
+      "done_marker_sha256": "a026fae57c6c9b85ae6334a09061f6d4c37008a7a6d7c9418fd130ffbffdea39",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8101/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8101,
+      "sha256": "235bedd541822b39c20a72d67a492223855b536f6da3dc06c898284b50faeb9d",
+      "task_id": "core_loss_temperature_curvature_seed8101"
+    },
+    {
+      "done_marker_sha256": "6b0a4b648f76645a2d4faf54f2039081d8a996175a90c2cc56d213cd92e9da21",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8102/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8102,
+      "sha256": "b3772c9887c31272a1242fd9067d178b29c0c4f6fbc7440bfecb6d3acef93037",
+      "task_id": "core_loss_temperature_curvature_seed8102"
+    },
+    {
+      "done_marker_sha256": "a24aad5a36a57dd0fc8f6e3049fa1f179655bb29c0427d8ca1c1dc57470f6abd",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8103/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8103,
+      "sha256": "e49ed953fdfcc33fb7134586338dd030155679c97f13f0aa02aaaca5f2e1bc2e",
+      "task_id": "core_loss_temperature_curvature_seed8103"
+    },
+    {
+      "done_marker_sha256": "7370ecb7172c3967a3f60974b154115a1839eb14c87da0c7b7f96f98a88ef62f",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8104/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8104,
+      "sha256": "aeba235ee964d26d44e6561d4614f54bbc7309ce0548eb45ac5617ba61cabb90",
+      "task_id": "core_loss_temperature_curvature_seed8104"
+    },
+    {
+      "done_marker_sha256": "850ebf24d4e67496fd0c51f8160918566e3f92d22c78a1474a95fe3778f2340e",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8105/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8105,
+      "sha256": "d09c52b69a9612b819c94d2cb90835a78618ce06e559bbb236746f387dd00969",
+      "task_id": "core_loss_temperature_curvature_seed8105"
+    },
+    {
+      "done_marker_sha256": "1655e9a44be81fdae78bb118e276c760e2db7304270f42bfd83f03baea218e04",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8106/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8106,
+      "sha256": "d0fbe01013c135c486643e0cbf342af69b0793be39e46003d0803a457fef2a08",
+      "task_id": "core_loss_temperature_curvature_seed8106"
+    },
+    {
+      "done_marker_sha256": "ac834d52f4bb1a51a49b7c04a6aa91f4be086cab7b04037fce0b24ba197260e6",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8107/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8107,
+      "sha256": "b90a7442480b76b8869e600b8467423722a97eaa4c51305481d54f42a89aaf97",
+      "task_id": "core_loss_temperature_curvature_seed8107"
+    },
+    {
+      "done_marker_sha256": "5ab92e6681ad4cc9f30a5bf62da05e91d96d0db396e6b8050ee149c8129bc8be",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8108/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8108,
+      "sha256": "23c86b3261ea3b9ed14812009ff1e4ea9e865f9c674e36feae5e1af085874f78",
+      "task_id": "core_loss_temperature_curvature_seed8108"
+    },
+    {
+      "done_marker_sha256": "90d81e25d454da52aeb499e62321be1de586d7ffebaaa315f766eefd4cc0f18d",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8109/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8109,
+      "sha256": "7e15ffd6830e3e93bb730b4f7828c1c429d91cfd7d2e12caa155101b6105f99c",
+      "task_id": "core_loss_temperature_curvature_seed8109"
+    },
+    {
+      "done_marker_sha256": "2fc7ee55bf033a3885f58961ea5672bd73ecb8d0c4db4ba69a7780bd69c937c1",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8110/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8110,
+      "sha256": "540c38995dafa2a8319fa157d9d283c98888264a149635cc3205e03028fc8fd1",
+      "task_id": "core_loss_temperature_curvature_seed8110"
+    },
+    {
+      "done_marker_sha256": "9c16c3c5add6f33da9e89b89b55aa7a5a0b4efdea5098c9f24e9afd68c69efd0",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8111/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8111,
+      "sha256": "223ed90c644536748e6f79bdf1bc3ef47cbf1ec835b9fa2fe9b3defdd87c2d59",
+      "task_id": "core_loss_temperature_curvature_seed8111"
+    },
+    {
+      "done_marker_sha256": "7dc27da1c248f852491692fa3b58aaf07a139a91f757a7e335dfd1e500dd7176",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8112/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8112,
+      "sha256": "63f8123324aedd415c50ed61db2ca91be8ccdd70ba2bc2fc1eea1718a38422fb",
+      "task_id": "core_loss_temperature_curvature_seed8112"
+    },
+    {
+      "done_marker_sha256": "55663826cba732c464ae6777bc716703962b1ab8f4d7452bf7baa5c0b815b847",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8113/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8113,
+      "sha256": "7d79cf831c58fe7dca70f54530c11549713eb7554318f69c15d53006c9f560eb",
+      "task_id": "core_loss_temperature_curvature_seed8113"
+    },
+    {
+      "done_marker_sha256": "5d9f5c8b2a589d6b1bc0f23b2a300b8ca6e6c30903081492e8e7b922290438a9",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8114/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8114,
+      "sha256": "604d400474b5475fa6c72ccf29270d2d69ac6c659475d1d42626e5291aefaccf",
+      "task_id": "core_loss_temperature_curvature_seed8114"
+    },
+    {
+      "done_marker_sha256": "fe6b82edb5101c3aeab47592c4459fce6c1bfe5ab995d5cd7900451982bd27c5",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8115/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8115,
+      "sha256": "a627acfce2228f2cea573d93e09af34b5e258297bf0d0a122d62586d769d6198",
+      "task_id": "core_loss_temperature_curvature_seed8115"
+    },
+    {
+      "done_marker_sha256": "378da9ed1c125885207f94e2ca4c6c5864ecbda31707280703db9aebc84d28fa",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8116/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8116,
+      "sha256": "1b25685a0d5e8518c6ec90d07e625d75c70a8f23cd7d123051988732f89af5d6",
+      "task_id": "core_loss_temperature_curvature_seed8116"
+    },
+    {
+      "done_marker_sha256": "b6e312ac1192214dd3af61a5446ebef681bb7fed03b7661ff920d6f199e68f13",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8117/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8117,
+      "sha256": "c873a4352a64ca2ee7aa7df4898991afdbf3379bdbded7aac320b5b216ccacee",
+      "task_id": "core_loss_temperature_curvature_seed8117"
+    },
+    {
+      "done_marker_sha256": "63850677c86c5c553c92db4f38a921e5d05944ac8d5c07c259380a3468fa912d",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8118/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8118,
+      "sha256": "52dbc8f88783d725dd4c40e7b043c3a6a5f99e8f34a7412aa2521de2f26bc285",
+      "task_id": "core_loss_temperature_curvature_seed8118"
+    },
+    {
+      "done_marker_sha256": "f378a92b83ba2d10bbfbed02b6a26bc1f1287bc4b8d311dc5b68cf14d3d790a3",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8119/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8119,
+      "sha256": "2cf88bf2a37fa991081476a563d6a59024fe5608429c2b48d862c708d996976e",
+      "task_id": "core_loss_temperature_curvature_seed8119"
+    },
+    {
+      "done_marker_sha256": "0b5f9f0d7bd50b37262913984642ee152062254da4154d11cb093e7167a827ee",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8120/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8120,
+      "sha256": "8151861d509aea98e8d7aeb77dc4165e87862778eb3b2471ec380713e69669d1",
+      "task_id": "core_loss_temperature_curvature_seed8120"
+    },
+    {
+      "done_marker_sha256": "be2bc808ba9aff00d1ffbfb64a911a2cf366a0f93f799f07539a60555df90bf6",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8121/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8121,
+      "sha256": "2df41eef2dfcdef82e4f7b679d0d3926656700f2e01739fb5b9b16a7a837ae4c",
+      "task_id": "core_loss_temperature_curvature_seed8121"
+    },
+    {
+      "done_marker_sha256": "ba10ed304627dfce30a209f525e9952657307106dbd7ee091ec7ab71b13faf8e",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8122/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8122,
+      "sha256": "ed14fb2976f08c1fa228d1b37fb13723a239560c22b6c36724a0896945930984",
+      "task_id": "core_loss_temperature_curvature_seed8122"
+    },
+    {
+      "done_marker_sha256": "444c383fc717f57d2413e6b659c3619c9bdde931b4b4dbd8c0cdbca4743b5818",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8123/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8123,
+      "sha256": "261e10ca723722ae340d3175fd193acd60cb501700148d5a2974de65d3804337",
+      "task_id": "core_loss_temperature_curvature_seed8123"
+    },
+    {
+      "done_marker_sha256": "47461d87eb7ad9175d28cddea8c71bf860f4bd286914d03840f6d8b66846717d",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8124/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8124,
+      "sha256": "b039e6076dd77e99c418e0273e95e548b955236b691c54fe81b86ed586385c5c",
+      "task_id": "core_loss_temperature_curvature_seed8124"
+    },
+    {
+      "done_marker_sha256": "56fbec0ddc354b909d5b6372b23a6142384ba6433c1e1674dc000b6de0cc61ba",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8125/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8125,
+      "sha256": "faeb96247dd65257d64a0c5e628dd958032dcd0bbeaca7d051df8160e85f678b",
+      "task_id": "core_loss_temperature_curvature_seed8125"
+    },
+    {
+      "done_marker_sha256": "ca0b8a51a92d1bf257df10ad294ef9e64bbd680e1399990afa102bab8db70472",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8126/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8126,
+      "sha256": "78b9bc53ce0687d951e62ca36a8ceb15dae16080249ff5d62db01876977f1fe8",
+      "task_id": "core_loss_temperature_curvature_seed8126"
+    },
+    {
+      "done_marker_sha256": "88852ee1060f73fad4a6c3bd74492d8f453a0cdeecee71998c331e7a0930dca3",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8127/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8127,
+      "sha256": "9091c6cd0582adda070f3a15677316157411f8ee516073d62590ba597931bb31",
+      "task_id": "core_loss_temperature_curvature_seed8127"
+    },
+    {
+      "done_marker_sha256": "7447d7f20ee7ee0d0462dd7a4d46228c93308bd8ae05cf6335ebefbcb3f98917",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8128/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8128,
+      "sha256": "17f601eb8733f5b42846962fc1bfd466fee04299015b037c626126df9f7085e6",
+      "task_id": "core_loss_temperature_curvature_seed8128"
+    },
+    {
+      "done_marker_sha256": "0ab8788f9f2f08e6b61c7833c46e6340e7a6b7c9684e5e9fbf166312170e5513",
+      "path": "results/model_mismatch/core_loss_temperature_curvature_seed8129/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 8129,
+      "sha256": "81ad77b29ad780e710527c43866bd4206df50089a2f50cb1dd5787790cbd9fb3",
+      "task_id": "core_loss_temperature_curvature_seed8129"
+    },
+    {
+      "done_marker_sha256": "c61da96a2949a096d2fb5dd335782f1026b6d744af80cc245b633c57b956fcc4",
+      "path": "results/model_mismatch/matched_control_seed8100/result.json",
+      "scenario": "matched_control",
+      "seed": 8100,
+      "sha256": "3a1435776fa72a94a3429092a0f9ddb90c4b033aa3bc8ce19f904de2e01e19dd",
+      "task_id": "matched_control_seed8100"
+    },
+    {
+      "done_marker_sha256": "cb5acf50c5e7d9af507a77e7618f818d92c04afc2491277df95e328853a94c02",
+      "path": "results/model_mismatch/matched_control_seed8101/result.json",
+      "scenario": "matched_control",
+      "seed": 8101,
+      "sha256": "a387f1034f28cdca1df44e488877202737d4a4e82d2032a46a0c1932b8bdfa5b",
+      "task_id": "matched_control_seed8101"
+    },
+    {
+      "done_marker_sha256": "d30be06305221d77ef11ddcf122e47988e32b86de30f31a719c86478fd1ffebe",
+      "path": "results/model_mismatch/matched_control_seed8102/result.json",
+      "scenario": "matched_control",
+      "seed": 8102,
+      "sha256": "364717c22346c52baa59023dc33d2c2f2b87af50f91bef35a52c5a45ba951465",
+      "task_id": "matched_control_seed8102"
+    },
+    {
+      "done_marker_sha256": "0bf8dabd5e476b0f79308aa956b175f2af41efa114ab587dbbd71dabc57970b4",
+      "path": "results/model_mismatch/matched_control_seed8103/result.json",
+      "scenario": "matched_control",
+      "seed": 8103,
+      "sha256": "e64a87133303cfe533b48a72ff9de8034c0eb78bcd97eb4697e0fa7e281d79f0",
+      "task_id": "matched_control_seed8103"
+    },
+    {
+      "done_marker_sha256": "68d48b14052e6ac4fc8294f7bec5cc3981eedd1ff682254790d2a56b99adb473",
+      "path": "results/model_mismatch/matched_control_seed8104/result.json",
+      "scenario": "matched_control",
+      "seed": 8104,
+      "sha256": "ea164b749eb644f615dfaa676800f908357389ccb2c55e96ecaa1e4166e4fae0",
+      "task_id": "matched_control_seed8104"
+    },
+    {
+      "done_marker_sha256": "d0dfbc7643c0b2166b02495e3b5d1005507cac682fdb4584c31fb27aba2af23f",
+      "path": "results/model_mismatch/matched_control_seed8105/result.json",
+      "scenario": "matched_control",
+      "seed": 8105,
+      "sha256": "0dce6b30311f757845a75c2107e3f41a673ff0e36e4ad06ed0007cfa1c045917",
+      "task_id": "matched_control_seed8105"
+    },
+    {
+      "done_marker_sha256": "5ad984a859e6306705f18eadc9ca03ac3df96a20c6adc19deb99200700f1264d",
+      "path": "results/model_mismatch/matched_control_seed8106/result.json",
+      "scenario": "matched_control",
+      "seed": 8106,
+      "sha256": "d2e04e44a26df5aca0f1ae3fed46b5ca39732e786651012109c6a8878154d0ca",
+      "task_id": "matched_control_seed8106"
+    },
+    {
+      "done_marker_sha256": "fd96f9b310788609f4226b21d8d37ee98b7bd29747f343074b658fb3e18b13cb",
+      "path": "results/model_mismatch/matched_control_seed8107/result.json",
+      "scenario": "matched_control",
+      "seed": 8107,
+      "sha256": "fce8ceb0a72ce2963a332da73df34f6ff9286d826d01c6a97c232519a2c2fec0",
+      "task_id": "matched_control_seed8107"
+    },
+    {
+      "done_marker_sha256": "68ef5f9c31c93596aa114eb8f05c56899708ae7ab5d3b0b5d914d4cc0d33e19a",
+      "path": "results/model_mismatch/matched_control_seed8108/result.json",
+      "scenario": "matched_control",
+      "seed": 8108,
+      "sha256": "a008a13625ca64c21aa80dbf00fc4032e5857256209a79062e7534035162e276",
+      "task_id": "matched_control_seed8108"
+    },
+    {
+      "done_marker_sha256": "087186d5e9b136bc16ebb6215d09c071504cb4d156e5145ef57a414bf91b44a3",
+      "path": "results/model_mismatch/matched_control_seed8109/result.json",
+      "scenario": "matched_control",
+      "seed": 8109,
+      "sha256": "ff974a2914242ab807fec28f16261b432d0315a9ec7add341553bd09af86fca4",
+      "task_id": "matched_control_seed8109"
+    },
+    {
+      "done_marker_sha256": "1924ffc9cc3866439f1b8c4ef782e2027f58e4060b0d1b833a4844431b680f13",
+      "path": "results/model_mismatch/matched_control_seed8110/result.json",
+      "scenario": "matched_control",
+      "seed": 8110,
+      "sha256": "e7c1ec1c4fa8e7ba59f220cb07c041cce5d9074e17cafe8e3f1fa79c8aa2c63a",
+      "task_id": "matched_control_seed8110"
+    },
+    {
+      "done_marker_sha256": "459f81f9a3edf6b86e5ba44d4b4811d04d314c84df4a7b6b3e0e9a2304a78b1c",
+      "path": "results/model_mismatch/matched_control_seed8111/result.json",
+      "scenario": "matched_control",
+      "seed": 8111,
+      "sha256": "cad67acacd70310f6c7b96d04676f06ef30b6954accc1183d4cc0ca2884456bf",
+      "task_id": "matched_control_seed8111"
+    },
+    {
+      "done_marker_sha256": "d99461216a59f6d488a0d70e2eee0f4099df252f93c8ecab8cc19b1580f32a74",
+      "path": "results/model_mismatch/matched_control_seed8112/result.json",
+      "scenario": "matched_control",
+      "seed": 8112,
+      "sha256": "bac07dc7a64664a457df62889c59fbfea987d2c4c13c226a2ace7df63bfbcbd3",
+      "task_id": "matched_control_seed8112"
+    },
+    {
+      "done_marker_sha256": "1343a1da3cf1c1f890c2516296407999dab47574105ff036c49817f9ca061040",
+      "path": "results/model_mismatch/matched_control_seed8113/result.json",
+      "scenario": "matched_control",
+      "seed": 8113,
+      "sha256": "78af3d7296efc7a67d13bddf4b7d6e9c41d97f91ad6cf92d4bb2073d95ff2995",
+      "task_id": "matched_control_seed8113"
+    },
+    {
+      "done_marker_sha256": "e9cac905ec6ce06b2efbdb819b58590a35790d83bc31999f4a971927f29d3eb2",
+      "path": "results/model_mismatch/matched_control_seed8114/result.json",
+      "scenario": "matched_control",
+      "seed": 8114,
+      "sha256": "9d0c22265c0f81e68d8be9b72ab32def3b3264b8172aa53fcbc649684055f89a",
+      "task_id": "matched_control_seed8114"
+    },
+    {
+      "done_marker_sha256": "5e24e0bda357842bde89c9524ffbb7adcd67b292c346fd5004c06c35d0963b3d",
+      "path": "results/model_mismatch/matched_control_seed8115/result.json",
+      "scenario": "matched_control",
+      "seed": 8115,
+      "sha256": "97bbff793ae77c79ec33014dfa10cfde5a3eed2be9f1a36d444858fe9d4d460c",
+      "task_id": "matched_control_seed8115"
+    },
+    {
+      "done_marker_sha256": "15594fea5d019f7807c8202c1b48d51eb896402c3862284d3d0378f4563e9523",
+      "path": "results/model_mismatch/matched_control_seed8116/result.json",
+      "scenario": "matched_control",
+      "seed": 8116,
+      "sha256": "4e4e0cbc40f8530ed4a068eabb128d7e2dace6f3e6f80a8a5257909297c390b7",
+      "task_id": "matched_control_seed8116"
+    },
+    {
+      "done_marker_sha256": "6d9391f933f98837e9846dd6ead5a581312fe40f3c659977e40955596eeb86c4",
+      "path": "results/model_mismatch/matched_control_seed8117/result.json",
+      "scenario": "matched_control",
+      "seed": 8117,
+      "sha256": "73d4bc483bc37541290a953fde61915d5ef182778f3179d8bec586ddfc3372c7",
+      "task_id": "matched_control_seed8117"
+    },
+    {
+      "done_marker_sha256": "ca02b8e81cae0669edcf86f06c28620488e6dac98f62a8e73806b7184e38fa74",
+      "path": "results/model_mismatch/matched_control_seed8118/result.json",
+      "scenario": "matched_control",
+      "seed": 8118,
+      "sha256": "60e6f52d2df1989c45721dca64f2917241690d5ba6d04d62e50c212c05d50d3b",
+      "task_id": "matched_control_seed8118"
+    },
+    {
+      "done_marker_sha256": "4c935c439a05feb7729ee6da1ebd93fd6818bee6a911194c074505ca1060d5b2",
+      "path": "results/model_mismatch/matched_control_seed8119/result.json",
+      "scenario": "matched_control",
+      "seed": 8119,
+      "sha256": "17d70bc63055964372720dd0eb7c9e769c28ae525c34b6119ef5b935ca72bc01",
+      "task_id": "matched_control_seed8119"
+    },
+    {
+      "done_marker_sha256": "bd61d8b5998751211eba1e3cee44ed842358758f8bbdb65488321c3a06a7c4db",
+      "path": "results/model_mismatch/matched_control_seed8120/result.json",
+      "scenario": "matched_control",
+      "seed": 8120,
+      "sha256": "394174207906733d8532c2b5cdd2c7c8e7d0c887de6639979a81531aa69c9c5b",
+      "task_id": "matched_control_seed8120"
+    },
+    {
+      "done_marker_sha256": "a04b8736ebf24e93b1b6a293d47bdb73ff9f79c851e14ee43af036ab22e1eceb",
+      "path": "results/model_mismatch/matched_control_seed8121/result.json",
+      "scenario": "matched_control",
+      "seed": 8121,
+      "sha256": "3692c3c37a26edc88dafdad0a0610b42c269b9bd8e9a2e941392c284ca60d184",
+      "task_id": "matched_control_seed8121"
+    },
+    {
+      "done_marker_sha256": "b7822023759a4f626a0062aeab3c9ad210963e505d0bee731e88d5d434816a61",
+      "path": "results/model_mismatch/matched_control_seed8122/result.json",
+      "scenario": "matched_control",
+      "seed": 8122,
+      "sha256": "16cf6d285872a8213a05697d2748ea8f60570339ec37456959f36e1344930540",
+      "task_id": "matched_control_seed8122"
+    },
+    {
+      "done_marker_sha256": "de20da8ddf110ed782f48b3649c4645efa47ea2f31e7cbc14a45f9a8a72c1def",
+      "path": "results/model_mismatch/matched_control_seed8123/result.json",
+      "scenario": "matched_control",
+      "seed": 8123,
+      "sha256": "fdfbe9f45b079b40b269989a70b01d5e173972db7018222b30b249f3db0f5984",
+      "task_id": "matched_control_seed8123"
+    },
+    {
+      "done_marker_sha256": "15218efdc81aca748bdf6e2125daa97db35364d7b48e85ae353ddb656901e790",
+      "path": "results/model_mismatch/matched_control_seed8124/result.json",
+      "scenario": "matched_control",
+      "seed": 8124,
+      "sha256": "3de21512a364c5cd3b31d5739f5b8982d6579f578a79cbd7bb8b5a78b73c5b2e",
+      "task_id": "matched_control_seed8124"
+    },
+    {
+      "done_marker_sha256": "ab88ba507fa5464e7a90ff577c2b1359d27b68d83322bd0f354a3640175bc656",
+      "path": "results/model_mismatch/matched_control_seed8125/result.json",
+      "scenario": "matched_control",
+      "seed": 8125,
+      "sha256": "0951ba61891b293fbff47796fd7fa3ccbedd3344ceb649b6bba01aeab8a152a3",
+      "task_id": "matched_control_seed8125"
+    },
+    {
+      "done_marker_sha256": "693153f9fba8a1457b5fcbe850d25339c3891c1c8ce6a8f2a0918d5d9f762133",
+      "path": "results/model_mismatch/matched_control_seed8126/result.json",
+      "scenario": "matched_control",
+      "seed": 8126,
+      "sha256": "41b3e59be7248f75d64e449d1c9d88f51fdc1cb3d3a1c5339bb00bfc039fac87",
+      "task_id": "matched_control_seed8126"
+    },
+    {
+      "done_marker_sha256": "299377461476e0df66d29ad6377f9e9617304cf2e5db49cba660296cfd41138c",
+      "path": "results/model_mismatch/matched_control_seed8127/result.json",
+      "scenario": "matched_control",
+      "seed": 8127,
+      "sha256": "cc1f9e09a1fffc530295109813df9cadc8ff4ab4dafa88d71d013aa1834ee6b9",
+      "task_id": "matched_control_seed8127"
+    },
+    {
+      "done_marker_sha256": "75ec11ce9c95ce809720857ccc452fa943367f12c6e804d859f096ea1a787a8b",
+      "path": "results/model_mismatch/matched_control_seed8128/result.json",
+      "scenario": "matched_control",
+      "seed": 8128,
+      "sha256": "0221de083cfbcd64d49ada97714d655c695b0c413c57aa637b412053f140687d",
+      "task_id": "matched_control_seed8128"
+    },
+    {
+      "done_marker_sha256": "23cd5a7f2dae524f68396ddd3af62c7c3869617f72e5f9b316040af5655a17a0",
+      "path": "results/model_mismatch/matched_control_seed8129/result.json",
+      "scenario": "matched_control",
+      "seed": 8129,
+      "sha256": "d3c865a67b4227b241b6f4d0bc349daf5bbb27a5815ad645e6390e3a5786f986",
+      "task_id": "matched_control_seed8129"
+    },
+    {
+      "done_marker_sha256": "6a82b7c816c36ad719f86a27101a7907c9e57e7dfa41102b31fafa7cc3ab5add",
+      "path": "results/model_mismatch/permeability_two_pole_seed8100/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8100,
+      "sha256": "b7a695037d4a25352cef1b0356112dd8f42172a6896c5eed3d393f6f1097c6d1",
+      "task_id": "permeability_two_pole_seed8100"
+    },
+    {
+      "done_marker_sha256": "032bbdf052feae1e8035c74804b2e25fcaee074693270211ee320180c7c8978d",
+      "path": "results/model_mismatch/permeability_two_pole_seed8101/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8101,
+      "sha256": "3a27a835d5c9b4813a8cbcdb82e017827de6a10df1dcb553d8f4df4e2ddb6e47",
+      "task_id": "permeability_two_pole_seed8101"
+    },
+    {
+      "done_marker_sha256": "03895453e87eec7eea606f96980ff475fb1595f8a3004890c3a6f3211ecb0415",
+      "path": "results/model_mismatch/permeability_two_pole_seed8102/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8102,
+      "sha256": "feb36eac3f41eef2c8f74996f8471d53f805c503e805c0e2b406587510fafae4",
+      "task_id": "permeability_two_pole_seed8102"
+    },
+    {
+      "done_marker_sha256": "0a59f92c988234ebf5215dc22a931bb6427a5750f3f17f50e81d78ef87cffed8",
+      "path": "results/model_mismatch/permeability_two_pole_seed8103/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8103,
+      "sha256": "2f4f0363db66ca637643f7ae446508e30ef02e97ace5b817a0577614a926dbed",
+      "task_id": "permeability_two_pole_seed8103"
+    },
+    {
+      "done_marker_sha256": "5aee48d9b44c8557d60706a15f9d1054d1fc167401c7f7a67487ddb8b569a10c",
+      "path": "results/model_mismatch/permeability_two_pole_seed8104/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8104,
+      "sha256": "07b6f22392cc8938497885ddd07aefc63d7fdebcd44664c118292fcf1f825acd",
+      "task_id": "permeability_two_pole_seed8104"
+    },
+    {
+      "done_marker_sha256": "ee793fc119648898b75561710484b96206be48f56eba2e2f41f752a515ec95d0",
+      "path": "results/model_mismatch/permeability_two_pole_seed8105/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8105,
+      "sha256": "ba5b2e9b3ddbecdf82618eae06f0e551ffed872a4f75f449482ee3ba5d425911",
+      "task_id": "permeability_two_pole_seed8105"
+    },
+    {
+      "done_marker_sha256": "dfab5d80b3f5ac9acc4f078c3b23a2efe7d8f9c083b124f871fed1ff7c68e543",
+      "path": "results/model_mismatch/permeability_two_pole_seed8106/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8106,
+      "sha256": "32c4fd51db0651a4f8e898a285cfb937edfaa2079e481ea24fcb5b22dd30b41e",
+      "task_id": "permeability_two_pole_seed8106"
+    },
+    {
+      "done_marker_sha256": "388dc3b90dcb4d746eda72858efda50f0cef926497e4ca50be480dcf85ae6fc6",
+      "path": "results/model_mismatch/permeability_two_pole_seed8107/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8107,
+      "sha256": "c6cac5b98e30c76be6e299a70cd3fc5b34874293f438f105dad40973d4f98adf",
+      "task_id": "permeability_two_pole_seed8107"
+    },
+    {
+      "done_marker_sha256": "eb57d31682f044086d560d3b728d7c1a8e5d1ec8bdf57edd447dd3741643e964",
+      "path": "results/model_mismatch/permeability_two_pole_seed8109/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8109,
+      "sha256": "b8f3717f92108290cdc8771dbaf6618fa4bb0f56b6549893e72b6909b4f82953",
+      "task_id": "permeability_two_pole_seed8109"
+    },
+    {
+      "done_marker_sha256": "7eea5491a3259aad8f02a591b3dbaa84f73cb99e6614e9fe1bd92dabc17a4134",
+      "path": "results/model_mismatch/permeability_two_pole_seed8110/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8110,
+      "sha256": "6b0dcfba2e915d54661629d77e34eb7d7ebbf1865e5f894265cee4b9975cbd00",
+      "task_id": "permeability_two_pole_seed8110"
+    },
+    {
+      "done_marker_sha256": "30c064e1834eaf376da2a44b77eef4315320f44e81e3cfa3fd3e9ee357bc2b36",
+      "path": "results/model_mismatch/permeability_two_pole_seed8111/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8111,
+      "sha256": "3beea7aa15d6c7674a3945053f7d9a6644d58f794b905ad5ef40d3fa496a1bd3",
+      "task_id": "permeability_two_pole_seed8111"
+    },
+    {
+      "done_marker_sha256": "e1700416ec18a624a40334d653926270c79693d1c96fac4ecb409a0cdca1955a",
+      "path": "results/model_mismatch/permeability_two_pole_seed8112/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8112,
+      "sha256": "947ebab7c79371edf488ded77f84101d9ba3cbbf81da4b947eae6255df269860",
+      "task_id": "permeability_two_pole_seed8112"
+    },
+    {
+      "done_marker_sha256": "7ae2153cb26378ac50b90f015d1ad86ee05273919cab8044fd15d954f048fa18",
+      "path": "results/model_mismatch/permeability_two_pole_seed8113/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8113,
+      "sha256": "6323fe5478123e1f348418bb879d75f7a2177cd1f95882f617bde3cd0c7629e7",
+      "task_id": "permeability_two_pole_seed8113"
+    },
+    {
+      "done_marker_sha256": "143f409133cff5dfdf1394653d9fa17850ebf8f60b3adac04fe9c24d718cfd4e",
+      "path": "results/model_mismatch/permeability_two_pole_seed8114/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8114,
+      "sha256": "88d3b4768768c7693f2538876b0463883606bacd55b7b022668f179d15abc745",
+      "task_id": "permeability_two_pole_seed8114"
+    },
+    {
+      "done_marker_sha256": "8c215b11045e74c77f92353b520d899196a93a36df87ac685d0d8c513c13c428",
+      "path": "results/model_mismatch/permeability_two_pole_seed8115/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8115,
+      "sha256": "ec271f0f3ae516819598b77b26d3f518274fe2abfc1fb9431290332ad497490b",
+      "task_id": "permeability_two_pole_seed8115"
+    },
+    {
+      "done_marker_sha256": "6e909081bb0dfbacb668f8e02ff6fdb338006a4855201ccb32e44cf8c12d689e",
+      "path": "results/model_mismatch/permeability_two_pole_seed8116/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8116,
+      "sha256": "2c3714b4bf596eb95d9b1ead3a2640530a942ea0e09059582cac34754f8b8635",
+      "task_id": "permeability_two_pole_seed8116"
+    },
+    {
+      "done_marker_sha256": "b4ad7692edf7f1c76acdd174f9277f7aa7ced4a35c4f058d854a38efb6c8619d",
+      "path": "results/model_mismatch/permeability_two_pole_seed8117/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8117,
+      "sha256": "ab4e0467254636fa09190767d8076e8a67103bc7b3da61944293d02aafcc5316",
+      "task_id": "permeability_two_pole_seed8117"
+    },
+    {
+      "done_marker_sha256": "ee1c58a0486c0561c3d4a9834962885f9cc6ee912fb845191de469b3a9c36db2",
+      "path": "results/model_mismatch/permeability_two_pole_seed8118/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8118,
+      "sha256": "51d1646f19a7e81c33816036e41ee523feb542abab2ff6b1a09f3862aac39afe",
+      "task_id": "permeability_two_pole_seed8118"
+    },
+    {
+      "done_marker_sha256": "327b55d2964cab83ffa1bd158e707f6ee8b38463b0ff0e9db999047017711232",
+      "path": "results/model_mismatch/permeability_two_pole_seed8119/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8119,
+      "sha256": "d8d81df51e2646dcf677f3d1659a1ff80249526ea1f3500e9c5dab9a8acdfe04",
+      "task_id": "permeability_two_pole_seed8119"
+    },
+    {
+      "done_marker_sha256": "88f1dc0308d458b4a9a28bdba8bf50727cbc9067e1b9a28a5438555e1cac85a5",
+      "path": "results/model_mismatch/permeability_two_pole_seed8120/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8120,
+      "sha256": "20aa96fbf3b9c4adc774178df1f323c8a12b8f45646812fd58d1c96db14fa456",
+      "task_id": "permeability_two_pole_seed8120"
+    },
+    {
+      "done_marker_sha256": "e5e4b1895de609385eb12b8cb50db24bfd0f63009481329becc9a682d8399146",
+      "path": "results/model_mismatch/permeability_two_pole_seed8121/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8121,
+      "sha256": "d531ea412106830c73ad99b6f6d3cecdcd3d8292ce0e6eabe3fff62e620a25ec",
+      "task_id": "permeability_two_pole_seed8121"
+    },
+    {
+      "done_marker_sha256": "944551c165805f1b3e64d9bb7a9f359b7ddedab9cd58b1d9990a717fda2543f0",
+      "path": "results/model_mismatch/permeability_two_pole_seed8122/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8122,
+      "sha256": "eaef446eb0736a9dd8e1643dd50fe29b0063e9d1560c0ca6dfa77e38b9466aeb",
+      "task_id": "permeability_two_pole_seed8122"
+    },
+    {
+      "done_marker_sha256": "dd7c1c880e95d60c79e6f85faa584725320b700b4fda46dc3bee43159940a9ba",
+      "path": "results/model_mismatch/permeability_two_pole_seed8123/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8123,
+      "sha256": "ba6767a3fc1f2cf064232b9030d8536f918b750cdd02596b230d6f3a41bbc5f1",
+      "task_id": "permeability_two_pole_seed8123"
+    },
+    {
+      "done_marker_sha256": "1420b0b1c529f9f795e361241d19dadbf06ac777688c334d3010205dfe4f3af3",
+      "path": "results/model_mismatch/permeability_two_pole_seed8124/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8124,
+      "sha256": "082bede3fdefc3e9269cb5ec7a21b49103af798f6fd42f9c91b1ca00b22a7e73",
+      "task_id": "permeability_two_pole_seed8124"
+    },
+    {
+      "done_marker_sha256": "cffac148d49e6cf033ad64e2149b511b1c81099421fa461f8d8de1ab00cf1f37",
+      "path": "results/model_mismatch/permeability_two_pole_seed8125/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8125,
+      "sha256": "afc647af45292d6122a4edc10099a222042217e262333c9841321345d44775f1",
+      "task_id": "permeability_two_pole_seed8125"
+    },
+    {
+      "done_marker_sha256": "aa0a39673a670faef386a574e3f500e665e8bc304699b9f1ec0bce9c87d2d619",
+      "path": "results/model_mismatch/permeability_two_pole_seed8126/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8126,
+      "sha256": "3f72cab63abab04b9cb4bc68a08fac5500be17745fff66c10fe7169683e21b64",
+      "task_id": "permeability_two_pole_seed8126"
+    },
+    {
+      "done_marker_sha256": "208652149037fc03b0cc497dd28d3c780ab6e94c76817dd24bce7a6e00f5daac",
+      "path": "results/model_mismatch/permeability_two_pole_seed8127/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8127,
+      "sha256": "e54ca6144fa676b208a97178ff3211074c3f94be0cdc2267ccb5ec5cb7b20d7c",
+      "task_id": "permeability_two_pole_seed8127"
+    },
+    {
+      "done_marker_sha256": "5e57bdf1500d6a81e6049d2cf3aa354b77fb2e8f6e1dd77a61b03761ff7ba36e",
+      "path": "results/model_mismatch/permeability_two_pole_seed8128/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8128,
+      "sha256": "edeb6ea7e92e43e9bfa463427b62a69c3fac5c454aa5fb6253acfc588126bc7b",
+      "task_id": "permeability_two_pole_seed8128"
+    },
+    {
+      "done_marker_sha256": "f53237f38ccc3c4bca3c306540bdc6c2ff0d9c2b97a084155813971a3c9f5279",
+      "path": "results/model_mismatch/permeability_two_pole_seed8129/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 8129,
+      "sha256": "470a86db6299f10d53be5c4c62eadd1acfb3b066ae0cf061edfb3f7320d1324c",
+      "task_id": "permeability_two_pole_seed8129"
+    }
+  ]
+}

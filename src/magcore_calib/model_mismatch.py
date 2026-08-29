@@ -31,6 +31,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - production is Python 3.
 MISMATCH_CONFIG_SCHEMA = "magcore-model-mismatch-preregistration/1.0"
 MISMATCH_RESULT_SCHEMA = "magcore-model-mismatch-result/1.0"
 MISMATCH_AGGREGATE_SCHEMA = "magcore-model-mismatch-aggregate/1.0"
+MISMATCH_NON_ADMISSION_SCHEMA = "magcore-model-mismatch-non-admission/1.0"
 POLICIES = (
     "eig_raw", "eig_per_cost", "fixed_channel_balanced",
     "random_channel_balanced", "predictive_variance_raw",
