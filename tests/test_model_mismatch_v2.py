@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -162,3 +164,34 @@ def test_mm2_scheduler_contract_is_fail_closed_and_full_matrix():
     watcher_text = watcher.read_text(encoding="utf-8")
     assert "COMPLETED + FAILED == TASK_COUNT" in watcher_text
     assert "rejection_records" in watcher_text
+
+
+def test_mm2_watcher_handles_not_yet_created_result_directories(tmp_path: Path):
+    project = tmp_path / "project"
+    run = project / "runs/run"
+    (project / "scripts").mkdir(parents=True)
+    (run / "provenance").mkdir(parents=True)
+    (run / "status").mkdir()
+    watcher = project / "scripts/watch_model_mismatch_v2.sh"
+    shutil.copy2(ROOT / "scripts/watch_model_mismatch_v2.sh", watcher)
+    watcher.chmod(0o755)
+    venv = Path(sys.executable).parent.parent
+    (run / "provenance/run.env").write_text(
+        f"MAGCORE_VENV={venv}\n", encoding="utf-8"
+    )
+    (run / "status/MM2_SUBMITTED").write_text(
+        '{"array_job_id":"123","aggregate_job_id":"456","task_count":120}\n',
+        encoding="utf-8",
+    )
+    (run / "status/MM2_SUBMISSION_FAILED").write_text(
+        '{"stage":"test"}\n', encoding="utf-8"
+    )
+    environment = os.environ.copy()
+    environment["MAGCORE_WATCH_INTERVAL"] = "10"
+    completed = subprocess.run(
+        [str(watcher), str(run)], capture_output=True, text=True,
+        env=environment, timeout=10,
+    )
+    assert completed.returncode == 1
+    assert "completed=0/120 failed=0 rejection_records=0" in completed.stdout
+    assert "submission failed" in completed.stderr.lower()

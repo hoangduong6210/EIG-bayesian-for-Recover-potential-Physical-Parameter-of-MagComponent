@@ -53,12 +53,20 @@ PY
 )
 
 while :; do
-    COMPLETED="$(find "$RUN_DIR/results/model_mismatch_v2" -mindepth 2 -maxdepth 2 \
-        -name result.json -type f 2>/dev/null | wc -l)"
-    FAILED="$(find "$RUN_DIR/status" -maxdepth 1 -name 'model_mismatch_v2_*.failed' \
-        -type f 2>/dev/null | wc -l)"
-    REJECTIONS="$(find "$RUN_DIR/status/model_mismatch_v2_rejections" -maxdepth 1 \
-        -name '*.json' -type f 2>/dev/null | wc -l)"
+    if [[ -d "$RUN_DIR/results/model_mismatch_v2" ]]; then
+        COMPLETED="$(find "$RUN_DIR/results/model_mismatch_v2" \
+            -mindepth 2 -maxdepth 2 -name result.json -type f | wc -l)"
+    else
+        COMPLETED=0
+    fi
+    FAILED="$(find "$RUN_DIR/status" -maxdepth 1 \
+        -name 'model_mismatch_v2_*.failed' -type f | wc -l)"
+    if [[ -d "$RUN_DIR/status/model_mismatch_v2_rejections" ]]; then
+        REJECTIONS="$(find "$RUN_DIR/status/model_mismatch_v2_rejections" \
+            -maxdepth 1 -name '*.json' -type f | wc -l)"
+    else
+        REJECTIONS=0
+    fi
     printf '%s MM-2 completed=%s/%s failed=%s rejection_records=%s array=%s aggregate=%s\n' \
         "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$COMPLETED" "$TASK_COUNT" \
         "$FAILED" "$REJECTIONS" "$ARRAY_JOB" "$AGGREGATE_JOB"
