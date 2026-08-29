@@ -1,18 +1,17 @@
 ---
 title: Model-Mismatch Campaign MM-1
-status: preregistered; no confirmatory result admitted
-last_updated: 2026-08-26
+status: closed; confirmatory result not admitted
+last_updated: 2026-08-28
 paper_source: false
 ---
 
 # Model-mismatch campaign MM-1
 
-MM-1 asks whether the acquisition conclusions survive when synthetic data do
-not come from the model used for inference. It is a new experiment, separate
-from the completed matched-model benchmark. Its configuration is fixed in
-`configs/model_mismatch.toml`. No MM-1
-number belongs in the manuscript until all declared seed--scenario records
-pass validation and a release containing those records is frozen.
+MM-1 asked whether the acquisition conclusions survive when synthetic data do
+not come from the model used for inference. It is separate from the completed
+matched-model benchmark. Its configuration remains fixed in
+`configs/model_mismatch.toml`. The campaign did not pass its admission rule;
+therefore no MM-1 endpoint belongs in the manuscript.
 
 ## Scientific question
 
@@ -130,6 +129,24 @@ new release identity. Partial arrays, failed sampler states, and pilot runs are
 diagnostics only. The matched-model release remains unchanged regardless of
 the MM-1 outcome.
 
+## Closeout
+
+The task matrix reached terminal state on 27 August 2026 with 119 validated
+result records and one failed marker for
+`permeability_two_pole_seed8108`. The failed task produced no valid result.
+Consequently the dependent aggregate was not created and MM-1 is not admitted
+as confirmatory evidence. [Source E10](../evidence/Evidence-Sources.md#e10)
+
+The endpoint-blind closeout lists the SHA-256 of each validated result and the
+failed marker. It deliberately contains no policy endpoint, holdout error,
+coverage value, gate result, or paired contrast. The marker establishes a
+nonzero task failure. The public closeout does not support naming a policy,
+posterior state, failure mechanism, or failed diagnostic threshold.
+
+MM-1 will not be repaired by replacing the failed task under a different
+sampler contract. Any further model-mismatch study uses a new campaign
+identity, a prospective sampler rule, and a new seed namespace.
+
 ## Execution and monitoring
 
 MM-1 is submitted only from an immutable run prepared from a clean commit on a
@@ -148,6 +165,6 @@ or malformed response creates a failure record rather than a success marker.
 The watcher is read-only and exits only after the aggregate exists or a task,
 submission, or aggregation failure is recorded.
 
-The campaign deliberately does not introduce a gate-aligned utility or
-simulation-based calibration. Those are later experiments and must use their
-own prospective configurations and seed namespaces.
+The campaign deliberately did not introduce a gate-aligned utility or
+simulation-based calibration. Those remain later experiments with their own
+prospective configurations and seed namespaces.

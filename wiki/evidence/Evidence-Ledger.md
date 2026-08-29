@@ -18,6 +18,7 @@ paper_source: false
 | `E7` | Measured-data adequacy | [Detailed E7](Evidence-Sources.md#e7) |
 | `E8` | Release integrity | [Detailed E8](Evidence-Sources.md#e8) |
 | `E9` | Comparator selection-path diagnostic | [Detailed E9](Evidence-Sources.md#e9) |
+| `E10` | MM-1 endpoint-blind non-admission record | [Detailed E10](Evidence-Sources.md#e10) |
 
 The disclosure-safe projection is `evidence/results.json`; its hash and release
 binding are enforced by the wiki build.

@@ -69,8 +69,8 @@ so measured-data acquisition suggestions remain model-conditional.
 | Nested-EIG estimator setting | Qualified for the declared benchmark | [E3](wiki/evidence/Evidence-Sources.md#e3) |
 | Public raw-to-aggregate audit bundle v2 | Published and independently verifiable | [E8](wiki/evidence/Evidence-Sources.md#e8) |
 | Comparator selection-path analysis | Post hoc diagnostic complete | [E9](wiki/evidence/Evidence-Sources.md#e9) |
-| Model-mismatch campaign MM-1 | Preregistered; no confirmatory outcome admitted | [MM-1 protocol](wiki/experiments/Model-Mismatch-Preregistration.md) |
-| Gate-aligned utility and simulation-based calibration | Deferred until MM-1 completes | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
+| Model-mismatch campaign MM-1 | Closed with 119/120 valid task records; not admitted | [E10](wiki/evidence/Evidence-Sources.md#e10), [MM-1 record](wiki/experiments/Model-Mismatch-Preregistration.md) |
+| Gate-aligned utility and simulation-based calibration | Deferred until an independent mismatch campaign is admitted | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release
 `20260817T072230Z_401e3030fe13`, manifest SHA-256

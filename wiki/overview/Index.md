@@ -32,7 +32,7 @@ pointer, scope, release identity, and checksum.
 | How stable is the nested EIG estimator? | [Estimator qualification](../manuscript/Full-Manuscript.md#nested-estimator-qualification) | [E3](../evidence/Evidence-Sources.md#e3) |
 | How well does the model fit measured data? | [Measured-data adequacy](../status/Project-Status.md#measured-data-adequacy) | [E7](../evidence/Evidence-Sources.md#e7) |
 | Which release produced the numbers? | [Project status](../status/Project-Status.md) | [E8](../evidence/Evidence-Sources.md#e8) |
-| How will structural mismatch be tested? | [MM-1 preregistration](../experiments/Model-Mismatch-Preregistration.md) | [`configs/model_mismatch.toml`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/configs/model_mismatch.toml) |
+| What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
 
 ## Complete page directory
 
@@ -42,7 +42,7 @@ pointer, scope, release identity, and checksum.
 | Architecture | [Research system map](../architecture/Research-System-Map.md) |
 | Methods | [Sequential design method](../methods/Sequential-Design-Method.md) |
 | Data | [Dataset registry](../datasets/Dataset-Registry.md) |
-| Experiments | [MM-1 preregistration](../experiments/Model-Mismatch-Preregistration.md) |
+| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md) |
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |

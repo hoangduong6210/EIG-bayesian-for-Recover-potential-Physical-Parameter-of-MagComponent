@@ -1,7 +1,7 @@
 ---
 title: Scientific Job Results
 status: canonical computation ledger
-last_updated: 2026-08-26
+last_updated: 2026-08-28
 paper_source: false
 ---
 
@@ -35,15 +35,15 @@ The three tasks without result artifacts are the smoke check, estimator-setting
 selection, and final decision assembly. Their absence from the artifact total
 is explicitly included in the accounting. [Source E1](../evidence/Evidence-Sources.md#e1)
 
-## Preregistered work not included in the artifact total
+## MM-1 work not included in the admitted artifact total
 
-MM-1 declares 120 scenario--seed tasks (four fixed data generators by 30 new
-seeds) followed by one validated aggregate task. These jobs are prospective
-and are not part of the 213 completed tasks or 222 artifacts above. Until all
-120 records pass the sampler and schema gates, the job ledger contains no
-MM-1 numerical result. The fixed scenarios, seeds, endpoints, estimator-file
-digest, and admission rule are recorded in the
-[MM-1 preregistration](../experiments/Model-Mismatch-Preregistration.md).
+MM-1 declared 120 scenario--seed tasks (four fixed data generators by 30 new
+seeds) followed by one validated aggregate task. The array closed with 119
+validated records and one failed task marker. Because the complete matrix did
+not pass the admission rule, the dependent aggregate was not created and no
+policy, accuracy, coverage, or model-mismatch endpoint was admitted. These
+diagnostic records are not part of the 213 completed tasks or 222 artifacts in
+the validated release above. [Source E10](../evidence/Evidence-Sources.md#e10)
 
 ## Policy endpoints
 

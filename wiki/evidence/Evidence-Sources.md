@@ -106,6 +106,18 @@ source label.
   comparator result. It is descriptive evidence about the observed paths, not
   a preregistered causal or counterfactual contrast.
 
+<a id="e10"></a>
+## E10 — MM-1 non-admission record
+
+- Artifact: [`non_admission.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/26bc699b66f0866b1ea16e09dc5ffa0d26ca6e81/results/diagnostics/model_mismatch/MM-1/20260827T045036Z_e4c674a6ff98/non_admission.json)
+- SHA-256: `dba31b989debfe1729261a0fb42e07317069a97095b743c0d73237500e5a5207`
+- Supports: the declared 120-task matrix closed with 119 validated result
+  records and one failed task marker; the aggregate was not created and no
+  confirmatory MM-1 claim is allowed.
+- Disclosure boundary: the record contains result and marker hashes but no
+  acquisition endpoint, holdout, error, coverage, or policy-comparison value.
+  It establishes non-admission, not a model-mismatch outcome.
+
 ## Verification rule
 
 [`build.py`](../build.py) rejects the wiki if the projection hash, release ID,

@@ -1,13 +1,13 @@
 ---
 title: Project Status
 status: canonical current status
-last_updated: 2026-08-26
+last_updated: 2026-08-28
 paper_source: false
 ---
 
 # Project Status
 
-Status date: 2026-08-26.
+Status date: 2026-08-28.
 
 ## Completed scientific work
 
@@ -33,6 +33,20 @@ Manifest SHA-256:
 **85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7**
 
 [Release source E8](../evidence/Evidence-Sources.md#e8)
+
+## MM-1 closeout
+
+The preregistered structural-mismatch array reached a terminal task matrix on
+27 August 2026. Of 120 declared scenario--seed tasks, 119 produced validated
+records and one, `permeability_two_pole_seed8108`, produced a nonzero failure
+marker without a valid result. The aggregate was therefore not created. MM-1
+is closed as a diagnostic campaign and supplies no endpoint or policy claim.
+[Source E10](../evidence/Evidence-Sources.md#e10)
+
+The failed marker does not identify the policy, posterior state, or individual
+diagnostic threshold responsible for rejection. Those details are not
+inferred from the 119 successful records. A new campaign must preserve
+rejection diagnostics prospectively and use a separate campaign identity.
 
 ## Primary direct contrasts
 
@@ -88,13 +102,14 @@ and [E9](../evidence/Evidence-Sources.md#e9)
 
 ## Next scientific experiments
 
-1. Run preregistered model-mismatch campaign MM-1: four fixed scenarios and 30
-   new seeds. No MM-1 result has been admitted yet.
-   [MM-1 protocol](../experiments/Model-Mismatch-Preregistration.md)
-2. Preregister a gate-aligned utility after MM-1 is complete.
-3. Run larger simulation-based calibration for parameter and predictive
+1. Reproduce the failed MM-1 task as a diagnostic only, retaining the rejected
+   sampler diagnostics outside the claim-bearing result tree.
+2. Preregister and run a new full model-mismatch matrix with an explicit
+   deterministic sampler-escalation rule and a new, unobserved seed namespace.
+3. Preregister a gate-aligned utility after that mismatch campaign is admitted.
+4. Run larger simulation-based calibration for parameter and predictive
    coverage.
-4. Controlled laboratory timing and multi-lot measurements before any
+5. Controlled laboratory timing and multi-lot measurements before any
    real-world time-saving claim.
-5. Stable measured-data acquisition ranking only after the forward model and
+6. Stable measured-data acquisition ranking only after the forward model and
    observation model pass adequacy checks.
