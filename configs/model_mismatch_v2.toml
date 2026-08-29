@@ -1,0 +1,90 @@
+schema_version = "magcore-model-mismatch-preregistration/1.1"
+campaign_id = "MM-2"
+status = "preregistered_before_confirmatory_outcomes"
+estimator_source_release_id = "20260817T072230Z_401e3030fe13"
+estimator_decision_sha256 = "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6"
+predecessor_campaign_id = "MM-1"
+predecessor_non_admission_sha256 = "dba31b989debfe1729261a0fb42e07317069a97095b743c0d73237500e5a5207"
+seed_namespace = "mm2_confirmatory_seed_v1"
+retain_rejection_diagnostics = true
+
+# The successor seeds were not used by benchmark v4 or MM-1.  Both observed
+# namespaces are forbidden so no completed outcome can enter this campaign.
+seeds = [9100, 9101, 9102, 9103, 9104, 9105, 9106, 9107, 9108, 9109,
+         9110, 9111, 9112, 9113, 9114, 9115, 9116, 9117, 9118, 9119,
+         9120, 9121, 9122, 9123, 9124, 9125, 9126, 9127, 9128, 9129]
+forbidden_development_seeds = [7300, 7301, 7302, 7303, 7304, 7305, 7306, 7307, 7308, 7309,
+                               7310, 7311, 7312, 7313, 7314, 7315, 7316, 7317, 7318, 7319,
+                               7320, 7321, 7322, 7323, 7324, 7325, 7326, 7327, 7328, 7329,
+                               8100, 8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109,
+                               8110, 8111, 8112, 8113, 8114, 8115, 8116, 8117, 8118, 8119,
+                               8120, 8121, 8122, 8123, 8124, 8125, 8126, 8127, 8128, 8129]
+temperatures_c = [25.0, 60.0, 100.0]
+policies = [
+  "eig_raw",
+  "eig_per_cost",
+  "fixed_channel_balanced",
+  "random_channel_balanced",
+  "predictive_variance_raw",
+  "predictive_variance_per_cost",
+  "laplace_d_opt_raw",
+  "laplace_d_opt_per_cost",
+]
+
+[runtime]
+n_walkers = 48
+n_steps = 20000
+burn = 4000
+max_steps = 320000
+check_interval = 10000
+max_measurements = 25
+
+[endpoints]
+pcv_gate_pct = 8.0
+lm_gate_pct = 5.0
+false_confidence_pcv_error_pct = 8.0
+false_confidence_lm_error_pct = 5.0
+
+[[scenarios]]
+name = "matched_control"
+second_pole_fraction = 0.0
+first_pole_frequency_multiplier = 1.0
+second_pole_frequency_multiplier = 1.0
+first_pole_alpha_offset = 0.0
+second_pole_alpha_offset = 0.0
+pcv_temperature_log_slope_per_c = 0.0
+pcv_log_frequency_curvature = 0.0
+pcv_log_frequency_flux_interaction = 0.0
+
+[[scenarios]]
+name = "permeability_two_pole"
+second_pole_fraction = 0.25
+first_pole_frequency_multiplier = 0.75
+second_pole_frequency_multiplier = 5.0
+first_pole_alpha_offset = -0.05
+second_pole_alpha_offset = 0.18
+pcv_temperature_log_slope_per_c = 0.0
+pcv_log_frequency_curvature = 0.0
+pcv_log_frequency_flux_interaction = 0.0
+
+[[scenarios]]
+name = "core_loss_temperature_curvature"
+second_pole_fraction = 0.0
+first_pole_frequency_multiplier = 1.0
+second_pole_frequency_multiplier = 1.0
+first_pole_alpha_offset = 0.0
+second_pole_alpha_offset = 0.0
+pcv_temperature_log_slope_per_c = 0.0035
+pcv_log_frequency_curvature = 0.08
+pcv_log_frequency_flux_interaction = 0.05
+
+[[scenarios]]
+name = "combined_mismatch"
+second_pole_fraction = 0.35
+first_pole_frequency_multiplier = 0.55
+second_pole_frequency_multiplier = 7.0
+first_pole_alpha_offset = -0.10
+second_pole_alpha_offset = 0.25
+pcv_temperature_log_slope_per_c = 0.0055
+pcv_log_frequency_curvature = 0.14
+pcv_log_frequency_flux_interaction = 0.10

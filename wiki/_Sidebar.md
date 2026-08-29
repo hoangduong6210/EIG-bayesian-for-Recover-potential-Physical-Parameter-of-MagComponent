@@ -21,7 +21,8 @@ paper_source: false
 
 ## Ongoing work and publication
 
-- [MM-1 preregistration](experiments/Model-Mismatch-Preregistration.md)
+- [MM-1 protocol and closeout](experiments/Model-Mismatch-Preregistration.md)
+- [MM-2 preregistration](experiments/Model-Mismatch-V2-Preregistration.md)
 - [Method decisions](decisions/0001-gate-aligned-objective.md)
 - [References](references/References.md)
 - [Authoring and snapshots](manuscript/Authoring-and-Snapshots.md)

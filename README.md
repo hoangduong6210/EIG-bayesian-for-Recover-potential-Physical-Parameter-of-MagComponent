@@ -70,6 +70,7 @@ so measured-data acquisition suggestions remain model-conditional.
 | Public raw-to-aggregate audit bundle v2 | Published and independently verifiable | [E8](wiki/evidence/Evidence-Sources.md#e8) |
 | Comparator selection-path analysis | Post hoc diagnostic complete | [E9](wiki/evidence/Evidence-Sources.md#e9) |
 | Model-mismatch campaign MM-1 | Closed with 119/120 valid task records; not admitted | [E10](wiki/evidence/Evidence-Sources.md#e10), [MM-1 record](wiki/experiments/Model-Mismatch-Preregistration.md) |
+| Model-mismatch campaign MM-2 | Preregistered independent successor; no outcomes admitted | [MM-2 protocol](wiki/experiments/Model-Mismatch-V2-Preregistration.md) |
 | Gate-aligned utility and simulation-based calibration | Deferred until an independent mismatch campaign is admitted | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release

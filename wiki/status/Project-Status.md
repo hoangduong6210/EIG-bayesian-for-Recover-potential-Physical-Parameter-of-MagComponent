@@ -48,6 +48,11 @@ diagnostic threshold responsible for rejection. Those details are not
 inferred from the 119 successful records. A new campaign must preserve
 rejection diagnostics prospectively and use a separate campaign identity.
 
+MM-2 now supplies that separate protocol. It uses seeds 9100--9129, forbids
+both earlier observed seed namespaces, preserves the scientific design, and
+retains state-level rejection diagnostics. No MM-2 outcome has been admitted.
+[MM-2 protocol](../experiments/Model-Mismatch-V2-Preregistration.md)
+
 ## Primary direct contrasts
 
 The difference is comparator minus EIG; positive values favor EIG.
@@ -102,11 +107,11 @@ and [E9](../evidence/Evidence-Sources.md#e9)
 
 ## Next scientific experiments
 
-1. Reproduce the failed MM-1 task as a diagnostic only, retaining the rejected
-   sampler diagnostics outside the claim-bearing result tree.
-2. Preregister and run a new full model-mismatch matrix with an explicit
-   deterministic sampler-escalation rule and a new, unobserved seed namespace.
-3. Preregister a gate-aligned utility after that mismatch campaign is admitted.
+1. Run the preregistered 120-task MM-2 matrix and apply its fail-closed
+   admission rule.
+2. Reproduce the failed MM-1 task as a diagnostic only; do not merge it into
+   either campaign.
+3. Preregister a gate-aligned utility after MM-2 is admitted.
 4. Run larger simulation-based calibration for parameter and predictive
    coverage.
 5. Controlled laboratory timing and multi-lot measurements before any

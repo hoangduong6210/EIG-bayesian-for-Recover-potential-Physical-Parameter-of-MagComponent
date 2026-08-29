@@ -60,6 +60,25 @@ load_run() {
         echo "FATAL: immutable source snapshot is missing or mismatched" >&2
         exit 66
     }
+    local archive actual_archive_sha verification_root
+    archive="$MAGCORE_RUN_DIR/provenance/source-tree.tar.gz"
+    [[ -f "$archive" ]] || {
+        echo "FATAL: immutable source archive is missing" >&2
+        exit 66
+    }
+    actual_archive_sha="$(sha256sum "$archive" | awk '{print $1}')"
+    [[ "$actual_archive_sha" == "$MAGCORE_SOURCE_ARCHIVE_SHA256" ]] || {
+        echo "FATAL: immutable source archive digest mismatch" >&2
+        exit 68
+    }
+    verification_root="$(mktemp -d "$MAGCORE_RUN_DIR/tmp/source-verify.XXXXXX")"
+    tar -xzf "$archive" -C "$verification_root"
+    if ! diff -qr --no-dereference "$verification_root" "$MAGCORE_CODE_ROOT" >/dev/null; then
+        rm -rf -- "$verification_root"
+        echo "FATAL: extracted source differs from the immutable archive" >&2
+        exit 68
+    fi
+    rm -rf -- "$verification_root"
     export MAGCORE_RUN_DIR PROJECT_ROOT
     export MAGCORE_CODE_ROOT MAGCORE_DATA_ROOT
     export MAGCORE_RUN_ID MAGCORE_PROJECT_ROOT MAGCORE_GIT_REVISION

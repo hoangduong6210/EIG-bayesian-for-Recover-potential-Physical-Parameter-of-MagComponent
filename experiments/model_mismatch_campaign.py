@@ -13,8 +13,8 @@ import numpy as np
 from eig_efficiency import BENCHMARK_V4_POLICIES, load_locked_selection, run_policy
 from magcore_calib.inference import PosteriorResult
 from magcore_calib.model_mismatch import (
-    MISMATCH_RESULT_SCHEMA, POLICIES, config_sha256, gate_truth_evaluation,
-    load_model_mismatch_plan, mismatch_candidate_library,
+    MISMATCH_REJECTION_SCHEMA, MISMATCH_RESULT_SCHEMA, POLICIES, config_sha256,
+    gate_truth_evaluation, load_model_mismatch_plan, mismatch_candidate_library,
     mismatch_holdout_evaluation, mismatch_validation_library, payload_sha256,
     stable_mismatch_outcomes, validate_mismatch_result,
 )
@@ -39,17 +39,69 @@ def _truth_anchor(seed: int, spec: DatasheetPrior):
     return draw_prior_predictive(spec, np.random.default_rng(seed))
 
 
-def _write_immutable_json(record: dict, destination: Path) -> Path:
-    validate_mismatch_result(record)
+def _write_immutable_json_unvalidated(
+    record: dict, destination: Path, *, label: str,
+) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
-        raise FileExistsError(f"refusing to overwrite model-mismatch result: {destination}")
-    temporary = destination.with_name(destination.name + ".tmp")
-    temporary.write_text(
-        json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
-    )
-    os.replace(temporary, destination)
+        raise FileExistsError(f"refusing to overwrite {label}: {destination}")
+    temporary = destination.with_name(f".{destination.name}.{os.getpid()}.partial")
+    try:
+        with temporary.open("x", encoding="utf-8") as stream:
+            json.dump(record, stream, sort_keys=True, indent=2)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.chmod(temporary, 0o640)
+        os.link(temporary, destination)
+    finally:
+        temporary.unlink(missing_ok=True)
     return destination
+
+
+def _write_immutable_json(record: dict, destination: Path) -> Path:
+    validate_mismatch_result(record)
+    return _write_immutable_json_unvalidated(
+        record, destination, label="model-mismatch result"
+    )
+
+
+def _rejection_record(record: dict, error: ValueError) -> dict:
+    invalid_policies = [
+        policy for policy in POLICIES
+        if record["validity"][f"{policy}_convergence_valid"] is not True
+    ]
+    failed_states = {}
+    for policy in invalid_policies:
+        failed_states[policy] = [{
+            "n_measurements": row["n_measurements"],
+            "state_identity_sha256": row["decision_state"][
+                "state_identity_sha256"
+            ],
+            "mcmc_seed": row["decision_state"]["mcmc_seed"],
+            "sampler_diagnostics": row["decision_state"]["sampler_diagnostics"],
+        } for row in record["policies"][policy]["trajectory"]
+            if row["decision_state"]["valid"] is not True]
+    return {
+        "schema_version": MISMATCH_REJECTION_SCHEMA,
+        "record_class": "sampler_rejection_diagnostic",
+        "campaign_id": record["campaign_id"],
+        "config_sha256": record["config_sha256"],
+        "run_id": record["run_id"],
+        "seed": record["seed"],
+        "scenario": record["scenario"]["name"],
+        "reason": "posterior_convergence_gate_failed",
+        "validator_message": str(error),
+        "invalid_policies": invalid_policies,
+        "failed_states": failed_states,
+        "estimator_decision_sha256": record["provenance"][
+            "estimator_decision_sha256"
+        ],
+        "disclosure": {
+            "scientific_endpoint_values_included": False,
+            "claim_bearing_result": False,
+        },
+    }
 
 
 def main() -> None:
@@ -60,12 +112,15 @@ def main() -> None:
     parser.add_argument("--selection-file", required=True, type=Path)
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--out", required=True, type=Path)
+    parser.add_argument("--rejection-out", type=Path)
     args = parser.parse_args()
     require_slurm()
 
     plan = load_model_mismatch_plan(args.config)
+    if plan.retain_rejection_diagnostics and args.rejection_out is None:
+        parser.error("this campaign requires --rejection-out")
     if args.seed not in plan.seeds:
-        parser.error("seed is outside the preregistered MM-1 confirmatory set")
+        parser.error("seed is outside the preregistered confirmatory set")
     scenario = plan.scenario(args.scenario)
     setting, selection_sha256, selection_contents = load_locked_selection(
         str(args.selection_file)
@@ -73,7 +128,7 @@ def main() -> None:
     if selection_sha256 != plan.estimator_decision_sha256:
         raise RuntimeError("estimator decision differs from the preregistered digest")
     if tuple(BENCHMARK_V4_POLICIES) != POLICIES:
-        raise RuntimeError("existing policy implementation differs from MM-1 registry")
+        raise RuntimeError("policy implementation differs from the frozen registry")
 
     spec, geometry = DatasheetPrior(), Geometry()
     truth = _truth_anchor(args.seed, spec)
@@ -212,6 +267,17 @@ def main() -> None:
             },
         },
     }
+    try:
+        validate_mismatch_result(record)
+    except ValueError as error:
+        if "nonconverged policy" not in str(error):
+            raise
+        if plan.retain_rejection_diagnostics and args.rejection_out is not None:
+            _write_immutable_json_unvalidated(
+                _rejection_record(record, error), args.rejection_out,
+                label="model-mismatch rejection diagnostic",
+            )
+        raise
     print(_write_immutable_json(record, args.out))
 
 

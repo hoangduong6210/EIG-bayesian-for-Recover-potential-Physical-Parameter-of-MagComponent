@@ -29,9 +29,11 @@ except ModuleNotFoundError as exc:  # pragma: no cover - production is Python 3.
 
 
 MISMATCH_CONFIG_SCHEMA = "magcore-model-mismatch-preregistration/1.0"
+MISMATCH_CONFIG_SUCCESSOR_SCHEMA = "magcore-model-mismatch-preregistration/1.1"
 MISMATCH_RESULT_SCHEMA = "magcore-model-mismatch-result/1.0"
 MISMATCH_AGGREGATE_SCHEMA = "magcore-model-mismatch-aggregate/1.0"
 MISMATCH_NON_ADMISSION_SCHEMA = "magcore-model-mismatch-non-admission/1.0"
+MISMATCH_REJECTION_SCHEMA = "magcore-model-mismatch-rejection/1.0"
 POLICIES = (
     "eig_raw", "eig_per_cost", "fixed_channel_balanced",
     "random_channel_balanced", "predictive_variance_raw",
@@ -71,6 +73,7 @@ class MismatchScenario:
 class ModelMismatchPlan:
     """Frozen task, model, runtime, and endpoint definitions."""
 
+    schema_version: str
     campaign_id: str
     status: str
     estimator_source_release_id: str
@@ -90,6 +93,10 @@ class ModelMismatchPlan:
     lm_gate_pct: float
     false_confidence_pcv_error_pct: float
     false_confidence_lm_error_pct: float
+    predecessor_campaign_id: str | None = None
+    predecessor_non_admission_sha256: str | None = None
+    seed_namespace: str | None = None
+    retain_rejection_diagnostics: bool = False
 
     @property
     def task_count(self) -> int:
@@ -111,7 +118,7 @@ class ModelMismatchPlan:
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": MISMATCH_CONFIG_SCHEMA,
+            "schema_version": self.schema_version,
             "campaign_id": self.campaign_id,
             "status": self.status,
             "estimator_source_release_id": self.estimator_source_release_id,
@@ -134,6 +141,14 @@ class ModelMismatchPlan:
                     self.false_confidence_pcv_error_pct
                 ),
                 "false_confidence_lm_error_pct": self.false_confidence_lm_error_pct,
+            },
+            "lineage": {
+                "predecessor_campaign_id": self.predecessor_campaign_id,
+                "predecessor_non_admission_sha256": (
+                    self.predecessor_non_admission_sha256
+                ),
+                "seed_namespace": self.seed_namespace,
+                "retain_rejection_diagnostics": self.retain_rejection_diagnostics,
             },
         }
 
@@ -179,7 +194,10 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
     with config_path.open("rb") as stream:
         raw = tomllib.load(stream)
     try:
-        if raw["schema_version"] != MISMATCH_CONFIG_SCHEMA:
+        schema_version = raw["schema_version"]
+        if schema_version not in {
+            MISMATCH_CONFIG_SCHEMA, MISMATCH_CONFIG_SUCCESSOR_SCHEMA,
+        }:
             raise ValueError("unsupported model-mismatch config schema")
         runtime = raw["runtime"]
         endpoints = raw["endpoints"]
@@ -219,6 +237,7 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
             ),
         ) for entry in raw["scenarios"])
         plan = ModelMismatchPlan(
+            schema_version=schema_version,
             campaign_id=raw["campaign_id"], status=raw["status"],
             estimator_source_release_id=raw["estimator_source_release_id"],
             estimator_decision_sha256=raw["estimator_decision_sha256"],
@@ -245,6 +264,14 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
                 endpoints["false_confidence_lm_error_pct"],
                 "false-confidence Lm error",
             ),
+            predecessor_campaign_id=raw.get("predecessor_campaign_id"),
+            predecessor_non_admission_sha256=raw.get(
+                "predecessor_non_admission_sha256"
+            ),
+            seed_namespace=raw.get("seed_namespace"),
+            retain_rejection_diagnostics=raw.get(
+                "retain_rejection_diagnostics", False
+            ),
         )
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError(f"invalid model-mismatch plan in {config_path}: {exc}") from exc
@@ -253,6 +280,27 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
         raise ValueError("campaign_id must be a nonempty string")
     if plan.status != "preregistered_before_confirmatory_outcomes":
         raise ValueError("campaign status must declare prospective preregistration")
+    if plan.schema_version == MISMATCH_CONFIG_SUCCESSOR_SCHEMA:
+        if not isinstance(plan.predecessor_campaign_id, str) \
+                or not plan.predecessor_campaign_id \
+                or plan.predecessor_campaign_id == plan.campaign_id:
+            raise ValueError("successor campaign requires a distinct predecessor")
+        if not isinstance(plan.predecessor_non_admission_sha256, str) \
+                or not re.fullmatch(
+                    r"[0-9a-f]{64}", plan.predecessor_non_admission_sha256
+                ):
+            raise ValueError("successor campaign requires a non-admission digest")
+        if not isinstance(plan.seed_namespace, str) \
+                or not re.fullmatch(r"[a-z][a-z0-9_-]{7,63}", plan.seed_namespace):
+            raise ValueError("successor campaign requires a stable seed namespace")
+        if plan.retain_rejection_diagnostics is not True:
+            raise ValueError("successor campaign must retain rejection diagnostics")
+    elif any(value is not None for value in (
+        plan.predecessor_campaign_id,
+        plan.predecessor_non_admission_sha256,
+        plan.seed_namespace,
+    )) or plan.retain_rejection_diagnostics:
+        raise ValueError("v1.0 campaigns cannot declare successor lineage")
     if not re.fullmatch(
         r"\d{8}T\d{6}Z_[0-9a-f]{12}", plan.estimator_source_release_id
     ):
