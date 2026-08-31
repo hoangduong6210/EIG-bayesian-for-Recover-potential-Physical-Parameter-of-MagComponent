@@ -77,3 +77,5 @@ target_id = "n4"
 n_measurements = 4
 state_identity_sha256 = "c53fb8373ff54b01ce874bf363af024715348b6f898a059704a7e29ac43b4869"
 original_mcmc_seed = 1017639342
+observation_manifest_sha256 = "22b7d356e2240d9490932336d82899efaa2a195cfcc3632f82bc631754b09a5c"
+exact_initial_ensemble_sha256 = "ac7b15238317e1cb3305905dd319238581d70cb696d60d5c370fb6b0bf44ff32"

@@ -12,7 +12,7 @@ in MM-2. It is an endpoint-free sampler diagnostic, not a model-mismatch
 performance campaign. The machine-readable contract is
 [`configs/sparse_mixing_v1.toml`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/configs/sparse_mixing_v1.toml).
 Its preregistration SHA-256 is
-`f3d531d08ac24968bcd47b781b153fb18187a2576db8e9f2f8af11ee5fc5ea8c`.
+`88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435`.
 No SparseMix-1 chain had been run when this protocol was committed.
 
 ## Parent evidence and fixed targets
