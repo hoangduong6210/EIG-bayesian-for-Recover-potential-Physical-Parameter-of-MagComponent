@@ -34,6 +34,7 @@ pointer, scope, release identity, and checksum.
 | Which release produced the numbers? | [Project status](../status/Project-Status.md) | [E8](../evidence/Evidence-Sources.md#e8) |
 | What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
 | What happened in the independent successor? | [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md#closeout) | [E11](../evidence/Evidence-Sources.md#e11) |
+| How will the rejected posterior states be diagnosed? | [SparseMix-1 preregistration](../experiments/Sparse-Posterior-Mixing-Preregistration.md) | [`configs/sparse_mixing_v1.toml`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/configs/sparse_mixing_v1.toml) |
 
 ## Complete page directory
 
@@ -43,7 +44,7 @@ pointer, scope, release identity, and checksum.
 | Architecture | [Research system map](../architecture/Research-System-Map.md) |
 | Methods | [Sequential design method](../methods/Sequential-Design-Method.md) |
 | Data | [Dataset registry](../datasets/Dataset-Registry.md) |
-| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md) |
+| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md), [SparseMix-1 preregistration](../experiments/Sparse-Posterior-Mixing-Preregistration.md) |
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |

@@ -1,0 +1,79 @@
+schema_version = "magcore-sparse-mixing-preregistration/1.0"
+protocol_id = "SparseMix-1"
+status = "preregistered_before_diagnostic_chains"
+record_class = "endpoint_free_sampler_diagnostic"
+diagnostic_only = true
+retroactive_mm2_admission_allowed = false
+
+[parent]
+campaign_id = "MM-2"
+run_id = "20260829T041912Z_002a58340aa0"
+source_revision = "002a58340aa04a272b6cd66388a4db69f707a982"
+source_archive_sha256 = "6c864d5e2dcc5156970eaadb051dba5f266ddd4a6f102a9fc9fa4407e06d9f04"
+source_status_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+config_sha256 = "d081298e546a92887519cb98a65e3c0bd4930590e0c26394a6a49f1ac8cd3984"
+rejection_sha256 = "e98dcd1ef6c6c5f1590263bde56d83d579aba2ffd87869d7de04cf30ace67cf1"
+failed_marker_sha256 = "4a852b0b6650a83df56b16e8036ce401d3ee39ca20a6e40482c50e032431ea92"
+closeout_sha256 = "bf11358cbdb411532d2b3e9695d1e4c82585ba8751912ef98a495f8c334e6cb8"
+scenario = "combined_mismatch"
+seed = 9123
+policy = "random_channel_balanced"
+truth_anchor_sha256 = "c09ddb8e2d22d70801e8e4b594e3eff0cd58ad81cb67514fe122a5fea73c6206"
+
+[sampler]
+implementation = "emcee.EnsembleSampler"
+move = "default_stretch_move"
+n_walkers = 48
+dimensions = 6
+exact_replay_burn_steps = 4000
+exact_replay_retained_steps = 320000
+independent_warmup_steps = 80000
+independent_retained_steps = 800000
+checkpoints = [20000, 40000, 80000, 160000, 320000, 480000, 640000, 800000]
+independent_replicates_per_initialization = 4
+initialization_families = ["local_prior_center", "overdispersed_prior_lhs"]
+seed_namespace = "sparse-mixing-v1"
+thin_stride = 200
+early_stopping = false
+
+[diagnostics]
+minimum_steps_per_tau = 50.0
+minimum_effective_sample_size = 400.0
+acceptance_range = [0.20, 0.60]
+tau_stability_checkpoints = [640000, 800000]
+maximum_relative_tau_change = 0.10
+maximum_median_difference_pooled_sd = 0.10
+maximum_tail_difference_pooled_iqr = 0.15
+exact_replay_numeric_rtol = 1.0e-10
+exact_replay_numeric_atol = 1.0e-12
+ordinary_walker_level_rhat_allowed = false
+
+[outputs]
+persist_full_chain_publicly = false
+persist_deterministic_thin = true
+persist_chain_block_hashes = true
+validator_requires_complete_matrix = true
+forbidden_key_fragments = [
+  "holdout",
+  "gate_truth",
+  "n_measurements_to_gate",
+  "modeled_cost",
+  "candidate_scores",
+  "truth_anchor_values",
+  "paired_differences",
+  "policy_contrast",
+]
+
+[[targets]]
+target_id = "n3"
+n_measurements = 3
+state_identity_sha256 = "4ef1263722e4af3968932b0f38b7e10839f4474d5bc4604aed40f481b385ad64"
+original_mcmc_seed = 2950378469
+observation_manifest_sha256 = "707cba89c075e58049321786fac51ada819e707697b2132670268a0bb8f7edf9"
+exact_initial_ensemble_sha256 = "0069ed17ae1d599ab31cd5215f0e9601c6e9e91ac14de200260b191d756ce1bc"
+
+[[targets]]
+target_id = "n4"
+n_measurements = 4
+state_identity_sha256 = "c53fb8373ff54b01ce874bf363af024715348b6f898a059704a7e29ac43b4869"
+original_mcmc_seed = 1017639342

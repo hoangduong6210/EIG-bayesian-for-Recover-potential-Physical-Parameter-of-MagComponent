@@ -23,6 +23,7 @@ paper_source: false
 
 - [MM-1 protocol and closeout](experiments/Model-Mismatch-Preregistration.md)
 - [MM-2 protocol and closeout](experiments/Model-Mismatch-V2-Preregistration.md)
+- [SparseMix-1 preregistration](experiments/Sparse-Posterior-Mixing-Preregistration.md)
 - [Method decisions](decisions/0001-gate-aligned-objective.md)
 - [References](references/References.md)
 - [Authoring and snapshots](manuscript/Authoring-and-Snapshots.md)
