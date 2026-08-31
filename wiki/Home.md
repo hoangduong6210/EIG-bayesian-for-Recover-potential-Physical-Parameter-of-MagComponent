@@ -76,7 +76,7 @@ so measured-data acquisition suggestions remain model-conditional.
 | Comparator selection-path analysis | Post hoc diagnostic complete | [E9](evidence/Evidence-Sources.md#e9) |
 | Model-mismatch campaign MM-1 | Closed with 119/120 valid task records; not admitted | [E10](evidence/Evidence-Sources.md#e10), [MM-1 record](experiments/Model-Mismatch-Preregistration.md) |
 | Model-mismatch campaign MM-2 | Closed with 119/120 valid task records and one prospectively retained sampler rejection; not admitted | [E11](evidence/Evidence-Sources.md#e11), [MM-2 record](experiments/Model-Mismatch-V2-Preregistration.md) |
-| Sparse-posterior mixing diagnostic | Preregistered for the two endpoint-free MM-2 rejection states; no chains run | [SparseMix-1 protocol](experiments/Sparse-Posterior-Mixing-Preregistration.md) |
+| Sparse-posterior mixing diagnostic | Immutable 18-ensemble run active; no diagnostic classification yet | [SparseMix-1 protocol](experiments/Sparse-Posterior-Mixing-Preregistration.md) |
 | Gate-aligned utility and simulation-based calibration | Deferred; neither non-admitted mismatch campaign can authorize these experiments | [Decision 0001](decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release

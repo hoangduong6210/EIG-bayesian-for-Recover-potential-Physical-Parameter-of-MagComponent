@@ -58,10 +58,11 @@ not meet the minimum steps-per-autocorrelation-time rule at the 320,000-step
 cap. No aggregate was created and no MM-2 outcome was admitted.
 [Source E11](../evidence/Evidence-Sources.md#e11)
 
-The next operation is an endpoint-free mixing study fixed to those rejected
-states. It may diagnose autocorrelation, initialization sensitivity, or
-multiple posterior regions. It cannot retroactively admit MM-2 or supply a
-model-mismatch endpoint.
+The endpoint-free mixing study fixed to those rejected states is now running
+under immutable run `20260831T054419Z_44edb519aa48`. It may diagnose
+autocorrelation, initialization sensitivity, or multiple posterior regions.
+It cannot retroactively admit MM-2 or supply a model-mismatch endpoint.
+[SparseMix-1 protocol](../experiments/Sparse-Posterior-Mixing-Preregistration.md)
 
 ## Primary direct contrasts
 
@@ -117,8 +118,8 @@ and [E9](../evidence/Evidence-Sources.md#e9)
 
 ## Next scientific experiments
 
-1. Preregister and run the endpoint-free sparse-posterior mixing diagnostic
-   for the two rejected MM-2 states.
+1. Complete and validate the active endpoint-free sparse-posterior mixing
+   diagnostic for the two rejected MM-2 states.
 2. Keep MM-1 and MM-2 permanently separate and non-admitted.
 3. Defer gate-aligned utility until a new independent mismatch campaign is
    scientifically justified.

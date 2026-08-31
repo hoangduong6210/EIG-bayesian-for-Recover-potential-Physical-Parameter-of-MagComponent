@@ -15,6 +15,15 @@ Its preregistration SHA-256 is
 `88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435`.
 No SparseMix-1 chain had been run when this protocol was committed.
 
+## Execution status
+
+The immutable run `20260831T054419Z_44edb519aa48` was submitted from source
+revision `44edb519aa48` after the reconstruction anchors and implementation
+passed the repository test suite. Its matrix contains 18 diagnostic ensembles
+and one dependent validator job. The run is active; no classification is
+available yet. A partial matrix, failed validator, or failed ensemble cannot
+produce a public diagnostic manifest.
+
 ## Parent evidence and fixed targets
 
 The protocol binds the immutable MM-2 source archive, configuration, failed

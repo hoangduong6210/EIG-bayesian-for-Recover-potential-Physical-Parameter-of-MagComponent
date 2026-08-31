@@ -51,6 +51,15 @@ records and one task-level sampler rejection. The aggregate was not created,
 no endpoint was admitted, and these diagnostic records are not included in
 either artifact total. [Source E11](../evidence/Evidence-Sources.md#e11)
 
+## SparseMix-1 work outside the admitted artifact total
+
+SparseMix-1 declares 18 endpoint-free sampler tasks: one exact replay and
+eight independent ensembles for each of the two rejected MM-2 states. A
+dependent validator requires the exact 18-record matrix and produces a
+diagnostic manifest rather than a scientific aggregate. The immutable run is
+active; no completed record or mixing classification is reported here.
+[Protocol](../experiments/Sparse-Posterior-Mixing-Preregistration.md)
+
 ## Policy endpoints
 
 | Policy | Measurements to gate | Modeled cost to gate | Gate failures | Source |
