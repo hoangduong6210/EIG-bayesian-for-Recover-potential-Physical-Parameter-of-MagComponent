@@ -65,6 +65,31 @@ def _expected_tasks(plan) -> dict[str, tuple[str, int]]:
     }
 
 
+def _campaign_layout(campaign_id: str) -> dict[str, str]:
+    layouts = {
+        "MM-1": {
+            "config": "model_mismatch.toml",
+            "submission": "MM1_SUBMITTED",
+            "stage": "model_mismatch",
+            "summary": "model_mismatch",
+            "aggregate_stage": "model_mismatch_aggregate",
+            "rejection_directory": "",
+        },
+        "MM-2": {
+            "config": "model_mismatch_v2.toml",
+            "submission": "MM2_SUBMITTED",
+            "stage": "model_mismatch_v2",
+            "summary": "model_mismatch_v2",
+            "aggregate_stage": "model_mismatch_v2_aggregate",
+            "rejection_directory": "model_mismatch_v2_rejections",
+        },
+    }
+    try:
+        return layouts[campaign_id]
+    except KeyError as error:
+        raise ValueError(f"unsupported model-mismatch campaign: {campaign_id}") from error
+
+
 def _write_atomic_new(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
@@ -82,17 +107,24 @@ def _write_atomic_new(path: Path, payload: dict[str, Any]) -> None:
         partial.unlink(missing_ok=True)
 
 
-def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
+def build_non_admission_record(
+    run_dir: Path, *, campaign_id: str = "MM-1",
+) -> dict[str, Any]:
     run_dir = run_dir.expanduser().resolve()
-    config = run_dir / "source" / "configs" / "model_mismatch.toml"
+    layout = _campaign_layout(campaign_id)
+    config = run_dir / "source" / "configs" / layout["config"]
     run_env_path = run_dir / "provenance" / "run.env"
-    submission_path = run_dir / "status" / "MM1_SUBMITTED"
-    decision_path = run_dir / "summary" / "model_mismatch" / "estimator_decision.json"
+    submission_path = run_dir / "status" / layout["submission"]
+    decision_path = (
+        run_dir / "summary" / layout["summary"] / "estimator_decision.json"
+    )
     for required in (config, run_env_path, submission_path, decision_path):
         if not required.is_file():
-            raise FileNotFoundError(f"missing MM-1 closeout input: {required}")
+            raise FileNotFoundError(f"missing {campaign_id} closeout input: {required}")
 
     plan = load_model_mismatch_plan(config)
+    if plan.campaign_id != campaign_id:
+        raise ValueError("campaign layout differs from the frozen configuration")
     run_env = _read_run_environment(run_env_path)
     submission = _load_json(submission_path)
     expected = _expected_tasks(plan)
@@ -101,30 +133,46 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
         raise ValueError("locked estimator decision differs from the campaign contract")
     for key in ("array_job_id", "aggregate_job_id"):
         if not re.fullmatch(r"[1-9][0-9]*", str(submission.get(key, ""))):
-            raise ValueError(f"MM1_SUBMITTED has an invalid {key}")
+            raise ValueError(f"{layout['submission']} has an invalid {key}")
     if submission.get("task_count") != len(expected):
-        raise ValueError("MM1_SUBMITTED task count differs from the campaign contract")
+        raise ValueError(
+            f"{layout['submission']} task count differs from the campaign contract"
+        )
 
     status_dir = run_dir / "status"
-    results_root = run_dir / "results" / "model_mismatch"
+    stage = layout["stage"]
+    results_root = run_dir / "results" / stage
     result_paths = {
         path.parent.name: path
         for path in results_root.glob("*/result.json")
     }
     done_paths = {
-        path.name.removeprefix("model_mismatch_").removesuffix(".done"): path
-        for path in status_dir.glob("model_mismatch_*.done")
-        if not path.name.startswith("model_mismatch_aggregate_")
+        path.name.removeprefix(f"{stage}_").removesuffix(".done"): path
+        for path in status_dir.glob(f"{stage}_*.done")
+        if not path.name.startswith(f"{layout['aggregate_stage']}_")
     }
     failed_paths = {
-        path.name.removeprefix("model_mismatch_").removesuffix(".failed"): path
-        for path in status_dir.glob("model_mismatch_*.failed")
-        if not path.name.startswith("model_mismatch_aggregate_")
+        path.name.removeprefix(f"{stage}_").removesuffix(".failed"): path
+        for path in status_dir.glob(f"{stage}_*.failed")
+        if not path.name.startswith(f"{layout['aggregate_stage']}_")
     }
     observed = set(result_paths) | set(done_paths) | set(failed_paths)
     extra = sorted(observed - expected.keys())
     if extra:
-        raise ValueError(f"MM-1 closeout contains undeclared tasks: {extra}")
+        raise ValueError(f"{campaign_id} closeout contains undeclared tasks: {extra}")
+
+    rejection_paths: dict[str, Path] = {}
+    if layout["rejection_directory"]:
+        rejection_root = status_dir / layout["rejection_directory"]
+        rejection_paths = {
+            path.stem: path for path in rejection_root.glob("*.json")
+        }
+        extra_rejections = sorted(rejection_paths.keys() - expected.keys())
+        if extra_rejections:
+            raise ValueError(
+                f"{campaign_id} closeout contains undeclared rejections: "
+                f"{extra_rejections}"
+            )
 
     validated_results: list[dict[str, Any]] = []
     failed_tasks: list[dict[str, Any]] = []
@@ -134,6 +182,10 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
         has_done = task_id in done_paths
         has_failed = task_id in failed_paths
         if has_result and has_done and not has_failed:
+            if task_id in rejection_paths:
+                raise ValueError(
+                    f"successful task cannot have a rejection record: {task_id}"
+                )
             path = result_paths[task_id]
             record = _load_json(path)
             validate_mismatch_result(record)
@@ -145,7 +197,7 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
                     != plan.estimator_decision_sha256:
                 raise ValueError(f"result differs from the frozen contract: {task_id}")
             done = _load_json(done_paths[task_id])
-            if done.get("stage") != "model_mismatch" \
+            if done.get("stage") != stage \
                     or done.get("task") != task_id \
                     or done.get("exit_code") != 0:
                 raise ValueError(f"success marker is malformed: {task_id}")
@@ -161,13 +213,13 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
             marker_path = failed_paths[task_id]
             marker = _load_json(marker_path)
             exit_code = marker.get("exit_code")
-            if marker.get("stage") != "model_mismatch" \
+            if marker.get("stage") != stage \
                     or marker.get("task") != task_id \
                     or isinstance(exit_code, bool) \
                     or not isinstance(exit_code, int) \
                     or exit_code == 0:
                 raise ValueError(f"failure marker is malformed: {task_id}")
-            failed_tasks.append({
+            failed_entry = {
                 "task_id": task_id,
                 "scenario": scenario,
                 "seed": seed,
@@ -177,19 +229,53 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
                     "exit_code": exit_code,
                     "ended_at": marker.get("ended_at"),
                 },
-            })
+            }
+            rejection_path = rejection_paths.get(task_id)
+            if rejection_path is not None:
+                rejection = _load_json(rejection_path)
+                if rejection.get("campaign_id") != campaign_id \
+                        or rejection.get("config_sha256") != expected_config_sha \
+                        or rejection.get("scenario") != scenario \
+                        or rejection.get("seed") != seed \
+                        or rejection.get("record_class") \
+                        != "sampler_rejection_diagnostic" \
+                        or rejection.get("disclosure") != {
+                            "scientific_endpoint_values_included": False,
+                            "claim_bearing_result": False,
+                        }:
+                    raise ValueError(f"rejection record is malformed: {task_id}")
+                failed_entry["rejection"] = {
+                    "path": rejection_path.relative_to(run_dir).as_posix(),
+                    "sha256": _sha256(rejection_path),
+                    "reason": rejection.get("reason"),
+                    "invalid_policies": rejection.get("invalid_policies"),
+                    "failed_state_count": sum(
+                        len(states)
+                        for states in rejection.get("failed_states", {}).values()
+                    ),
+                    "diagnostic": {
+                        "schema_version": rejection.get("schema_version"),
+                        "reason": rejection.get("reason"),
+                        "invalid_policies": rejection.get("invalid_policies"),
+                        "failed_states": rejection.get("failed_states"),
+                        "disclosure": rejection.get("disclosure"),
+                    },
+                }
+            elif plan.retain_rejection_diagnostics:
+                raise ValueError(f"required rejection record is missing: {task_id}")
+            failed_tasks.append(failed_entry)
         else:
             unexplained.append(task_id)
     if unexplained:
         raise ValueError(
-            "MM-1 closeout matrix is incomplete or contradictory: "
+            f"{campaign_id} closeout matrix is incomplete or contradictory: "
             f"{sorted(unexplained)}"
         )
     if not failed_tasks:
         raise ValueError("non-admission requires at least one declared failed task")
 
-    aggregate_path = run_dir / "summary" / "model_mismatch" / "aggregate.json"
-    aggregate_marker = status_dir / "model_mismatch_aggregate_0.done"
+    aggregate_path = run_dir / "summary" / layout["summary"] / "aggregate.json"
+    aggregate_marker = status_dir / f"{layout['aggregate_stage']}_0.done"
     if aggregate_path.exists() or aggregate_marker.exists():
         raise ValueError("non-admission cannot coexist with an admitted aggregate")
 
@@ -227,6 +313,8 @@ def build_non_admission_record(run_dir: Path) -> dict[str, Any]:
             "validated_result_count": len(validated_results),
             "done_marker_count": len(done_paths),
             "failed_marker_count": len(failed_tasks),
+            **({"rejection_record_count": len(rejection_paths)}
+               if layout["rejection_directory"] else {}),
             "unexplained_missing_task_count": 0,
             "extra_task_count": 0,
         },
@@ -243,8 +331,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-dir", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
+    parser.add_argument("--campaign-id", choices=("MM-1", "MM-2"), default="MM-1")
     args = parser.parse_args()
-    record = build_non_admission_record(args.run_dir)
+    record = build_non_admission_record(
+        args.run_dir, campaign_id=args.campaign_id
+    )
     _write_atomic_new(args.out.expanduser().resolve(), record)
     print(args.out)
 

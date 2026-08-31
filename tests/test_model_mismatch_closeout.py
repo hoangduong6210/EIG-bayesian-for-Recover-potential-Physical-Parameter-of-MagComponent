@@ -73,22 +73,29 @@ def _result(plan, config_hash: str, scenario, seed: int) -> dict:
     }
 
 
-def _run_fixture(tmp_path: Path) -> tuple[Path, str]:
+def _run_fixture(
+    tmp_path: Path, *, campaign_id: str = "MM-1",
+) -> tuple[Path, str]:
+    is_v2 = campaign_id == "MM-2"
+    config_name = "model_mismatch_v2.toml" if is_v2 else "model_mismatch.toml"
+    stage = "model_mismatch_v2" if is_v2 else "model_mismatch"
+    summary = stage
+    submission = "MM2_SUBMITTED" if is_v2 else "MM1_SUBMITTED"
     run = tmp_path / "run"
     for relative in (
         "source/configs", "provenance", "status",
-        "summary/model_mismatch", "results/model_mismatch",
+        f"summary/{summary}", f"results/{stage}",
     ):
         (run / relative).mkdir(parents=True, exist_ok=True)
-    decision = run / "summary/model_mismatch/estimator_decision.json"
+    decision = run / f"summary/{summary}/estimator_decision.json"
     decision.write_text('{"setting":"test"}\n', encoding="utf-8")
     decision_hash = hashlib.sha256(decision.read_bytes()).hexdigest()
-    source_config = (ROOT / "configs/model_mismatch.toml").read_text(encoding="utf-8")
+    source_config = (ROOT / "configs" / config_name).read_text(encoding="utf-8")
     source_config = source_config.replace(
         "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6",
         decision_hash,
     )
-    config = run / "source/configs/model_mismatch.toml"
+    config = run / "source/configs" / config_name
     config.write_text(source_config, encoding="utf-8")
     plan = load_model_mismatch_plan(config)
     config_hash = config_sha256(config)
@@ -99,33 +106,59 @@ def _run_fixture(tmp_path: Path) -> tuple[Path, str]:
         f"MAGCORE_SOURCE_STATUS_SHA256={'c' * 64}\n",
         encoding="utf-8",
     )
-    (run / "status/MM1_SUBMITTED").write_text(
+    (run / "status" / submission).write_text(
         '{"array_job_id":"123","aggregate_job_id":"456","task_count":120}\n',
         encoding="utf-8",
     )
-    failed_task = "permeability_two_pole_seed8108"
+    failed_task = (
+        "combined_mismatch_seed9123" if is_v2
+        else "permeability_two_pole_seed8108"
+    )
     for scenario in plan.scenarios:
         for seed in plan.seeds:
             task = f"{scenario.name}_seed{seed}"
             if task == failed_task:
-                (run / f"status/model_mismatch_{task}.failed").write_text(
+                (run / f"status/{stage}_{task}.failed").write_text(
                     json.dumps({
-                        "stage": "model_mismatch", "task": task,
+                        "stage": stage, "task": task,
                         "job_id": "789", "exit_code": 1, "line": 143,
                         "ended_at": "2026-08-27T07:52:33Z",
                     }) + "\n",
                     encoding="utf-8",
                 )
+                if is_v2:
+                    rejection_dir = run / "status/model_mismatch_v2_rejections"
+                    rejection_dir.mkdir(exist_ok=True)
+                    (rejection_dir / f"{task}.json").write_text(
+                        json.dumps({
+                            "schema_version": "magcore-model-mismatch-rejection/1.0",
+                            "record_class": "sampler_rejection_diagnostic",
+                            "campaign_id": campaign_id,
+                            "config_sha256": config_hash,
+                            "seed": seed,
+                            "scenario": scenario.name,
+                            "reason": "posterior_convergence_gate_failed",
+                            "invalid_policies": ["random_channel_balanced"],
+                            "failed_states": {
+                                "random_channel_balanced": [{"state": "test"}],
+                            },
+                            "disclosure": {
+                                "scientific_endpoint_values_included": False,
+                                "claim_bearing_result": False,
+                            },
+                        }) + "\n",
+                        encoding="utf-8",
+                    )
                 continue
-            result_dir = run / "results/model_mismatch" / task
+            result_dir = run / "results" / stage / task
             result_dir.mkdir()
             (result_dir / "result.json").write_text(
                 json.dumps(_result(plan, config_hash, scenario, seed)) + "\n",
                 encoding="utf-8",
             )
-            (run / f"status/model_mismatch_{task}.done").write_text(
+            (run / f"status/{stage}_{task}.done").write_text(
                 json.dumps({
-                    "stage": "model_mismatch", "task": task,
+                    "stage": stage, "task": task,
                     "job_id": "789", "exit_code": 0,
                     "ended_at": "2026-08-27T07:00:00Z",
                 }) + "\n",
@@ -158,6 +191,35 @@ def test_closeout_records_complete_non_admission_without_endpoints(tmp_path: Pat
         "extra_task_count": 0,
     }
     assert [item["task_id"] for item in record["failed_tasks"]] == [failed_task]
+    encoded = json.dumps(record, sort_keys=True)
+    for prohibited in (
+        '"policies"', "holdout_latent_mean", "relative_rmse_pct",
+        "paired_differences", "n_measurements_to_gate",
+    ):
+        assert prohibited not in encoded
+
+
+def test_mm2_closeout_binds_rejection_without_aggregating_endpoints(tmp_path: Path):
+    module = _module()
+    run, failed_task = _run_fixture(tmp_path, campaign_id="MM-2")
+    record = module.build_non_admission_record(run, campaign_id="MM-2")
+    assert record["campaign_id"] == "MM-2"
+    assert record["matrix"] == {
+        "expected_task_count": 120,
+        "validated_result_count": 119,
+        "done_marker_count": 119,
+        "failed_marker_count": 1,
+        "rejection_record_count": 1,
+        "unexplained_missing_task_count": 0,
+        "extra_task_count": 0,
+    }
+    failed = record["failed_tasks"][0]
+    assert failed["task_id"] == failed_task
+    assert failed["rejection"]["reason"] == "posterior_convergence_gate_failed"
+    assert failed["rejection"]["invalid_policies"] == [
+        "random_channel_balanced"
+    ]
+    assert failed["rejection"]["failed_state_count"] == 1
     encoded = json.dumps(record, sort_keys=True)
     for prohibited in (
         '"policies"', "holdout_latent_mean", "relative_rmse_pct",
