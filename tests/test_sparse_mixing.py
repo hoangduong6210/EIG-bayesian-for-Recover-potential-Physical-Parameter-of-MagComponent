@@ -6,6 +6,7 @@ import hashlib
 import importlib.util
 import json
 import subprocess
+import sys
 import tarfile
 from dataclasses import replace
 from pathlib import Path
@@ -142,7 +143,7 @@ def test_sparse_mixing_artifacts_are_create_only(tmp_path: Path):
 def test_sparse_mixing_plan_cli_and_scheduler_are_diagnostic_only():
     completed = subprocess.run(
         [
-            str(ROOT / ".venv/bin/python"),
+            sys.executable,
             str(ROOT / "scripts/sparse_mixing_plan.py"), "plan",
             "--config", str(CONFIG),
         ],
