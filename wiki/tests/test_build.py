@@ -114,7 +114,7 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E9" in index
+    assert "E1--E11" in index
 
 
 def test_acquisition_figure_is_bound_to_evidence_projection():

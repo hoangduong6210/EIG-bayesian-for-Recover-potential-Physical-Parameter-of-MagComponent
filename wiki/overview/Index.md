@@ -1,14 +1,14 @@
 ---
 title: Research Wiki Index
 status: canonical index
-last_updated: 2026-08-26
+last_updated: 2026-08-31
 paper_source: false
 ---
 
 # Research Wiki index
 
 This directory routes each question to one canonical page. Numerical statements
-use evidence labels E1--E9; the evidence page records the corresponding JSON
+use evidence labels E1--E11; the evidence page records the corresponding JSON
 pointer, scope, release identity, and checksum.
 
 ## Recommended reading paths
@@ -33,7 +33,7 @@ pointer, scope, release identity, and checksum.
 | How well does the model fit measured data? | [Measured-data adequacy](../status/Project-Status.md#measured-data-adequacy) | [E7](../evidence/Evidence-Sources.md#e7) |
 | Which release produced the numbers? | [Project status](../status/Project-Status.md) | [E8](../evidence/Evidence-Sources.md#e8) |
 | What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
-| What is fixed for the independent successor? | [MM-2 preregistration](../experiments/Model-Mismatch-V2-Preregistration.md) | [`configs/model_mismatch_v2.toml`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/configs/model_mismatch_v2.toml) |
+| What happened in the independent successor? | [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md#closeout) | [E11](../evidence/Evidence-Sources.md#e11) |
 
 ## Complete page directory
 
@@ -43,7 +43,7 @@ pointer, scope, release identity, and checksum.
 | Architecture | [Research system map](../architecture/Research-System-Map.md) |
 | Methods | [Sequential design method](../methods/Sequential-Design-Method.md) |
 | Data | [Dataset registry](../datasets/Dataset-Registry.md) |
-| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 preregistration](../experiments/Model-Mismatch-V2-Preregistration.md) |
+| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md) |
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |
@@ -59,11 +59,11 @@ pointer, scope, release identity, and checksum.
 1. Follow the evidence label beside the number.
 2. Read its scope and JSON pointer on [Evidence sources](../evidence/Evidence-Sources.md).
 3. Open [`evidence/results.json`](../evidence/results.json) or the separately
-   bound E9 diagnostic named by the source record.
+   bound diagnostic named by the source record.
 4. Confirm the projection and release hashes.
 5. Follow [Reproduce and audit](../operations/Reproduce-and-Audit.md) for the
    raw-to-aggregate chain.
 
 If a result-bearing sentence lacks an evidence label, treat it as unverified.
-Literature citations support scientific background; E1--E9 support numerical
+Literature citations support scientific background; E1--E11 support numerical
 results produced by this project.

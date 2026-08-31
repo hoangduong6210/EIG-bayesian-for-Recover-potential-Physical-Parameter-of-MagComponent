@@ -1,13 +1,13 @@
 ---
 title: Project Status
 status: canonical current status
-last_updated: 2026-08-28
+last_updated: 2026-08-31
 paper_source: false
 ---
 
 # Project Status
 
-Status date: 2026-08-28.
+Status date: 2026-08-31.
 
 ## Completed scientific work
 
@@ -48,10 +48,20 @@ diagnostic threshold responsible for rejection. Those details are not
 inferred from the 119 successful records. A new campaign must preserve
 rejection diagnostics prospectively and use a separate campaign identity.
 
-MM-2 now supplies that separate protocol. It uses seeds 9100--9129, forbids
-both earlier observed seed namespaces, preserves the scientific design, and
-retains state-level rejection diagnostics. No MM-2 outcome has been admitted.
-[MM-2 protocol](../experiments/Model-Mismatch-V2-Preregistration.md)
+## MM-2 closeout
+
+MM-2 used the independent seeds 9100--9129 and prospectively retained
+state-level rejection diagnostics. Its 120-task matrix also closed with 119
+validated records and one failure, `combined_mismatch_seed9123`. The rejection
+occurred in `random_channel_balanced` at two sparse posterior states that did
+not meet the minimum steps-per-autocorrelation-time rule at the 320,000-step
+cap. No aggregate was created and no MM-2 outcome was admitted.
+[Source E11](../evidence/Evidence-Sources.md#e11)
+
+The next operation is an endpoint-free mixing study fixed to those rejected
+states. It may diagnose autocorrelation, initialization sensitivity, or
+multiple posterior regions. It cannot retroactively admit MM-2 or supply a
+model-mismatch endpoint.
 
 ## Primary direct contrasts
 
@@ -107,11 +117,11 @@ and [E9](../evidence/Evidence-Sources.md#e9)
 
 ## Next scientific experiments
 
-1. Run the preregistered 120-task MM-2 matrix and apply its fail-closed
-   admission rule.
-2. Reproduce the failed MM-1 task as a diagnostic only; do not merge it into
-   either campaign.
-3. Preregister a gate-aligned utility after MM-2 is admitted.
+1. Preregister and run the endpoint-free sparse-posterior mixing diagnostic
+   for the two rejected MM-2 states.
+2. Keep MM-1 and MM-2 permanently separate and non-admitted.
+3. Defer gate-aligned utility until a new independent mismatch campaign is
+   scientifically justified.
 4. Run larger simulation-based calibration for parameter and predictive
    coverage.
 5. Controlled laboratory timing and multi-lot measurements before any

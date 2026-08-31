@@ -1,7 +1,7 @@
 ---
 title: Scientific Job Results
 status: canonical computation ledger
-last_updated: 2026-08-28
+last_updated: 2026-08-31
 paper_source: false
 ---
 
@@ -45,9 +45,11 @@ policy, accuracy, coverage, or model-mismatch endpoint was admitted. These
 diagnostic records are not part of the 213 completed tasks or 222 artifacts in
 the validated release above. [Source E10](../evidence/Evidence-Sources.md#e10)
 
-MM-2 independently declares another 120-task matrix using seeds 9100--9129
-and a prospective sampler-escalation rule. It has no admitted result and is not
-included in either artifact total. [MM-2 protocol](../experiments/Model-Mismatch-V2-Preregistration.md)
+MM-2 independently declared another 120-task matrix using seeds 9100--9129
+and a prospective sampler-escalation rule. It closed with 119 validated
+records and one task-level sampler rejection. The aggregate was not created,
+no endpoint was admitted, and these diagnostic records are not included in
+either artifact total. [Source E11](../evidence/Evidence-Sources.md#e11)
 
 ## Policy endpoints
 

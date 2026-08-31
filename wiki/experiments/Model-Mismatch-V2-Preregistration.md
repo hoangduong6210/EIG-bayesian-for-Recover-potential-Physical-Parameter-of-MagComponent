@@ -1,7 +1,7 @@
 ---
 title: Model-Mismatch Campaign MM-2
-status: preregistered before confirmatory outcomes
-last_updated: 2026-08-28
+status: closed without admission
+last_updated: 2026-08-31
 paper_source: false
 ---
 
@@ -95,4 +95,29 @@ bash scripts/watch_model_mismatch_v2.sh runs/<prepared-run>
 ```
 
 Gate-aligned utility and simulation-based calibration remain separate future
-protocols and cannot alter MM-2 while it is running.
+protocols and cannot alter the MM-2 admission rule or closeout.
+
+## Closeout
+
+The array reached a terminal state on 29 August 2026. Of the 120 declared
+scenario--seed tasks, 119 produced validated `result.json` records. The task
+`combined_mismatch_seed9123` produced a nonzero failure marker and a
+prospectively retained sampler-rejection sidecar. The exact matrix therefore
+failed the admission rule, the dependent aggregate was not created, and no
+MM-2 endpoint or policy comparison was admitted. [Source E11](../evidence/Evidence-Sources.md#e11)
+
+The rejection sidecar identifies `random_channel_balanced` as the affected
+policy at two posterior states, after three and four measurements. Both states
+reached the 320,000-step cap with finite log probability and acceptance within
+the declared range, but at least one magnetic parameter remained below the
+minimum 50 retained steps per estimated autocorrelation time. This locates a
+mixing diagnostic problem; it does not reveal or support any model-mismatch
+performance endpoint.
+
+The endpoint-blind closeout is schema
+`magcore-model-mismatch-non-admission/1.1`, binds the MM-1 predecessor digest,
+the MM-2 configuration, immutable source archive, 119 result hashes, failed
+marker, and rejection sidecar. Its SHA-256 is
+`bf11358cbdb411532d2b3e9695d1e4c82585ba8751912ef98a495f8c334e6cb8`.
+MM-2 remains permanently non-admitted; a later sampler diagnostic cannot
+change this decision.

@@ -1,7 +1,7 @@
 ---
 title: Evidence Sources
 status: canonical evidence source map
-last_updated: 2026-08-19
+last_updated: 2026-08-31
 paper_source: false
 ---
 
@@ -117,6 +117,23 @@ source label.
 - Disclosure boundary: the record contains result and marker hashes but no
   acquisition endpoint, holdout, error, coverage, or policy-comparison value.
   It establishes non-admission, not a model-mismatch outcome.
+
+<a id="e11"></a>
+## E11 — MM-2 non-admission record
+
+- Artifact: [`non_admission.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/225fea17b14e13f4b2f1ddbd868a16ae64d866a0/results/diagnostics/model_mismatch/MM-2/20260829T041912Z_002a58340aa0/non_admission.json)
+- SHA-256: `bf11358cbdb411532d2b3e9695d1e4c82585ba8751912ef98a495f8c334e6cb8`
+- Supports: the independent 120-task matrix closed with 119 validated results,
+  one failed task marker, and one bound sampler-rejection sidecar; the
+  dependent aggregate was not created and no MM-2 endpoint claim is allowed.
+- Rejection scope: `combined_mismatch_seed9123` failed because the
+  `random_channel_balanced` posterior did not pass the locked convergence
+  rule at two states. The closeout binds the full sidecar by SHA-256 but does
+  not copy its state diagnostics.
+- Disclosure boundary: no acquisition endpoint, holdout value, truth error,
+  coverage statistic, measurement count to gate, modeled cost, or policy
+  contrast is present. E11 establishes non-admission and identifies a sampler
+  diagnostic target; it is not model-mismatch performance evidence.
 
 ## Verification rule
 
