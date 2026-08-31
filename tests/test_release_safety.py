@@ -70,6 +70,12 @@ HEAVY_ARGUMENTS = {
     "real_data_recovery.py": [
         "--material", "N95", "--source", "LEA_MTB", "--out", "/tmp/never",
     ],
+    "sparse_mixing_diagnostic.py": [
+        "--config", "/does/not/exist", "--task-id", "0",
+        "--mm2-source", "/does/not/exist",
+        "--mm2-config", "/does/not/exist", "--thin-out", "/tmp/never.npz",
+        "--out", "/tmp/never.json",
+    ],
 }
 
 
