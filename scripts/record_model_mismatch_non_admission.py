@@ -14,8 +14,10 @@ from typing import Any
 
 from magcore_calib.model_mismatch import (
     MISMATCH_NON_ADMISSION_SCHEMA,
+    MISMATCH_NON_ADMISSION_SUCCESSOR_SCHEMA,
     config_sha256,
     load_model_mismatch_plan,
+    validate_mismatch_rejection,
     validate_mismatch_result,
 )
 
@@ -118,7 +120,14 @@ def build_non_admission_record(
     decision_path = (
         run_dir / "summary" / layout["summary"] / "estimator_decision.json"
     )
-    for required in (config, run_env_path, submission_path, decision_path):
+    predecessor_path = (
+        run_dir / "summary" / layout["summary"] / "predecessor_non_admission.json"
+        if campaign_id == "MM-2" else None
+    )
+    required_paths = [config, run_env_path, submission_path, decision_path]
+    if predecessor_path is not None:
+        required_paths.append(predecessor_path)
+    for required in required_paths:
         if not required.is_file():
             raise FileNotFoundError(f"missing {campaign_id} closeout input: {required}")
 
@@ -131,6 +140,18 @@ def build_non_admission_record(
     expected_config_sha = config_sha256(config)
     if _sha256(decision_path) != plan.estimator_decision_sha256:
         raise ValueError("locked estimator decision differs from the campaign contract")
+    predecessor: dict[str, Any] | None = None
+    if predecessor_path is not None:
+        if _sha256(predecessor_path) != plan.predecessor_non_admission_sha256:
+            raise ValueError("predecessor closeout differs from the successor contract")
+        predecessor = _load_json(predecessor_path)
+        if predecessor.get("campaign_id") != plan.predecessor_campaign_id \
+                or predecessor.get("admission", {}).get("decision") \
+                != "not_admitted" \
+                or predecessor.get("admission", {}).get(
+                    "confirmatory_claims_allowed"
+                ) is not False:
+            raise ValueError("predecessor closeout is not a valid non-admission")
     for key in ("array_job_id", "aggregate_job_id"):
         if not re.fullmatch(r"[1-9][0-9]*", str(submission.get(key, ""))):
             raise ValueError(f"{layout['submission']} has an invalid {key}")
@@ -233,33 +254,29 @@ def build_non_admission_record(
             rejection_path = rejection_paths.get(task_id)
             if rejection_path is not None:
                 rejection = _load_json(rejection_path)
+                validate_mismatch_rejection(rejection)
                 if rejection.get("campaign_id") != campaign_id \
                         or rejection.get("config_sha256") != expected_config_sha \
+                        or rejection.get("estimator_decision_sha256") \
+                        != plan.estimator_decision_sha256 \
                         or rejection.get("scenario") != scenario \
                         or rejection.get("seed") != seed \
-                        or rejection.get("record_class") \
-                        != "sampler_rejection_diagnostic" \
-                        or rejection.get("disclosure") != {
-                            "scientific_endpoint_values_included": False,
-                            "claim_bearing_result": False,
-                        }:
+                        or any(
+                            state["n_measurements"] > plan.max_measurements
+                            for states in rejection["failed_states"].values()
+                            for state in states
+                        ):
                     raise ValueError(f"rejection record is malformed: {task_id}")
                 failed_entry["rejection"] = {
                     "path": rejection_path.relative_to(run_dir).as_posix(),
                     "sha256": _sha256(rejection_path),
+                    "schema_version": rejection["schema_version"],
                     "reason": rejection.get("reason"),
                     "invalid_policies": rejection.get("invalid_policies"),
                     "failed_state_count": sum(
                         len(states)
                         for states in rejection.get("failed_states", {}).values()
                     ),
-                    "diagnostic": {
-                        "schema_version": rejection.get("schema_version"),
-                        "reason": rejection.get("reason"),
-                        "invalid_policies": rejection.get("invalid_policies"),
-                        "failed_states": rejection.get("failed_states"),
-                        "disclosure": rejection.get("disclosure"),
-                    },
                 }
             elif plan.retain_rejection_diagnostics:
                 raise ValueError(f"required rejection record is missing: {task_id}")
@@ -281,19 +298,39 @@ def build_non_admission_record(
 
     validated_results.sort(key=lambda item: item["task_id"])
     failed_tasks.sort(key=lambda item: item["task_id"])
+    successor = campaign_id == "MM-2"
+    frozen_contract = {
+        "config_sha256": expected_config_sha,
+        "estimator_source_release_id": plan.estimator_source_release_id,
+        "estimator_decision_sha256": plan.estimator_decision_sha256,
+        "campaign_source_revision": run_env["MAGCORE_GIT_REVISION"],
+        "source_archive_sha256": run_env["MAGCORE_SOURCE_ARCHIVE_SHA256"],
+        "source_status_sha256": run_env["MAGCORE_SOURCE_STATUS_SHA256"],
+    }
+    if successor:
+        frozen_contract.update({
+            "config_schema_version": plan.schema_version,
+            "lineage": {
+                "predecessor_campaign_id": plan.predecessor_campaign_id,
+                "predecessor_non_admission_sha256": (
+                    plan.predecessor_non_admission_sha256
+                ),
+                "seed_namespace": plan.seed_namespace,
+                "retain_rejection_diagnostics": plan.retain_rejection_diagnostics,
+            },
+        })
+    run_provenance = {"run_id": run_env["MAGCORE_RUN_ID"]}
+    if successor:
+        run_provenance["stage"] = layout["stage"]
     return {
-        "schema_version": MISMATCH_NON_ADMISSION_SCHEMA,
+        "schema_version": (
+            MISMATCH_NON_ADMISSION_SUCCESSOR_SCHEMA
+            if successor else MISMATCH_NON_ADMISSION_SCHEMA
+        ),
         "record_class": "diagnostic_campaign_closeout",
         "campaign_id": plan.campaign_id,
-        "frozen_contract": {
-            "config_sha256": expected_config_sha,
-            "estimator_source_release_id": plan.estimator_source_release_id,
-            "estimator_decision_sha256": plan.estimator_decision_sha256,
-            "campaign_source_revision": run_env["MAGCORE_GIT_REVISION"],
-            "source_archive_sha256": run_env["MAGCORE_SOURCE_ARCHIVE_SHA256"],
-            "source_status_sha256": run_env["MAGCORE_SOURCE_STATUS_SHA256"],
-        },
-        "run_provenance": {"run_id": run_env["MAGCORE_RUN_ID"]},
+        "frozen_contract": frozen_contract,
+        "run_provenance": run_provenance,
         "scheduler_submission": {
             "array_job_id": str(submission["array_job_id"]),
             "aggregate_job_id": str(submission["aggregate_job_id"]),

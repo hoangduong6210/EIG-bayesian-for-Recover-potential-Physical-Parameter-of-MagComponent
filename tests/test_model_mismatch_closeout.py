@@ -11,6 +11,7 @@ import pytest
 
 from magcore_calib.model_mismatch import (
     MISMATCH_NON_ADMISSION_SCHEMA,
+    MISMATCH_NON_ADMISSION_SUCCESSOR_SCHEMA,
     MISMATCH_RESULT_SCHEMA,
     POLICIES,
     config_sha256,
@@ -99,6 +100,15 @@ def _run_fixture(
     config.write_text(source_config, encoding="utf-8")
     plan = load_model_mismatch_plan(config)
     config_hash = config_sha256(config)
+    if is_v2:
+        predecessor = (
+            ROOT
+            / "results/diagnostics/model_mismatch/MM-1"
+            / "20260827T045036Z_e4c674a6ff98/non_admission.json"
+        )
+        (run / f"summary/{summary}/predecessor_non_admission.json").write_bytes(
+            predecessor.read_bytes()
+        )
     (run / "provenance/run.env").write_text(
         "MAGCORE_RUN_ID=test-run\n"
         f"MAGCORE_GIT_REVISION={'a' * 40}\n"
@@ -135,12 +145,61 @@ def _run_fixture(
                             "record_class": "sampler_rejection_diagnostic",
                             "campaign_id": campaign_id,
                             "config_sha256": config_hash,
+                            "estimator_decision_sha256": decision_hash,
+                            "run_id": "test-run",
                             "seed": seed,
                             "scenario": scenario.name,
                             "reason": "posterior_convergence_gate_failed",
+                            "validator_message": "test convergence rejection",
                             "invalid_policies": ["random_channel_balanced"],
                             "failed_states": {
-                                "random_channel_balanced": [{"state": "test"}],
+                                "random_channel_balanced": [{
+                                    "state_identity_sha256": "d" * 64,
+                                    "n_measurements": 3,
+                                    "mcmc_seed": 123,
+                                    "sampler_diagnostics": {
+                                        "acceptance_fraction": 0.3,
+                                        "adaptive_sampling": {
+                                            "actual_retained_steps": 320000,
+                                            "check_interval_steps": 10000,
+                                            "extension_count": 30,
+                                            "maximum_retained_steps": 320000,
+                                            "minimum_retained_steps": 20000,
+                                            "stopped_reason": "maximum_steps",
+                                        },
+                                        "ess": {
+                                            name: 1000.0 for name in (
+                                                "ln_k", "alpha", "beta", "ln_mu_s",
+                                                "ln_f_rel_hz", "alpha_cc",
+                                            )
+                                        },
+                                        "finite_log_probability_fraction": 1.0,
+                                        "method": "emcee_integrated_autocorrelation_time",
+                                        "note": "walkers are interacting",
+                                        "parameter_names": [
+                                            "ln_k", "alpha", "beta", "ln_mu_s",
+                                            "ln_f_rel_hz", "alpha_cc",
+                                        ],
+                                        "steps_per_tau": {
+                                            name: 40.0 for name in (
+                                                "ln_k", "alpha", "beta", "ln_mu_s",
+                                                "ln_f_rel_hz", "alpha_cc",
+                                            )
+                                        },
+                                        "tau": {
+                                            name: 8000.0 for name in (
+                                                "ln_k", "alpha", "beta", "ln_mu_s",
+                                                "ln_f_rel_hz", "alpha_cc",
+                                            )
+                                        },
+                                        "thresholds": {
+                                            "acceptance_range": [0.2, 0.6],
+                                            "min_ess": 400.0,
+                                            "min_steps_per_tau": 50.0,
+                                        },
+                                        "valid": False,
+                                    },
+                                }],
                             },
                             "disclosure": {
                                 "scientific_endpoint_values_included": False,
@@ -204,6 +263,7 @@ def test_mm2_closeout_binds_rejection_without_aggregating_endpoints(tmp_path: Pa
     run, failed_task = _run_fixture(tmp_path, campaign_id="MM-2")
     record = module.build_non_admission_record(run, campaign_id="MM-2")
     assert record["campaign_id"] == "MM-2"
+    assert record["schema_version"] == MISMATCH_NON_ADMISSION_SUCCESSOR_SCHEMA
     assert record["matrix"] == {
         "expected_task_count": 120,
         "validated_result_count": 119,
@@ -220,12 +280,41 @@ def test_mm2_closeout_binds_rejection_without_aggregating_endpoints(tmp_path: Pa
         "random_channel_balanced"
     ]
     assert failed["rejection"]["failed_state_count"] == 1
+    assert "diagnostic" not in failed["rejection"]
+    assert record["run_provenance"]["stage"] == "model_mismatch_v2"
+    assert record["frozen_contract"]["lineage"] == {
+        "predecessor_campaign_id": "MM-1",
+        "predecessor_non_admission_sha256": (
+            "dba31b989debfe1729261a0fb42e07317069a97095b743c0d73237500e5a5207"
+        ),
+        "seed_namespace": "mm2_confirmatory_seed_v1",
+        "retain_rejection_diagnostics": True,
+    }
     encoded = json.dumps(record, sort_keys=True)
     for prohibited in (
         '"policies"', "holdout_latent_mean", "relative_rmse_pct",
         "paired_differences", "n_measurements_to_gate",
     ):
         assert prohibited not in encoded
+
+
+def test_mm2_closeout_rejects_predecessor_or_rejection_tampering(tmp_path: Path):
+    module = _module()
+    run, failed_task = _run_fixture(tmp_path, campaign_id="MM-2")
+    predecessor = run / "summary/model_mismatch_v2/predecessor_non_admission.json"
+    predecessor.write_text("{}\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="predecessor closeout differs"):
+        module.build_non_admission_record(run, campaign_id="MM-2")
+
+    run, failed_task = _run_fixture(tmp_path / "second", campaign_id="MM-2")
+    rejection = run / f"status/model_mismatch_v2_rejections/{failed_task}.json"
+    value = json.loads(rejection.read_text(encoding="utf-8"))
+    value["failed_states"]["random_channel_balanced"][0]["holdout"] = {
+        "endpoint": 1.0,
+    }
+    rejection.write_text(json.dumps(value) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="rejection state schema"):
+        module.build_non_admission_record(run, campaign_id="MM-2")
 
 
 def test_closeout_rejects_unexplained_or_contradictory_task(tmp_path: Path):

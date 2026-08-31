@@ -23,147 +23,13 @@
         "sha256": "4a852b0b6650a83df56b16e8036ce401d3ee39ca20a6e40482c50e032431ea92"
       },
       "rejection": {
-        "diagnostic": {
-          "disclosure": {
-            "claim_bearing_result": false,
-            "scientific_endpoint_values_included": false
-          },
-          "failed_states": {
-            "random_channel_balanced": [
-              {
-                "mcmc_seed": 2950378469,
-                "n_measurements": 3,
-                "sampler_diagnostics": {
-                  "acceptance_fraction": 0.3014460519547325,
-                  "adaptive_sampling": {
-                    "actual_retained_steps": 320000,
-                    "check_interval_steps": 10000,
-                    "extension_count": 30,
-                    "maximum_retained_steps": 320000,
-                    "minimum_retained_steps": 20000,
-                    "stopped_reason": "maximum_steps"
-                  },
-                  "ess": {
-                    "alpha": 99979.13323149922,
-                    "alpha_cc": 1784.365758897497,
-                    "beta": 100614.52726125738,
-                    "ln_f_rel_hz": 2114.954504460207,
-                    "ln_k": 100020.54623575632,
-                    "ln_mu_s": 1838.5507145217553
-                  },
-                  "finite_log_probability_fraction": 1.0,
-                  "method": "emcee_integrated_autocorrelation_time",
-                  "note": "R-hat is not claimed for interacting affine-invariant walkers.",
-                  "parameter_names": [
-                    "ln_k",
-                    "alpha",
-                    "beta",
-                    "ln_mu_s",
-                    "ln_f_rel_hz",
-                    "alpha_cc"
-                  ],
-                  "steps_per_tau": {
-                    "alpha": 2082.898608989567,
-                    "alpha_cc": 37.174286643697855,
-                    "beta": 2096.135984609529,
-                    "ln_f_rel_hz": 44.06155217625431,
-                    "ln_k": 2083.7613799115898,
-                    "ln_mu_s": 38.303139885869896
-                  },
-                  "tau": {
-                    "alpha": 153.63205804589543,
-                    "alpha_cc": 8608.10062253742,
-                    "beta": 152.6618513061833,
-                    "ln_f_rel_hz": 7262.567571835444,
-                    "ln_k": 153.56844746473658,
-                    "ln_mu_s": 8354.406478254505
-                  },
-                  "thresholds": {
-                    "acceptance_range": [
-                      0.2,
-                      0.6
-                    ],
-                    "min_ess": 400.0,
-                    "min_steps_per_tau": 50.0
-                  },
-                  "valid": false
-                },
-                "state_identity_sha256": "4ef1263722e4af3968932b0f38b7e10839f4474d5bc4604aed40f481b385ad64"
-              },
-              {
-                "mcmc_seed": 1017639342,
-                "n_measurements": 4,
-                "sampler_diagnostics": {
-                  "acceptance_fraction": 0.28729925411522633,
-                  "adaptive_sampling": {
-                    "actual_retained_steps": 320000,
-                    "check_interval_steps": 10000,
-                    "extension_count": 30,
-                    "maximum_retained_steps": 320000,
-                    "minimum_retained_steps": 20000,
-                    "stopped_reason": "maximum_steps"
-                  },
-                  "ess": {
-                    "alpha": 98015.88001544928,
-                    "alpha_cc": 1119.9891512613544,
-                    "beta": 98291.96188076261,
-                    "ln_f_rel_hz": 1310.5644488182743,
-                    "ln_k": 97565.24126952142,
-                    "ln_mu_s": 1121.8468524385275
-                  },
-                  "finite_log_probability_fraction": 1.0,
-                  "method": "emcee_integrated_autocorrelation_time",
-                  "note": "R-hat is not claimed for interacting affine-invariant walkers.",
-                  "parameter_names": [
-                    "ln_k",
-                    "alpha",
-                    "beta",
-                    "ln_mu_s",
-                    "ln_f_rel_hz",
-                    "alpha_cc"
-                  ],
-                  "steps_per_tau": {
-                    "alpha": 2041.99750032186,
-                    "alpha_cc": 23.333107317944886,
-                    "beta": 2047.749205849221,
-                    "ln_f_rel_hz": 27.30342601704738,
-                    "ln_k": 2032.6091931150295,
-                    "ln_mu_s": 23.37180942580266
-                  },
-                  "tau": {
-                    "alpha": 156.70930054985942,
-                    "alpha_cc": 13714.41855727018,
-                    "beta": 156.26913641863334,
-                    "ln_f_rel_hz": 11720.140901006427,
-                    "ln_k": 157.4331165498623,
-                    "ln_mu_s": 13691.70842402632
-                  },
-                  "thresholds": {
-                    "acceptance_range": [
-                      0.2,
-                      0.6
-                    ],
-                    "min_ess": 400.0,
-                    "min_steps_per_tau": 50.0
-                  },
-                  "valid": false
-                },
-                "state_identity_sha256": "c53fb8373ff54b01ce874bf363af024715348b6f898a059704a7e29ac43b4869"
-              }
-            ]
-          },
-          "invalid_policies": [
-            "random_channel_balanced"
-          ],
-          "reason": "posterior_convergence_gate_failed",
-          "schema_version": "magcore-model-mismatch-rejection/1.0"
-        },
         "failed_state_count": 2,
         "invalid_policies": [
           "random_channel_balanced"
         ],
         "path": "status/model_mismatch_v2_rejections/combined_mismatch_seed9123.json",
         "reason": "posterior_convergence_gate_failed",
+        "schema_version": "magcore-model-mismatch-rejection/1.0",
         "sha256": "e98dcd1ef6c6c5f1590263bde56d83d579aba2ffd87869d7de04cf30ace67cf1"
       },
       "scenario": "combined_mismatch",
@@ -173,9 +39,16 @@
   ],
   "frozen_contract": {
     "campaign_source_revision": "002a58340aa04a272b6cd66388a4db69f707a982",
+    "config_schema_version": "magcore-model-mismatch-preregistration/1.1",
     "config_sha256": "d081298e546a92887519cb98a65e3c0bd4930590e0c26394a6a49f1ac8cd3984",
     "estimator_decision_sha256": "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6",
     "estimator_source_release_id": "20260817T072230Z_401e3030fe13",
+    "lineage": {
+      "predecessor_campaign_id": "MM-1",
+      "predecessor_non_admission_sha256": "dba31b989debfe1729261a0fb42e07317069a97095b743c0d73237500e5a5207",
+      "retain_rejection_diagnostics": true,
+      "seed_namespace": "mm2_confirmatory_seed_v1"
+    },
     "source_archive_sha256": "6c864d5e2dcc5156970eaadb051dba5f266ddd4a6f102a9fc9fa4407e06d9f04",
     "source_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
@@ -190,13 +63,14 @@
   },
   "record_class": "diagnostic_campaign_closeout",
   "run_provenance": {
-    "run_id": "20260829T041912Z_002a58340aa0"
+    "run_id": "20260829T041912Z_002a58340aa0",
+    "stage": "model_mismatch_v2"
   },
   "scheduler_submission": {
     "aggregate_job_id": "7085049",
     "array_job_id": "7085048"
   },
-  "schema_version": "magcore-model-mismatch-non-admission/1.0",
+  "schema_version": "magcore-model-mismatch-non-admission/1.1",
   "validated_results": [
     {
       "done_marker_sha256": "5a695f18d7bce836cb588f6b6994a41bdc637b0cf6f345338bc1524039028f40",

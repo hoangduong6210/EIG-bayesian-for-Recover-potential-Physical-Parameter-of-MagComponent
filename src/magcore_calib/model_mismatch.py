@@ -33,6 +33,9 @@ MISMATCH_CONFIG_SUCCESSOR_SCHEMA = "magcore-model-mismatch-preregistration/1.1"
 MISMATCH_RESULT_SCHEMA = "magcore-model-mismatch-result/1.0"
 MISMATCH_AGGREGATE_SCHEMA = "magcore-model-mismatch-aggregate/1.0"
 MISMATCH_NON_ADMISSION_SCHEMA = "magcore-model-mismatch-non-admission/1.0"
+MISMATCH_NON_ADMISSION_SUCCESSOR_SCHEMA = (
+    "magcore-model-mismatch-non-admission/1.1"
+)
 MISMATCH_REJECTION_SCHEMA = "magcore-model-mismatch-rejection/1.0"
 POLICIES = (
     "eig_raw", "eig_per_cost", "fixed_channel_balanced",
@@ -631,3 +634,91 @@ def validate_mismatch_result(record: dict[str, Any]) -> None:
         raise ValueError("model-mismatch convergence-validity registry is incomplete")
     if any(value is not True for value in record["validity"].values()):
         raise ValueError("model-mismatch result contains a nonconverged policy")
+
+
+def validate_mismatch_rejection(record: dict[str, Any]) -> None:
+    """Validate the endpoint-free sampler-rejection sidecar schema."""
+
+    required = {
+        "schema_version", "record_class", "campaign_id", "config_sha256",
+        "estimator_decision_sha256", "run_id", "seed", "scenario", "reason",
+        "validator_message", "invalid_policies", "failed_states", "disclosure",
+    }
+    if set(record) != required \
+            or record.get("schema_version") != MISMATCH_REJECTION_SCHEMA \
+            or record.get("record_class") != "sampler_rejection_diagnostic":
+        raise ValueError("model-mismatch rejection has an invalid top-level schema")
+    if record.get("reason") != "posterior_convergence_gate_failed" \
+            or not isinstance(record.get("validator_message"), str) \
+            or not record["validator_message"]:
+        raise ValueError("model-mismatch rejection reason is invalid")
+    if record.get("disclosure") != {
+        "scientific_endpoint_values_included": False,
+        "claim_bearing_result": False,
+    }:
+        raise ValueError("model-mismatch rejection disclosure is invalid")
+    if not isinstance(record.get("seed"), int) or record["seed"] <= 0 \
+            or not isinstance(record.get("run_id"), str) \
+            or not record["run_id"] \
+            or not isinstance(record.get("scenario"), str) \
+            or not record["scenario"]:
+        raise ValueError("model-mismatch rejection identity is invalid")
+    for key in ("config_sha256", "estimator_decision_sha256"):
+        if not isinstance(record.get(key), str) \
+                or not re.fullmatch(r"[0-9a-f]{64}", record[key]):
+            raise ValueError(f"model-mismatch rejection {key} is invalid")
+
+    invalid = record.get("invalid_policies")
+    if not isinstance(invalid, list) or not invalid \
+            or len(invalid) != len(set(invalid)) \
+            or any(policy not in POLICIES for policy in invalid):
+        raise ValueError("model-mismatch rejection policy registry is invalid")
+    failed_states = record.get("failed_states")
+    if not isinstance(failed_states, dict) or set(failed_states) != set(invalid):
+        raise ValueError("model-mismatch rejection state registry is invalid")
+
+    parameters = {"ln_k", "alpha", "beta", "ln_mu_s", "ln_f_rel_hz", "alpha_cc"}
+    diagnostic_keys = {
+        "acceptance_fraction", "adaptive_sampling", "ess",
+        "finite_log_probability_fraction", "method", "note", "parameter_names",
+        "steps_per_tau", "tau", "thresholds", "valid",
+    }
+    adaptive_keys = {
+        "actual_retained_steps", "check_interval_steps", "extension_count",
+        "maximum_retained_steps", "minimum_retained_steps", "stopped_reason",
+    }
+    for policy, states in failed_states.items():
+        if not isinstance(states, list) or not states:
+            raise ValueError(f"rejection states are invalid for {policy}")
+        for state in states:
+            if not isinstance(state, dict) or set(state) != {
+                "state_identity_sha256", "n_measurements", "mcmc_seed",
+                "sampler_diagnostics",
+            }:
+                raise ValueError("model-mismatch rejection state schema is invalid")
+            if not re.fullmatch(r"[0-9a-f]{64}", str(state["state_identity_sha256"])):
+                raise ValueError("model-mismatch rejection state hash is invalid")
+            for key in ("n_measurements", "mcmc_seed"):
+                value = state[key]
+                if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                    raise ValueError(f"model-mismatch rejection {key} is invalid")
+            diagnostic = state["sampler_diagnostics"]
+            if not isinstance(diagnostic, dict) or set(diagnostic) != diagnostic_keys:
+                raise ValueError("sampler rejection diagnostic schema is invalid")
+            if diagnostic.get("valid") is not False \
+                    or set(diagnostic.get("parameter_names", ())) != parameters:
+                raise ValueError("sampler rejection diagnostic status is invalid")
+            for key in ("tau", "ess", "steps_per_tau"):
+                values = diagnostic.get(key)
+                if not isinstance(values, dict) or set(values) != parameters \
+                        or any(not math.isfinite(float(value)) or float(value) <= 0.0
+                               for value in values.values()):
+                    raise ValueError(f"sampler rejection {key} is invalid")
+            adaptive = diagnostic.get("adaptive_sampling")
+            if not isinstance(adaptive, dict) or set(adaptive) != adaptive_keys:
+                raise ValueError("sampler rejection adaptive record is invalid")
+            thresholds = diagnostic.get("thresholds")
+            if not isinstance(thresholds, dict) or set(thresholds) != {
+                "acceptance_range", "min_ess", "min_steps_per_tau",
+            }:
+                raise ValueError("sampler rejection thresholds are invalid")
