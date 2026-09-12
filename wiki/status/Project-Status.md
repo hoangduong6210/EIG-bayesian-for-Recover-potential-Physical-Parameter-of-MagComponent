@@ -124,8 +124,10 @@ must be reproduced by rerunning the locked workflow. [Source E12](../evidence/Ev
 
 ## Next scientific experiments
 
-The [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) specifies the
-comparison that precedes SparseMix-2 registration.
+The [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) completed 24 tasks
+and a 72-artifact full-chain audit. DE + snooker is selected for SparseMix-2;
+its n4 pilot autocorrelation-stability check is still insufficient, so the
+selection does not yet qualify the sampler. [Source E13](../evidence/Evidence-Sources.md#e13)
 
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
 2. Test a reparameterized or alternative sampler on both locked sparse states

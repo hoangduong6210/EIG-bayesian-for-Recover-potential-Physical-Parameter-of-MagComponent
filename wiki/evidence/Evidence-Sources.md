@@ -158,6 +158,29 @@ source label.
   recomputation. E12 contains no acquisition endpoint and does not change the
   non-admission of MM-2.
 
+<a id="e13"></a>
+## E13 — Endpoint-free sampler pilot and exploratory selection
+
+- Artifact: [`manifest.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/manifest.json)
+- Manifest SHA-256: `8d2e1298941d413dd3cb849425613ac08218c9b8d81846168b5ebb90b4bb0b87`
+- Selection: [`decision.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/decision.json)
+- Decision SHA-256: `5914e90dcace7622052cfb658db139510005802faaac33fd0a9e3aaeab29d756`
+- Source revision: `efbc1c2f169e4debf8541a78c6d115eeb2295284`;
+  validator revision: `df06d7bed1de397cd25156b61c2a321fc174839d`.
+- Pointers: `/matrix`, `/method_summaries`, `/tasks`, `/artifacts`,
+  `/verification`. The record accounts for all 24 tasks and 72 artifacts.
+  Every checkpoint autocorrelation estimate, ESS and final parameter summary
+  was independently recomputed from the saved full chain.
+- Interpretation: DE + snooker was selected after the complete exploratory
+  comparison. Its n4 autocorrelation stability remains insufficient at the
+  pilot horizon; selection does not admit a model-mismatch campaign.
+- Availability: the public manifest includes per-ensemble diagnostics,
+  quantile summaries and original artifact hashes. Full chains remain in the
+  production archive and are not included in this repository projection.
+  Acceptance histories were not retained, so acceptance is checked for
+  consistency rather than independently recomputed. No scientific endpoint
+  or retroactive MM-2 admission is supplied.
+
 ## Verification rule
 
 [`build.py`](../build.py) rejects the wiki if the projection hash, release ID,

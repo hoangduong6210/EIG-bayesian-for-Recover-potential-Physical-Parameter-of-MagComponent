@@ -1,0 +1,18 @@
+{
+  "schema_version": "magcore-sparse-pilot-selection/1.0",
+  "record_class": "exploratory_sampler_selection_after_complete_pilot",
+  "pilot_manifest": "results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/manifest.json",
+  "pilot_manifest_sha256": "8d2e1298941d413dd3cb849425613ac08218c9b8d81846168b5ebb90b4bb0b87",
+  "complete_matrix": true,
+  "selected_arm": "de_snooker",
+  "selection_is_exploratory": true,
+  "rationale": [
+    "Among the three complete arms, differential evolution plus snooker has the largest worst-chain steps-per-tau and smallest worst-chain relative tau change in both states.",
+    "Its all-pair normalized median and tail differences are below one in both states, with no undefined comparisons.",
+    "The n4 relative tau change remains above 0.10 at the pilot horizon; the pilot does not establish confirmatory passage."
+  ],
+  "next_study": "SparseMix-2 with new initialization and sampler seeds and a separately frozen long-horizon protocol",
+  "scientific_endpoints_included": false,
+  "model_mismatch_campaign_admitted": false,
+  "retroactive_mm2_admission_allowed": false
+}

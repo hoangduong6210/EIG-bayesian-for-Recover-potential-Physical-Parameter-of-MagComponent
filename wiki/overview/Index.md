@@ -8,7 +8,7 @@ paper_source: false
 # Research Wiki index
 
 This directory routes each question to one canonical page. Numerical statements
-use evidence labels E1--E12; the evidence page records the corresponding JSON
+use evidence labels E1--E13; the evidence page records the corresponding JSON
 pointer, scope, release identity, and checksum.
 
 ## Recommended reading paths
@@ -35,6 +35,7 @@ pointer, scope, release identity, and checksum.
 | What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
 | What happened in the independent successor? | [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md#closeout) | [E11](../evidence/Evidence-Sources.md#e11) |
 | What did the rejected-state sampler diagnostic find? | [SparseMix-1 record](../experiments/Sparse-Posterior-Mixing-Preregistration.md#results) | [E12](../evidence/Evidence-Sources.md#e12) |
+| Which sampler is being tested next, and why? | [Endpoint-free pilot](../experiments/Sparse-Sampler-Pilot.md) | [E13](../evidence/Evidence-Sources.md#e13) |
 
 ## Complete page directory
 
@@ -69,5 +70,5 @@ The next sampler comparison is specified in the
    raw-to-aggregate chain.
 
 If a result-bearing sentence lacks an evidence label, treat it as unverified.
-Literature citations support scientific background; E1--E12 support numerical
+Literature citations support scientific background; E1--E13 support numerical
 results produced by this project.

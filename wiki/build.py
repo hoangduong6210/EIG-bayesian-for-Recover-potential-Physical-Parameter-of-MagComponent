@@ -60,6 +60,61 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def check_sparse_pilot_contract(contract: dict) -> dict:
+    """Validate optional pilot evidence before allowing Wiki claims to use it."""
+    if not isinstance(contract, dict):
+        raise WikiError("sparse-pilot diagnostic contract must be a table")
+    root = WIKI_ROOT.parent.resolve()
+    records = {}
+    for label in ("manifest", "decision"):
+        relative, digest = contract.get(label), contract.get(f"{label}_sha256")
+        if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+            raise WikiError(f"invalid sparse-pilot {label} path")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise WikiError(f"missing or unsafe sparse-pilot {label}")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise WikiError(f"invalid sparse-pilot {label} SHA-256")
+        if sha256(path) != digest:
+            raise WikiError(f"sparse-pilot {label} SHA-256 mismatch")
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (ValueError, UnicodeError) as exc:
+            raise WikiError(f"invalid sparse-pilot {label} JSON") from exc
+        if not isinstance(value, dict):
+            raise WikiError(f"sparse-pilot {label} must contain an object")
+        records[label] = value
+    pilot, decision = records["manifest"], records["decision"]
+    if pilot.get("schema_version") != "magcore-sparse-mixing-pilot-manifest/1.0" \
+            or pilot.get("record_class") != "endpoint_free_sampler_pilot_manifest" \
+            or pilot.get("protocol_id") != "SparseMix-Pilot-1":
+        raise WikiError("unsupported sparse-pilot manifest identity")
+    if pilot.get("matrix") != {"expected_task_count": 24, "validated_task_count": 24,
+                               "artifact_count": 72}:
+        raise WikiError("sparse-pilot matrix is not complete")
+    disclosure = pilot.get("disclosure", {})
+    if any(disclosure.get(key) is not False for key in (
+        "scientific_endpoints_included", "automatic_admission", "claim_bearing_result",
+        "retroactive_mm2_admission_allowed", "confirmatory_sampler_validation",
+    )):
+        raise WikiError("sparse-pilot disclosure boundary differs")
+    if decision.get("schema_version") != "magcore-sparse-pilot-selection/1.0":
+        raise WikiError("unsupported sparse-pilot decision schema")
+    if decision.get("complete_matrix") is not True \
+            or decision.get("pilot_manifest") != contract["manifest"] \
+            or decision.get("pilot_manifest_sha256") != contract["manifest_sha256"]:
+        raise WikiError("sparse-pilot decision source binding differs")
+    arm = decision.get("selected_arm")
+    if arm not in {"stretch", "de_snooker", "logit_stretch"}:
+        raise WikiError("unsupported sparse-pilot selected arm")
+    for target in ("n3", "n4"):
+        summary = pilot.get("method_summaries", {}).get(target, {}).get(arm)
+        if not isinstance(summary, dict) or summary.get("independent_ensemble_count") != 4:
+            raise WikiError("sparse-pilot selected arm lacks both state summaries")
+    return {"sparse_pilot_manifest_sha256": contract["manifest_sha256"],
+            "sparse_pilot_decision_sha256": contract["decision_sha256"]}
+
+
 def aggregate_digest(entries: dict[str, str]) -> str:
     """Hash a path-to-digest map without depending on filesystem traversal order."""
     digest = hashlib.sha256()
@@ -377,6 +432,9 @@ def check() -> dict:
     if overlap.get("source", {}).get("release_manifest_sha256") != release_digest:
         raise WikiError("selection-overlap release manifest mismatch")
 
+    pilot_report = {}
+    if "sparse_pilot" in manifest.get("diagnostics", {}):
+        pilot_report = check_sparse_pilot_contract(manifest["diagnostics"]["sparse_pilot"])
     sparse_contract = manifest.get("diagnostics", {}).get("sparse_mixing", {})
     if sparse_contract.get("protocol_id") != "SparseMix-1":
         raise WikiError("unexpected sparse-mixing protocol identity")
@@ -526,6 +584,7 @@ def check() -> dict:
             raise WikiError(f"{page} is not bound to the declared evidence release")
 
     return {
+        **pilot_report,
         "abstract_words": len(abstract.split()),
         "body_words": len(body.split()),
         "citation_count": len(cited),

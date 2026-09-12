@@ -131,6 +131,13 @@ library. It does not establish universal predictive-variance superiority.
 
 ## Consequence for the next experiment
 
+The subsequent endpoint-free sampler pilot completed all 24 tasks and 72
+audited artifacts. [Source E13](../evidence/Evidence-Sources.md#e13) provides
+per-ensemble diagnostics and the
+[complete comparison](../experiments/Sparse-Sampler-Pilot.md). It selects a
+sampler for a new confirmatory diagnostic; it contributes no acquisition or
+model-mismatch endpoint.
+
 A fair follow-up should preregister a gate-aligned acquisition objective before
 new outcomes are inspected. Candidates include target-weighted information
 gain, probability of crossing the remaining gate, or approximate expected

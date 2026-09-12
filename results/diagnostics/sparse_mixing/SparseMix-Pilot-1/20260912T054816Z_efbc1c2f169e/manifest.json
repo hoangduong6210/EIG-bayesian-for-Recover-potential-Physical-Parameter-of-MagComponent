@@ -1,0 +1,3198 @@
+{
+  "artifacts": [
+    {
+      "chain_path": "0/n3_stretch_local_prior_center_r0.chain.npz",
+      "chain_sha256": "0d2047fa4c6af636066a3209e30c443c27305cdc93c16a62f39818e6c9786557",
+      "result_path": "0/n3_stretch_local_prior_center_r0.json",
+      "result_sha256": "b4609c3a3782ccd2d2fac3e00a431add01ffb2134e467cce619bb37b85b6e59c",
+      "success_path": "0/n3_stretch_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "ae9bd05eeb866f77488475dcd5246087a8cc7462a370604e37dd0e475969fad7",
+      "task_id": "n3_stretch_local_prior_center_r0"
+    },
+    {
+      "chain_path": "1/n3_stretch_local_prior_center_r1.chain.npz",
+      "chain_sha256": "eeb7da9cadfffd4da7aa536b4ce573384917c4f34688a8ee9dcf7e8fcc4d5bb6",
+      "result_path": "1/n3_stretch_local_prior_center_r1.json",
+      "result_sha256": "d50226e1173ffa21ee7ecff8d5ed699ea5f4c82845f60c766910587e8bc97228",
+      "success_path": "1/n3_stretch_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "e9bce0edfd08adcaed84131c3e32fbcc961483ac3236e2cddb883610f754e8a5",
+      "task_id": "n3_stretch_local_prior_center_r1"
+    },
+    {
+      "chain_path": "2/n3_stretch_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "7a71f16135b037bc1ef692f5f5aa489994fab46cdc1a9bc88729b01ae8d1f5a6",
+      "result_path": "2/n3_stretch_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "3a529b28acf4322063cf17aefa92e4e9ac608c001c1b3636eac7958e083b18d4",
+      "success_path": "2/n3_stretch_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "38f263a88d2ac709a3ab59ed31838fcbaf407809dbfba78d5b398e7285a4ae7e",
+      "task_id": "n3_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "3/n3_stretch_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "4678057e395c6693024e672e98a9106e6431e5d5d3ffed3385b1b9e32c2390cb",
+      "result_path": "3/n3_stretch_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "d7933345da9a877af9a11d75969da1bf5c5bbe14b3047b34a42b344d0ba70599",
+      "success_path": "3/n3_stretch_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "31d14acfc386ec9668bb5af4b4bf67cd6b8d8f79c58d96cd91e7fab7803723e3",
+      "task_id": "n3_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "chain_path": "4/n3_de_snooker_local_prior_center_r0.chain.npz",
+      "chain_sha256": "a3792b95104223a417317fa1ffb1b453a66372f6410789e5a56a5791c5d9fa65",
+      "result_path": "4/n3_de_snooker_local_prior_center_r0.json",
+      "result_sha256": "5750bf3d3933c7ea3e14e5561b12996427786deb719ed0fe62b9fd97319065ae",
+      "success_path": "4/n3_de_snooker_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "6bba38c2ac1167ee6c9da1f16a0ec4ffbff45d1e44db65b680e6abeff4153f47",
+      "task_id": "n3_de_snooker_local_prior_center_r0"
+    },
+    {
+      "chain_path": "5/n3_de_snooker_local_prior_center_r1.chain.npz",
+      "chain_sha256": "52778b6f2beb28fe204bfc4ddf5685ef6ac4a797c37b5fce90e47c33f8a80738",
+      "result_path": "5/n3_de_snooker_local_prior_center_r1.json",
+      "result_sha256": "f6eac1f6a28918c7528f8be75d9de09d1517a28fcd894da863b95e254753ff07",
+      "success_path": "5/n3_de_snooker_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "0a06e80635b35f4962b27d82b4498f3a05b3da8ca69cd94281c88caa6d4dfb84",
+      "task_id": "n3_de_snooker_local_prior_center_r1"
+    },
+    {
+      "chain_path": "6/n3_de_snooker_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "ebd4ae12dc1adc5d0ac1c3293494b6a7d6b40a8f5f38f738061756ce72a875d0",
+      "result_path": "6/n3_de_snooker_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "cd38b3f2b165fd620a20b407d4574ff6ac913cfd6ee37b666194cf88d3b05896",
+      "success_path": "6/n3_de_snooker_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "8571268e4973a8e46f5fef73b9644395ee72784296399f7370f871e0b1437f3c",
+      "task_id": "n3_de_snooker_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "7/n3_de_snooker_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "f595264e57b6561700355543b1a0bb01d5b576fa1e6d83474798c0c0d04907df",
+      "result_path": "7/n3_de_snooker_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "b099c35a5156bfb3c99837233cd8c95cdf9a7781d30e114132fae9a69ff2e784",
+      "success_path": "7/n3_de_snooker_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "dcedd7655df359879e0d3c35759388a309e66e98bb6c993746080f9b1ae0dbde",
+      "task_id": "n3_de_snooker_overdispersed_prior_lhs_r1"
+    },
+    {
+      "chain_path": "8/n3_logit_stretch_local_prior_center_r0.chain.npz",
+      "chain_sha256": "f02a28f363882771f861852637e1c3da903b92e7f0a1b8e0368821561a7e969f",
+      "result_path": "8/n3_logit_stretch_local_prior_center_r0.json",
+      "result_sha256": "f8eea0dad06879780893b37d0f5ed6c3948b29dbce4a5edc1e701ee7c185d60a",
+      "success_path": "8/n3_logit_stretch_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "e36e65ccfcb823a3eb8991ec0aa394ee9eed36228d55e07c17b69473d0f57483",
+      "task_id": "n3_logit_stretch_local_prior_center_r0"
+    },
+    {
+      "chain_path": "9/n3_logit_stretch_local_prior_center_r1.chain.npz",
+      "chain_sha256": "f345d6a79bac3e80377a6effefa65c2c15b2987e9a7959d4a258ea6b7be613fa",
+      "result_path": "9/n3_logit_stretch_local_prior_center_r1.json",
+      "result_sha256": "06a332ea138fd04244988983feff2e0c5c3a23ce881b5b12f860468602c27ae2",
+      "success_path": "9/n3_logit_stretch_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "a03a034f872f74447dc5820b607bc6fc7a0fe5a45c2a1f08bd06df28a37d1fd1",
+      "task_id": "n3_logit_stretch_local_prior_center_r1"
+    },
+    {
+      "chain_path": "10/n3_logit_stretch_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "297306bab44c83e4635ea7b9e9a55c9989d128a6cf9d3d2178feffd35e93c021",
+      "result_path": "10/n3_logit_stretch_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "e87e2938b56b1204f664826bba8a0248a47df7f18c4327307f50e212b723a361",
+      "success_path": "10/n3_logit_stretch_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "59693e43ccff22d2045390be548c9bf94a5689d686a6d1f3e134cdf6923e77bc",
+      "task_id": "n3_logit_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "11/n3_logit_stretch_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "8e654ac76d277ad31a2f4bfaa3da4cd1443a629b2f545150df0602afde62452f",
+      "result_path": "11/n3_logit_stretch_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "80b3912b9891355a9d053f729bad7480af2919acadf1279aa3775c46bd496d03",
+      "success_path": "11/n3_logit_stretch_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "f4aee43195a116363b671267355ad13e5ab235aa26f67ed52ccaf66cb442c620",
+      "task_id": "n3_logit_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "chain_path": "12/n4_stretch_local_prior_center_r0.chain.npz",
+      "chain_sha256": "cd4d4cc83d09223854c2cb61b399b1420b0395f65bab0f28d2f9b031c21b0bae",
+      "result_path": "12/n4_stretch_local_prior_center_r0.json",
+      "result_sha256": "fc89f76c4711fa517a8c9c13af4874bbb13bdc9f72d971907742426f0e69334a",
+      "success_path": "12/n4_stretch_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "b034943509f99b47c72d8e2ab0aefbe893ec15ca739ae97b73442aab94dffa60",
+      "task_id": "n4_stretch_local_prior_center_r0"
+    },
+    {
+      "chain_path": "13/n4_stretch_local_prior_center_r1.chain.npz",
+      "chain_sha256": "445603bf1c87233545423e3c4f1933dbd0d4e2d64c098b32d5d6b44f839453e3",
+      "result_path": "13/n4_stretch_local_prior_center_r1.json",
+      "result_sha256": "879178bd2a5d3318b7cc87de64998d46986f4eb3ce0755556797faa124702364",
+      "success_path": "13/n4_stretch_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "f0c06693247ca5425c0a72b4274cd3520f8393fd2ab55c36f813b38b0f3b4fd3",
+      "task_id": "n4_stretch_local_prior_center_r1"
+    },
+    {
+      "chain_path": "14/n4_stretch_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "4ba2903d5b502e94a5dc1ae3fe5d5733e949d4c841a69790bbd3f324bed23a53",
+      "result_path": "14/n4_stretch_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "0a1400198b51ebb4c7e4e77d34c76faa80587b7f41d79cf870ee60c2bbed6863",
+      "success_path": "14/n4_stretch_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "a5734c3d023e8f1ce6207a4c75868851d935400c810a85517ba1915308ceaf4b",
+      "task_id": "n4_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "15/n4_stretch_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "ff0d2e621c0900b311aa86ff5f79cc46e95016fb1ecfb10db3e1417f34d41710",
+      "result_path": "15/n4_stretch_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "8a211964f87730ae087a85abed5c00d8d9bb80c1e85b590861a3bf18d530ac16",
+      "success_path": "15/n4_stretch_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "2c8f16f1d76a79a1ad835c5e5e6e251f795064c9d06dcf5f6f89af740b533adb",
+      "task_id": "n4_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "chain_path": "16/n4_de_snooker_local_prior_center_r0.chain.npz",
+      "chain_sha256": "fe8f9a3f0ba4cc03db7c92614f1b9907a796cbc5080e1f4557d573efd01f4623",
+      "result_path": "16/n4_de_snooker_local_prior_center_r0.json",
+      "result_sha256": "e24ab06b1893c3baf24c1a9d9a031d57aac481330f0e77b20dcbb0818561309a",
+      "success_path": "16/n4_de_snooker_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "a6771dc30785ab02cf44ab68b49816a2b9bb6dd462c3132845620e96c62cc77d",
+      "task_id": "n4_de_snooker_local_prior_center_r0"
+    },
+    {
+      "chain_path": "17/n4_de_snooker_local_prior_center_r1.chain.npz",
+      "chain_sha256": "f4e89ae83bf500b42a03a722201874abe05b26a7e44d6637780e5d25bbf8cdc0",
+      "result_path": "17/n4_de_snooker_local_prior_center_r1.json",
+      "result_sha256": "1b22b6bf4ebabec1c95a313512ad6b81161fbf24bef50daf8acd75470e19977e",
+      "success_path": "17/n4_de_snooker_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "58276a5b6e6d2343fa9e67959e99ddfa9011c2157a39c95421b63fae6a26a691",
+      "task_id": "n4_de_snooker_local_prior_center_r1"
+    },
+    {
+      "chain_path": "18/n4_de_snooker_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "f2bbc99927155cfa022284c900e049a9ee2caab5839dac5a62e306fb2728820d",
+      "result_path": "18/n4_de_snooker_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "72205dc17db65a7f9c82c5f0f44b058abaa64c6fa460973f4ac1c2756c8c4c7d",
+      "success_path": "18/n4_de_snooker_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "a5ff0414602ef686481c92b99003780b8a63e02793a3272d976dd24ee36e7f17",
+      "task_id": "n4_de_snooker_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "19/n4_de_snooker_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "41f6fc3abac7f5df000f280242e9ded2d0c5794479d82042fb22269f6ec36152",
+      "result_path": "19/n4_de_snooker_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "6ac43e667553ca5629f9254695995ba47fedcfd83976a25bc63befe3f9972d31",
+      "success_path": "19/n4_de_snooker_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "55a2510e7e96c43ec12efd16a5819ff015cd5c8a60f5e84529e35e074213da78",
+      "task_id": "n4_de_snooker_overdispersed_prior_lhs_r1"
+    },
+    {
+      "chain_path": "20/n4_logit_stretch_local_prior_center_r0.chain.npz",
+      "chain_sha256": "3851892b3dfcfa48594c77bbe37ea8978a1de2ec784b03a0e9e46ef0167bc0e9",
+      "result_path": "20/n4_logit_stretch_local_prior_center_r0.json",
+      "result_sha256": "019338ca2913ace1ebfadbaad53e3cc123b3addb661330a3b006872c18c8d2be",
+      "success_path": "20/n4_logit_stretch_local_prior_center_r0.SUCCESS.json",
+      "success_sha256": "4ee5ab66f4e4e058bc5bdfb681921cf09076026b70b5f0a3f2edde8afaf176a2",
+      "task_id": "n4_logit_stretch_local_prior_center_r0"
+    },
+    {
+      "chain_path": "21/n4_logit_stretch_local_prior_center_r1.chain.npz",
+      "chain_sha256": "4233564f599e30237d6c681788e38076244843666a5c0ecb3eaa70c74c99d91b",
+      "result_path": "21/n4_logit_stretch_local_prior_center_r1.json",
+      "result_sha256": "0cf9617a43cc294c0eddd0513a82833d2ea5353817fc69b1b33493acbebaf0f4",
+      "success_path": "21/n4_logit_stretch_local_prior_center_r1.SUCCESS.json",
+      "success_sha256": "6ac5300aa85172f96d014e82a3edb8cd09ca2f4798ae9780c10bd937d9a839b2",
+      "task_id": "n4_logit_stretch_local_prior_center_r1"
+    },
+    {
+      "chain_path": "22/n4_logit_stretch_overdispersed_prior_lhs_r0.chain.npz",
+      "chain_sha256": "59b75fd1f88d49c1d224358a93c1d6a5108adc2713b7598d93abcb7d830cce35",
+      "result_path": "22/n4_logit_stretch_overdispersed_prior_lhs_r0.json",
+      "result_sha256": "31356dcfa1ce0c96004f207128190d2ea637293fa8cc1febed27cfdec6d9036a",
+      "success_path": "22/n4_logit_stretch_overdispersed_prior_lhs_r0.SUCCESS.json",
+      "success_sha256": "74d64bb38dcbbdffff9d31a400ad9530a1968985187ec037e75d1ea6db4096e9",
+      "task_id": "n4_logit_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "chain_path": "23/n4_logit_stretch_overdispersed_prior_lhs_r1.chain.npz",
+      "chain_sha256": "34c44038ab39cbe65c3868d3fe8f4e80c92c5746f4bbb50fea91e5125b5851ac",
+      "result_path": "23/n4_logit_stretch_overdispersed_prior_lhs_r1.json",
+      "result_sha256": "66784b0b1de6847b16b472c352bab92a4740ab9de7233ae73d72a72a700de193",
+      "success_path": "23/n4_logit_stretch_overdispersed_prior_lhs_r1.SUCCESS.json",
+      "success_sha256": "c364eee862469ffe327e5efcf3ff61b7d00c87cd41156d17f75ac648fb88d926",
+      "task_id": "n4_logit_stretch_overdispersed_prior_lhs_r1"
+    }
+  ],
+  "comparison_rules": {
+    "median": "max(2 * pooled MCSE, 0.10 * pooled SD)",
+    "tail": "0.15 * pooled IQR",
+    "tau_stability_checkpoints": [
+      60000,
+      80000
+    ]
+  },
+  "config_sha256": "d8658a4941a64e8049a75bc42616f3c4612141c0ff88d48d79fa88c2ff003cc3",
+  "disclosure": {
+    "automatic_admission": false,
+    "claim_bearing_result": false,
+    "confirmatory_sampler_validation": false,
+    "retroactive_mm2_admission_allowed": false,
+    "scientific_endpoints_included": false
+  },
+  "matrix": {
+    "artifact_count": 72,
+    "expected_task_count": 24,
+    "validated_task_count": 24
+  },
+  "method_summaries": {
+    "n3": {
+      "de_snooker": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 0.10250563684442465,
+        "maximum_normalized_tail_difference": 0.08098058691209284,
+        "maximum_relative_tau_change": 0.05442131357883711,
+        "minimum_steps_per_tau": 108.30229521018029,
+        "undefined_comparisons": []
+      },
+      "logit_stretch": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 0.6122624063711337,
+        "maximum_normalized_tail_difference": 0.1339745234271268,
+        "maximum_relative_tau_change": 0.22051851051536475,
+        "minimum_steps_per_tau": 16.93215423413135,
+        "undefined_comparisons": []
+      },
+      "stretch": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 2.2056962258588806,
+        "maximum_normalized_tail_difference": 0.664378115303836,
+        "maximum_relative_tau_change": 0.21012441131655016,
+        "minimum_steps_per_tau": 15.118704513654494,
+        "undefined_comparisons": []
+      }
+    },
+    "n4": {
+      "de_snooker": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 0.6213999082873289,
+        "maximum_normalized_tail_difference": 0.4569868547161161,
+        "maximum_relative_tau_change": 0.11193549964351392,
+        "minimum_steps_per_tau": 58.642366507618085,
+        "undefined_comparisons": []
+      },
+      "logit_stretch": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 0.9447467682049553,
+        "maximum_normalized_tail_difference": 0.27007124304194174,
+        "maximum_relative_tau_change": 0.28160129468105133,
+        "minimum_steps_per_tau": 12.329240805395457,
+        "undefined_comparisons": []
+      },
+      "stretch": {
+        "comparison_count": 36,
+        "independent_ensemble_count": 4,
+        "maximum_normalized_median_difference": 1.150604878549003,
+        "maximum_normalized_tail_difference": 0.493496451696198,
+        "maximum_relative_tau_change": 0.26227290064291053,
+        "minimum_steps_per_tau": 11.098808531516395,
+        "undefined_comparisons": []
+      }
+    }
+  },
+  "parent_config_sha256": "88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435",
+  "protocol_id": "SparseMix-Pilot-1",
+  "record_class": "endpoint_free_sampler_pilot_manifest",
+  "run_id": "20260912T054816Z_efbc1c2f169e",
+  "schema_version": "magcore-sparse-mixing-pilot-manifest/1.0",
+  "tasks": [
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.2931934895833333,
+        "ess": {
+          "alpha": 25231.25296867232,
+          "alpha_cc": 774.2271518373146,
+          "beta": 25096.067127235405,
+          "ln_f_rel_hz": 921.7829914757115,
+          "ln_k": 25267.08929303111,
+          "ln_mu_s": 796.024387703027
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 525.6511035140068,
+          "alpha_cc": 16.129732329944055,
+          "beta": 522.8347318174043,
+          "ln_f_rel_hz": 19.203812322410656,
+          "ln_k": 526.3976936048148,
+          "ln_mu_s": 16.583841410479728
+        },
+        "tau": {
+          "alpha": 152.1922040402761,
+          "alpha_cc": 4959.784723239575,
+          "beta": 153.0120229807903,
+          "ln_f_rel_hz": 4165.839503994777,
+          "ln_k": 151.97634976732783,
+          "ln_mu_s": 4823.972807014789
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34fa8e377c95fc31f36b35da847acba9c3f117591fa26034fb3cace04fb2af8f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.07007259459739501,
+          "median": 1.6227535191706597,
+          "quantile_05": 1.5374383365005382,
+          "quantile_25": 1.5875802992265389,
+          "quantile_75": 1.6576528938239339,
+          "quantile_95": 1.7079493676742805,
+          "sd": 0.05180084822554104
+        },
+        "alpha_cc": {
+          "iqr": 0.5738498489005711,
+          "median": 0.24529393391298884,
+          "quantile_05": 0.02233041915640377,
+          "quantile_25": 0.10414183106875745,
+          "quantile_75": 0.6779916799693285,
+          "quantile_95": 0.7130317779675487,
+          "sd": 0.2812893521267242
+        },
+        "beta": {
+          "iqr": 0.19397548146342025,
+          "median": 2.528272061720359,
+          "quantile_05": 2.291056102032043,
+          "quantile_25": 2.431646648184258,
+          "quantile_75": 2.6256221296476783,
+          "quantile_95": 2.765947125724683,
+          "sd": 0.14405744789493766
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7900543288725199,
+          "median": 12.976201262928457,
+          "quantile_05": 12.616714601394673,
+          "quantile_25": 12.820980117575427,
+          "quantile_75": 13.611034446447947,
+          "quantile_95": 14.119397185447284,
+          "sd": 0.49889618896374666
+        },
+        "ln_k": {
+          "iqr": 0.455362022525577,
+          "median": -17.2319430520971,
+          "quantile_05": -17.78901821907368,
+          "quantile_25": -17.45943801033184,
+          "quantile_75": -17.004075987806264,
+          "quantile_95": -16.675047192952675,
+          "sd": 0.3380028249590624
+        },
+        "ln_mu_s": {
+          "iqr": 0.18222835875357823,
+          "median": 7.6319940849313275,
+          "quantile_05": 7.571566664616386,
+          "quantile_25": 7.59854117592787,
+          "quantile_75": 7.780769534681448,
+          "quantile_95": 7.83867914775148,
+          "sd": 0.09782823590261251
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0016550700122656547,
+        "alpha_cc": 0.12783976356989932,
+        "beta": 0.013044293276250615,
+        "ln_f_rel_hz": 0.12370290022256036,
+        "ln_k": 0.025851862865735167,
+        "ln_mu_s": 0.13144410681813515
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_stretch_local_prior_center_r0"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.30997890625,
+        "ess": {
+          "alpha": 25175.985832422306,
+          "alpha_cc": 762.6128430975476,
+          "beta": 26589.736967623463,
+          "ln_f_rel_hz": 863.2223363690587,
+          "ln_k": 24586.531087693766,
+          "ln_mu_s": 773.7654469180645
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 524.4997048421313,
+          "alpha_cc": 15.887767564532243,
+          "beta": 553.9528534921554,
+          "ln_f_rel_hz": 17.983798674355388,
+          "ln_k": 512.2193976602867,
+          "ln_mu_s": 16.12011347745968
+        },
+        "tau": {
+          "alpha": 152.5263012761449,
+          "alpha_cc": 5035.320391934202,
+          "beta": 144.41662227331207,
+          "ln_f_rel_hz": 4448.448375597016,
+          "ln_k": 156.1830738262229,
+          "ln_mu_s": 4962.744220868039
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "7e6703a0cad6d9abde950ff3baddb5c8b6a52b45a93028015072a92f4c37d884",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06982099131847153,
+          "median": 1.6230950538946822,
+          "quantile_05": 1.538399087134569,
+          "quantile_25": 1.5881517942222114,
+          "quantile_75": 1.657972785540683,
+          "quantile_95": 1.7074419627471937,
+          "sd": 0.051499999277277275
+        },
+        "alpha_cc": {
+          "iqr": 0.5777142056761584,
+          "median": 0.18741764113344778,
+          "quantile_05": 0.01910384767522391,
+          "quantile_25": 0.08775241102690573,
+          "quantile_75": 0.6654666167030641,
+          "quantile_95": 0.7090250776060996,
+          "sd": 0.27117811912778184
+        },
+        "beta": {
+          "iqr": 0.19445849473957644,
+          "median": 2.529970652327083,
+          "quantile_05": 2.2926453623160143,
+          "quantile_25": 2.4325763591895337,
+          "quantile_75": 2.62703485392911,
+          "quantile_95": 2.7664596911860517,
+          "sd": 0.14391869374011432
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6557822023172157,
+          "median": 12.932951038403017,
+          "quantile_05": 12.604265709404443,
+          "quantile_25": 12.799568800982005,
+          "quantile_75": 13.45535100329922,
+          "quantile_95": 14.071496196803277,
+          "sd": 0.4730163357340878
+        },
+        "ln_k": {
+          "iqr": 0.4526909673959594,
+          "median": -17.23140239734048,
+          "quantile_05": -17.784747455754342,
+          "quantile_25": -17.45823659088626,
+          "quantile_75": -17.0055456234903,
+          "quantile_95": -16.680437626432493,
+          "sd": 0.3358139494198081
+        },
+        "ln_mu_s": {
+          "iqr": 0.16671379120306362,
+          "median": 7.618644552130489,
+          "quantile_05": 7.569708719355009,
+          "quantile_25": 7.5947364364038705,
+          "quantile_75": 7.761450227606934,
+          "quantile_95": 7.8315109754005405,
+          "sd": 0.09300586570142746
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.005289264451150966,
+        "alpha_cc": 0.2070625711346939,
+        "beta": 0.009164748708399938,
+        "ln_f_rel_hz": 0.19877984697230278,
+        "ln_k": 0.029240491258851323,
+        "ln_mu_s": 0.21012441131655016
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_stretch_local_prior_center_r1"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.3139177083333333,
+        "ess": {
+          "alpha": 24532.918819669507,
+          "alpha_cc": 763.5213923054515,
+          "beta": 24237.804546907733,
+          "ln_f_rel_hz": 870.9912978179083,
+          "ln_k": 25154.297399048915,
+          "ln_mu_s": 781.1385437877481
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 511.10247540978145,
+          "alpha_cc": 15.906695673030239,
+          "beta": 504.9542613939111,
+          "ln_f_rel_hz": 18.145652037873088,
+          "ln_k": 524.0478624801857,
+          "ln_mu_s": 16.27371966224475
+        },
+        "tau": {
+          "alpha": 156.52438375662183,
+          "alpha_cc": 5029.328632698983,
+          "beta": 158.43019084374572,
+          "ln_f_rel_hz": 4408.769650879796,
+          "ln_k": 152.65781186737462,
+          "ln_mu_s": 4915.901321908665
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "f51cc5de6ba1f7073a2db89e8dbea56fdc75db30cb4ce2bdff1e32472f506e79",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.07010342638757217,
+          "median": 1.6223500668425548,
+          "quantile_05": 1.5376445205782785,
+          "quantile_25": 1.5872885889381818,
+          "quantile_75": 1.657392015325754,
+          "quantile_95": 1.707794835355086,
+          "sd": 0.05178034683099909
+        },
+        "alpha_cc": {
+          "iqr": 0.57429310496123,
+          "median": 0.18357184744776003,
+          "quantile_05": 0.01873764220576568,
+          "quantile_25": 0.08705109554598947,
+          "quantile_75": 0.6613442005072194,
+          "quantile_95": 0.7077121160067666,
+          "sd": 0.267281420781845
+        },
+        "beta": {
+          "iqr": 0.19448448694057596,
+          "median": 2.5280168748882295,
+          "quantile_05": 2.290513320220596,
+          "quantile_25": 2.4304238857663307,
+          "quantile_75": 2.6249083727069067,
+          "quantile_95": 2.764358997389026,
+          "sd": 0.14404528874587963
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6040646123631781,
+          "median": 12.925157575858528,
+          "quantile_05": 12.598100855543366,
+          "quantile_25": 12.793626810370654,
+          "quantile_75": 13.397691422733832,
+          "quantile_95": 14.049930526845717,
+          "sd": 0.4643134614849749
+        },
+        "ln_k": {
+          "iqr": 0.4537757333523764,
+          "median": -17.23099906201626,
+          "quantile_05": -17.78822558610502,
+          "quantile_25": -17.459157751072862,
+          "quantile_75": -17.005382017720486,
+          "quantile_95": -16.678637219294494,
+          "sd": 0.337005429681441
+        },
+        "ln_mu_s": {
+          "iqr": 0.16214540758413953,
+          "median": 7.617357951540628,
+          "quantile_05": 7.56962017523716,
+          "quantile_25": 7.5944451934012545,
+          "quantile_75": 7.756590600985394,
+          "quantile_95": 7.829209618750569,
+          "sd": 0.09151111081599946
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.012763197147171437,
+        "alpha_cc": 0.09724079085356012,
+        "beta": 0.0031367293935462403,
+        "ln_f_rel_hz": 0.1095343296635452,
+        "ln_k": 0.017562610270911966,
+        "ln_mu_s": 0.09831661290204191
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.30983802083333334,
+        "ess": {
+          "alpha": 24134.86740747703,
+          "alpha_cc": 725.6978166554157,
+          "beta": 24381.460025700137,
+          "ln_f_rel_hz": 835.3337861515233,
+          "ln_k": 24112.997273423633,
+          "ln_mu_s": 740.9796318416919
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 502.8097376557715,
+          "alpha_cc": 15.118704513654494,
+          "beta": 507.9470838687528,
+          "ln_f_rel_hz": 17.402787211490068,
+          "ln_k": 502.35410986299235,
+          "ln_mu_s": 15.437075663368582
+        },
+        "tau": {
+          "alpha": 159.10590827651947,
+          "alpha_cc": 5291.458664844452,
+          "beta": 157.49672070303882,
+          "ln_f_rel_hz": 4596.964786605019,
+          "ln_k": 159.25021499638672,
+          "ln_mu_s": 5182.328683523658
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "2d92677098788fd8041cfa8b41f5da71a019bb661807ce4e44f01c41938f6506",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06996924994948217,
+          "median": 1.6231166331726259,
+          "quantile_05": 1.5377570034691865,
+          "quantile_25": 1.5879302098006092,
+          "quantile_75": 1.6578994597500913,
+          "quantile_95": 1.7078572636468328,
+          "sd": 0.05176014742238182
+        },
+        "alpha_cc": {
+          "iqr": 0.5769128440123574,
+          "median": 0.19026841318939636,
+          "quantile_05": 0.019224458663782043,
+          "quantile_25": 0.08922267352653578,
+          "quantile_75": 0.6661355175388932,
+          "quantile_95": 0.7092821586496758,
+          "sd": 0.27095212194776297
+        },
+        "beta": {
+          "iqr": 0.19564310063772528,
+          "median": 2.5292580679507517,
+          "quantile_05": 2.29149268869279,
+          "quantile_25": 2.4314214720837786,
+          "quantile_75": 2.627064572721504,
+          "quantile_95": 2.7675467076182754,
+          "sd": 0.14478217552496
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6436650629267966,
+          "median": 12.931751391259393,
+          "quantile_05": 12.600577384149124,
+          "quantile_25": 12.797339119847319,
+          "quantile_75": 13.441004182774115,
+          "quantile_95": 14.056567939573732,
+          "sd": 0.4686337581134805
+        },
+        "ln_k": {
+          "iqr": 0.45401754571612685,
+          "median": -17.232651412625092,
+          "quantile_05": -17.787734715285183,
+          "quantile_25": -17.459603180744146,
+          "quantile_75": -17.00558563502802,
+          "quantile_95": -16.67718467493632,
+          "sd": 0.3375238382642802
+        },
+        "ln_mu_s": {
+          "iqr": 0.16868687113205372,
+          "median": 7.619000661001578,
+          "quantile_05": 7.5700282751617465,
+          "quantile_25": 7.5950440201791825,
+          "quantile_75": 7.763730891311236,
+          "quantile_95": 7.8322458902604595,
+          "sd": 0.09355302215136567
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.005167459777993649,
+        "alpha_cc": 0.19640327083187795,
+        "beta": 0.0008699356980539274,
+        "ln_f_rel_hz": 0.20818392338105948,
+        "ln_k": 0.01192704508560034,
+        "ln_mu_s": 0.2010393507500549
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.16640416666666666,
+        "ess": {
+          "alpha": 75065.21430298766,
+          "alpha_cc": 5413.516930105921,
+          "beta": 76636.8323389998,
+          "ln_f_rel_hz": 5893.69139014999,
+          "ln_k": 76829.81126942112,
+          "ln_mu_s": 5647.238206530155
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1563.858631312243,
+          "alpha_cc": 112.78160271054004,
+          "beta": 1596.6006737291623,
+          "ln_f_rel_hz": 122.78523729479146,
+          "ln_k": 1600.6210681129398,
+          "ln_mu_s": 117.65079596937824
+        },
+        "tau": {
+          "alpha": 51.155519046418874,
+          "alpha_cc": 709.3355483280748,
+          "beta": 50.10645511826379,
+          "ln_f_rel_hz": 651.5441250313371,
+          "ln_k": 49.98059915225057,
+          "ln_mu_s": 679.9783999831343
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34fa8e377c95fc31f36b35da847acba9c3f117591fa26034fb3cace04fb2af8f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06161313492186449,
+          "median": 1.6226190499999578,
+          "quantile_05": 1.5464136893873195,
+          "quantile_25": 1.5919634459814607,
+          "quantile_75": 1.6535765809033252,
+          "quantile_95": 1.699510805529998,
+          "sd": 0.04647800073954049
+        },
+        "alpha_cc": {
+          "iqr": 0.5833717048836179,
+          "median": 0.16246258654361026,
+          "quantile_05": 0.019353692545431962,
+          "quantile_25": 0.08112992611853231,
+          "quantile_75": 0.6645016310021502,
+          "quantile_95": 0.7060470965047582,
+          "sd": 0.2712404222687055
+        },
+        "beta": {
+          "iqr": 0.1726271363316565,
+          "median": 2.529219353023181,
+          "quantile_05": 2.316198539423832,
+          "quantile_25": 2.4429298497988405,
+          "quantile_75": 2.615556986130497,
+          "quantile_95": 2.74309696258539,
+          "sd": 0.1299278622182907
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6362481520927901,
+          "median": 12.932299419154019,
+          "quantile_05": 12.649708266051723,
+          "quantile_25": 12.817576358238092,
+          "quantile_75": 13.453824510330882,
+          "quantile_95": 14.00034164597392,
+          "sd": 0.4438083484392796
+        },
+        "ln_k": {
+          "iqr": 0.4032836655692691,
+          "median": -17.231038282164874,
+          "quantile_05": -17.731667204661637,
+          "quantile_25": -17.433105526643047,
+          "quantile_75": -17.029821861073778,
+          "quantile_95": -16.72831587041205,
+          "sd": 0.30464417125498894
+        },
+        "ln_mu_s": {
+          "iqr": 0.16680328071016426,
+          "median": 7.613551316539419,
+          "quantile_05": 7.571939822759004,
+          "quantile_25": 7.593833720222485,
+          "quantile_75": 7.7606370009326495,
+          "quantile_95": 7.825351383123654,
+          "sd": 0.09161897295785501
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0010335749280487947,
+        "alpha_cc": 0.04690326836974975,
+        "beta": 0.01068028003260005,
+        "ln_f_rel_hz": 0.030267353664053715,
+        "ln_k": 0.004234746741535606,
+        "ln_mu_s": 0.05442131357883711
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_de_snooker_local_prior_center_r0"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.168246875,
+        "ess": {
+          "alpha": 77522.29833421473,
+          "alpha_cc": 5198.510170088654,
+          "beta": 77013.98813121994,
+          "ln_f_rel_hz": 5656.196198310833,
+          "ln_k": 75842.30723541488,
+          "ln_mu_s": 5330.089764396162
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1615.047881962807,
+          "alpha_cc": 108.30229521018029,
+          "beta": 1604.4580860670821,
+          "ln_f_rel_hz": 117.83742079814236,
+          "ln_k": 1580.0480674044766,
+          "ln_mu_s": 111.04353675825337
+        },
+        "tau": {
+          "alpha": 49.534135113550974,
+          "alpha_cc": 738.6731725744635,
+          "beta": 49.86107190627803,
+          "ln_f_rel_hz": 678.9014852679222,
+          "ln_k": 50.63137106418219,
+          "ln_mu_s": 720.4381482747933
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "7e6703a0cad6d9abde950ff3baddb5c8b6a52b45a93028015072a92f4c37d884",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06187684985576003,
+          "median": 1.6225994309193426,
+          "quantile_05": 1.5458752259719708,
+          "quantile_25": 1.591754063812205,
+          "quantile_75": 1.653630913667965,
+          "quantile_95": 1.6996838502106193,
+          "sd": 0.04668545112567932
+        },
+        "alpha_cc": {
+          "iqr": 0.5825434040308702,
+          "median": 0.16251987358791695,
+          "quantile_05": 0.01911585307372552,
+          "quantile_25": 0.08109313707083424,
+          "quantile_75": 0.6636365411017044,
+          "quantile_95": 0.7063058201823024,
+          "sd": 0.2701320446410124
+        },
+        "beta": {
+          "iqr": 0.17186639824270245,
+          "median": 2.5283815942988936,
+          "quantile_05": 2.3150310039626767,
+          "quantile_25": 2.4428282251160796,
+          "quantile_75": 2.614694623358782,
+          "quantile_95": 2.743131180489068,
+          "sd": 0.12996412324911127
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6177020242862028,
+          "median": 12.93019847314827,
+          "quantile_05": 12.645395915004045,
+          "quantile_25": 12.814792524916173,
+          "quantile_75": 13.432494549202376,
+          "quantile_95": 13.99892318273441,
+          "sd": 0.4416953994886665
+        },
+        "ln_k": {
+          "iqr": 0.40475060035238286,
+          "median": -17.231376317509003,
+          "quantile_05": -17.73270826699163,
+          "quantile_25": -17.433320824816573,
+          "quantile_75": -17.02857022446419,
+          "quantile_95": -16.728237638010995,
+          "sd": 0.30505456335832565
+        },
+        "ln_mu_s": {
+          "iqr": 0.16632548218774712,
+          "median": 7.613179297212991,
+          "quantile_05": 7.572003068029835,
+          "quantile_25": 7.593716505795005,
+          "quantile_75": 7.760041987982752,
+          "quantile_95": 7.826153124321145,
+          "sd": 0.09166561468971357
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.00416915074749939,
+        "alpha_cc": 0.04643770009131563,
+        "beta": 0.0008728767475802252,
+        "ln_f_rel_hz": 0.04949942533753479,
+        "ln_k": 0.0014963711635702043,
+        "ln_mu_s": 0.0458980761933975
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_de_snooker_local_prior_center_r1"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.16654505208333334,
+        "ess": {
+          "alpha": 76551.68976897218,
+          "alpha_cc": 5751.757770497979,
+          "beta": 75808.89175220809,
+          "ln_f_rel_hz": 6205.317585254044,
+          "ln_k": 76103.90328321485,
+          "ln_mu_s": 5879.441818464134
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1594.8268701869206,
+          "alpha_cc": 119.82828688537458,
+          "beta": 1579.351911504335,
+          "ln_f_rel_hz": 129.2774496927926,
+          "ln_k": 1585.497985066976,
+          "ln_mu_s": 122.4883712180028
+        },
+        "tau": {
+          "alpha": 50.16218468317107,
+          "alpha_cc": 667.6219954352385,
+          "beta": 50.65368865372118,
+          "ln_f_rel_hz": 618.8240887340162,
+          "ln_k": 50.45733312402826,
+          "ln_mu_s": 653.1232247150818
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "f51cc5de6ba1f7073a2db89e8dbea56fdc75db30cb4ce2bdff1e32472f506e79",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06189831376782884,
+          "median": 1.6226344572134523,
+          "quantile_05": 1.5458229473503042,
+          "quantile_25": 1.591625155174797,
+          "quantile_75": 1.653523468942626,
+          "quantile_95": 1.6993038257450672,
+          "sd": 0.046649152802747416
+        },
+        "alpha_cc": {
+          "iqr": 0.5808467698311397,
+          "median": 0.1633316873796004,
+          "quantile_05": 0.019853710292097315,
+          "quantile_25": 0.08224477506138478,
+          "quantile_75": 0.6630915448925245,
+          "quantile_95": 0.7057178960928623,
+          "sd": 0.26928503665188736
+        },
+        "beta": {
+          "iqr": 0.1722293285521057,
+          "median": 2.5282308290630904,
+          "quantile_05": 2.314383961812098,
+          "quantile_25": 2.4421987154554667,
+          "quantile_75": 2.6144280440075724,
+          "quantile_95": 2.7416205778007723,
+          "sd": 0.1298326157456876
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.619890672879043,
+          "median": 12.928230463463308,
+          "quantile_05": 12.643465061370758,
+          "quantile_25": 12.812532931554186,
+          "quantile_75": 13.432423604433229,
+          "quantile_95": 13.995898377353237,
+          "sd": 0.44294599798729006
+        },
+        "ln_k": {
+          "iqr": 0.4057326958590046,
+          "median": -17.23133334441627,
+          "quantile_05": -17.735915010174025,
+          "quantile_25": -17.4347616162145,
+          "quantile_75": -17.029028920355497,
+          "quantile_95": -16.728475995619878,
+          "sd": 0.3057654945223851
+        },
+        "ln_mu_s": {
+          "iqr": 0.16558343055604308,
+          "median": 7.613360538090051,
+          "quantile_05": 7.5719712071281675,
+          "quantile_25": 7.593889205737462,
+          "quantile_75": 7.759472636293505,
+          "quantile_95": 7.824237369860405,
+          "sd": 0.09105714707479473
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0078475450783355,
+        "alpha_cc": 0.0007924032878399432,
+        "beta": 0.011876141477394523,
+        "ln_f_rel_hz": 0.026004424763280916,
+        "ln_k": 0.004313116768109849,
+        "ln_mu_s": 0.0048070047404890305
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_de_snooker_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.16821380208333334,
+        "ess": {
+          "alpha": 76422.3998576971,
+          "alpha_cc": 5926.181332233618,
+          "beta": 75774.09162089067,
+          "ln_f_rel_hz": 6062.967503454921,
+          "ln_k": 75511.75384450065,
+          "ln_mu_s": 6123.661761378329
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1592.13333036869,
+          "alpha_cc": 123.46211108820039,
+          "beta": 1578.6269087685557,
+          "ln_f_rel_hz": 126.31182298864418,
+          "ln_k": 1573.161538427097,
+          "ln_mu_s": 127.57628669538187
+        },
+        "tau": {
+          "alpha": 50.24704807949371,
+          "alpha_cc": 647.9720725239229,
+          "beta": 50.676951948326945,
+          "ln_f_rel_hz": 633.3532214731177,
+          "ln_k": 50.85301035263477,
+          "ln_mu_s": 627.0757840053666
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "2d92677098788fd8041cfa8b41f5da71a019bb661807ce4e44f01c41938f6506",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.061774561765920444,
+          "median": 1.6227514025343461,
+          "quantile_05": 1.5456642887801564,
+          "quantile_25": 1.5918310094073518,
+          "quantile_75": 1.6536055711732722,
+          "quantile_95": 1.6992562559134206,
+          "sd": 0.04661430601947567
+        },
+        "alpha_cc": {
+          "iqr": 0.5810938841087508,
+          "median": 0.16190621240849035,
+          "quantile_05": 0.019243598840488887,
+          "quantile_25": 0.08095310286200819,
+          "quantile_75": 0.662046986970759,
+          "quantile_95": 0.7055467019955145,
+          "sd": 0.26872075628150605
+        },
+        "beta": {
+          "iqr": 0.17247963200108885,
+          "median": 2.528873202143312,
+          "quantile_05": 2.314636905283549,
+          "quantile_25": 2.442564097933319,
+          "quantile_75": 2.615043729934408,
+          "quantile_95": 2.7435503752835264,
+          "sd": 0.1302421332604701
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6075130322723439,
+          "median": 12.92776492711211,
+          "quantile_05": 12.64486021494065,
+          "quantile_25": 12.81272101809888,
+          "quantile_75": 13.420234050371224,
+          "quantile_95": 13.997418267822953,
+          "sd": 0.440917208183402
+        },
+        "ln_k": {
+          "iqr": 0.407820282179042,
+          "median": -17.23078051678777,
+          "quantile_05": -17.735232059151507,
+          "quantile_25": -17.434212295885565,
+          "quantile_75": -17.026392013706523,
+          "quantile_95": -16.726220556686158,
+          "sd": 0.3064482463236697
+        },
+        "ln_mu_s": {
+          "iqr": 0.1637136597889537,
+          "median": 7.613148280405112,
+          "quantile_05": 7.571823269314353,
+          "quantile_25": 7.593808837212129,
+          "quantile_75": 7.757522497001083,
+          "quantile_95": 7.82430863460188,
+          "sd": 0.0906525975067803
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.007545890786639466,
+        "alpha_cc": 0.04794357916665688,
+        "beta": 0.0026591035800947087,
+        "ln_f_rel_hz": 0.0488378807457907,
+        "ln_k": 0.012431030773393793,
+        "ln_mu_s": 0.04688179320290503
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_de_snooker_overdispersed_prior_lhs_r1"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.31013958333333336,
+        "ess": {
+          "alpha": 25738.118831897453,
+          "alpha_cc": 962.8652216909016,
+          "beta": 25480.383069139152,
+          "ln_f_rel_hz": 1154.724679538293,
+          "ln_k": 27110.84175396011,
+          "ln_mu_s": 991.268580659627
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 536.2108089978636,
+          "alpha_cc": 20.05969211856045,
+          "beta": 530.841313940399,
+          "ln_f_rel_hz": 24.05676415704777,
+          "ln_k": 564.8092032075023,
+          "ln_mu_s": 20.651428763742228
+        },
+        "tau": {
+          "alpha": 149.19505287391314,
+          "alpha_cc": 3988.0971017485917,
+          "beta": 150.7041707175454,
+          "ln_f_rel_hz": 3325.468025447756,
+          "ln_k": 141.64075150632632,
+          "ln_mu_s": 3873.823981634444
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34fa8e377c95fc31f36b35da847acba9c3f117591fa26034fb3cace04fb2af8f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06987625757784066,
+          "median": 1.6229301310386106,
+          "quantile_05": 1.5379220211939113,
+          "quantile_25": 1.5879768081309424,
+          "quantile_75": 1.657853065708783,
+          "quantile_95": 1.7077927100081771,
+          "sd": 0.05162516816171988
+        },
+        "alpha_cc": {
+          "iqr": 0.5765093624168517,
+          "median": 0.2125869381414038,
+          "quantile_05": 0.02081019545462703,
+          "quantile_25": 0.09628848074219643,
+          "quantile_75": 0.6727978431590481,
+          "quantile_95": 0.7110918954608314,
+          "sd": 0.2772870090210354
+        },
+        "beta": {
+          "iqr": 0.19528105938976426,
+          "median": 2.52925686397021,
+          "quantile_05": 2.292540668928756,
+          "quantile_25": 2.4318432864538098,
+          "quantile_75": 2.627124345843574,
+          "quantile_95": 2.7668519302550534,
+          "sd": 0.14399601807036844
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7397652675470425,
+          "median": 12.951930619836881,
+          "quantile_05": 12.608678473092807,
+          "quantile_25": 12.80832553404287,
+          "quantile_75": 13.548090801589913,
+          "quantile_95": 14.094504924606877,
+          "sd": 0.4883685303854391
+        },
+        "ln_k": {
+          "iqr": 0.45661927058208107,
+          "median": -17.23219022329633,
+          "quantile_05": -17.78676389915929,
+          "quantile_25": -17.459629842897225,
+          "quantile_75": -17.003010572315144,
+          "quantile_95": -16.676200107892914,
+          "sd": 0.3376467332296399
+        },
+        "ln_mu_s": {
+          "iqr": 0.17554443389401353,
+          "median": 7.624430236791593,
+          "quantile_05": 7.570849197807504,
+          "quantile_25": 7.596855183264696,
+          "quantile_75": 7.77239961715871,
+          "quantile_95": 7.835267507158943,
+          "sd": 0.09559524664212303
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.00536141740530167,
+        "alpha_cc": 0.12451413872679448,
+        "beta": 0.01208976315742454,
+        "ln_f_rel_hz": 0.11022181361440127,
+        "ln_k": 0.004756397996186005,
+        "ln_mu_s": 0.1204200123447421
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_logit_stretch_local_prior_center_r0"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.31825442708333335,
+        "ess": {
+          "alpha": 25121.834759419446,
+          "alpha_cc": 812.7434032383048,
+          "beta": 25011.023204329555,
+          "ln_f_rel_hz": 975.0801567165588,
+          "ln_k": 27285.197945698063,
+          "ln_mu_s": 835.0208653439562
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 523.3715574879051,
+          "alpha_cc": 16.93215423413135,
+          "beta": 521.0629834235324,
+          "ln_f_rel_hz": 20.314169931594975,
+          "ln_k": 568.4416238687096,
+          "ln_mu_s": 17.39626802799909
+        },
+        "tau": {
+          "alpha": 152.85507753609397,
+          "alpha_cc": 4724.738441062525,
+          "beta": 153.5323032819894,
+          "ln_f_rel_hz": 3938.1377762117977,
+          "ln_k": 140.73564749803973,
+          "ln_mu_s": 4598.687481202344
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "7e6703a0cad6d9abde950ff3baddb5c8b6a52b45a93028015072a92f4c37d884",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06982046589127555,
+          "median": 1.6231716919646493,
+          "quantile_05": 1.5379523174444434,
+          "quantile_25": 1.588223909764589,
+          "quantile_75": 1.6580443756558645,
+          "quantile_95": 1.708303327734264,
+          "sd": 0.05174903774843758
+        },
+        "alpha_cc": {
+          "iqr": 0.5770204983163836,
+          "median": 0.19573842106138126,
+          "quantile_05": 0.01912432464740126,
+          "quantile_25": 0.09067941722889103,
+          "quantile_75": 0.6676999155452746,
+          "quantile_95": 0.7093517133517045,
+          "sd": 0.27306595640721426
+        },
+        "beta": {
+          "iqr": 0.1949598513101467,
+          "median": 2.5302203772895138,
+          "quantile_05": 2.2918149949945863,
+          "quantile_25": 2.4330297447414555,
+          "quantile_75": 2.627989596051602,
+          "quantile_95": 2.7674673619249646,
+          "sd": 0.1444923852449729
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6798876686514301,
+          "median": 12.93777236487795,
+          "quantile_05": 12.604037410441794,
+          "quantile_25": 12.800901747159475,
+          "quantile_75": 13.480789415810905,
+          "quantile_95": 14.080240125189944,
+          "sd": 0.4780665127060668
+        },
+        "ln_k": {
+          "iqr": 0.4539775551513685,
+          "median": -17.231779823620876,
+          "quantile_05": -17.784621693622064,
+          "quantile_25": -17.45837072506353,
+          "quantile_75": -17.004393169912163,
+          "quantile_95": -16.678607739761684,
+          "sd": 0.3362391448471723
+        },
+        "ln_mu_s": {
+          "iqr": 0.16950315052238363,
+          "median": 7.620477342323989,
+          "quantile_05": 7.570436697965627,
+          "quantile_25": 7.595750227115658,
+          "quantile_75": 7.765253377638041,
+          "quantile_95": 7.832273128230765,
+          "sd": 0.09366299617876225
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.025120374482484182,
+        "alpha_cc": 0.19440592331435588,
+        "beta": 0.017188321738927117,
+        "ln_f_rel_hz": 0.22051851051536475,
+        "ln_k": 0.0007246020939345677,
+        "ln_mu_s": 0.19830837987390845
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_logit_stretch_local_prior_center_r1"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.31455911458333335,
+        "ess": {
+          "alpha": 25835.337294583293,
+          "alpha_cc": 830.328757343838,
+          "beta": 25581.41772444313,
+          "ln_f_rel_hz": 981.5007237255443,
+          "ln_k": 25861.842752812558,
+          "ln_mu_s": 856.0773315597718
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 538.2361936371519,
+          "alpha_cc": 17.298515777996624,
+          "beta": 532.9462025925652,
+          "ln_f_rel_hz": 20.447931744282172,
+          "ln_k": 538.7883906835949,
+          "ln_mu_s": 17.834944407495247
+        },
+        "tau": {
+          "alpha": 148.63363137918486,
+          "alpha_cc": 4624.674222152541,
+          "beta": 150.10895961136927,
+          "ln_f_rel_hz": 3912.3761268603753,
+          "ln_k": 148.4812987497725,
+          "ln_mu_s": 4485.576078744574
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "f51cc5de6ba1f7073a2db89e8dbea56fdc75db30cb4ce2bdff1e32472f506e79",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06950272304972471,
+          "median": 1.6224452952348534,
+          "quantile_05": 1.5381986872843652,
+          "quantile_25": 1.5878150775658058,
+          "quantile_75": 1.6573178006155305,
+          "quantile_95": 1.7078228187892681,
+          "sd": 0.05159932139396299
+        },
+        "alpha_cc": {
+          "iqr": 0.5780960940803898,
+          "median": 0.20240132239854244,
+          "quantile_05": 0.020506397376436437,
+          "quantile_25": 0.09230853701357822,
+          "quantile_75": 0.670404631093968,
+          "quantile_95": 0.7103721805555012,
+          "sd": 0.27549663044044903
+        },
+        "beta": {
+          "iqr": 0.1942862840837596,
+          "median": 2.5281801756707734,
+          "quantile_05": 2.291885404068448,
+          "quantile_25": 2.431057680709128,
+          "quantile_75": 2.625343964792888,
+          "quantile_95": 2.7651472160100843,
+          "sd": 0.143939293700362
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7093996318628193,
+          "median": 12.94467251776139,
+          "quantile_05": 12.606570603517179,
+          "quantile_25": 12.80637557567336,
+          "quantile_75": 13.51577520753618,
+          "quantile_95": 14.087402708405131,
+          "sd": 0.4827863970883744
+        },
+        "ln_k": {
+          "iqr": 0.45587611412773654,
+          "median": -17.23266557335363,
+          "quantile_05": -17.78879943583875,
+          "quantile_25": -17.461359658257816,
+          "quantile_75": -17.00548354413008,
+          "quantile_95": -16.67470193983058,
+          "sd": 0.3387369361089734
+        },
+        "ln_mu_s": {
+          "iqr": 0.17284122781759148,
+          "median": 7.621990239172195,
+          "quantile_05": 7.570432016507139,
+          "quantile_25": 7.596019355238189,
+          "quantile_75": 7.768860583055781,
+          "quantile_95": 7.834071565650214,
+          "sd": 0.09486695996257867
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.01768607624653828,
+        "alpha_cc": 0.1960740247840677,
+        "beta": 0.007187458185532526,
+        "ln_f_rel_hz": 0.19313125103433676,
+        "ln_k": 0.010892743905771187,
+        "ln_mu_s": 0.1933314104905388
+      },
+      "replicate": 0,
+      "target_id": "n3",
+      "task_id": "n3_logit_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.3139752604166666,
+        "ess": {
+          "alpha": 25369.98254898315,
+          "alpha_cc": 839.7852848565727,
+          "beta": 24795.68074030948,
+          "ln_f_rel_hz": 976.9546964627646,
+          "ln_k": 25351.6299495409,
+          "ln_mu_s": 874.2990601349129
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 528.5413031038156,
+          "alpha_cc": 17.495526767845266,
+          "beta": 516.5766820897808,
+          "ln_f_rel_hz": 20.35322284297426,
+          "ln_k": 528.158957282102,
+          "ln_mu_s": 18.214563752810687
+        },
+        "tau": {
+          "alpha": 151.35997798129785,
+          "alpha_cc": 4572.597387980947,
+          "beta": 154.8656816571059,
+          "ln_f_rel_hz": 3930.581442418356,
+          "ln_k": 151.46955078008858,
+          "ln_mu_s": 4392.089818108063
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "2d92677098788fd8041cfa8b41f5da71a019bb661807ce4e44f01c41938f6506",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06974060152643147,
+          "median": 1.6219303696542813,
+          "quantile_05": 1.5371059509497085,
+          "quantile_25": 1.5872158558242242,
+          "quantile_75": 1.6569564573506557,
+          "quantile_95": 1.7072415522034936,
+          "sd": 0.051711628475453325
+        },
+        "alpha_cc": {
+          "iqr": 0.5766883340538468,
+          "median": 0.20262226190135668,
+          "quantile_05": 0.02018670733191917,
+          "quantile_25": 0.09352054804349388,
+          "quantile_75": 0.6702088820973406,
+          "quantile_95": 0.7102578266807927,
+          "sd": 0.27475747157637753
+        },
+        "beta": {
+          "iqr": 0.1944349393535867,
+          "median": 2.526643378840487,
+          "quantile_05": 2.290114969697895,
+          "quantile_25": 2.4293373918054373,
+          "quantile_75": 2.623772331159024,
+          "quantile_95": 2.764963522582924,
+          "sd": 0.14429949207459072
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7135899211878716,
+          "median": 12.943145988747647,
+          "quantile_05": 12.603819242769086,
+          "quantile_25": 12.803679367862994,
+          "quantile_75": 13.517269289050866,
+          "quantile_95": 14.089415830637828,
+          "sd": 0.4850581372431669
+        },
+        "ln_k": {
+          "iqr": 0.45272176083995674,
+          "median": -17.229939313210547,
+          "quantile_05": -17.78564468842403,
+          "quantile_25": -17.45741787181027,
+          "quantile_75": -17.004696110970315,
+          "quantile_95": -16.6781352000227,
+          "sd": 0.3366812888142908
+        },
+        "ln_mu_s": {
+          "iqr": 0.17232525042458846,
+          "median": 7.621859188491441,
+          "quantile_05": 7.570553154659309,
+          "quantile_25": 7.596079503953181,
+          "quantile_75": 7.7684047543777695,
+          "quantile_95": 7.833511909327588,
+          "sd": 0.09458608065999832
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0012247516764039993,
+        "alpha_cc": 0.18457362011290213,
+        "beta": 0.005258612824928681,
+        "ln_f_rel_hz": 0.16829940354072617,
+        "ln_k": 0.028163671167608272,
+        "ln_mu_s": 0.18012823281591425
+      },
+      "replicate": 1,
+      "target_id": "n3",
+      "task_id": "n3_logit_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.2853333333333334,
+        "ess": {
+          "alpha": 26141.461990396263,
+          "alpha_cc": 699.8477730582681,
+          "beta": 25024.4524473872,
+          "ln_f_rel_hz": 850.2751004848357,
+          "ln_k": 24929.244845145797,
+          "ln_mu_s": 705.1932386664047
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 544.6137914665889,
+          "alpha_cc": 14.58016193871392,
+          "beta": 521.3427593205666,
+          "ln_f_rel_hz": 17.714064593434077,
+          "ln_k": 519.3592676072041,
+          "ln_mu_s": 14.691525805550098
+        },
+        "tau": {
+          "alpha": 146.89308506963852,
+          "alpha_cc": 5486.907507356301,
+          "beta": 153.4499109650223,
+          "ln_f_rel_hz": 4516.185406123726,
+          "ln_k": 154.03595350974788,
+          "ln_mu_s": 5445.315963695069
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "4155688a5ed7688f2d2e02552fc3dec03cd2a2e6fe63edb30d029f3e48a7733f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06923629870774928,
+          "median": 1.6225015874288888,
+          "quantile_05": 1.537834106580753,
+          "quantile_25": 1.58814737483199,
+          "quantile_75": 1.6573836735397394,
+          "quantile_95": 1.7076256498212175,
+          "sd": 0.051551564379571875
+        },
+        "alpha_cc": {
+          "iqr": 0.5774648636701883,
+          "median": 0.22477663000068132,
+          "quantile_05": 0.020823536542582455,
+          "quantile_25": 0.09811517855748253,
+          "quantile_75": 0.6755800422276709,
+          "quantile_95": 0.7100431604547798,
+          "sd": 0.27979524231076963
+        },
+        "beta": {
+          "iqr": 0.19372756453634166,
+          "median": 2.5296740227667662,
+          "quantile_05": 2.2913850809469087,
+          "quantile_25": 2.432400754767393,
+          "quantile_75": 2.6261283193037346,
+          "quantile_95": 2.7665848746816177,
+          "sd": 0.14420376326389364
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7678399685234378,
+          "median": 12.966417104829617,
+          "quantile_05": 12.61574676448305,
+          "quantile_25": 12.819268996359227,
+          "quantile_75": 13.587108964882665,
+          "quantile_95": 14.107140636295707,
+          "sd": 0.49300014630198297
+        },
+        "ln_k": {
+          "iqr": 0.4554868734435864,
+          "median": -17.228738210145337,
+          "quantile_05": -17.78322612160903,
+          "quantile_25": -17.45693471352884,
+          "quantile_75": -17.001447840085255,
+          "quantile_95": -16.67391075793452,
+          "sd": 0.3370654205392675
+        },
+        "ln_mu_s": {
+          "iqr": 0.1829236748540426,
+          "median": 7.61545924979474,
+          "quantile_05": 7.580841156991221,
+          "quantile_25": 7.594605479972043,
+          "quantile_75": 7.777529154826086,
+          "quantile_95": 7.825671665595565,
+          "sd": 0.09533300515009532
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.009463616050229062,
+        "alpha_cc": 0.24205391844580873,
+        "beta": 0.015189263929560595,
+        "ln_f_rel_hz": 0.2184289517192293,
+        "ln_k": 0.04889232003541761,
+        "ln_mu_s": 0.24189913162339033
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_stretch_local_prior_center_r0"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.2885552083333333,
+        "ess": {
+          "alpha": 24402.317624767093,
+          "alpha_cc": 542.6522048382195,
+          "beta": 25650.859328635226,
+          "ln_f_rel_hz": 630.6568222066963,
+          "ln_k": 23979.050698969084,
+          "ln_mu_s": 543.8148049189646
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 508.3816171826478,
+          "alpha_cc": 11.305254267462905,
+          "beta": 534.3929026799005,
+          "ln_f_rel_hz": 13.13868379597284,
+          "ln_k": 499.5635562285226,
+          "ln_mu_s": 11.329475102478428
+        },
+        "tau": {
+          "alpha": 157.3621022005958,
+          "alpha_cc": 7076.355657938986,
+          "beta": 149.70258698948274,
+          "ln_f_rel_hz": 6088.8899711949025,
+          "ln_k": 160.1397840226048,
+          "ln_mu_s": 7061.2273981253775
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34d034a3f4f0235dace46be4d61eebfe828298a4c8c1b7b7e9ea045d681a48e0",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06969102805578431,
+          "median": 1.6230378893452218,
+          "quantile_05": 1.5381475261235003,
+          "quantile_25": 1.5882686935393537,
+          "quantile_75": 1.657959721595138,
+          "quantile_95": 1.708121059847319,
+          "sd": 0.05167040972123943
+        },
+        "alpha_cc": {
+          "iqr": 0.5783413831485047,
+          "median": 0.20539561434372317,
+          "quantile_05": 0.020273233727456236,
+          "quantile_25": 0.09383810766007988,
+          "quantile_75": 0.6721794908085845,
+          "quantile_95": 0.7093374037609058,
+          "sd": 0.27640652754036854
+        },
+        "beta": {
+          "iqr": 0.1943559737050311,
+          "median": 2.5304215897145634,
+          "quantile_05": 2.2937385850938834,
+          "quantile_25": 2.4331988022811095,
+          "quantile_75": 2.6275547759861406,
+          "quantile_95": 2.767348260708077,
+          "sd": 0.14386669453303585
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7194419404345691,
+          "median": 12.95121407485884,
+          "quantile_05": 12.613638925003526,
+          "quantile_25": 12.812539787600388,
+          "quantile_75": 13.531981728034957,
+          "quantile_95": 14.090941596921645,
+          "sd": 0.48312447926991786
+        },
+        "ln_k": {
+          "iqr": 0.4602035450726092,
+          "median": -17.230020443833325,
+          "quantile_05": -17.788059282498917,
+          "quantile_25": -17.461032717950125,
+          "quantile_75": -17.000829172877516,
+          "quantile_95": -16.67239564618155,
+          "sd": 0.3392058880221051
+        },
+        "ln_mu_s": {
+          "iqr": 0.17979319181055242,
+          "median": 7.6114618150461055,
+          "quantile_05": 7.580440035463173,
+          "quantile_25": 7.593724405205095,
+          "quantile_75": 7.773517597015648,
+          "quantile_95": 7.824423750839133,
+          "sd": 0.09420239220365562
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.02327812212583947,
+        "alpha_cc": 0.2407057916034738,
+        "beta": 0.001136188425393739,
+        "ln_f_rel_hz": 0.26227290064291053,
+        "ln_k": 0.014931096376970722,
+        "ln_mu_s": 0.24707607961638764
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_stretch_local_prior_center_r1"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.28739192708333333,
+        "ess": {
+          "alpha": 25318.982578865503,
+          "alpha_cc": 532.742809512787,
+          "beta": 24606.925085778883,
+          "ln_f_rel_hz": 618.3045951676044,
+          "ln_k": 25419.894085672044,
+          "ln_mu_s": 533.6152448904232
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 527.4788037263646,
+          "alpha_cc": 11.098808531516395,
+          "beta": 512.6442726203934,
+          "ln_f_rel_hz": 12.881345732658422,
+          "ln_k": 529.5811267848343,
+          "ln_mu_s": 11.116984268550484
+        },
+        "tau": {
+          "alpha": 151.6648620472357,
+          "alpha_cc": 7207.980908295735,
+          "beta": 156.05363070005268,
+          "ln_f_rel_hz": 6210.531233330214,
+          "ln_k": 151.06278519722161,
+          "ln_mu_s": 7196.196204605316
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "ebef6e2567b7f6540a07cf2dab2cfec2c7e2b2de85a07d554abe64fcb41b4d85",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06925031498742462,
+          "median": 1.622859133865379,
+          "quantile_05": 1.5381251568548782,
+          "quantile_25": 1.5882227928976758,
+          "quantile_75": 1.6574731078851004,
+          "quantile_95": 1.7075925364555042,
+          "sd": 0.051500205088824094
+        },
+        "alpha_cc": {
+          "iqr": 0.5773511017487765,
+          "median": 0.20801975880702556,
+          "quantile_05": 0.02038546228142399,
+          "quantile_25": 0.0947334522586937,
+          "quantile_75": 0.6720845540074701,
+          "quantile_95": 0.709262202050667,
+          "sd": 0.27610389717947414
+        },
+        "beta": {
+          "iqr": 0.1936815272104293,
+          "median": 2.528753367208916,
+          "quantile_05": 2.2919686243322794,
+          "quantile_25": 2.432429507777662,
+          "quantile_75": 2.6261110349880914,
+          "quantile_95": 2.7647169072932645,
+          "sd": 0.14375569746644984
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.723447544020587,
+          "median": 12.951628876467208,
+          "quantile_05": 12.610232709580043,
+          "quantile_25": 12.810087887024347,
+          "quantile_75": 13.533535431044934,
+          "quantile_95": 14.102259447031962,
+          "sd": 0.4872989411383824
+        },
+        "ln_k": {
+          "iqr": 0.4560612525849095,
+          "median": -17.23299304670706,
+          "quantile_05": -17.787764015436114,
+          "quantile_25": -17.461301839180933,
+          "quantile_75": -17.005240586596024,
+          "quantile_95": -16.67816346785422,
+          "sd": 0.33753087959552214
+        },
+        "ln_mu_s": {
+          "iqr": 0.17949189444374536,
+          "median": 7.6118554816478285,
+          "quantile_05": 7.5804996923399806,
+          "quantile_25": 7.593848672760223,
+          "quantile_75": 7.773340567203968,
+          "quantile_95": 7.824643532669442,
+          "sd": 0.09413609570494383
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.02950004368244975,
+        "alpha_cc": 0.23285981388027419,
+        "beta": 0.008267834765723184,
+        "ln_f_rel_hz": 0.2550213492126579,
+        "ln_k": 0.0010507063669539412,
+        "ln_mu_s": 0.23820703934873935
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.3003578125,
+        "ess": {
+          "alpha": 23848.136276501347,
+          "alpha_cc": 621.9194193506539,
+          "beta": 24130.622996760158,
+          "ln_f_rel_hz": 720.4654170949703,
+          "ln_k": 24647.383718273722,
+          "ln_mu_s": 619.3723743598523
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 496.83617242711136,
+          "alpha_cc": 12.95665456980529,
+          "beta": 502.7213124325032,
+          "ln_f_rel_hz": 15.009696189478548,
+          "ln_k": 513.4871607973693,
+          "ln_mu_s": 12.903591132496922
+        },
+        "tau": {
+          "alpha": 161.0188718933029,
+          "alpha_cc": 6174.433343807376,
+          "beta": 159.13389391212854,
+          "ln_f_rel_hz": 5329.888026386448,
+          "ln_k": 155.7974689684001,
+          "ln_mu_s": 6199.824465805088
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "9b92d25cb60be1c8ec84e168d0501ac8e36232fab845e7cc69e86753a43f60c4",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.07031322179201216,
+          "median": 1.6224767828506144,
+          "quantile_05": 1.5369477586073508,
+          "quantile_25": 1.5873172086720542,
+          "quantile_75": 1.6576304304640663,
+          "quantile_95": 1.7081010391623757,
+          "sd": 0.052009407656109924
+        },
+        "alpha_cc": {
+          "iqr": 0.5755580584798213,
+          "median": 0.18999463153784674,
+          "quantile_05": 0.019785521848604715,
+          "quantile_25": 0.09025598046954134,
+          "quantile_75": 0.6658140389493626,
+          "quantile_95": 0.7076317980527291,
+          "sd": 0.2692787026148553
+        },
+        "beta": {
+          "iqr": 0.19550335015760245,
+          "median": 2.527945634495193,
+          "quantile_05": 2.2893789136931626,
+          "quantile_25": 2.4304383176387847,
+          "quantile_75": 2.625941667796387,
+          "quantile_95": 2.765927444985412,
+          "sd": 0.14482322523767485
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6418958843624676,
+          "median": 12.931039432013339,
+          "quantile_05": 12.602170501473124,
+          "quantile_25": 12.797223952175377,
+          "quantile_75": 13.439119836537845,
+          "quantile_95": 14.054963163203599,
+          "sd": 0.4681427132949415
+        },
+        "ln_k": {
+          "iqr": 0.4572792802758343,
+          "median": -17.232836447583793,
+          "quantile_05": -17.78711643612069,
+          "quantile_25": -17.46044097035075,
+          "quantile_75": -17.003161690074915,
+          "quantile_95": -16.677426184066473,
+          "sd": 0.33791687401087206
+        },
+        "ln_mu_s": {
+          "iqr": 0.17306572121966024,
+          "median": 7.608578118996725,
+          "quantile_05": 7.580332025023435,
+          "quantile_25": 7.593269185566776,
+          "quantile_75": 7.766334906786437,
+          "quantile_95": 7.821736979904316,
+          "sd": 0.09168558288587923
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.007797378012518409,
+        "alpha_cc": 0.23047377777423061,
+        "beta": 0.015382983842392728,
+        "ln_f_rel_hz": 0.22589991973782625,
+        "ln_k": 0.010195941342953043,
+        "ln_mu_s": 0.23006312195082335
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_stretch_overdispersed_prior_lhs_r1"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.15141484375,
+        "ess": {
+          "alpha": 66695.77425564745,
+          "alpha_cc": 2840.080164396239,
+          "beta": 66127.17040130532,
+          "ln_f_rel_hz": 3225.259335516211,
+          "ln_k": 66224.40135905972,
+          "ln_mu_s": 2814.833592365668
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1389.4952969926553,
+          "alpha_cc": 59.16833675825498,
+          "beta": 1377.6493833605277,
+          "ln_f_rel_hz": 67.1929028232544,
+          "ln_k": 1379.675028313744,
+          "ln_mu_s": 58.642366507618085
+        },
+        "tau": {
+          "alpha": 57.57486201871101,
+          "alpha_cc": 1352.0745111842045,
+          "beta": 58.06992763634416,
+          "ln_f_rel_hz": 1190.6019332195492,
+          "ln_k": 57.98466911282507,
+          "ln_mu_s": 1364.2014257662572
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "4155688a5ed7688f2d2e02552fc3dec03cd2a2e6fe63edb30d029f3e48a7733f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06144757225356856,
+          "median": 1.622705499167695,
+          "quantile_05": 1.5462006230045373,
+          "quantile_25": 1.591906384681422,
+          "quantile_75": 1.6533539569349907,
+          "quantile_95": 1.6986882473230052,
+          "sd": 0.0462541649713047
+        },
+        "alpha_cc": {
+          "iqr": 0.58417385568101,
+          "median": 0.16707443196365399,
+          "quantile_05": 0.02010231219638167,
+          "quantile_25": 0.08400416600970537,
+          "quantile_75": 0.6681780216907154,
+          "quantile_95": 0.7046608784899273,
+          "sd": 0.2733073673455683
+        },
+        "beta": {
+          "iqr": 0.17221497714634149,
+          "median": 2.52912651246213,
+          "quantile_05": 2.3160225254542026,
+          "quantile_25": 2.4427582566590935,
+          "quantile_75": 2.614973233805435,
+          "quantile_95": 2.74256467805363,
+          "sd": 0.12961046809299948
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6670554685685612,
+          "median": 12.938704243728534,
+          "quantile_05": 12.656871036364882,
+          "quantile_25": 12.823411324728088,
+          "quantile_75": 13.49046679329665,
+          "quantile_95": 14.02244344601424,
+          "sd": 0.45118458003970313
+        },
+        "ln_k": {
+          "iqr": 0.40306185100060077,
+          "median": -17.230364837192198,
+          "quantile_05": -17.72779220762327,
+          "quantile_25": -17.431322679199873,
+          "quantile_75": -17.028260828199272,
+          "quantile_95": -16.731200543072127,
+          "sd": 0.30261363221627857
+        },
+        "ln_mu_s": {
+          "iqr": 0.17601967511782313,
+          "median": 7.604841102245803,
+          "quantile_05": 7.58082506192944,
+          "quantile_25": 7.592307676822262,
+          "quantile_75": 7.768327351940085,
+          "quantile_95": 7.816286169956613,
+          "sd": 0.09156514436814749
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.022649165747403666,
+        "alpha_cc": 0.06010510352520902,
+        "beta": 0.008612310661024369,
+        "ln_f_rel_hz": 0.054396528734151156,
+        "ln_k": 0.024290620990201482,
+        "ln_mu_s": 0.06323902714046377
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_de_snooker_local_prior_center_r0"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.16550807291666667,
+        "ess": {
+          "alpha": 69011.21479787756,
+          "alpha_cc": 2859.853462865055,
+          "beta": 67946.30344520461,
+          "ln_f_rel_hz": 3103.3922103700856,
+          "ln_k": 69886.31138496693,
+          "ln_mu_s": 2860.136843730045
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1437.733641622449,
+          "alpha_cc": 59.58028047635531,
+          "beta": 1415.5479884417628,
+          "ln_f_rel_hz": 64.65400438271013,
+          "ln_k": 1455.9648205201443,
+          "ln_mu_s": 59.58618424437593
+        },
+        "tau": {
+          "alpha": 55.64313005135072,
+          "alpha_cc": 1342.7261395949342,
+          "beta": 56.51521577029975,
+          "ln_f_rel_hz": 1237.3556868411654,
+          "ln_k": 54.94638254475129,
+          "ln_mu_s": 1342.593102990159
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34d034a3f4f0235dace46be4d61eebfe828298a4c8c1b7b7e9ea045d681a48e0",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06163783036976245,
+          "median": 1.6225613193543766,
+          "quantile_05": 1.5459676192721694,
+          "quantile_25": 1.5917437743236618,
+          "quantile_75": 1.6533816046934242,
+          "quantile_95": 1.6990055793711285,
+          "sd": 0.04648461963189378
+        },
+        "alpha_cc": {
+          "iqr": 0.5816221359054851,
+          "median": 0.15514154425473758,
+          "quantile_05": 0.018962965760891806,
+          "quantile_25": 0.07902369010986186,
+          "quantile_75": 0.6606458260153469,
+          "quantile_95": 0.7027169474343918,
+          "sd": 0.26627724915683065
+        },
+        "beta": {
+          "iqr": 0.1712868531042897,
+          "median": 2.5282189138002065,
+          "quantile_05": 2.3166217664351425,
+          "quantile_25": 2.4424435742250283,
+          "quantile_75": 2.613730427329318,
+          "quantile_95": 2.7415361703185215,
+          "sd": 0.1292295699586983
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.5603152538239797,
+          "median": 12.927897516434463,
+          "quantile_05": 12.655300478664712,
+          "quantile_25": 12.817873167000807,
+          "quantile_75": 13.378188420824786,
+          "quantile_95": 13.980376524564479,
+          "sd": 0.42973402970960556
+        },
+        "ln_k": {
+          "iqr": 0.401837366882944,
+          "median": -17.231450510700384,
+          "quantile_05": -17.730153750643197,
+          "quantile_25": -17.432728391859325,
+          "quantile_75": -17.03089102497638,
+          "quantile_95": -16.732154283812896,
+          "sd": 0.3031573745691687
+        },
+        "ln_mu_s": {
+          "iqr": 0.16932877972397353,
+          "median": 7.602954267067301,
+          "quantile_05": 7.580668648155972,
+          "quantile_25": 7.591736337341743,
+          "quantile_75": 7.761065117065717,
+          "quantile_95": 7.814344322998969,
+          "sd": 0.08918660430608097
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.03420278287795973,
+        "alpha_cc": 0.10980313340246801,
+        "beta": 0.0404245488290888,
+        "ln_f_rel_hz": 0.11193549964351392,
+        "ln_k": 0.03097280210972301,
+        "ln_mu_s": 0.1076100718565631
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_de_snooker_local_prior_center_r1"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.15331015625,
+        "ess": {
+          "alpha": 64031.377157457384,
+          "alpha_cc": 3073.7941234189743,
+          "beta": 63844.59207653735,
+          "ln_f_rel_hz": 3379.0428136550727,
+          "ln_k": 66202.97692844752,
+          "ln_mu_s": 3068.555360115138
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1333.9870241136955,
+          "alpha_cc": 64.03737757122863,
+          "beta": 1330.095668261195,
+          "ln_f_rel_hz": 70.39672528448068,
+          "ln_k": 1379.2286860093234,
+          "ln_mu_s": 63.92823666906537
+        },
+        "tau": {
+          "alpha": 59.97059832958436,
+          "alpha_cc": 1249.2703954189283,
+          "beta": 60.14604957294708,
+          "ln_f_rel_hz": 1136.4164977378061,
+          "ln_k": 58.00343395660726,
+          "ln_mu_s": 1251.4032009694347
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "ebef6e2567b7f6540a07cf2dab2cfec2c7e2b2de85a07d554abe64fcb41b4d85",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06146009802318009,
+          "median": 1.6227695164991487,
+          "quantile_05": 1.5464137172835382,
+          "quantile_25": 1.5920163174916702,
+          "quantile_75": 1.6534764155148503,
+          "quantile_95": 1.6990870072955522,
+          "sd": 0.046342335475572934
+        },
+        "alpha_cc": {
+          "iqr": 0.5848429757999248,
+          "median": 0.16436652009849917,
+          "quantile_05": 0.01989218690148173,
+          "quantile_25": 0.08216546569094117,
+          "quantile_75": 0.667008441490866,
+          "quantile_95": 0.7040945732509336,
+          "sd": 0.2722335942045552
+        },
+        "beta": {
+          "iqr": 0.17066135391134862,
+          "median": 2.5285311413714315,
+          "quantile_05": 2.316271842403127,
+          "quantile_25": 2.4435746876826037,
+          "quantile_75": 2.6142360415939523,
+          "quantile_95": 2.741807520492139,
+          "sd": 0.129119244255969
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6507201441651471,
+          "median": 12.937176409214208,
+          "quantile_05": 12.658077769172584,
+          "quantile_25": 12.82271833317508,
+          "quantile_75": 13.473438477340228,
+          "quantile_95": 14.005498311092751,
+          "sd": 0.44451300345021166
+        },
+        "ln_k": {
+          "iqr": 0.40286095838846236,
+          "median": -17.231605353312858,
+          "quantile_05": -17.731992605122137,
+          "quantile_25": -17.43340116984284,
+          "quantile_75": -17.030540211454376,
+          "quantile_95": -16.734784137973396,
+          "sd": 0.30252786453498387
+        },
+        "ln_mu_s": {
+          "iqr": 0.17568112469383923,
+          "median": 7.604424709241106,
+          "quantile_05": 7.580882383745843,
+          "quantile_25": 7.5922415561628425,
+          "quantile_75": 7.767922680856682,
+          "quantile_95": 7.815273422447887,
+          "sd": 0.09114598675274767
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.017053468775524907,
+        "alpha_cc": 0.0320788730226497,
+        "beta": 0.009402706355363612,
+        "ln_f_rel_hz": 0.03265385805618971,
+        "ln_k": 0.0038550769128813623,
+        "ln_mu_s": 0.031160258188902883
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_de_snooker_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "de_snooker",
+      "diagnostics": {
+        "acceptance_fraction": 0.1477796875,
+        "ess": {
+          "alpha": 61592.913994238275,
+          "alpha_cc": 2833.2047066148543,
+          "beta": 63920.258207231214,
+          "ln_f_rel_hz": 3293.0764615935454,
+          "ln_k": 64644.268603774035,
+          "ln_mu_s": 2831.871841224884
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 1283.1857082132974,
+          "alpha_cc": 59.02509805447614,
+          "beta": 1331.6720459839837,
+          "ln_f_rel_hz": 68.6057596165322,
+          "ln_k": 1346.755595911959,
+          "ln_mu_s": 58.997330025518416
+        },
+        "tau": {
+          "alpha": 62.344834023589364,
+          "alpha_cc": 1355.355647629174,
+          "beta": 60.074851192725404,
+          "ln_f_rel_hz": 1166.082854371925,
+          "ln_k": 59.40201788864875,
+          "ln_mu_s": 1355.9935672579961
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "9b92d25cb60be1c8ec84e168d0501ac8e36232fab845e7cc69e86753a43f60c4",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06136730195306783,
+          "median": 1.62288326191575,
+          "quantile_05": 1.5466199155460691,
+          "quantile_25": 1.5921700208081893,
+          "quantile_75": 1.653537322761257,
+          "quantile_95": 1.6990540733275237,
+          "sd": 0.04629762623427616
+        },
+        "alpha_cc": {
+          "iqr": 0.5855936728541173,
+          "median": 0.17199089265889445,
+          "quantile_05": 0.020796446512878257,
+          "quantile_25": 0.0848485926582554,
+          "quantile_75": 0.6704422655123727,
+          "quantile_95": 0.7052086234750258,
+          "sd": 0.27593955960439503
+        },
+        "beta": {
+          "iqr": 0.17068586076158487,
+          "median": 2.5285790896269766,
+          "quantile_05": 2.316722471573422,
+          "quantile_25": 2.4428600638681446,
+          "quantile_75": 2.6135459246297295,
+          "quantile_95": 2.7408619926310545,
+          "sd": 0.12883764653763394
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7032861191260782,
+          "median": 12.943724878790185,
+          "quantile_05": 12.659625692035046,
+          "quantile_25": 12.825383561573688,
+          "quantile_75": 13.528669680699766,
+          "quantile_95": 14.023488934253841,
+          "sd": 0.45549811312846195
+        },
+        "ln_k": {
+          "iqr": 0.4022270672429471,
+          "median": -17.235186263594606,
+          "quantile_05": -17.732918046465127,
+          "quantile_25": -17.43474740243956,
+          "quantile_75": -17.03252033519661,
+          "quantile_95": -16.730856552819283,
+          "sd": 0.3039295423083895
+        },
+        "ln_mu_s": {
+          "iqr": 0.17869783848233656,
+          "median": 7.605610468560584,
+          "quantile_05": 7.581132815885131,
+          "quantile_25": 7.592560043957,
+          "quantile_75": 7.771257882439336,
+          "quantile_95": 7.8166177508741095,
+          "sd": 0.09247778677382369
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.02103123671098604,
+        "alpha_cc": 0.04130988170062743,
+        "beta": 0.010740039904948047,
+        "ln_f_rel_hz": 0.026837952382289622,
+        "ln_k": 0.003473270415718845,
+        "ln_mu_s": 0.045731432510115674
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_de_snooker_overdispersed_prior_lhs_r1"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.3010541666666667,
+        "ess": {
+          "alpha": 24900.924070493973,
+          "alpha_cc": 591.803558658982,
+          "beta": 25213.77435871587,
+          "ln_f_rel_hz": 688.1822323525645,
+          "ln_k": 25256.665846217755,
+          "ln_mu_s": 594.872010042639
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 518.7692514686244,
+          "alpha_cc": 12.329240805395457,
+          "beta": 525.2869658065806,
+          "ln_f_rel_hz": 14.337129840678427,
+          "ln_k": 526.1805384628699,
+          "ln_mu_s": 12.393166875888312
+        },
+        "tau": {
+          "alpha": 154.2111444992581,
+          "alpha_cc": 6488.639589632382,
+          "beta": 152.29770622075046,
+          "ln_f_rel_hz": 5579.917381582033,
+          "ln_k": 152.0390705321482,
+          "ln_mu_s": 6455.170078896061
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "4155688a5ed7688f2d2e02552fc3dec03cd2a2e6fe63edb30d029f3e48a7733f",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.0700110213559837,
+          "median": 1.6230184959359772,
+          "quantile_05": 1.5382901756100402,
+          "quantile_25": 1.5881821645004355,
+          "quantile_75": 1.6581931858564192,
+          "quantile_95": 1.708009969029067,
+          "sd": 0.05167581284994211
+        },
+        "alpha_cc": {
+          "iqr": 0.5757607860273841,
+          "median": 0.19992076532415293,
+          "quantile_05": 0.020883862617807163,
+          "quantile_25": 0.09341839157758147,
+          "quantile_75": 0.6691791776049656,
+          "quantile_95": 0.7081517100029108,
+          "sd": 0.2727402267253391
+        },
+        "beta": {
+          "iqr": 0.1941485127640199,
+          "median": 2.5294506207141674,
+          "quantile_05": 2.2930035834103055,
+          "quantile_25": 2.432631564737293,
+          "quantile_75": 2.626780077501313,
+          "quantile_95": 2.7670091085026436,
+          "sd": 0.14407853858958794
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6953730430372964,
+          "median": 12.940993217169291,
+          "quantile_05": 12.605042721807559,
+          "quantile_25": 12.802873142322305,
+          "quantile_75": 13.498246185359601,
+          "quantile_95": 14.085973125190153,
+          "sd": 0.4811192862754427
+        },
+        "ln_k": {
+          "iqr": 0.45710863753349074,
+          "median": -17.234500619708424,
+          "quantile_05": -17.790275601131885,
+          "quantile_25": -17.462058959631268,
+          "quantile_75": -17.004950322097777,
+          "quantile_95": -16.67686904027185,
+          "sd": 0.33821583795840354
+        },
+        "ln_mu_s": {
+          "iqr": 0.17614572713338017,
+          "median": 7.610203760180988,
+          "quantile_05": 7.580455895379379,
+          "quantile_25": 7.593629496849315,
+          "quantile_75": 7.769775223982696,
+          "quantile_95": 7.8223395886664155,
+          "sd": 0.09275162086722769
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.01999411918997615,
+        "alpha_cc": 0.24098143597480462,
+        "beta": 0.014916806036691942,
+        "ln_f_rel_hz": 0.2515724446949452,
+        "ln_k": 0.0024136863027306756,
+        "ln_mu_s": 0.2378522077391319
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_logit_stretch_local_prior_center_r0"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.2939091145833333,
+        "ess": {
+          "alpha": 24940.368384448968,
+          "alpha_cc": 664.3690045225727,
+          "beta": 23659.086295136196,
+          "ln_f_rel_hz": 802.9835502115677,
+          "ln_k": 25772.69266686011,
+          "ln_mu_s": 670.32762310398
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 519.5910080093536,
+          "alpha_cc": 13.841020927553599,
+          "beta": 492.89763114867077,
+          "ln_f_rel_hz": 16.728823962740993,
+          "ln_k": 536.9310972262524,
+          "ln_mu_s": 13.965158814666252
+        },
+        "tau": {
+          "alpha": 153.9672526406767,
+          "alpha_cc": 5779.9204566436565,
+          "beta": 162.30550715686016,
+          "ln_f_rel_hz": 4782.1652124607635,
+          "ln_k": 148.99490905495003,
+          "ln_mu_s": 5728.542085463701
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "34d034a3f4f0235dace46be4d61eebfe828298a4c8c1b7b7e9ea045d681a48e0",
+      "initialization": "local_prior_center",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.0693175627134548,
+          "median": 1.6227039910385122,
+          "quantile_05": 1.5381355161284822,
+          "quantile_25": 1.5881855032405172,
+          "quantile_75": 1.657503065953972,
+          "quantile_95": 1.7077645243162414,
+          "sd": 0.051545330474986086
+        },
+        "alpha_cc": {
+          "iqr": 0.5777593957101528,
+          "median": 0.21459668077710042,
+          "quantile_05": 0.019978992191194707,
+          "quantile_25": 0.09592967814739614,
+          "quantile_75": 0.673689073857549,
+          "quantile_95": 0.7095398390187148,
+          "sd": 0.27779574683980074
+        },
+        "beta": {
+          "iqr": 0.1940130131098461,
+          "median": 2.5287243917415916,
+          "quantile_05": 2.2925542521896363,
+          "quantile_25": 2.4320051018419844,
+          "quantile_75": 2.6260181149518305,
+          "quantile_95": 2.76543385285392,
+          "sd": 0.14382938354419156
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7346639568668163,
+          "median": 12.956826423226811,
+          "quantile_05": 12.610519811850422,
+          "quantile_25": 12.813785345198195,
+          "quantile_75": 13.548449302065011,
+          "quantile_95": 14.096185457640923,
+          "sd": 0.48657575991784086
+        },
+        "ln_k": {
+          "iqr": 0.4546131125082091,
+          "median": -17.233724406750248,
+          "quantile_05": -17.786820670321188,
+          "quantile_25": -17.460002331950143,
+          "quantile_75": -17.005389219441934,
+          "quantile_95": -16.676814973742943,
+          "sd": 0.33737807306602974
+        },
+        "ln_mu_s": {
+          "iqr": 0.18165736757858042,
+          "median": 7.613366423979748,
+          "quantile_05": 7.580635276489117,
+          "quantile_25": 7.59425657055971,
+          "quantile_75": 7.775913938138291,
+          "quantile_95": 7.825124367564401,
+          "sd": 0.09483933820759059
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0005396250090275336,
+        "alpha_cc": 0.2363553067730034,
+        "beta": 0.016006697948156307,
+        "ln_f_rel_hz": 0.26293299890329874,
+        "ln_k": 0.015735647389087278,
+        "ln_mu_s": 0.24193726406496838
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_logit_stretch_local_prior_center_r1"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.30220625,
+        "ess": {
+          "alpha": 25087.64393853424,
+          "alpha_cc": 642.3172086863954,
+          "beta": 24264.944555868802,
+          "ln_f_rel_hz": 736.8632523068296,
+          "ln_k": 24734.265295945977,
+          "ln_mu_s": 642.1875421318481
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 522.6592487194633,
+          "alpha_cc": 13.381608514299904,
+          "beta": 505.5196782472667,
+          "ln_f_rel_hz": 15.351317756392284,
+          "ln_k": 515.2971936655412,
+          "ln_mu_s": 13.378907127746835
+        },
+        "tau": {
+          "alpha": 153.06339684221277,
+          "alpha_cc": 5978.354538956218,
+          "beta": 158.25298883987125,
+          "ln_f_rel_hz": 5211.279010017757,
+          "ln_k": 155.2502147953183,
+          "ln_mu_s": 5979.56165149589
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "ebef6e2567b7f6540a07cf2dab2cfec2c7e2b2de85a07d554abe64fcb41b4d85",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06996901496810937,
+          "median": 1.6231127877043956,
+          "quantile_05": 1.5379464103124483,
+          "quantile_25": 1.5880407670377736,
+          "quantile_75": 1.658009782005883,
+          "quantile_95": 1.7084210920074314,
+          "sd": 0.05186618477583514
+        },
+        "alpha_cc": {
+          "iqr": 0.5776438201336624,
+          "median": 0.1906564264104187,
+          "quantile_05": 0.019268731722960945,
+          "quantile_25": 0.08928834426374274,
+          "quantile_75": 0.6669321643974052,
+          "quantile_95": 0.7073225829164247,
+          "sd": 0.2712413389297007
+        },
+        "beta": {
+          "iqr": 0.1947709911296811,
+          "median": 2.529447746523606,
+          "quantile_05": 2.293379801337238,
+          "quantile_25": 2.4326026251953934,
+          "quantile_75": 2.6273736163250745,
+          "quantile_95": 2.7676644987339736,
+          "sd": 0.14415548482741836
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.6621298423024804,
+          "median": 12.936617995360464,
+          "quantile_05": 12.609166442248858,
+          "quantile_25": 12.802766117110812,
+          "quantile_75": 13.464895959413292,
+          "quantile_95": 14.074118449126258,
+          "sd": 0.47419691601724395
+        },
+        "ln_k": {
+          "iqr": 0.4570411960613292,
+          "median": -17.232146520628355,
+          "quantile_05": -17.789926288932058,
+          "quantile_25": -17.461445591548998,
+          "quantile_75": -17.00440439548767,
+          "quantile_95": -16.67446043652754,
+          "sd": 0.33897651821187724
+        },
+        "ln_mu_s": {
+          "iqr": 0.173479558387176,
+          "median": 7.608681773222567,
+          "quantile_05": 7.580337369140117,
+          "quantile_25": 7.59327781516889,
+          "quantile_75": 7.766757373556066,
+          "quantile_95": 7.821648621682031,
+          "sd": 0.09188776323980974
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.0002877596078882474,
+        "alpha_cc": 0.18365581043614343,
+        "beta": 0.00898270474513316,
+        "ln_f_rel_hz": 0.17821614370848757,
+        "ln_k": 0.009030619516234975,
+        "ln_mu_s": 0.1888788283556784
+      },
+      "replicate": 0,
+      "target_id": "n4",
+      "task_id": "n4_logit_stretch_overdispersed_prior_lhs_r0"
+    },
+    {
+      "arm": "logit_stretch",
+      "diagnostics": {
+        "acceptance_fraction": 0.29207682291666665,
+        "ess": {
+          "alpha": 25315.669134940992,
+          "alpha_cc": 595.8150746387724,
+          "beta": 25835.180555671486,
+          "ln_f_rel_hz": 702.4739835533477,
+          "ln_k": 24926.973101296844,
+          "ln_mu_s": 601.5045839952738
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "steps_per_tau": {
+          "alpha": 527.409773644604,
+          "alpha_cc": 12.412814054974426,
+          "beta": 538.2329282431559,
+          "ln_f_rel_hz": 14.63487465736141,
+          "ln_k": 519.3119396103509,
+          "ln_mu_s": 12.531345499901539
+        },
+        "tau": {
+          "alpha": 151.68471271810017,
+          "alpha_cc": 6444.952743648009,
+          "beta": 148.63453312142698,
+          "ln_f_rel_hz": 5466.394613756369,
+          "ln_k": 154.04999172563882,
+          "ln_mu_s": 6383.991248236558
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.2,
+            0.6
+          ],
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0
+        },
+        "valid": false
+      },
+      "initial_ensemble_sha256": "9b92d25cb60be1c8ec84e168d0501ac8e36232fab845e7cc69e86753a43f60c4",
+      "initialization": "overdispersed_prior_lhs",
+      "parameter_summary": {
+        "alpha": {
+          "iqr": 0.06961583056113341,
+          "median": 1.6220435816175576,
+          "quantile_05": 1.5374699419374438,
+          "quantile_25": 1.5873463065335023,
+          "quantile_75": 1.6569621370946357,
+          "quantile_95": 1.7074812141825628,
+          "sd": 0.0515843947073005
+        },
+        "alpha_cc": {
+          "iqr": 0.5754140895579791,
+          "median": 0.22017358039738824,
+          "quantile_05": 0.022111408188559268,
+          "quantile_25": 0.09911026144288139,
+          "quantile_75": 0.6745243510008605,
+          "quantile_95": 0.7099131913997633,
+          "sd": 0.27777022902433557
+        },
+        "beta": {
+          "iqr": 0.1944370037589147,
+          "median": 2.527498954634222,
+          "quantile_05": 2.290769033093097,
+          "quantile_25": 2.4305126009139277,
+          "quantile_75": 2.6249496046728424,
+          "quantile_95": 2.765660124307542,
+          "sd": 0.14427605575582902
+        },
+        "ln_f_rel_hz": {
+          "iqr": 0.7479878494263392,
+          "median": 12.958629763991944,
+          "quantile_05": 12.6096861685584,
+          "quantile_25": 12.813344044699994,
+          "quantile_75": 13.561331894126333,
+          "quantile_95": 14.102680866964306,
+          "sd": 0.49025027539439453
+        },
+        "ln_k": {
+          "iqr": 0.45447781786407404,
+          "median": -17.229741148979247,
+          "quantile_05": -17.783751915266432,
+          "quantile_25": -17.45694581025509,
+          "quantile_75": -17.002467992391015,
+          "quantile_95": -16.67653007524935,
+          "sd": 0.3368388004733198
+        },
+        "ln_mu_s": {
+          "iqr": 0.18230146200852015,
+          "median": 7.614477019249568,
+          "quantile_05": 7.580805498970412,
+          "quantile_25": 7.594438752769709,
+          "quantile_75": 7.776740214778229,
+          "quantile_95": 7.825330177057065,
+          "sd": 0.09501065871460032
+        }
+      },
+      "relative_tau_change": {
+        "alpha": 0.017316997779022403,
+        "alpha_cc": 0.2558117919372038,
+        "beta": 0.01330366073454106,
+        "ln_f_rel_hz": 0.28160129468105133,
+        "ln_k": 0.008744509551989863,
+        "ln_mu_s": 0.25386230788042946
+      },
+      "replicate": 1,
+      "target_id": "n4",
+      "task_id": "n4_logit_stretch_overdispersed_prior_lhs_r1"
+    }
+  ],
+  "validator_revision": "df06d7bed1de397cd25156b61c2a321fc174839d",
+  "validator_source_sha256": "03275719157d4fb1970b7b398c5355286232e4e6785e8ae639578399431ecb06",
+  "verification": {
+    "acceptance_note": "Proposal acceptance fractions are checked for range and consistency; proposal histories are not stored.",
+    "acceptance_recomputed": false,
+    "all_checkpoint_tau_ess_and_parameter_summaries_recomputed": true,
+    "density_parity_recomputed": false,
+    "numeric_atol": 1e-11,
+    "numeric_rtol": 1e-09
+  }
+}

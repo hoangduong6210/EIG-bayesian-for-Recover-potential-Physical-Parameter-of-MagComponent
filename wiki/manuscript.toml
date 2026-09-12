@@ -77,6 +77,12 @@ manifest_sha256 = "9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1
 asset_descriptor = "results/diagnostics/sparse_mixing/SparseMix-1/20260831T054419Z_44edb519aa48/asset.json"
 asset_descriptor_sha256 = "e9d9feb2a4de36e5f620d7727714d92974666f2ef194a693b083c6450d5375d0"
 
+[diagnostics.sparse_pilot]
+manifest = "results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/manifest.json"
+manifest_sha256 = "8d2e1298941d413dd3cb849425613ac08218c9b8d81846168b5ebb90b4bb0b87"
+decision = "results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/decision.json"
+decision_sha256 = "5914e90dcace7622052cfb658db139510005802faaac33fd0a9e3aaeab29d756"
+
 [snapshot]
 format = "A4, 10 point, two column"
 minimum_bibliography_items = 45

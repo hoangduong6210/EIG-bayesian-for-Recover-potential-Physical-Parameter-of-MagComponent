@@ -93,7 +93,7 @@ def test_comparator_explanation_is_source_bound():
     assert "Why EIG did not beat the strong comparators" in page
     assert "Evidence-Sources.md#e4" in page
     assert "Evidence-Sources.md#e5" in page
-    for source_id in range(1, 13):
+    for source_id in range(1, 14):
         assert f'<a id="e{source_id}"></a>' in (
             WIKI / "evidence" / "Evidence-Sources.md"
         ).read_text(encoding="utf-8")
@@ -114,7 +114,7 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E12" in index
+    assert "E1--E13" in index
 
 
 def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():
@@ -129,6 +129,74 @@ def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():
     )
     assert descriptor["scope"]["changes_mm2_admission"] is False
     assert descriptor["validation"]["validated_task_count"] == 18
+
+
+@pytest.fixture
+def sparse_pilot_contract(tmp_path, monkeypatch):
+    monkeypatch.setattr(MODULE, "WIKI_ROOT", tmp_path / "wiki")
+    pilot = {
+        "schema_version": "magcore-sparse-mixing-pilot-manifest/1.0",
+        "record_class": "endpoint_free_sampler_pilot_manifest", "protocol_id": "SparseMix-Pilot-1",
+        "matrix": {"expected_task_count": 24, "validated_task_count": 24, "artifact_count": 72},
+        "disclosure": {"scientific_endpoints_included": False, "automatic_admission": False,
+                       "claim_bearing_result": False, "retroactive_mm2_admission_allowed": False,
+                       "confirmatory_sampler_validation": False},
+        "method_summaries": {state: {"stretch": {"independent_ensemble_count": 4}}
+                             for state in ("n3", "n4")},
+    }
+    pilot_path, decision_path = tmp_path / "manifest.json", tmp_path / "decision.json"
+    pilot_path.write_text(json.dumps(pilot), encoding="utf-8")
+    decision = {"schema_version": "magcore-sparse-pilot-selection/1.0",
+                "complete_matrix": True, "selected_arm": "stretch",
+                "pilot_manifest": "manifest.json", "pilot_manifest_sha256": MODULE.sha256(pilot_path)}
+    decision_path.write_text(json.dumps(decision), encoding="utf-8")
+    contract = {"manifest": "manifest.json", "manifest_sha256": MODULE.sha256(pilot_path),
+                "decision": "decision.json", "decision_sha256": MODULE.sha256(decision_path)}
+    return contract, pilot_path, decision_path
+
+
+def test_sparse_pilot_contract_binds_both_hashes(sparse_pilot_contract):
+    contract, pilot_path, _ = sparse_pilot_contract
+    report = MODULE.check_sparse_pilot_contract(contract)
+    assert report["sparse_pilot_manifest_sha256"] == contract["manifest_sha256"]
+    pilot_path.write_text("{}", encoding="utf-8")
+    with pytest.raises(MODULE.WikiError, match="SHA-256 mismatch"):
+        MODULE.check_sparse_pilot_contract(contract)
+
+
+@pytest.mark.parametrize("mutation", ["matrix", "disclosure", "missing_state", "schema"])
+def test_sparse_pilot_invalid_evidence_fails_even_with_updated_hash(sparse_pilot_contract, mutation):
+    contract, pilot_path, decision_path = sparse_pilot_contract
+    pilot = json.loads(pilot_path.read_text())
+    if mutation == "matrix":
+        pilot["matrix"]["validated_task_count"] = 23
+    elif mutation == "disclosure":
+        pilot["disclosure"]["automatic_admission"] = True
+    elif mutation == "missing_state":
+        del pilot["method_summaries"]["n4"]
+    else:
+        pilot["schema_version"] = "unknown"
+    pilot_path.write_text(json.dumps(pilot), encoding="utf-8")
+    contract["manifest_sha256"] = MODULE.sha256(pilot_path)
+    decision = json.loads(decision_path.read_text())
+    decision["pilot_manifest_sha256"] = contract["manifest_sha256"]
+    decision_path.write_text(json.dumps(decision), encoding="utf-8")
+    contract["decision_sha256"] = MODULE.sha256(decision_path)
+    with pytest.raises(MODULE.WikiError):
+        MODULE.check_sparse_pilot_contract(contract)
+
+
+@pytest.mark.parametrize("field,value", [("selected_arm", "invented"),
+    ("pilot_manifest", "another.json"), ("pilot_manifest_sha256", "0" * 64),
+    ("schema_version", "unknown")])
+def test_sparse_pilot_decision_must_bind_manifest(sparse_pilot_contract, field, value):
+    contract, _, decision_path = sparse_pilot_contract
+    decision = json.loads(decision_path.read_text())
+    decision[field] = value
+    decision_path.write_text(json.dumps(decision), encoding="utf-8")
+    contract["decision_sha256"] = MODULE.sha256(decision_path)
+    with pytest.raises(MODULE.WikiError):
+        MODULE.check_sparse_pilot_contract(contract)
 
 
 def test_acquisition_figure_is_bound_to_evidence_projection():

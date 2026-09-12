@@ -1,6 +1,6 @@
 ---
 title: Sparse posterior sampler pilot
-status: technical pilot specified before execution
+status: complete exploratory sampler comparison
 last_updated: 2026-09-12
 paper_source: false
 ---
@@ -16,8 +16,8 @@ The executable design is
 Its matrix crosses two states, three sampler arms, two initialization families,
 and two replicates, for 24 tasks. Each task uses 48 walkers, 10,000 warmup
 iterations and 80,000 retained iterations. Checkpoints are fixed at 20,000,
-40,000, 60,000 and 80,000 retained iterations. These are design quantities;
-the pilot has not yet produced an outcome.
+40,000, 60,000 and 80,000 retained iterations. All 24 tasks and 72 artifacts
+passed the full-chain audit. [Source E13](../evidence/Evidence-Sources.md#e13)
 
 ## Sampling methods
 
@@ -36,6 +36,28 @@ quantile comparisons and covariance summaries use the original six coordinates.
 
 ## Interpretation and continuation
 
+The following values are worst cases over four independent ensembles per
+state and method. Median and tail differences are normalized by the comparison
+scales defined in the manifest; values above one exceed those scales.
+
+| State | Method | Minimum steps/τ | Maximum relative τ change | Maximum median ratio | Maximum tail ratio |
+|---|---|---:|---:|---:|---:|
+| n3 | Stretch | 15.12 | 21.01% | 2.206 | 0.664 |
+| n3 | DE + snooker | 108.30 | 5.44% | 0.103 | 0.081 |
+| n3 | Logit stretch | 16.93 | 22.05% | 0.612 | 0.134 |
+| n4 | Stretch | 11.10 | 26.23% | 1.151 | 0.493 |
+| n4 | DE + snooker | 58.64 | 11.19% | 0.621 | 0.457 |
+| n4 | Logit stretch | 12.33 | 28.16% | 0.945 | 0.270 |
+
+[Table source E13](../evidence/Evidence-Sources.md#e13), `/method_summaries`.
+
+DE + snooker is selected for the prospective study: it improves the worst-chain
+autocorrelation measures in both states without a detected cross-ensemble
+quantile disagreement. This is exploratory method selection, not a
+preregistered comparison of sampler superiority. At n4 its 11.19% change in τ
+still exceeds the 10% criterion proposed for the long run. Transforming only
+the Cole--Cole exponent did not resolve the slow-mixing behavior.
+
 Full retained chains and log probabilities are saved to permit recomputation
 of the pilot diagnostics. No acquisition score, prediction error, truth
 distance, coverage endpoint or policy contrast is computed. The locked MM-2
@@ -47,7 +69,7 @@ tails. Selection examines both states, independent initializations, quantile
 agreement and autocorrelation stability. Acceptance is reported separately
 because its useful range depends on the proposal.
 
-SparseMix-2 will be registered after the complete pilot is inspected and
+SparseMix-2 is to be registered after the complete pilot is inspected and
 before its fresh chains run. Its sampler, seeds, horizon, diagnostics and
 failure rule will be fixed at registration. A new model-mismatch campaign
 requires both locked states to pass that prospective rule. Gate-aligned
