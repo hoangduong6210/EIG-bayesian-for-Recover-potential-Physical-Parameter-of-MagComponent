@@ -1,7 +1,7 @@
 ---
 title: Scientific Results
 status: canonical result interpretation
-last_updated: 2026-08-19
+last_updated: 2026-09-12
 paper_source: false
 prose_reviewed: true
 claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-RECOVERY-001, C-ADEQ-001
@@ -17,6 +17,7 @@ claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-RECOVERY-001, C-ADEQ-00
 | EIG/cost vs Laplace D-optimality/cost | Tie in all 30 | `E4` |
 | Raw EIG vs deterministic fixed traversal | Five versus nine measurements | `E4` |
 | Accepted measured permeability fits | Loss-component RRMSE 36.77%--52.42% | `E7` |
+| SparseMix-1 endpoint-free diagnostic | `n3`: mixing supported; `n4`: mixing not supported | `E12` |
 
 The benchmark does not show EIG superiority over strong comparators. A
 descriptive path analysis found that raw EIG ranked candidates almost
@@ -31,3 +32,7 @@ of acquisition methods. [Source E9](../evidence/Evidence-Sources.md#e9)
 
 Full trajectory interpretation remains in the
 [job ledger](Scientific-Job-Results.md).
+
+SparseMix-1 is a sampler diagnostic for the two rejected MM-2 states. Its
+result does not supply model-mismatch performance evidence and does not change
+MM-2 non-admission. [Source E12](../evidence/Evidence-Sources.md#e12)

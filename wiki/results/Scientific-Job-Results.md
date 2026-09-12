@@ -1,7 +1,7 @@
 ---
 title: Scientific Job Results
 status: canonical computation ledger
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -53,12 +53,14 @@ either artifact total. [Source E11](../evidence/Evidence-Sources.md#e11)
 
 ## SparseMix-1 work outside the admitted artifact total
 
-SparseMix-1 declares 18 endpoint-free sampler tasks: one exact replay and
-eight independent ensembles for each of the two rejected MM-2 states. A
-dependent validator requires the exact 18-record matrix and produces a
-diagnostic manifest rather than a scientific aggregate. The immutable run is
-active; no completed record or mixing classification is reported here.
-[Protocol](../experiments/Sparse-Posterior-Mixing-Preregistration.md)
+SparseMix-1 completed 18 endpoint-free sampler tasks: one exact replay and
+eight independent ensembles for each of the two rejected MM-2 states. Its
+dependent validator accepted the exact 18-record, 36-artifact matrix and
+produced a diagnostic manifest rather than a scientific aggregate. The
+three-measurement state is `mixing_supported`; the four-measurement state is
+`mixing_not_supported` under the locked criteria. These records remain outside
+the 213 tasks and 222 artifacts in the admitted evidence freeze and do not
+alter MM-2 non-admission. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 ## Policy endpoints
 

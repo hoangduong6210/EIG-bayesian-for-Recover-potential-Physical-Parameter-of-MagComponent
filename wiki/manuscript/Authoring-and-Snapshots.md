@@ -1,7 +1,7 @@
 ---
 title: Authoring and Paper Snapshots
 status: publication guide
-last_updated: 2026-08-19
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -22,7 +22,7 @@ and evidence release named in its snapshot record.
 1. Edit the relevant wiki page.
 2. Run `python wiki/build.py write-readme` to refresh the repository summary.
 3. Run the wiki build tool in check mode.
-4. Review the diff for claim scope, citations, and internal disclosure.
+4. Review the diff for claim scope, citations, and disclosure risk.
 5. Commit the Wiki and README change without rebuilding `paper/`.
 
 ## Hosted Wiki projection

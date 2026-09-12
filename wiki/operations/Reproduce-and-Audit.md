@@ -1,7 +1,7 @@
 ---
 title: Reproduce and Audit
 status: audit guide
-last_updated: 2026-08-19
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -35,6 +35,20 @@ scientific aggregates used by this wiki. Public audit bundle v2 provides all
 larger asset adds the twelve flattened posterior-sample matrices. Both assets
 remove operational metadata, pass disclosure scanning, and verify against
 their published manifests. [Source E8](../evidence/Evidence-Sources.md#e8)
+
+SparseMix-1 has a separate endpoint-free diagnostic asset containing all 18
+task records and 18 deterministic thinned chains. After extraction, verify it
+from the repository root with:
+
+```bash
+python scripts/public_sparse_mixing_bundle.py verify \
+  --bundle sparsemix-1-20260831T054419Z_44edb519aa48
+```
+
+This verifies the portable file registry, task identities, hashes, array
+contracts, and disclosure boundary. It cannot reconstruct full-chain
+autocorrelation diagnostics from the thinned arrays; that audit requires a
+rerun of the locked source and configuration. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for all 222
 result artifacts, and [Evidence Sources](../evidence/Evidence-Sources.md) gives the exact

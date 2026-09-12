@@ -68,6 +68,14 @@ selection_overlap = "results/diagnostics/selection_overlap/20260817T072230Z_401e
 selection_overlap_sha256 = "cbdfc7f19a707ed9e58d3fb129ddcd314c1b75e1447eaa1ebdf88f75b07b6153"
 scope = "matched-model synthetic acquisition and accepted in-sample measured-data adequacy"
 
+[diagnostics.sparse_mixing]
+protocol_id = "SparseMix-1"
+run_id = "20260831T054419Z_44edb519aa48"
+manifest = "results/diagnostics/sparse_mixing/SparseMix-1/20260831T054419Z_44edb519aa48/manifest.json"
+manifest_sha256 = "9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1a6e"
+asset_descriptor = "results/diagnostics/sparse_mixing/SparseMix-1/20260831T054419Z_44edb519aa48/asset.json"
+asset_descriptor_sha256 = "e9d9feb2a4de36e5f620d7727714d92974666f2ef194a693b083c6450d5375d0"
+
 [snapshot]
 format = "A4, 10 point, two column"
 minimum_bibliography_items = 45

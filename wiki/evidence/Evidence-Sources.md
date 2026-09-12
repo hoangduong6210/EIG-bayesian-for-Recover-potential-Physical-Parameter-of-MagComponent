@@ -1,7 +1,7 @@
 ---
 title: Evidence Sources
 status: canonical evidence source map
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -134,6 +134,29 @@ source label.
   coverage statistic, measurement count to gate, modeled cost, or policy
   contrast is present. E11 establishes non-admission and identifies a sampler
   diagnostic target; it is not model-mismatch performance evidence.
+
+<a id="e12"></a>
+## E12 — SparseMix-1 endpoint-free sampler diagnostic
+
+- Artifact: [`manifest.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/17b6205c6a15d4368e9a4d0e9b1e9139809861d9/results/diagnostics/sparse_mixing/SparseMix-1/20260831T054419Z_44edb519aa48/manifest.json)
+- Manifest SHA-256: `9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1a6e`
+- Public record: [complete diagnostic release](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/sparsemix-1-20260831-audit-v1)
+  and [`asset.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/f48a3c5fce47506be968f0c37535ad4ed308711d/results/diagnostics/sparse_mixing/SparseMix-1/20260831T054419Z_44edb519aa48/asset.json).
+- Supports: the endpoint-free matrix contains 18 validated tasks and 36
+  artifacts. Under the locked diagnostic thresholds, the three-measurement
+  state is classified `mixing_supported`; the four-measurement state is
+  classified `mixing_not_supported`.
+- Interpretation: the first state is consistent with a finite-horizon failure
+  at 320,000 retained steps that resolves in the tested 800,000-step
+  ensembles. At the second state, every independent ensemble remains below 50
+  retained steps per estimated autocorrelation time; two ensembles also fail
+  the locked autocorrelation-stability threshold, and the maximum normalized
+  cross-ensemble tail difference is 1.14248.
+- Disclosure boundary: the release contains 18 task records and 18
+  deterministic thinned chains, but not the full walker-by-iteration chains.
+  The full-chain diagnostics therefore require a rerun for independent
+  recomputation. E12 contains no acquisition endpoint and does not change the
+  non-admission of MM-2.
 
 ## Verification rule
 

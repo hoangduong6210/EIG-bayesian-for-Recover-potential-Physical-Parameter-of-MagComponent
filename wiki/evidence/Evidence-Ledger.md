@@ -1,7 +1,7 @@
 ---
 title: Evidence Ledger
 status: canonical evidence registry
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -20,6 +20,7 @@ paper_source: false
 | `E9` | Comparator selection-path diagnostic | [Detailed E9](Evidence-Sources.md#e9) |
 | `E10` | MM-1 endpoint-blind non-admission record | [Detailed E10](Evidence-Sources.md#e10) |
 | `E11` | MM-2 endpoint-blind non-admission record | [Detailed E11](Evidence-Sources.md#e11) |
+| `E12` | SparseMix-1 endpoint-free sampler diagnostic | [Detailed E12](Evidence-Sources.md#e12) |
 
 The disclosure-safe projection is `evidence/results.json`; its hash and release
 binding are enforced by the wiki build.

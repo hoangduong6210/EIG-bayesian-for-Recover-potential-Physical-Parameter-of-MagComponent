@@ -1,7 +1,7 @@
 ---
 title: Wiki Sidebar
 status: navigation
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -23,7 +23,7 @@ paper_source: false
 
 - [MM-1 protocol and closeout](experiments/Model-Mismatch-Preregistration.md)
 - [MM-2 protocol and closeout](experiments/Model-Mismatch-V2-Preregistration.md)
-- [SparseMix-1 preregistration](experiments/Sparse-Posterior-Mixing-Preregistration.md)
+- [SparseMix-1 protocol and result](experiments/Sparse-Posterior-Mixing-Preregistration.md)
 - [Method decisions](decisions/0001-gate-aligned-objective.md)
 - [References](references/References.md)
 - [Authoring and snapshots](manuscript/Authoring-and-Snapshots.md)

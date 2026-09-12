@@ -93,7 +93,7 @@ def test_comparator_explanation_is_source_bound():
     assert "Why EIG did not beat the strong comparators" in page
     assert "Evidence-Sources.md#e4" in page
     assert "Evidence-Sources.md#e5" in page
-    for source_id in range(1, 10):
+    for source_id in range(1, 13):
         assert f'<a id="e{source_id}"></a>' in (
             WIKI / "evidence" / "Evidence-Sources.md"
         ).read_text(encoding="utf-8")
@@ -114,7 +114,21 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E11" in index
+    assert "E1--E12" in index
+
+
+def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():
+    report = MODULE.check()
+    assert report["sparse_mixing_manifest_sha256"] == (
+        "9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1a6e"
+    )
+    manifest = MODULE.load_manifest()
+    contract = manifest["diagnostics"]["sparse_mixing"]
+    descriptor = json.loads(
+        (WIKI.parent / contract["asset_descriptor"]).read_text(encoding="utf-8")
+    )
+    assert descriptor["scope"]["changes_mm2_admission"] is False
+    assert descriptor["validation"]["validated_task_count"] == 18
 
 
 def test_acquisition_figure_is_bound_to_evidence_projection():

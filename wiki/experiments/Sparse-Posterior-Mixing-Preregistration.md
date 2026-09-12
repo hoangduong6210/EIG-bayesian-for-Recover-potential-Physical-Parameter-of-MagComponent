@@ -1,7 +1,7 @@
 ---
 title: Sparse-Posterior Mixing Diagnostic SparseMix-1
-status: preregistered before diagnostic chains
-last_updated: 2026-08-31
+status: completed endpoint-free diagnostic record
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -19,10 +19,32 @@ No SparseMix-1 chain had been run when this protocol was committed.
 
 The immutable run `20260831T054419Z_44edb519aa48` was submitted from source
 revision `44edb519aa48` after the reconstruction anchors and implementation
-passed the repository test suite. Its matrix contains 18 diagnostic ensembles
-and one dependent validator job. The run is active; no classification is
-available yet. A partial matrix, failed validator, or failed ensemble cannot
-produce a public diagnostic manifest.
+passed the repository test suite. Its matrix contains two exact replays and 16
+independent ensembles, followed by one dependent validator job. All 18 tasks
+completed, the validator accepted all 36 declared artifacts, and no failure
+marker was produced. [Source E12](../evidence/Evidence-Sources.md#e12)
+
+## Results
+
+| Locked state | Independent ensembles | Classification | Decisive evidence |
+|---|---:|---|---|
+| Three measurements (`n3`) | 8 | `mixing_supported` | Every preregistered gate passed; maximum normalized median and tail differences were 0.50677 and 0.14398 |
+| Four measurements (`n4`) | 8 | `mixing_not_supported` | All eight ensembles remained below 50 retained steps per estimated autocorrelation time; two also failed the 10% autocorrelation-stability gate; normalized tail difference reached 1.14248 |
+
+The exact replays reproduce the two rejected MM-2 diagnostic states under the
+original seeds. At `n3`, the original 320,000-step replay has a minimum of
+37.17 retained steps per estimated autocorrelation time. The eight independent
+ensembles pass the same threshold after 800,000 retained steps, with minima
+from 71.38 to 87.17. This is evidence for finite-horizon slow mixing under the
+tested sampler and initializations; it is not proof that the posterior has one
+globally connected region.
+
+At `n4`, acceptance and effective sample-size thresholds pass, but the
+steps-per-autocorrelation-time range remains 33.50--47.18 after 800,000
+retained steps. The tail separation is between individual independent
+ensembles and does not establish initialization-family sensitivity or
+separated modes. The defensible conclusion is persistent unresolved slow
+exploration under the locked sampler and horizon. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 ## Parent evidence and fixed targets
 
@@ -78,16 +100,24 @@ initialization families. Failure of any condition yields an unresolved or
 initialization-sensitive classification; it does not trigger extra chains or
 a changed threshold.
 
+The validator committed before execution applies the median and tail limits to
+every pair of independent ensembles, which is stricter than comparing only the
+two initialization-family aggregates. The result above follows that executed
+all-pair contract; no threshold was changed after the chains were observed.
+
 ## Output and interpretation boundary
 
-The public record contains checkpoint diagnostics, deterministic thinned
-samples, chain-block hashes, and an exact-matrix validator manifest. Full
-walker-by-iteration chains are not public artifacts. The validator rejects
-partial, duplicate, hash-mismatched, or endpoint-bearing records.
+The [public diagnostic release](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/sparsemix-1-20260831-audit-v1)
+contains checkpoint diagnostics, 18 deterministic thinned samples, chain-block
+hashes, and the exact-matrix validator manifest. Full walker-by-iteration
+chains are not public artifacts, so the full-chain diagnostics cannot be
+recomputed from the 1-in-200 thins alone. The repository verifier checks the
+portable manifest, all 37 payload hashes, NPZ shapes and dtypes, task identity,
+and disclosure scope. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 SparseMix-1 may distinguish a slowly explored connected ridge from
 initialization sensitivity, separated posterior regions, or persistent
 nonstationarity. It cannot establish truth recovery, predictive accuracy,
 uncertainty calibration, model adequacy, policy superiority, laboratory-time
-savings, or model-mismatch robustness. Regardless of its outcome, MM-2 remains
-non-admitted. [Parent closeout E11](../evidence/Evidence-Sources.md#e11)
+savings, or model-mismatch robustness. MM-2 remains non-admitted.
+[Parent closeout E11](../evidence/Evidence-Sources.md#e11)

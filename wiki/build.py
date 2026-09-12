@@ -376,6 +376,98 @@ def check() -> dict:
         raise WikiError("selection-overlap release ID mismatch")
     if overlap.get("source", {}).get("release_manifest_sha256") != release_digest:
         raise WikiError("selection-overlap release manifest mismatch")
+
+    sparse_contract = manifest.get("diagnostics", {}).get("sparse_mixing", {})
+    if sparse_contract.get("protocol_id") != "SparseMix-1":
+        raise WikiError("unexpected sparse-mixing protocol identity")
+    sparse_run_id = sparse_contract.get("run_id", "")
+    if not re.fullmatch(r"\d{8}T\d{6}Z_[0-9a-f]{12}", sparse_run_id):
+        raise WikiError("invalid sparse-mixing run ID")
+    sparse_manifest_path = WIKI_ROOT.parent / sparse_contract.get("manifest", "")
+    sparse_descriptor_path = (
+        WIKI_ROOT.parent / sparse_contract.get("asset_descriptor", "")
+    )
+    for path, digest, label in (
+        (sparse_manifest_path, sparse_contract.get("manifest_sha256", ""),
+         "sparse-mixing manifest"),
+        (sparse_descriptor_path,
+         sparse_contract.get("asset_descriptor_sha256", ""),
+         "sparse-mixing asset descriptor"),
+    ):
+        if not path.is_file():
+            raise WikiError(f"missing {label}")
+        if not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise WikiError(f"invalid {label} SHA-256")
+        if sha256(path) != digest:
+            raise WikiError(f"{label} SHA-256 mismatch")
+    sparse_result = json.loads(sparse_manifest_path.read_text(encoding="utf-8"))
+    if sparse_result.get("schema_version") != "magcore-sparse-mixing-manifest/1.0":
+        raise WikiError("unsupported sparse-mixing manifest schema")
+    if sparse_result.get("protocol_id") != sparse_contract["protocol_id"]:
+        raise WikiError("sparse-mixing manifest protocol mismatch")
+    if sparse_result.get("matrix") != {
+        "artifact_count": 36,
+        "expected_task_count": 18,
+        "validated_task_count": 18,
+    }:
+        raise WikiError("sparse-mixing matrix is not complete")
+    if sparse_result.get("disclosure") != {
+        "claim_bearing_result": False,
+        "mm2_admission_changed": False,
+        "scientific_endpoints_included": False,
+    }:
+        raise WikiError("sparse-mixing disclosure boundary differs")
+    sparse_classes = sparse_result.get("classifications", {})
+    if sparse_classes.get("n3", {}).get("classification") != "mixing_supported" \
+            or sparse_classes.get("n4", {}).get("classification") \
+            != "mixing_not_supported":
+        raise WikiError("unexpected sparse-mixing classifications")
+    sparse_descriptor = json.loads(
+        sparse_descriptor_path.read_text(encoding="utf-8")
+    )
+    if sparse_descriptor.get("schema_version") \
+            != "magnetic-sparse-mixing-audit-assets/1.0":
+        raise WikiError("unsupported sparse-mixing asset descriptor schema")
+    if sparse_descriptor.get("run_id") != sparse_run_id \
+            or sparse_descriptor.get("source_validator_manifest_sha256") \
+            != sparse_contract["manifest_sha256"]:
+        raise WikiError("sparse-mixing descriptor source binding differs")
+    if sparse_descriptor.get("protocol_id") != sparse_contract["protocol_id"] \
+            or sparse_descriptor.get("preregistration_config_sha256") \
+            != sparse_result.get("config_sha256"):
+        raise WikiError("sparse-mixing descriptor protocol binding differs")
+    expected_sparse_classes = {
+        target: record["classification"]
+        for target, record in sparse_classes.items()
+    }
+    if sparse_descriptor.get("classifications") != expected_sparse_classes:
+        raise WikiError("sparse-mixing descriptor classifications differ")
+    if sparse_descriptor.get("validation") != {
+        "all_artifact_hashes_match": True,
+        "artifact_count": 36,
+        "exact_replay_task_count": 2,
+        "expected_task_count": 18,
+        "source_validator_exact_replay_match": True,
+        "validated_task_count": 18,
+    }:
+        raise WikiError("sparse-mixing descriptor validation differs")
+    if sparse_descriptor.get("scope") != {
+        "changes_mm2_admission": False,
+        "contains_deterministic_thinned_chains": True,
+        "contains_full_walker_iteration_chains": False,
+        "contains_scientific_endpoints": False,
+        "full_chain_diagnostics_recomputable_from_asset": False,
+    }:
+        raise WikiError("sparse-mixing descriptor scope differs")
+    sparse_asset = sparse_descriptor.get("asset", {})
+    if sparse_asset.get("task_record_count") != 18 \
+            or sparse_asset.get("deterministic_thinned_chain_count") != 18 \
+            or sparse_asset.get("payload_file_count") != 37 \
+            or not re.fullmatch(r"[0-9a-f]{64}", sparse_asset.get("sha256", "")) \
+            or not re.fullmatch(
+                r"[0-9a-f]{64}", sparse_asset.get("bundle_manifest_sha256", "")
+            ):
+        raise WikiError("sparse-mixing public asset declaration differs")
     projection = json.loads(projection_path.read_text(encoding="utf-8"))
     if projection.get("schema_version") != "magnetic-wiki-evidence/1.0":
         raise WikiError("unsupported evidence projection schema")
@@ -403,7 +495,7 @@ def check() -> dict:
         raise WikiError("acquisition figure has unexpected evidence sources")
     source_page_path = WIKI_ROOT / "evidence" / "Evidence-Sources.md"
     source_page = texts[source_page_path]
-    for source_id in range(1, 10):
+    for source_id in range(1, 13):
         anchor = f'<a id="e{source_id}"></a>'
         if anchor not in source_page:
             raise WikiError(f"missing evidence source anchor E{source_id}")
@@ -441,6 +533,10 @@ def check() -> dict:
         "evidence_release_id": release_id,
         "evidence_projection_sha256": projection_digest,
         "selection_overlap_sha256": overlap_digest,
+        "sparse_mixing_manifest_sha256": sparse_contract["manifest_sha256"],
+        "sparse_mixing_asset_descriptor_sha256": (
+            sparse_contract["asset_descriptor_sha256"]
+        ),
         "scientific_job_count": len(jobs),
         "result_artifact_count": declared_artifacts,
         "acquisition_figure_sha256": figure_manifest["figure_sha256"],

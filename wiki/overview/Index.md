@@ -1,14 +1,14 @@
 ---
 title: Research Wiki Index
 status: canonical index
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
 # Research Wiki index
 
 This directory routes each question to one canonical page. Numerical statements
-use evidence labels E1--E11; the evidence page records the corresponding JSON
+use evidence labels E1--E12; the evidence page records the corresponding JSON
 pointer, scope, release identity, and checksum.
 
 ## Recommended reading paths
@@ -34,7 +34,7 @@ pointer, scope, release identity, and checksum.
 | Which release produced the numbers? | [Project status](../status/Project-Status.md) | [E8](../evidence/Evidence-Sources.md#e8) |
 | What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
 | What happened in the independent successor? | [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md#closeout) | [E11](../evidence/Evidence-Sources.md#e11) |
-| How will the rejected posterior states be diagnosed? | [SparseMix-1 preregistration](../experiments/Sparse-Posterior-Mixing-Preregistration.md) | [`configs/sparse_mixing_v1.toml`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/configs/sparse_mixing_v1.toml) |
+| What did the rejected-state sampler diagnostic find? | [SparseMix-1 record](../experiments/Sparse-Posterior-Mixing-Preregistration.md#results) | [E12](../evidence/Evidence-Sources.md#e12) |
 
 ## Complete page directory
 
@@ -44,7 +44,7 @@ pointer, scope, release identity, and checksum.
 | Architecture | [Research system map](../architecture/Research-System-Map.md) |
 | Methods | [Sequential design method](../methods/Sequential-Design-Method.md) |
 | Data | [Dataset registry](../datasets/Dataset-Registry.md) |
-| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md), [SparseMix-1 preregistration](../experiments/Sparse-Posterior-Mixing-Preregistration.md) |
+| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md), [SparseMix-1 protocol and result](../experiments/Sparse-Posterior-Mixing-Preregistration.md) |
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |
@@ -66,5 +66,5 @@ pointer, scope, release identity, and checksum.
    raw-to-aggregate chain.
 
 If a result-bearing sentence lacks an evidence label, treat it as unverified.
-Literature citations support scientific background; E1--E11 support numerical
+Literature citations support scientific background; E1--E12 support numerical
 results produced by this project.

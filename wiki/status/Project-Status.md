@@ -1,7 +1,7 @@
 ---
 title: Project Status
 status: canonical current status
-last_updated: 2026-08-31
+last_updated: 2026-09-12
 paper_source: false
 ---
 
@@ -58,11 +58,14 @@ not meet the minimum steps-per-autocorrelation-time rule at the 320,000-step
 cap. No aggregate was created and no MM-2 outcome was admitted.
 [Source E11](../evidence/Evidence-Sources.md#e11)
 
-The endpoint-free mixing study fixed to those rejected states is now running
-under immutable run `20260831T054419Z_44edb519aa48`. It may diagnose
-autocorrelation, initialization sensitivity, or multiple posterior regions.
-It cannot retroactively admit MM-2 or supply a model-mismatch endpoint.
-[SparseMix-1 protocol](../experiments/Sparse-Posterior-Mixing-Preregistration.md)
+The endpoint-free SparseMix-1 study completed all 18 tasks and validated all
+36 artifacts. The three-measurement state passes the locked mixing criteria at
+800,000 retained steps, consistent with finite-horizon slow mixing at the old
+320,000-step cap. The four-measurement state remains unresolved: all eight
+independent ensembles fail the 50-steps-per-autocorrelation-time criterion,
+two fail autocorrelation stability, and the cross-ensemble tail criterion also
+fails. This diagnostic neither retroactively admits MM-2 nor supplies a
+model-mismatch endpoint. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 ## Primary direct contrasts
 
@@ -114,18 +117,23 @@ hashes. Public audit release v2 provides all 30 sanitized acquisition
 trajectories and the estimator decision chain; its larger asset also includes
 the twelve flattened posterior-sample matrices. Raw measured curves and
 walker-by-iteration chains are outside that bundle. [Sources E8](../evidence/Evidence-Sources.md#e8)
-and [E9](../evidence/Evidence-Sources.md#e9)
+and [E9](../evidence/Evidence-Sources.md#e9). The separate SparseMix-1 release
+contains all 18 endpoint-free task records and all 18 deterministic thinned
+chains. It omits full walker-by-iteration chains, so full-chain diagnostics
+must be reproduced by rerunning the locked workflow. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 ## Next scientific experiments
 
-1. Complete and validate the active endpoint-free sparse-posterior mixing
-   diagnostic for the two rejected MM-2 states.
-2. Keep MM-1 and MM-2 permanently separate and non-admitted.
-3. Defer gate-aligned utility until a new independent mismatch campaign is
-   scientifically justified.
-4. Run larger simulation-based calibration for parameter and predictive
+1. Keep MM-1 and MM-2 permanently separate and non-admitted.
+2. Test a reparameterized or alternative sampler on both locked sparse states
+   under a new prospective diagnostic before another mismatch campaign.
+3. Admit a new independent mismatch campaign only after its sampler passes the
+   prospective sparse-state checks.
+4. Preregister gate-aligned utility after a valid mismatch campaign establishes
+   the evaluation path.
+5. Run larger simulation-based calibration for parameter and predictive
    coverage.
-5. Controlled laboratory timing and multi-lot measurements before any
+6. Controlled laboratory timing and multi-lot measurements before any
    real-world time-saving claim.
-6. Stable measured-data acquisition ranking only after the forward model and
+7. Stable measured-data acquisition ranking only after the forward model and
    observation model pass adequacy checks.

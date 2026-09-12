@@ -17,6 +17,7 @@ PUBLISHED = (
     ROOT / "results/diagnostics/sparse_mixing/SparseMix-1"
     / "20260831T054419Z_44edb519aa48/manifest.json"
 )
+PUBLISHED_DESCRIPTOR = PUBLISHED.with_name("asset.json")
 
 
 def _module():
@@ -43,6 +44,21 @@ def test_published_manifest_is_complete_and_diagnostic_only():
         "mixing_not_supported"
     )
     assert manifest["parent"]["retroactive_admission_allowed"] is False
+
+
+def test_published_asset_descriptor_binds_release_and_scope():
+    module = _module()
+    descriptor = json.loads(PUBLISHED_DESCRIPTOR.read_text(encoding="utf-8"))
+    assert descriptor["source_validator_manifest_sha256"] == module.sha256_file(
+        PUBLISHED
+    )
+    assert descriptor["asset"]["sha256"] == (
+        "a76c33fea234c8353a2a6d25fa3a0e8250f8364d50841ad271675cf8b8f2bc56"
+    )
+    assert descriptor["asset"]["payload_file_count"] == 37
+    assert descriptor["scope"]["contains_scientific_endpoints"] is False
+    assert descriptor["scope"]["full_chain_diagnostics_recomputable_from_asset"] \
+        is False
 
 
 def _write_json(path: Path, payload: dict) -> None:
