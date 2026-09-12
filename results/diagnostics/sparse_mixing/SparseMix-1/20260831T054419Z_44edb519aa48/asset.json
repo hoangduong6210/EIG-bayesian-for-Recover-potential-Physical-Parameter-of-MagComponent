@@ -1,0 +1,45 @@
+{
+  "schema_version": "magnetic-sparse-mixing-audit-assets/1.0",
+  "protocol_id": "SparseMix-1",
+  "run_id": "20260831T054419Z_44edb519aa48",
+  "implementation_source_revision": "44edb519aa488119e1ef7076711ec842ded2f851",
+  "implementation_source_archive_sha256": "c019fdcac5ccb55a1648f790a4ee0ca16236718213bcdd0d6714b980bef6a56e",
+  "implementation_source_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "bundle_exporter_revision": "f1557b1df3278d86282c25532d14214445b96946",
+  "preregistration_config_sha256": "88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435",
+  "source_validator_manifest": "manifest.json",
+  "source_validator_manifest_sha256": "9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1a6e",
+  "tracked_manifest_revision": "17b6205c6a15d4368e9a4d0e9b1e9139809861d9",
+  "release_tag": "sparsemix-1-20260831-audit-v1",
+  "release_url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/sparsemix-1-20260831-audit-v1",
+  "asset": {
+    "name": "magcore-sparsemix-1-20260831-full.tar.zst",
+    "url": "https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/download/sparsemix-1-20260831-audit-v1/magcore-sparsemix-1-20260831-full.tar.zst",
+    "bytes": 147328904,
+    "sha256": "a76c33fea234c8353a2a6d25fa3a0e8250f8364d50841ad271675cf8b8f2bc56",
+    "bundle_manifest_bytes": 11170,
+    "bundle_manifest_sha256": "4c6e22a94aaf3e2f0e52cd1cf2f19e0314ead43eb152a37854de6dd2c41d5bc0",
+    "payload_file_count": 37,
+    "task_record_count": 18,
+    "deterministic_thinned_chain_count": 18
+  },
+  "validation": {
+    "expected_task_count": 18,
+    "validated_task_count": 18,
+    "artifact_count": 36,
+    "exact_replay_task_count": 2,
+    "source_validator_exact_replay_match": true,
+    "all_artifact_hashes_match": true
+  },
+  "classifications": {
+    "n3": "mixing_supported",
+    "n4": "mixing_not_supported"
+  },
+  "scope": {
+    "contains_deterministic_thinned_chains": true,
+    "contains_full_walker_iteration_chains": false,
+    "full_chain_diagnostics_recomputable_from_asset": false,
+    "contains_scientific_endpoints": false,
+    "changes_mm2_admission": false
+  }
+}
