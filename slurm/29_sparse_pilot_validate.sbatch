@@ -9,7 +9,7 @@
 set -Eeuo pipefail
 [[ -n "${SLURM_JOB_ID:-}" && -n "${SLURM_JOB_NODELIST:-}" ]] || exit 70
 PILOT_RUN="$(cd "$1" && pwd -P)"
-VALIDATOR_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
+VALIDATOR_ROOT="$(cd "$2" && pwd -P)"
 source "$PILOT_RUN/provenance/run.env"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
