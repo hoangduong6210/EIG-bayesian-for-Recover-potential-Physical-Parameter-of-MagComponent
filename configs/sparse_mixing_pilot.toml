@@ -1,0 +1,20 @@
+schema_version = "magcore-sparse-mixing-pilot/1.0"
+protocol_id = "SparseMix-Pilot-1"
+record_class = "endpoint_free_technical_pilot"
+parent_config = "configs/sparse_mixing_v1.toml"
+parent_config_sha256 = "88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435"
+arms = ["stretch", "de_snooker", "logit_stretch"]
+families = ["local_prior_center", "overdispersed_prior_lhs"]
+replicates = 2
+warmup = 10000
+retained = 80000
+checkpoints = [20000, 40000, 60000, 80000]
+n_walkers = 48
+diagnostic_only = true
+retroactive_mm2_admission_allowed = false
+
+[selection]
+description = "Pilot diagnostics inform a separate prospective protocol; no automatic campaign admission."
+require_complete_matrix = true
+confirmatory_seeds_must_be_new = true
+scientific_endpoints_allowed = false

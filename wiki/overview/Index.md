@@ -38,6 +38,9 @@ pointer, scope, release identity, and checksum.
 
 ## Complete page directory
 
+The next sampler comparison is specified in the
+[sparse posterior pilot](../experiments/Sparse-Sampler-Pilot.md).
+
 | Area | Canonical pages |
 |---|---|
 | Orientation | [Home](../Home.md), [Start here](Start-Here.md), [Glossary](Glossary.md) |

@@ -7,7 +7,7 @@ paper_source: false
 
 # Project Status
 
-Status date: 2026-08-31.
+Status date: 2026-09-12.
 
 ## Completed scientific work
 
@@ -123,6 +123,9 @@ chains. It omits full walker-by-iteration chains, so full-chain diagnostics
 must be reproduced by rerunning the locked workflow. [Source E12](../evidence/Evidence-Sources.md#e12)
 
 ## Next scientific experiments
+
+The [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) specifies the
+comparison that precedes SparseMix-2 registration.
 
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
 2. Test a reparameterized or alternative sampler on both locked sparse states
