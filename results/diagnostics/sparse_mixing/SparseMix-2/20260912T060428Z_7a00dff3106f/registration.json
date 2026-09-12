@@ -1,0 +1,17 @@
+{
+  "schema_version": "magcore-sparse-mixing-registration/1.0",
+  "protocol_id": "SparseMix-2",
+  "run_id": "20260912T060428Z_7a00dff3106f",
+  "source_revision": "7a00dff3106fa72027f243b94b7b512391b2548c",
+  "config": "configs/sparse_mixing_v2.toml",
+  "config_sha256": "89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c",
+  "pilot_decision_sha256": "5914e90dcace7622052cfb658db139510005802faaac33fd0a9e3aaeab29d756",
+  "selected_arm": "de_snooker",
+  "expected_task_count": 16,
+  "expected_artifact_count": 48,
+  "registration_precedes_sampling": true,
+  "record_class": "submission_record_not_a_completion_result",
+  "scientific_endpoints_included": false,
+  "model_mismatch_campaign_admitted": false,
+  "retroactive_mm2_admission_allowed": false
+}

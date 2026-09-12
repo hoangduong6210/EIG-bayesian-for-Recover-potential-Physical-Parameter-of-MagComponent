@@ -1,6 +1,6 @@
 ---
 title: SparseMix-2 prospective sampler validation
-status: preregistered before confirmatory sampling
+status: registered and submitted; validation pending
 last_updated: 2026-09-12
 paper_source: false
 ---
@@ -22,6 +22,13 @@ source archive identify the registration. No criterion may be changed within
 this study after sampling begins.
 
 ## Fixed state and sampling design
+
+The submitted run is `20260912T060428Z_7a00dff3106f`, from registration commit
+`7a00dff3106fa72027f243b94b7b512391b2548c`. Configuration SHA-256:
+`89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c`.
+The [registration record](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/SparseMix-2/20260912T060428Z_7a00dff3106f/registration.json)
+records submission, not completion or diagnostic passage. Independent
+full-chain validation follows successful completion of the entire array.
 
 The two targets are the exact n3 and n4 observation states reconstructed from
 the MM-2 rejection, with the same state and observation hashes as SparseMix-1.
