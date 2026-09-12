@@ -13,6 +13,10 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PUBLISHED = (
+    ROOT / "results/diagnostics/sparse_mixing/SparseMix-1"
+    / "20260831T054419Z_44edb519aa48/manifest.json"
+)
 
 
 def _module():
@@ -23,6 +27,22 @@ def _module():
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def test_published_manifest_is_complete_and_diagnostic_only():
+    module = _module()
+    manifest = json.loads(PUBLISHED.read_text(encoding="utf-8"))
+    assert module.sha256_file(PUBLISHED) == (
+        "9577a89b64207f17f241c52f68316eb2487a1ec31afbf3f9d77c45ea366e1a6e"
+    )
+    module._validate_source_manifest(manifest)
+    assert manifest["classifications"]["n3"]["classification"] == (
+        "mixing_supported"
+    )
+    assert manifest["classifications"]["n4"]["classification"] == (
+        "mixing_not_supported"
+    )
+    assert manifest["parent"]["retroactive_admission_allowed"] is False
 
 
 def _write_json(path: Path, payload: dict) -> None:
