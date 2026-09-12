@@ -39,8 +39,8 @@ pointer, scope, release identity, and checksum.
 
 ## Complete page directory
 
-The next sampler comparison is specified in the
-[sparse posterior pilot](../experiments/Sparse-Sampler-Pilot.md).
+The completed [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) motivates
+the prospective [SparseMix-2 protocol](../experiments/Sparse-Mixing-V2-Preregistration.md).
 
 | Area | Canonical pages |
 |---|---|

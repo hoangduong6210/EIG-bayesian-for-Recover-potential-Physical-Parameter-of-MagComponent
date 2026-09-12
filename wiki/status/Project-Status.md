@@ -129,6 +129,10 @@ and a 72-artifact full-chain audit. DE + snooker is selected for SparseMix-2;
 its n4 pilot autocorrelation-stability check is still insufficient, so the
 selection does not yet qualify the sampler. [Source E13](../evidence/Evidence-Sources.md#e13)
 
+[SparseMix-2](../experiments/Sparse-Mixing-V2-Preregistration.md) prospectively
+fixes 16 fresh ensembles, 800,000 retained steps each and a joint n3/n4
+passage rule. These are registered design quantities, not completed results.
+
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
 2. Test a reparameterized or alternative sampler on both locked sparse states
    under a new prospective diagnostic before another mismatch campaign.

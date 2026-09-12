@@ -69,9 +69,10 @@ tails. Selection examines both states, independent initializations, quantile
 agreement and autocorrelation stability. Acceptance is reported separately
 because its useful range depends on the proposal.
 
-SparseMix-2 is to be registered after the complete pilot is inspected and
-before its fresh chains run. Its sampler, seeds, horizon, diagnostics and
-failure rule will be fixed at registration. A new model-mismatch campaign
+[SparseMix-2](Sparse-Mixing-V2-Preregistration.md) is registered after the
+complete pilot inspection and before its fresh chains run. Its sampler,
+seeds, horizon, diagnostics and failure rule are fixed at registration.
+A new model-mismatch campaign
 requires both locked states to pass that prospective rule. Gate-aligned
 utility and simulation-based calibration follow the admitted mismatch study.
 MM-1 and MM-2 retain their recorded non-admission.

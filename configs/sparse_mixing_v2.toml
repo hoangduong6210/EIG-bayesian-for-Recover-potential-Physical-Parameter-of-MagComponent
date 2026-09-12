@@ -1,0 +1,33 @@
+schema_version = "magcore-sparse-mixing-v2/1.0"
+protocol_id = "SparseMix-2"
+status = "preregistered_before_confirmatory_chains"
+record_class = "endpoint_free_confirmatory_sampler_validation"
+parent_config = "configs/sparse_mixing_v1.toml"
+parent_config_sha256 = "88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435"
+pilot_decision = "results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/decision.json"
+pilot_decision_sha256 = "5914e90dcace7622052cfb658db139510005802faaac33fd0a9e3aaeab29d756"
+arms = ["de_snooker"]
+families = ["local_prior_center", "overdispersed_prior_lhs"]
+replicates = 4
+warmup = 80000
+retained = 800000
+checkpoints = [20000, 40000, 80000, 160000, 320000, 480000, 640000, 800000]
+n_walkers = 48
+emcee_version = "3.1.6"
+diagnostic_only = true
+retroactive_mm2_admission_allowed = false
+
+[selection]
+require_complete_matrix = true
+confirmatory_seeds_must_be_new = true
+scientific_endpoints_allowed = false
+
+[diagnostics]
+minimum_finite_log_probability_fraction = 1.0
+minimum_steps_per_tau = 50
+minimum_effective_sample_size = 400
+acceptance_range = [0.05, 0.80]
+tau_stability_checkpoints = [640000, 800000]
+maximum_relative_tau_change = 0.10
+maximum_median_difference_pooled_sd = 0.10
+maximum_tail_difference_pooled_iqr = 0.15
