@@ -26,6 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 _CONFIGURED_DATA_ROOT = os.environ.get("MAGCORE_DATA_ROOT")
 EXPERIMENTS = sorted((ROOT / "experiments").glob("*.py"))
 HEAVY_ARGUMENTS = {
+    "sparse_mixing_v2.py": [
+        "--config", "/does/not/exist", "--task-id", "0",
+        "--mm2-source", "/does/not/exist", "--mm2-config", "/does/not/exist",
+        "--out-dir", "/tmp/never-confirmatory",
+    ],
     "sparse_mixing_pilot.py": [
         "--config", "/does/not/exist", "--task-id", "0",
         "--mm2-source", "/does/not/exist", "--mm2-config", "/does/not/exist",
