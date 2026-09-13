@@ -1,7 +1,7 @@
 ---
 title: Evidence Sources
 status: canonical evidence source map
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 paper_source: false
 ---
 

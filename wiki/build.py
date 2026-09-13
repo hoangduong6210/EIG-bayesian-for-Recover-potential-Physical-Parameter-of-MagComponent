@@ -98,6 +98,23 @@ def check_mm3_readiness(manifest: dict) -> dict:
                     or config.get("sampler_qualification_manifest_sha256") != qualification.get("manifest_sha256") \
                     or config.get("sampler_qualification_config_sha256") != qualification.get("config_sha256"):
                 raise WikiError("MM-3 campaign identity or qualification binding differs")
+            if "registration" in contract:
+                relative_registration = contract["registration"]
+                if not isinstance(relative_registration, str) or Path(relative_registration).is_absolute():
+                    raise WikiError("MM-3 registration path is invalid")
+                registration_path = (root / relative_registration).resolve()
+                if not registration_path.is_relative_to(root) or not registration_path.is_file() \
+                        or sha256(registration_path) != contract.get("registration_sha256"):
+                    raise WikiError("MM-3 registration checksum or path mismatch")
+                registered = json.loads(registration_path.read_text(encoding="utf-8"))
+                if registered.get("campaign_id") != "MM-3" \
+                        or registered.get("record_class") != "submission_record_not_a_completion_result" \
+                        or registered.get("config_sha256") != contract["config_sha256"] \
+                        or registered.get("expected_task_count") != 120 \
+                        or registered.get("scientific_endpoints_included") is not False \
+                        or registered.get("campaign_admission_decided") is not False:
+                    raise WikiError("MM-3 registration is inconsistent with the protocol")
+                report["model_mismatch_v3_registration_sha256"] = contract["registration_sha256"]
         report[key + "_sha256"] = contract[field + "_sha256"]
     return report
 

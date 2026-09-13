@@ -72,10 +72,10 @@ so measured-data acquisition suggestions remain model-conditional.
 | Model-mismatch campaign MM-1 | Closed with 119/120 valid task records; not admitted | [E10](wiki/evidence/Evidence-Sources.md#e10), [MM-1 record](wiki/experiments/Model-Mismatch-Preregistration.md) |
 | Model-mismatch campaign MM-2 | Closed with 119/120 valid task records and one prospectively retained sampler rejection; not admitted | [E11](wiki/evidence/Evidence-Sources.md#e11), [MM-2 record](wiki/experiments/Model-Mismatch-V2-Preregistration.md) |
 | Sparse-posterior mixing diagnostic | Complete 18-task matrix: the three-measurement state passes the locked mixing criteria; the four-measurement state remains unresolved | [E12](wiki/evidence/Evidence-Sources.md#e12), [SparseMix-1 record](wiki/experiments/Sparse-Posterior-Mixing-Preregistration.md) |
-| Alternative-sampler pilot | Complete 24-task full-chain audit; DE + snooker selected for longer confirmation, not yet qualified | [E13](wiki/evidence/Evidence-Sources.md#e13), [Sampler comparison](wiki/experiments/Sparse-Sampler-Pilot.md) |
+| Alternative-sampler pilot | Complete 24-task full-chain audit; DE + snooker selected for subsequent confirmation | [E13](wiki/evidence/Evidence-Sources.md#e13), [Sampler comparison](wiki/experiments/Sparse-Sampler-Pilot.md) |
 | SparseMix-2 | Complete 16-task, 48-artifact audit; both locked states pass with DE + snooker | [E14](wiki/evidence/Evidence-Sources.md#e14), [Protocol and result](wiki/experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Production sampler integration | Both locked states pass the adaptive implementation check | [E15](wiki/evidence/Evidence-Sources.md#e15) |
-| Model-mismatch campaign MM-3 | Protocol registered; no campaign result yet | [Protocol and execution](wiki/experiments/Model-Mismatch-V3-Preregistration.md) |
+| Model-mismatch campaign MM-3 | Registered and submitted: 120 scenario--seed tasks; no admitted result yet | [Protocol and execution](wiki/experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval) |
 | Gate-aligned utility and simulation-based calibration | Deferred; neither non-admitted mismatch campaign can authorize these experiments | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release

@@ -98,6 +98,8 @@ record_sha256 = "07fa4edcc02ec2dd6a795cb07cab85c5978906e5c93f4d96294c47637344eb6
 [campaigns.model_mismatch_v3]
 config = "configs/model_mismatch_v3.toml"
 config_sha256 = "cf4496117e72e9f79b0770f4181ef0db32c0498096f089429aa4909adc00d2e0"
+registration = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/registration.json"
+registration_sha256 = "09df403319d6ea8ca7f2793d3a1092e5fce633c5f137900cd9d794aff8d06971"
 
 [snapshot]
 format = "A4, 10 point, two column"

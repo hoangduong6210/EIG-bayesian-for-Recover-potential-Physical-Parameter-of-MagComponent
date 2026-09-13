@@ -1,7 +1,7 @@
 ---
 title: Research Wiki Index
 status: canonical index
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 paper_source: false
 ---
 
@@ -37,6 +37,7 @@ pointer, scope, release identity, and checksum.
 | What did the rejected-state sampler diagnostic find? | [SparseMix-1 record](../experiments/Sparse-Posterior-Mixing-Preregistration.md#results) | [E12](../evidence/Evidence-Sources.md#e12) |
 | Which sampler is being tested next, and why? | [Endpoint-free pilot](../experiments/Sparse-Sampler-Pilot.md) | [E13](../evidence/Evidence-Sources.md#e13) |
 | Did the selected sampler pass independent confirmation? | [SparseMix-2 result](../experiments/Sparse-Mixing-V2-Preregistration.md#result) | [E14](../evidence/Evidence-Sources.md#e14) |
+| Which campaign is running, and how can I trace its jobs? | [MM-3 execution register](../experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval) | [Scientific job results](../results/Scientific-Job-Results.md) |
 
 ## Complete page directory
 
@@ -53,7 +54,8 @@ production integration check, not an MM-3 outcome.
 | Architecture | [Research system map](../architecture/Research-System-Map.md) |
 | Methods | [Sequential design method](../methods/Sequential-Design-Method.md) |
 | Data | [Dataset registry](../datasets/Dataset-Registry.md) |
-| Experiments | [MM-1 protocol and closeout](../experiments/Model-Mismatch-Preregistration.md), [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md), [SparseMix-1 protocol and result](../experiments/Sparse-Posterior-Mixing-Preregistration.md) |
+| Mismatch campaigns | [MM-1](../experiments/Model-Mismatch-Preregistration.md), [MM-2](../experiments/Model-Mismatch-V2-Preregistration.md), [MM-3 protocol and execution](../experiments/Model-Mismatch-V3-Preregistration.md) |
+| Sampler diagnostics | [SparseMix-1](../experiments/Sparse-Posterior-Mixing-Preregistration.md), [Sampler pilot](../experiments/Sparse-Sampler-Pilot.md), [SparseMix-2](../experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |

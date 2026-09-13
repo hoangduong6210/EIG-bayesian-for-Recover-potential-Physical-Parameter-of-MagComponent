@@ -78,6 +78,12 @@ and [E15](../evidence/Evidence-Sources.md#e15). Neither diagnostic is a
 model-mismatch outcome. The campaign has no admitted result at registration;
 all 120 planned tasks must validate before aggregation.
 
+Run `20260913T065150Z_a75d737c9d50` has been submitted from public registration
+commit `a75d737c9d5058798edc1508cb9ae7c961bc9544`. Array `7273251` and
+dependent aggregate `7273252` are recorded in the
+[execution register](../experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval).
+Submission is not completion; no MM-3 endpoint or comparison is admitted yet.
+
 ## Primary direct contrasts
 
 The difference is comparator minus EIG; positive values favor EIG.

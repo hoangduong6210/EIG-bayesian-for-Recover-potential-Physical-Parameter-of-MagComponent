@@ -1,0 +1,31 @@
+{
+  "schema_version": "magcore-model-mismatch-registration/1.0",
+  "record_class": "submission_record_not_a_completion_result",
+  "campaign_id": "MM-3",
+  "run_id": "20260913T065150Z_a75d737c9d50",
+  "source_revision": "a75d737c9d5058798edc1508cb9ae7c961bc9544",
+  "config": "configs/model_mismatch_v3.toml",
+  "config_sha256": "cf4496117e72e9f79b0770f4181ef0db32c0498096f089429aa4909adc00d2e0",
+  "sampler_qualification_manifest_sha256": "1f73174325341bd1638e5ac6f8c503ce75ee42022b0da42124799c766b14d1db",
+  "production_integration_sha256": "07fa4edcc02ec2dd6a795cb07cab85c5978906e5c93f4d96294c47637344eb60",
+  "estimator_decision_sha256": "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6",
+  "predecessor_campaign_id": "MM-2",
+  "predecessor_non_admission_sha256": "bf11358cbdb411532d2b3e9695d1e4c82585ba8751912ef98a495f8c334e6cb8",
+  "expected_task_count": 120,
+  "seed_count": 30,
+  "scenario_count": 4,
+  "policies_per_task": 8,
+  "scheduler_array_job_id": "7273251",
+  "scheduler_aggregate_job_id": "7273252",
+  "aggregate_dependency": "afterok:7273251",
+  "source_published_before_campaign_submission": true,
+  "release_checks": {
+    "scheduler_job_id": "7273241",
+    "full_test_suite_and_wiki_check_passed": true,
+    "ci_run_id": "34743778898",
+    "ci_conclusion": "success"
+  },
+  "scientific_endpoints_included": false,
+  "campaign_admission_decided": false,
+  "retroactive_predecessor_admission_allowed": false
+}

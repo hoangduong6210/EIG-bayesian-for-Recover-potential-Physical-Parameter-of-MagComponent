@@ -1,6 +1,6 @@
 ---
 title: Model-mismatch campaign MM-3
-status: preregistered before campaign execution
+status: registered and submitted; campaign validation pending
 last_updated: 2026-09-13
 paper_source: false
 ---
@@ -180,6 +180,30 @@ generated. Gate-aligned utility and simulation-based calibration remain
 deferred until a new mismatch campaign has an admitted result.
 
 ## Execution and retrieval
+
+The campaign was submitted from public commit
+`a75d737c9d5058798edc1508cb9ae7c961bc9544` after its full test suite and Wiki
+check passed on a compute node and
+[CI completed successfully](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/actions/runs/34743778898).
+The run is `20260913T065150Z_a75d737c9d50`. Its
+[registration record](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/registration.json)
+binds the source, configuration, prerequisites and submitted job identities.
+Its SHA-256 is
+`09df403319d6ea8ca7f2793d3a1092e5fce633c5f137900cd9d794aff8d06971`;
+the Wiki build checks that binding alongside the protocol configuration.
+
+| Stage | Identifier | Status at submission | Expected output |
+|---|---|---|---|
+| Release checks | `7273241` | Completed successfully | Full tests and Wiki contract |
+| Scenario--seed array | `7273251` | Submitted, 120 tasks | One validated record per scenario--seed |
+| Aggregate | `7273252` | Dependent on successful completion of the entire array | Exact-matrix aggregate or no admitted result |
+
+This is an execution record, not a result table. No gate-reach, error,
+coverage or policy contrast is claimed from submission. The read-only watcher
+separates task and aggregate failures and checks scheduler terminal states,
+including out-of-memory, timeout and cancellation when a shell failure marker
+is missing. Transient accounting absence is retried rather than reported as a
+numerical rejection. It never launches replacements or changes admission.
 
 The source is prepared from a clean public commit. Each task receives one
 CPU for vectorized sampling and a 64 GB memory limit; up to ten tasks run

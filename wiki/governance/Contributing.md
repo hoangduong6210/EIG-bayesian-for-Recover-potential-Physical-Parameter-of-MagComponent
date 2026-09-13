@@ -1,7 +1,7 @@
 ---
 title: Contributing to the Research Wiki
 status: canonical governance
-last_updated: 2026-08-19
+last_updated: 2026-09-13
 paper_source: false
 ---
 

@@ -21,6 +21,14 @@ def test_current_mm3_prerequisites_are_hash_bound():
     assert report["production_integration_sha256"] == manifest["diagnostics"]["production_integration"]["record_sha256"]
 
 
+def test_submission_record_is_not_allowed_to_drift():
+    with (WIKI / "manuscript.toml").open("rb") as stream:
+        manifest = tomllib.load(stream)
+    manifest["campaigns"]["model_mismatch_v3"]["registration_sha256"] = "0" * 64
+    with pytest.raises(build.WikiError, match="registration checksum"):
+        build.check_mm3_readiness(manifest)
+
+
 @pytest.mark.parametrize("change", ["digest", "overall", "missing_state", "endpoint", "admission"])
 def test_integration_cannot_claim_a_false_pass(tmp_path, monkeypatch, change):
     with (WIKI / "manuscript.toml").open("rb") as stream:
