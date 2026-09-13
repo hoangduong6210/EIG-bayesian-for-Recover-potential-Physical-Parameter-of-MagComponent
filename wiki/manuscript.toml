@@ -21,6 +21,7 @@ public_pages = [
   "datasets/Dataset-Registry.md",
   "experiments/Model-Mismatch-Preregistration.md",
   "experiments/Model-Mismatch-V2-Preregistration.md",
+  "experiments/Model-Mismatch-V3-Design.md",
   "experiments/Sparse-Posterior-Mixing-Preregistration.md",
   "experiments/Sparse-Sampler-Pilot.md",
   "experiments/Sparse-Mixing-V2-Preregistration.md",

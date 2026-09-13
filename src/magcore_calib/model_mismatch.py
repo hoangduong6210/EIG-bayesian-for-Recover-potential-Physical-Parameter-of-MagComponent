@@ -30,6 +30,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - production is Python 3.
 
 MISMATCH_CONFIG_SCHEMA = "magcore-model-mismatch-preregistration/1.0"
 MISMATCH_CONFIG_SUCCESSOR_SCHEMA = "magcore-model-mismatch-preregistration/1.1"
+MISMATCH_CONFIG_QUALIFIED_SCHEMA = "magcore-model-mismatch-preregistration/1.2"
 MISMATCH_RESULT_SCHEMA = "magcore-model-mismatch-result/1.0"
 MISMATCH_AGGREGATE_SCHEMA = "magcore-model-mismatch-aggregate/1.0"
 MISMATCH_NON_ADMISSION_SCHEMA = "magcore-model-mismatch-non-admission/1.0"
@@ -100,6 +101,11 @@ class ModelMismatchPlan:
     predecessor_non_admission_sha256: str | None = None
     seed_namespace: str | None = None
     retain_rejection_diagnostics: bool = False
+    sampler_method: str = "stretch"
+    sampler_qualification_manifest: str | None = None
+    sampler_qualification_manifest_sha256: str | None = None
+    sampler_qualification_config: str | None = None
+    sampler_qualification_config_sha256: str | None = None
 
     @property
     def task_count(self) -> int:
@@ -120,7 +126,7 @@ class ModelMismatchPlan:
         return matches[0]
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        record = {
             "schema_version": self.schema_version,
             "campaign_id": self.campaign_id,
             "status": self.status,
@@ -154,6 +160,15 @@ class ModelMismatchPlan:
                 "retain_rejection_diagnostics": self.retain_rejection_diagnostics,
             },
         }
+        if self.schema_version == MISMATCH_CONFIG_QUALIFIED_SCHEMA:
+            record["runtime"]["sampler_method"] = self.sampler_method
+            record["sampler_qualification"] = {
+                "manifest": self.sampler_qualification_manifest,
+                "manifest_sha256": self.sampler_qualification_manifest_sha256,
+                "config": self.sampler_qualification_config,
+                "config_sha256": self.sampler_qualification_config_sha256,
+            }
+        return record
 
 
 def _unique_positive_ints(value: Any, label: str) -> tuple[int, ...]:
@@ -200,6 +215,7 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
         schema_version = raw["schema_version"]
         if schema_version not in {
             MISMATCH_CONFIG_SCHEMA, MISMATCH_CONFIG_SUCCESSOR_SCHEMA,
+            MISMATCH_CONFIG_QUALIFIED_SCHEMA,
         }:
             raise ValueError("unsupported model-mismatch config schema")
         runtime = raw["runtime"]
@@ -275,6 +291,11 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
             retain_rejection_diagnostics=raw.get(
                 "retain_rejection_diagnostics", False
             ),
+            sampler_method=runtime.get("sampler_method", "stretch"),
+            sampler_qualification_manifest=raw.get("sampler_qualification_manifest"),
+            sampler_qualification_manifest_sha256=raw.get("sampler_qualification_manifest_sha256"),
+            sampler_qualification_config=raw.get("sampler_qualification_config"),
+            sampler_qualification_config_sha256=raw.get("sampler_qualification_config_sha256"),
         )
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError(f"invalid model-mismatch plan in {config_path}: {exc}") from exc
@@ -283,7 +304,7 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
         raise ValueError("campaign_id must be a nonempty string")
     if plan.status != "preregistered_before_confirmatory_outcomes":
         raise ValueError("campaign status must declare prospective preregistration")
-    if plan.schema_version == MISMATCH_CONFIG_SUCCESSOR_SCHEMA:
+    if plan.schema_version in {MISMATCH_CONFIG_SUCCESSOR_SCHEMA, MISMATCH_CONFIG_QUALIFIED_SCHEMA}:
         if not isinstance(plan.predecessor_campaign_id, str) \
                 or not plan.predecessor_campaign_id \
                 or plan.predecessor_campaign_id == plan.campaign_id:
@@ -331,13 +352,104 @@ def load_model_mismatch_plan(path: str | Path) -> ModelMismatchPlan:
     for scenario in plan.scenarios:
         if not 0.0 <= scenario.second_pole_fraction < 1.0:
             raise ValueError("second-pole fractions must lie in [0, 1)")
-    if plan.burn >= plan.n_steps or plan.max_steps < plan.n_steps \
+    if (plan.schema_version != MISMATCH_CONFIG_QUALIFIED_SCHEMA and plan.burn >= plan.n_steps) or plan.max_steps < plan.n_steps \
             or plan.check_interval > plan.max_steps - plan.n_steps:
         raise ValueError("sampler runtime contract is inconsistent")
+    if plan.schema_version == MISMATCH_CONFIG_QUALIFIED_SCHEMA:
+        _validate_qualified_campaign(plan, config_path.parent.parent)
+    elif plan.sampler_method != "stretch" or any(value is not None for value in (
+        plan.sampler_qualification_manifest, plan.sampler_qualification_manifest_sha256,
+        plan.sampler_qualification_config, plan.sampler_qualification_config_sha256,
+    )):
+        raise ValueError("legacy campaigns cannot declare a qualified sampler")
     candidate_count = len(mismatch_candidate_library(plan.temperatures_c))
     if plan.max_measurements > candidate_count:
         raise ValueError("measurement budget exceeds the mismatch candidate library")
     return plan
+
+
+def _qualified_file(root: Path, relative: Any, digest: Any) -> Path:
+    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+        raise ValueError("sampler qualification path must be repository-relative")
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root):
+        raise ValueError("sampler qualification path escapes repository")
+    if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        raise ValueError("sampler qualification digest is invalid")
+    if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+        raise ValueError("sampler qualification checksum mismatch")
+    return path
+
+
+def _validate_qualified_campaign(plan: ModelMismatchPlan, root: Path) -> None:
+    """Require completed independent sampler evidence before an MM-3 task."""
+    if plan.campaign_id != "MM-3" or plan.predecessor_campaign_id != "MM-2" \
+            or plan.predecessor_non_admission_sha256 != "bf11358cbdb411532d2b3e9695d1e4c82585ba8751912ef98a495f8c334e6cb8" \
+            or plan.seed_namespace != "mm3_confirmatory_seed_v1":
+        raise ValueError("MM-3 lineage differs from its registered predecessor")
+    previous = set(range(7300, 7330)) | set(range(8100, 8130)) | set(range(9100, 9130))
+    if plan.seeds != tuple(range(10100, 10130)) or not previous <= set(plan.forbidden_development_seeds):
+        raise ValueError("MM-3 requires fresh seeds and all previous outcome namespaces excluded")
+    if (plan.sampler_method, plan.n_walkers, plan.n_steps, plan.burn, plan.max_steps, plan.check_interval) \
+            != ("de_snooker", 48, 20000, 80000, 800000, 20000):
+        raise ValueError("MM-3 sampler runtime differs from the qualified method")
+    manifest_path = _qualified_file(root, plan.sampler_qualification_manifest, plan.sampler_qualification_manifest_sha256)
+    config_path = _qualified_file(root, plan.sampler_qualification_config, plan.sampler_qualification_config_sha256)
+    if plan.sampler_qualification_config_sha256 != "89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c":
+        raise ValueError("MM-3 qualification configuration is not the registered SparseMix-2 protocol")
+    with config_path.open("rb") as stream:
+        qualification = tomllib.load(stream)
+    if qualification.get("schema_version") != "magcore-sparse-mixing-v2/1.0" \
+            or qualification.get("protocol_id") != "SparseMix-2" \
+            or qualification.get("arms") != [plan.sampler_method] \
+            or qualification.get("diagnostic_only") is not True \
+            or qualification.get("retroactive_mm2_admission_allowed") is not False:
+        raise ValueError("MM-3 qualification configuration is incompatible")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict) \
+            or manifest.get("schema_version") != "magcore-sparse-mixing-v2-manifest/1.0" \
+            or manifest.get("record_class") != "endpoint_free_confirmatory_sampler_validation_manifest" \
+            or manifest.get("protocol_id") != "SparseMix-2" \
+            or manifest.get("config_sha256") != plan.sampler_qualification_config_sha256 \
+            or manifest.get("registered_criteria") != qualification.get("diagnostics") \
+            or manifest.get("parent_config_sha256") != qualification.get("parent_config_sha256") \
+            or manifest.get("pilot_decision_sha256") != qualification.get("pilot_decision_sha256") \
+            or manifest.get("matrix") != {"expected_task_count": 16, "validated_task_count": 16, "artifact_count": 48} \
+            or manifest.get("both_states_pass") is not True \
+            or manifest.get("disclosure") != {
+                "scientific_endpoints_included": False, "retroactive_mm2_admission_allowed": False,
+                "confirmatory_sampler_validation": True, "model_mismatch_campaign_admitted": False,
+            }:
+        raise ValueError("MM-3 requires a complete passing SparseMix-2 qualification")
+    classifications = manifest.get("classifications", {})
+    if set(classifications) != {"n3", "n4"} or any(
+        not isinstance(value, dict) or value.get("criteria_passed") is not True
+        or value.get("classification") != "mixing_supported"
+        or value.get("independent_ensemble_count") != 8 or value.get("reason_codes") != []
+        for value in classifications.values()
+    ):
+        raise ValueError("MM-3 qualification must pass each of the two locked states")
+    expected_ids = {
+        f"{target}_de_snooker_{family}_r{replicate}"
+        for target in ("n3", "n4")
+        for family in ("local_prior_center", "overdispersed_prior_lhs")
+        for replicate in range(4)
+    }
+    rows, artifacts = manifest.get("tasks"), manifest.get("artifacts")
+    if not isinstance(rows, list) or len(rows) != 16 \
+            or not isinstance(artifacts, list) or len(artifacts) != 16 \
+            or any(not isinstance(row, dict) for row in rows + artifacts) \
+            or {row.get("task_id") for row in rows} != expected_ids \
+            or {row.get("task_id") for row in artifacts} != expected_ids:
+        raise ValueError("MM-3 qualification independent ensemble matrix differs")
+    for row in rows:
+        expected_id = f"{row.get('target_id')}_de_snooker_{row.get('initialization')}_r{row.get('replicate')}"
+        if row["task_id"] != expected_id or type(row.get("replicate")) is not int:
+            raise ValueError("MM-3 qualification task identities disagree")
+    for artifact in artifacts:
+        for field in ("result_sha256", "chain_sha256", "success_sha256"):
+            if re.fullmatch(r"[0-9a-f]{64}", str(artifact.get(field))) is None:
+                raise ValueError("MM-3 qualification artifact digest is invalid")
 
 
 def mismatch_candidate_library(
@@ -591,6 +703,13 @@ def validate_mismatch_result(record: dict[str, Any]) -> None:
     }
     if set(record) != required or record.get("schema_version") != MISMATCH_RESULT_SCHEMA:
         raise ValueError("model-mismatch result has an invalid top-level schema")
+    if record.get("campaign_id") == "MM-3":
+        provenance = record.get("provenance", {})
+        if provenance.get("sampler_method") != "de_snooker" or any(
+            re.fullmatch(r"[0-9a-f]{64}", str(provenance.get(key))) is None
+            for key in ("sampler_qualification_manifest_sha256", "sampler_qualification_config_sha256")
+        ):
+            raise ValueError("MM-3 result lacks qualified sampler provenance")
     if not isinstance(record["seed"], int) or record["seed"] <= 0:
         raise ValueError("model-mismatch result seed is invalid")
     if len(record["policies"]) != len(POLICIES) \
@@ -615,6 +734,18 @@ def validate_mismatch_result(record: dict[str, Any]) -> None:
         raise ValueError("paired-outcome or holdout separation contract was violated")
     for policy in POLICIES:
         result = record["policies"][policy]
+        if record.get("campaign_id") == "MM-3":
+            trajectory = result.get("trajectory")
+            if not isinstance(trajectory, list) or not trajectory:
+                raise ValueError("MM-3 requires qualified sampler state records")
+            for row in trajectory:
+                diagnostic = row.get("decision_state", {}).get("sampler_diagnostics", {})
+                sampler = diagnostic.get("sampler", {})
+                if sampler.get("method") != "de_snooker" or sampler.get("version") != "3.1.6" \
+                        or sampler.get("warmup_steps") != 80000 or sampler.get("vectorize") is not True \
+                        or diagnostic.get("valid") is not True \
+                        or diagnostic.get("tau_stability", {}).get("eligible") is not True:
+                    raise ValueError("MM-3 policy state did not use the qualified production sampler")
         if set(result.get("mismatch_endpoints", {})) != {
             "holdout_latent_mean", "holdout_pcv_by_temperature_c",
             "holdout_point_records", "gate_truth_accuracy",
@@ -703,6 +834,9 @@ def validate_mismatch_rejection(record: dict[str, Any]) -> None:
                 if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
                     raise ValueError(f"model-mismatch rejection {key} is invalid")
             diagnostic = state["sampler_diagnostics"]
+            if record.get("campaign_id") == "MM-3":
+                _validate_de_rejection_diagnostic(diagnostic, diagnostic_keys, adaptive_keys, parameters)
+                continue
             if not isinstance(diagnostic, dict) or set(diagnostic) != diagnostic_keys:
                 raise ValueError("sampler rejection diagnostic schema is invalid")
             if diagnostic.get("valid") is not False \
@@ -722,3 +856,94 @@ def validate_mismatch_rejection(record: dict[str, Any]) -> None:
                 "acceptance_range", "min_ess", "min_steps_per_tau",
             }:
                 raise ValueError("sampler rejection thresholds are invalid")
+
+
+def _validate_de_rejection_diagnostic(diagnostic: Any, legacy_keys: set[str],
+                                     adaptive_keys: set[str], parameters: set[str]) -> None:
+    """Keep the richer production diagnostic strictly scoped to MM-3."""
+    report_keys = (legacy_keys - {"adaptive_sampling"}) | {"retained_steps", "tau_stability"}
+    if not isinstance(diagnostic, dict) or set(diagnostic) != report_keys | {"adaptive_sampling", "sampler"} \
+            or diagnostic.get("valid") is not False:
+        raise ValueError("MM-3 rejection diagnostic schema is invalid")
+    adaptive = diagnostic["adaptive_sampling"]
+    if not isinstance(adaptive, dict) or set(adaptive) != adaptive_keys | {"checkpoint_history"}:
+        raise ValueError("MM-3 rejection adaptive record is invalid")
+    history = adaptive["checkpoint_history"]
+    if not isinstance(history, list) or not history or any(not isinstance(row, dict) for row in history):
+        raise ValueError("MM-3 rejection checkpoint history is invalid")
+    if adaptive.get("minimum_retained_steps") != 20000 or adaptive.get("maximum_retained_steps") != 800000 \
+            or adaptive.get("check_interval_steps") != 20000 or adaptive.get("actual_retained_steps") != 800000 \
+            or adaptive.get("stopped_reason") != "maximum_steps" \
+            or adaptive.get("extension_count") != 39 or len(history) != 40:
+        raise ValueError("MM-3 rejection must exhaust the registered retained horizon")
+    expected_thresholds = {
+        "min_ess": 400.0, "min_steps_per_tau": 50.0,
+        "acceptance_range": [0.05, 0.80], "maximum_relative_tau_change": 0.10,
+        "required_consecutive_stable_changes": 2,
+        "minimum_finite_log_probability_fraction": 1.0,
+    }
+    reports = [{key: diagnostic[key] for key in report_keys}] + history
+    for report in reports:
+        if set(report) != report_keys or set(report.get("parameter_names", ())) != parameters \
+                or report.get("thresholds") != expected_thresholds or report.get("valid") is not False:
+            raise ValueError("MM-3 rejection checkpoint contract is invalid")
+        for key in ("acceptance_fraction", "finite_log_probability_fraction"):
+            value = report.get(key)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= 1:
+                raise ValueError("MM-3 rejection checkpoint fraction is invalid")
+        for key in ("tau", "ess", "steps_per_tau"):
+            values = report.get(key)
+            if not isinstance(values, dict) or set(values) != parameters or any(
+                value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))
+                                       or not math.isfinite(value) or value <= 0)
+                for value in values.values()
+            ):
+                raise ValueError("MM-3 rejection diagnostic values are invalid")
+        stability = report.get("tau_stability")
+        if not isinstance(stability, dict) or set(stability) != {
+            "comparison_available", "relative_change", "denominator", "consecutive_stable_changes", "eligible",
+        } or stability.get("denominator") != "current_checkpoint_tau" \
+                or type(stability.get("comparison_available")) is not bool \
+                or type(stability.get("eligible")) is not bool \
+                or type(stability.get("consecutive_stable_changes")) is not int \
+                or stability["consecutive_stable_changes"] < 0:
+            raise ValueError("MM-3 rejection stability schema is invalid")
+        if stability["eligible"] != (stability["consecutive_stable_changes"] >= 2):
+            raise ValueError("MM-3 rejection stability eligibility is inconsistent")
+        changes = stability.get("relative_change")
+        if not isinstance(changes, dict) or set(changes) != parameters or any(
+            (value is None if stability["comparison_available"] else value is not None)
+            or (value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))
+                                       or not math.isfinite(value) or value < 0))
+            for value in changes.values()
+        ):
+            raise ValueError("MM-3 rejection stability values are invalid")
+    if [row["retained_steps"] for row in history] != list(range(20000, 800001, 20000)) \
+            or reports[0] != history[-1]:
+        raise ValueError("MM-3 rejection checkpoints disagree with final diagnostics")
+    sampler = diagnostic["sampler"]
+    if not isinstance(sampler, dict) or set(sampler) != {
+        "method", "implementation", "version", "vectorize", "acceptance_window",
+        "warmup_steps", "move_parameters", "density_parity", "qualification_scope",
+    } or sampler.get("method") != "de_snooker" or sampler.get("version") != "3.1.6" \
+            or sampler.get("implementation") != "emcee.EnsembleSampler" \
+            or sampler.get("vectorize") is not True or sampler.get("acceptance_window") != "retained_only" \
+            or sampler.get("warmup_steps") != 80000:
+        raise ValueError("MM-3 rejection sampler identity is invalid")
+    expected_moves = {
+        "DEMove": {"weight": 0.8, "sigma": 1e-5, "gamma0": float(2.38 / np.sqrt(12)),
+                   "nsplits": 2, "randomize_split": True},
+        "DESnookerMove": {"weight": 0.2, "gammas": 1.7, "nsplits": 4, "randomize_split": True},
+    }
+    if sampler.get("move_parameters") != expected_moves or not isinstance(sampler.get("qualification_scope"), str):
+        raise ValueError("MM-3 rejection move contract is invalid")
+    parity = sampler.get("density_parity")
+    if not isinstance(parity, dict) or set(parity) != {"initial", "final"}:
+        raise ValueError("MM-3 rejection density parity is invalid")
+    for report in parity.values():
+        if not isinstance(report, dict) or set(report) != {"rows", "rtol", "atol", "maximum_absolute_difference"} \
+                or report.get("rows") != 48 or report.get("rtol") != 1e-11 or report.get("atol") != 1e-8 \
+                or isinstance(report.get("maximum_absolute_difference"), bool) \
+                or not isinstance(report.get("maximum_absolute_difference"), (int, float)) \
+                or not math.isfinite(report["maximum_absolute_difference"]) or report["maximum_absolute_difference"] < 0:
+            raise ValueError("MM-3 rejection density parity contract is invalid")

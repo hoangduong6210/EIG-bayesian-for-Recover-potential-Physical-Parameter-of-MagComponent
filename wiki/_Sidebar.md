@@ -26,6 +26,7 @@ paper_source: false
 - [SparseMix-1 protocol and result](experiments/Sparse-Posterior-Mixing-Preregistration.md)
 - [Sparse sampler pilot](experiments/Sparse-Sampler-Pilot.md)
 - [SparseMix-2 registration](experiments/Sparse-Mixing-V2-Preregistration.md)
+- [MM-3 proposed design](experiments/Model-Mismatch-V3-Design.md)
 - [Method decisions](decisions/0001-gate-aligned-objective.md)
 - [References](references/References.md)
 - [Authoring and snapshots](manuscript/Authoring-and-Snapshots.md)

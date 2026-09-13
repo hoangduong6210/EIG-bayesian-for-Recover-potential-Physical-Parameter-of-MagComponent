@@ -42,6 +42,8 @@ pointer, scope, release identity, and checksum.
 
 The completed [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) motivates
 the prospective [SparseMix-2 protocol](../experiments/Sparse-Mixing-V2-Preregistration.md).
+The [MM-3 design](../experiments/Model-Mismatch-V3-Design.md) describes the
+proposed transition to production inference; it is not yet a campaign release.
 
 | Area | Canonical pages |
 |---|---|

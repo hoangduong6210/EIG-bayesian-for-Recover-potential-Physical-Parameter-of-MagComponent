@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from collections import OrderedDict
 from pathlib import Path
 
 import numpy as np
@@ -31,6 +32,30 @@ POLICY_OBJECTIVES = {
     "predictive_variance_per_cost": "per_cost",
     "laplace_d_opt_raw": "raw", "laplace_d_opt_per_cost": "per_cost",
 }
+
+
+class BoundedPosteriorCache(OrderedDict):
+    """Bound resident full chains without changing deterministically seeded fits."""
+
+    def __init__(self, max_entries: int = 2):
+        if type(max_entries) is not int or max_entries < 1:
+            raise ValueError("cache capacity must be a positive integer")
+        super().__init__()
+        self.max_entries = max_entries
+        self.seen_keys: set[tuple[str, ...]] = set()
+
+    def get(self, key, default=None):
+        if key not in self:
+            return default
+        self.move_to_end(key)
+        return super().__getitem__(key)
+
+    def __setitem__(self, key, value):
+        self.seen_keys.add(key)
+        super().__setitem__(key, value)
+        self.move_to_end(key)
+        while len(self) > self.max_entries:
+            self.popitem(last=False)
 
 
 def _truth_anchor(seed: int, spec: DatasheetPrior):
@@ -146,8 +171,12 @@ def main() -> None:
         eig_replicates=setting["n_replicates"],
         pcv_gate_pct=plan.pcv_gate_pct, lm_gate_pct=plan.lm_gate_pct,
     )
+    if plan.sampler_method != "stretch":
+        common["sampler_method"] = plan.sampler_method
     with sampling_pool(args.workers) as pool:
-        fit_cache: dict[tuple[str, ...], PosteriorResult] = {}
+        fit_cache: dict[tuple[str, ...], PosteriorResult] = (
+            BoundedPosteriorCache(2) if plan.sampler_method == "de_snooker" else {}
+        )
         runs = {
             policy: run_policy(
                 policy, library, outcomes, spec, geometry,
@@ -262,11 +291,23 @@ def main() -> None:
                 "requested_fits": sum(
                     len(result[0]["trajectory"]) for result in runs.values()
                 ),
-                "unique_fits": len(fit_cache),
+                "unique_fits": (len(fit_cache.seen_keys)
+                                if isinstance(fit_cache, BoundedPosteriorCache)
+                                else len(fit_cache)),
                 "key": "sorted exact observed-design identities",
             },
         },
     }
+    if plan.sampler_method == "de_snooker":
+        record["provenance"].update(
+            sampler_method=plan.sampler_method,
+            sampler_qualification_manifest_sha256=plan.sampler_qualification_manifest_sha256,
+            sampler_qualification_config_sha256=plan.sampler_qualification_config_sha256,
+        )
+        record["provenance"]["posterior_state_cache"].update(
+            eviction_policy="least_recently_used", maximum_resident_fits=2,
+            full_posterior_draws_preserved=True,
+        )
     try:
         validate_mismatch_result(record)
     except ValueError as error:

@@ -169,6 +169,7 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
                pcv_gate_pct: float = 8.0, lm_gate_pct: float = 5.0,
                max_sampler_steps: int | None = None,
                sampler_check_interval: int | None = None,
+               sampler_method: str = "stretch",
                ) -> tuple[dict, np.ndarray, dict]:
     method_by_policy = {
         "eig": "eig",
@@ -210,11 +211,15 @@ def run_policy(policy: str, library: list[DesignPoint], outcomes: dict[str, Obse
             ordered_observations = sorted(
                 observations, key=lambda item: item.design.exact_key()
             )
+            method_options = {} if sampler_method == "stretch" else {
+                "sampler_method": sampler_method,
+            }
             fit = sample_emcee(
                 ordered_observations, spec, geometry, n_walkers=n_walkers,
                 n_steps=n_steps, burn=burn, seed=fit_seed, pool=pool,
                 max_steps=max_sampler_steps,
                 check_interval=sampler_check_interval,
+                **method_options,
             )
             if fit_cache is not None:
                 fit_cache[state_key] = fit
