@@ -134,7 +134,7 @@ library. It does not establish universal predictive-variance superiority.
 | Diagnostic study | Run identifier | Status and evidence |
 |---|---|---|
 | SparseMix-Pilot-1 | `20260912T054816Z_efbc1c2f169e` | 24/24 tasks; 72 artifacts independently audited; [E13](../evidence/Evidence-Sources.md#e13) |
-| SparseMix-2 | `20260912T060428Z_7a00dff3106f` | Submitted under the [registered protocol](../experiments/Sparse-Mixing-V2-Preregistration.md); no completion result yet |
+| SparseMix-2 | `20260912T060428Z_7a00dff3106f` | 16/16 tasks and 48 artifacts audited; both locked states pass; [E14](../evidence/Evidence-Sources.md#e14) |
 
 The subsequent endpoint-free sampler pilot completed all 24 tasks and 72
 audited artifacts. [Source E13](../evidence/Evidence-Sources.md#e13) provides

@@ -1,13 +1,13 @@
 ---
 title: Project Status
 status: canonical current status
-last_updated: 2026-09-12
+last_updated: 2026-09-13
 paper_source: false
 ---
 
 # Project Status
 
-Status date: 2026-09-12.
+Status date: 2026-09-13.
 
 ## Completed scientific work
 
@@ -129,15 +129,17 @@ and a 72-artifact full-chain audit. DE + snooker is selected for SparseMix-2;
 its n4 pilot autocorrelation-stability check is still insufficient, so the
 selection does not yet qualify the sampler. [Source E13](../evidence/Evidence-Sources.md#e13)
 
-[SparseMix-2](../experiments/Sparse-Mixing-V2-Preregistration.md) prospectively
-fixes 16 fresh ensembles, 800,000 retained steps each and a joint n3/n4
-passage rule. These are registered design quantities, not completed results.
+[SparseMix-2](../experiments/Sparse-Mixing-V2-Preregistration.md) completed all
+16 fresh ensembles and a 48-artifact full-chain audit. Both n3 and n4 pass:
+each has eight passing ensembles, with maximum relative autocorrelation-time
+changes of 1.23% and 2.56%, respectively. This permits registration of a new
+mismatch campaign; it does not admit a mismatch endpoint or qualify all future
+posterior states. [Source E14](../evidence/Evidence-Sources.md#e14)
 
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
-2. Test a reparameterized or alternative sampler on both locked sparse states
-   under a new prospective diagnostic before another mismatch campaign.
-3. Admit a new independent mismatch campaign only after its sampler passes the
-   prospective sparse-state checks.
+2. Preserve the completed SparseMix-2 qualification and its original criteria.
+3. Register a new independent mismatch campaign using the qualified sampler,
+   with prospective checks at every new posterior state.
 4. Preregister gate-aligned utility after a valid mismatch campaign establishes
    the evaluation path.
 5. Run larger simulation-based calibration for parameter and predictive

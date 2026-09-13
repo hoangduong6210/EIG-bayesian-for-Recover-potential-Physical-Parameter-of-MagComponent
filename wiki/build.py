@@ -115,6 +115,87 @@ def check_sparse_pilot_contract(contract: dict) -> dict:
             "sparse_pilot_decision_sha256": contract["decision_sha256"]}
 
 
+def check_sparse_mixing_v2_contract(contract: dict) -> dict:
+    """Bind the confirmatory diagnostic result to its prospective configuration."""
+    if not isinstance(contract, dict):
+        raise WikiError("SparseMix-2 diagnostic contract must be a table")
+    root = WIKI_ROOT.parent.resolve()
+    records = {}
+    for label in ("manifest", "config"):
+        relative, digest = contract.get(label), contract.get(f"{label}_sha256")
+        if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+            raise WikiError(f"invalid SparseMix-2 {label} path")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise WikiError(f"missing or unsafe SparseMix-2 {label}")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise WikiError(f"invalid SparseMix-2 {label} SHA-256")
+        if sha256(path) != digest:
+            raise WikiError(f"SparseMix-2 {label} SHA-256 mismatch")
+        try:
+            contents = path.read_text(encoding="utf-8")
+            value = json.loads(contents) if label == "manifest" else tomllib.loads(contents)
+        except (ValueError, UnicodeError) as exc:
+            raise WikiError(f"invalid SparseMix-2 {label}") from exc
+        if not isinstance(value, dict):
+            raise WikiError(f"SparseMix-2 {label} must contain an object")
+        records[label] = value
+    result, config = records["manifest"], records["config"]
+    if result.get("schema_version") != "magcore-sparse-mixing-v2-manifest/1.0" \
+            or result.get("record_class") != "endpoint_free_confirmatory_sampler_validation_manifest" \
+            or result.get("protocol_id") != "SparseMix-2" \
+            or config.get("schema_version") != "magcore-sparse-mixing-v2/1.0" \
+            or config.get("protocol_id") != "SparseMix-2":
+        raise WikiError("unsupported SparseMix-2 evidence identity")
+    if config.get("status") != "preregistered_before_confirmatory_chains" \
+            or config.get("diagnostic_only") is not True \
+            or config.get("retroactive_mm2_admission_allowed") is not False:
+        raise WikiError("SparseMix-2 configuration disclosure differs")
+    if result.get("config_sha256") != contract["config_sha256"] \
+            or result.get("parent_config_sha256") != config.get("parent_config_sha256") \
+            or result.get("pilot_decision_sha256") != config.get("pilot_decision_sha256") \
+            or not isinstance(config.get("diagnostics"), dict) \
+            or result.get("registered_criteria") != config["diagnostics"]:
+        raise WikiError("SparseMix-2 configuration binding differs")
+    if result.get("matrix") != {"expected_task_count": 16, "validated_task_count": 16,
+                                "artifact_count": 48}:
+        raise WikiError("SparseMix-2 matrix is not complete")
+    tasks, artifacts = result.get("tasks"), result.get("artifacts")
+    if not isinstance(tasks, list) or not isinstance(artifacts, list) \
+            or len(tasks) != 16 or len(artifacts) != 16 \
+            or any(not isinstance(row, dict) or not isinstance(row.get("task_id"), str)
+                   for row in tasks + artifacts):
+        raise WikiError("SparseMix-2 task records are incomplete")
+    identities = {row["task_id"] for row in tasks}
+    if len(identities) != 16 or {row["task_id"] for row in artifacts} != identities \
+            or any(sum(row.get("target_id") == state for row in tasks) != 8 for state in ("n3", "n4")):
+        raise WikiError("SparseMix-2 independent ensemble matrix differs")
+    disclosure = result.get("disclosure", {})
+    if any(disclosure.get(key) is not False for key in (
+        "scientific_endpoints_included", "retroactive_mm2_admission_allowed", "model_mismatch_campaign_admitted",
+    )) or disclosure.get("confirmatory_sampler_validation") is not True:
+        raise WikiError("SparseMix-2 disclosure boundary differs")
+    classifications = result.get("classifications")
+    if not isinstance(classifications, dict) or set(classifications) != {"n3", "n4"}:
+        raise WikiError("SparseMix-2 classifications must cover both locked states")
+    passes = []
+    for row in classifications.values():
+        if not isinstance(row, dict) or row.get("independent_ensemble_count") != 8 \
+                or type(row.get("criteria_passed")) is not bool \
+                or not isinstance(row.get("reason_codes"), list):
+            raise WikiError("SparseMix-2 classification is malformed")
+        passed = row["criteria_passed"]
+        if row.get("classification") != ("mixing_supported" if passed else "mixing_not_supported") \
+                or passed != (len(row["reason_codes"]) == 0):
+            raise WikiError("SparseMix-2 classification contradicts its criteria")
+        passes.append(passed)
+    if type(result.get("both_states_pass")) is not bool or result["both_states_pass"] != all(passes):
+        raise WikiError("SparseMix-2 both-state claim contradicts classifications")
+    return {"sparse_mixing_v2_manifest_sha256": contract["manifest_sha256"],
+            "sparse_mixing_v2_config_sha256": contract["config_sha256"],
+            "sparse_mixing_v2_both_states_pass": result["both_states_pass"]}
+
+
 def aggregate_digest(entries: dict[str, str]) -> str:
     """Hash a path-to-digest map without depending on filesystem traversal order."""
     digest = hashlib.sha256()
@@ -435,6 +516,9 @@ def check() -> dict:
     pilot_report = {}
     if "sparse_pilot" in manifest.get("diagnostics", {}):
         pilot_report = check_sparse_pilot_contract(manifest["diagnostics"]["sparse_pilot"])
+    sparse_v2_report = {}
+    if "sparse_mixing_v2" in manifest.get("diagnostics", {}):
+        sparse_v2_report = check_sparse_mixing_v2_contract(manifest["diagnostics"]["sparse_mixing_v2"])
     sparse_contract = manifest.get("diagnostics", {}).get("sparse_mixing", {})
     if sparse_contract.get("protocol_id") != "SparseMix-1":
         raise WikiError("unexpected sparse-mixing protocol identity")
@@ -585,6 +669,7 @@ def check() -> dict:
 
     return {
         **pilot_report,
+        **sparse_v2_report,
         "abstract_words": len(abstract.split()),
         "body_words": len(body.split()),
         "citation_count": len(cited),

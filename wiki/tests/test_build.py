@@ -93,7 +93,7 @@ def test_comparator_explanation_is_source_bound():
     assert "Why EIG did not beat the strong comparators" in page
     assert "Evidence-Sources.md#e4" in page
     assert "Evidence-Sources.md#e5" in page
-    for source_id in range(1, 14):
+    for source_id in range(1, 15):
         assert f'<a id="e{source_id}"></a>' in (
             WIKI / "evidence" / "Evidence-Sources.md"
         ).read_text(encoding="utf-8")
@@ -114,7 +114,7 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E13" in index
+    assert "E1--E14" in index
 
 
 def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():
@@ -197,6 +197,91 @@ def test_sparse_pilot_decision_must_bind_manifest(sparse_pilot_contract, field, 
     contract["decision_sha256"] = MODULE.sha256(decision_path)
     with pytest.raises(MODULE.WikiError):
         MODULE.check_sparse_pilot_contract(contract)
+
+
+@pytest.fixture
+def sparse_v2_contract(tmp_path, monkeypatch):
+    monkeypatch.setattr(MODULE, "WIKI_ROOT", tmp_path / "wiki")
+    config_path, result_path = tmp_path / "config.toml", tmp_path / "manifest.json"
+    config_path.write_text('''schema_version = "magcore-sparse-mixing-v2/1.0"
+protocol_id = "SparseMix-2"
+status = "preregistered_before_confirmatory_chains"
+diagnostic_only = true
+retroactive_mm2_admission_allowed = false
+parent_config_sha256 = "parent"
+pilot_decision_sha256 = "decision"
+[diagnostics]
+minimum_steps_per_tau = 50
+''', encoding="utf-8")
+    tasks = [{"task_id": f"{state}_{rep}", "target_id": state}
+             for state in ("n3", "n4") for rep in range(8)]
+    result = {
+        "schema_version": "magcore-sparse-mixing-v2-manifest/1.0",
+        "record_class": "endpoint_free_confirmatory_sampler_validation_manifest",
+        "protocol_id": "SparseMix-2", "config_sha256": MODULE.sha256(config_path),
+        "parent_config_sha256": "parent", "pilot_decision_sha256": "decision",
+        "registered_criteria": {"minimum_steps_per_tau": 50},
+        "matrix": {"expected_task_count": 16, "validated_task_count": 16, "artifact_count": 48},
+        "tasks": tasks, "artifacts": [{"task_id": r["task_id"]} for r in tasks],
+        "disclosure": {"scientific_endpoints_included": False, "retroactive_mm2_admission_allowed": False,
+                       "model_mismatch_campaign_admitted": False, "confirmatory_sampler_validation": True},
+        "classifications": {state: {"criteria_passed": True, "classification": "mixing_supported",
+                                    "independent_ensemble_count": 8, "reason_codes": []}
+                            for state in ("n3", "n4")},
+        "both_states_pass": True,
+    }
+    result_path.write_text(json.dumps(result), encoding="utf-8")
+    contract = {"manifest": "manifest.json", "manifest_sha256": MODULE.sha256(result_path),
+                "config": "config.toml", "config_sha256": MODULE.sha256(config_path)}
+    return contract, result_path, config_path
+
+
+def test_sparse_v2_validated_completion_is_hash_bound(sparse_v2_contract):
+    contract, _, config_path = sparse_v2_contract
+    report = MODULE.check_sparse_mixing_v2_contract(contract)
+    assert report["sparse_mixing_v2_both_states_pass"] is True
+    config_path.write_text("", encoding="utf-8")
+    with pytest.raises(MODULE.WikiError, match="SHA-256 mismatch"):
+        MODULE.check_sparse_mixing_v2_contract(contract)
+
+
+@pytest.mark.parametrize("mutation", ["matrix", "false_pass", "wrong_count", "reason",
+    "config", "disclosure", "duplicate", "non_boolean"])
+def test_sparse_v2_contradictory_claims_are_rejected(sparse_v2_contract, mutation):
+    contract, path, _ = sparse_v2_contract
+    result = json.loads(path.read_text())
+    if mutation == "matrix":
+        result["matrix"]["validated_task_count"] = 15
+    elif mutation == "false_pass":
+        result["classifications"]["n4"].update(criteria_passed=False,
+            classification="mixing_not_supported", reason_codes=["tau_instability"])
+    elif mutation == "wrong_count":
+        result["classifications"]["n4"]["independent_ensemble_count"] = 7
+    elif mutation == "reason":
+        result["classifications"]["n4"]["reason_codes"] = ["tau_instability"]
+    elif mutation == "config":
+        result["config_sha256"] = "0" * 64
+    elif mutation == "disclosure":
+        result["disclosure"]["retroactive_mm2_admission_allowed"] = True
+    elif mutation == "duplicate":
+        result["tasks"][-1] = result["tasks"][0]
+    else:
+        result["both_states_pass"] = 1
+    path.write_text(json.dumps(result), encoding="utf-8")
+    contract["manifest_sha256"] = MODULE.sha256(path)
+    with pytest.raises(MODULE.WikiError):
+        MODULE.check_sparse_mixing_v2_contract(contract)
+
+
+def test_sparse_v2_consistent_nonpass_remains_publishable(sparse_v2_contract):
+    contract, path, _ = sparse_v2_contract
+    result = json.loads(path.read_text())
+    result["classifications"]["n4"].update(criteria_passed=False,
+        classification="mixing_not_supported", reason_codes=["tau_instability"])
+    result["both_states_pass"] = False
+    path.write_text(json.dumps(result), encoding="utf-8")
+    contract["manifest_sha256"] = MODULE.sha256(path)
+    assert MODULE.check_sparse_mixing_v2_contract(contract)["sparse_mixing_v2_both_states_pass"] is False
 
 
 def test_acquisition_figure_is_bound_to_evidence_projection():

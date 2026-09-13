@@ -84,6 +84,12 @@ manifest_sha256 = "8d2e1298941d413dd3cb849425613ac08218c9b8d81846168b5ebb90b4bb0
 decision = "results/diagnostics/sparse_mixing/SparseMix-Pilot-1/20260912T054816Z_efbc1c2f169e/decision.json"
 decision_sha256 = "5914e90dcace7622052cfb658db139510005802faaac33fd0a9e3aaeab29d756"
 
+[diagnostics.sparse_mixing_v2]
+manifest = "results/diagnostics/sparse_mixing/SparseMix-2/20260912T060428Z_7a00dff3106f/manifest.json"
+manifest_sha256 = "1f73174325341bd1638e5ac6f8c503ce75ee42022b0da42124799c766b14d1db"
+config = "configs/sparse_mixing_v2.toml"
+config_sha256 = "89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c"
+
 [snapshot]
 format = "A4, 10 point, two column"
 minimum_bibliography_items = 45

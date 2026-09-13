@@ -1,7 +1,7 @@
 ---
 title: SparseMix-2 prospective sampler validation
-status: registered and submitted; validation pending
-last_updated: 2026-09-12
+status: completed; both locked states pass
+last_updated: 2026-09-13
 paper_source: false
 ---
 
@@ -27,8 +27,9 @@ The submitted run is `20260912T060428Z_7a00dff3106f`, from registration commit
 `7a00dff3106fa72027f243b94b7b512391b2548c`. Configuration SHA-256:
 `89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c`.
 The [registration record](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/SparseMix-2/20260912T060428Z_7a00dff3106f/registration.json)
-records submission, not completion or diagnostic passage. Independent
-full-chain validation follows successful completion of the entire array.
+records the original submission, not completion or diagnostic passage. The
+subsequent [validated result E14](../evidence/Evidence-Sources.md#e14) supplies
+the complete outcome without changing the prospective criteria below.
 
 The two targets are the exact n3 and n4 observation states reconstructed from
 the MM-2 rejection, with the same state and observation hashes as SparseMix-1.
@@ -99,6 +100,27 @@ overwrite a result. Diagnostic failure is not an infrastructure retry and
 must not trigger extension, reseeding or a relaxed threshold within SparseMix-2.
 
 ## Conditional continuation
+
+### Result
+
+All 16 tasks and 48 artifacts passed independent validation. Every checkpoint
+autocorrelation estimate, ESS and final parameter summary was recomputed from
+the full retained chains. Both states satisfy the registered rule, with all
+eight independent ensembles passing at each state.
+
+| Worst-case diagnostic | n3 | n4 | Registered threshold |
+|---|---:|---:|---:|
+| Minimum retained steps/τ | 1051.63 | 466.50 | At least 50 |
+| Maximum relative τ change | 1.23% | 2.56% | At most 10% |
+| Maximum normalized pairwise median difference | 0.099 | 0.112 | At most 1 |
+| Maximum normalized pairwise tail difference | 0.092 | 0.111 | At most 1 |
+
+[Table source E14](../evidence/Evidence-Sources.md#e14), `/tasks` and
+`/classifications`. These results support DE + snooker exploration at the
+two locked states; they do not establish convergence at untested states,
+physical uncertainty calibration or robustness to model discrepancy.
+
+### Registered consequence
 
 The study supports mixing at the two tested states only when all eight
 ensembles pass at n3 **and** all eight pass at n4. Only that result permits

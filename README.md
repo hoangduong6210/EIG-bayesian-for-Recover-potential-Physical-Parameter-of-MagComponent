@@ -73,7 +73,7 @@ so measured-data acquisition suggestions remain model-conditional.
 | Model-mismatch campaign MM-2 | Closed with 119/120 valid task records and one prospectively retained sampler rejection; not admitted | [E11](wiki/evidence/Evidence-Sources.md#e11), [MM-2 record](wiki/experiments/Model-Mismatch-V2-Preregistration.md) |
 | Sparse-posterior mixing diagnostic | Complete 18-task matrix: the three-measurement state passes the locked mixing criteria; the four-measurement state remains unresolved | [E12](wiki/evidence/Evidence-Sources.md#e12), [SparseMix-1 record](wiki/experiments/Sparse-Posterior-Mixing-Preregistration.md) |
 | Alternative-sampler pilot | Complete 24-task full-chain audit; DE + snooker selected for longer confirmation, not yet qualified | [E13](wiki/evidence/Evidence-Sources.md#e13), [Sampler comparison](wiki/experiments/Sparse-Sampler-Pilot.md) |
-| SparseMix-2 | Registered and submitted; both-state confirmation pending | [Prospective protocol and run record](wiki/experiments/Sparse-Mixing-V2-Preregistration.md) |
+| SparseMix-2 | Complete 16-task, 48-artifact audit; both locked states pass with DE + snooker | [E14](wiki/evidence/Evidence-Sources.md#e14), [Protocol and result](wiki/experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Gate-aligned utility and simulation-based calibration | Deferred; neither non-admitted mismatch campaign can authorize these experiments | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release

@@ -181,6 +181,29 @@ source label.
   consistency rather than independently recomputed. No scientific endpoint
   or retroactive MM-2 admission is supplied.
 
+<a id="e14"></a>
+## E14 — SparseMix-2 prospective sampler validation
+
+- Artifact: [`manifest.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/SparseMix-2/20260912T060428Z_7a00dff3106f/manifest.json)
+- SHA-256: `1f73174325341bd1638e5ac6f8c503ce75ee42022b0da42124799c766b14d1db`
+- Source and validator revision: `7a00dff3106fa72027f243b94b7b512391b2548c`.
+- Configuration SHA-256: `89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c`.
+- Pointers: `/matrix` accounts for 16 tasks and 48 artifacts;
+  `/classifications/n3` and `/classifications/n4` each record eight passing
+  ensembles; `/both_states_pass` is true. `/tasks` provides every final
+  parameter diagnostic and quantile summary, while `/artifacts` binds the
+  original result, full-chain and completion-marker hashes.
+- Verification: full-chain autocorrelation, ESS and quantiles were recomputed.
+  Acceptance histories were not retained; acceptance was range/consistency
+  checked, not independently recomputed. The public manifest retains that
+  distinction. Full unthinned arrays remain in the production archive and
+  are not bundled into this repository projection.
+- Interpretation: independent confirmation supports mixing at the two locked
+  sparse states under the registered DE + snooker protocol. It does not
+  establish calibration, laboratory performance, model-mismatch robustness
+  or convergence at every possible posterior state. MM-1 and MM-2 remain
+  non-admitted; a new mismatch campaign needs its own registration and checks.
+
 ## Verification rule
 
 [`build.py`](../build.py) rejects the wiki if the projection hash, release ID,
