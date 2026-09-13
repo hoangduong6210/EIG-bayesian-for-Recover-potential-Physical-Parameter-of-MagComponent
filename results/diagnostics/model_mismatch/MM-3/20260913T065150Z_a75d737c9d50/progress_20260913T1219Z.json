@@ -1,0 +1,128 @@
+{
+  "record_class": "endpoint_free_execution_progress",
+  "campaign_id": "MM-3",
+  "run_id": "20260913T065150Z_a75d737c9d50",
+  "observed_at_utc": "2026-09-13T12:19:01.710211+00:00",
+  "scheduler_accounting": [
+    "7273251_0|COMPLETED|0:0|02:06:39",
+    "7273251_1|COMPLETED|0:0|02:18:39",
+    "7273251_2|COMPLETED|0:0|02:15:24",
+    "7273251_3|COMPLETED|0:0|02:24:53",
+    "7273251_4|COMPLETED|0:0|02:22:25",
+    "7273251_5|COMPLETED|0:0|02:15:06",
+    "7273251_6|COMPLETED|0:0|02:07:40",
+    "7273251_7|COMPLETED|0:0|02:18:41",
+    "7273251_8|COMPLETED|0:0|02:15:36",
+    "7273251_9|COMPLETED|0:0|02:11:12",
+    "7273251_10|COMPLETED|0:0|02:17:14",
+    "7273251_11|COMPLETED|0:0|02:11:37",
+    "7273251_12|COMPLETED|0:0|02:11:28",
+    "7273251_13|COMPLETED|0:0|02:29:45",
+    "7273251_14|COMPLETED|0:0|02:09:02",
+    "7273251_15|COMPLETED|0:0|02:21:57",
+    "7273251_16|COMPLETED|0:0|02:11:23",
+    "7273251_17|COMPLETED|0:0|02:14:55",
+    "7273251_18|COMPLETED|0:0|02:07:19",
+    "7273251_19|COMPLETED|0:0|02:15:27",
+    "7273251_20|RUNNING|0:0|01:04:53",
+    "7273251_21|RUNNING|0:0|01:00:58",
+    "7273251_22|RUNNING|0:0|01:00:20",
+    "7273251_23|RUNNING|0:0|00:59:41",
+    "7273251_24|RUNNING|0:0|00:54:35",
+    "7273251_25|RUNNING|0:0|00:54:35",
+    "7273251_26|RUNNING|0:0|00:50:45",
+    "7273251_27|RUNNING|0:0|00:46:19",
+    "7273251_28|RUNNING|0:0|00:43:48",
+    "7273251_29|RUNNING|0:0|00:39:22",
+    "7273251_[30-119%10]|PENDING|0:0|00:00:00",
+    "7273252|PENDING|0:0|00:00:00"
+  ],
+  "completed_result_count": 20,
+  "result_artifacts": [
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10100/result.json",
+      "sha256": "a4e5ce94dc8d603ec5a93fa3dd3f61e8e4c48b33ca1b0c0f36a190d74e04eed2"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10101/result.json",
+      "sha256": "336e68263eda2a25175e89c5bfa568a3b0242bb1513b0fb2dca919c9a6577008"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10102/result.json",
+      "sha256": "3e6ee6f85dafdb60126d2e9bcad3cb6718c9ea71a49cf4c4bfa43457b7af3426"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10103/result.json",
+      "sha256": "44bd10ec29af256b4e2fe5d602a5f2e8544952a266d609073a616b97332aa4cb"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10104/result.json",
+      "sha256": "d08ffa6fe00800ac1db4f7f34cdcc7d68406f054cd78f3643321189215eb9841"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10105/result.json",
+      "sha256": "376922432a7f1cb235e7b8609266d1c0c7ec118a1bccaa78432238ae7f6ed7f1"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10106/result.json",
+      "sha256": "029162f20fec0977407744c01efb6a01b38c8f560789632abb2064af79376280"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10107/result.json",
+      "sha256": "ab8470c8f3fb0760737fad7c976e2213857304f1bbce20e5f7923a34ab14f5e9"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10108/result.json",
+      "sha256": "e36582345256a92096a80fb71dc2d149509007acf5b013adb3e1d7aa4e5df484"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10109/result.json",
+      "sha256": "72ba9324a230ec85c1d829914bae6610120b683fb7f4912eb6702272004a4400"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10110/result.json",
+      "sha256": "4d9586969c2d2a3546d80229f837f0a9be3aba87ba97988149f32aee50048b97"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10111/result.json",
+      "sha256": "4538ba658f7ce329789bac321ca4bfb2f29a0e76445be1ca813223f2d8e40819"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10112/result.json",
+      "sha256": "57aa7f354eccbd64afde6623cf6b23972b5930d25ac8dd63ddeffa1f85d8d1e7"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10113/result.json",
+      "sha256": "2d5edad2d74125f42f4569089eb2854f81386c376ece0fa9ae825c737ec8030b"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10114/result.json",
+      "sha256": "c69c0a13095c88f4c72381fb86eadaafbe0117abd1c0b5ac63bc36f87a2156bb"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10115/result.json",
+      "sha256": "84f4f1ac6da045f6f11f2bfdea8d405840b92a74262779c3fbcb4147bb2886f8"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10116/result.json",
+      "sha256": "82ed6bded2c34ee05cca8f84a61de3e7f364e589a5dadc1b9604ab3ac45e0088"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10117/result.json",
+      "sha256": "61c27a7151d1f0be2d6f25961eb184991b4e50cca0349d533dacc5a2a1f27a56"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10118/result.json",
+      "sha256": "b4cddcd102ae05e82eb96e0353424b46c098f18c29af4af5a6db829ec80560d6"
+    },
+    {
+      "path": "results/model_mismatch_v3/matched_control_seed10119/result.json",
+      "sha256": "59eb37f429a1d52e5b5bda4b4cf205f47839d35e50506dd9745429d47d412dd4"
+    }
+  ],
+  "failure_markers": [],
+  "rejection_records": [],
+  "aggregate_exists": false,
+  "scientific_endpoints_inspected": false,
+  "campaign_admission_decided": false
+}

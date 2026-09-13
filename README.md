@@ -75,7 +75,7 @@ so measured-data acquisition suggestions remain model-conditional.
 | Alternative-sampler pilot | Complete 24-task full-chain audit; DE + snooker selected for subsequent confirmation | [E13](wiki/evidence/Evidence-Sources.md#e13), [Sampler comparison](wiki/experiments/Sparse-Sampler-Pilot.md) |
 | SparseMix-2 | Complete 16-task, 48-artifact audit; both locked states pass with DE + snooker | [E14](wiki/evidence/Evidence-Sources.md#e14), [Protocol and result](wiki/experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Production sampler integration | Both locked states pass the adaptive implementation check | [E15](wiki/evidence/Evidence-Sources.md#e15) |
-| Model-mismatch campaign MM-3 | Registered and submitted: 120 scenario--seed tasks; no admitted result yet | [Protocol and execution](wiki/experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval) |
+| Model-mismatch campaign MM-3 | At 13 September 12:19 UTC: 20/120 tasks complete, ten running; no recorded failure or rejection, no admitted result | [Protocol and progress](wiki/experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z) |
 | Gate-aligned utility and simulation-based calibration | Deferred; neither non-admitted mismatch campaign can authorize these experiments | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release

@@ -205,6 +205,23 @@ including out-of-memory, timeout and cancellation when a shell failure marker
 is missing. Transient accounting absence is retried rather than reported as a
 numerical rejection. It never launches replacements or changes admission.
 
+<a id="progress-20260913t1219z"></a>
+### Progress checkpoint — 13 September 2026, 12:19 UTC
+
+The array has completed 20 of 120 tasks with successful scheduler exit codes
+and corresponding result files; ten tasks are running and 90 remain pending.
+No task-failure marker or sampler-rejection record is present. The aggregate
+is still waiting on the array and does not exist. These are execution counts,
+not a partial policy comparison or a campaign admission decision.
+
+The [endpoint-free progress record](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/progress_20260913T1219Z.json)
+contains the observation timestamp, scheduler accounting and hashes of all
+20 result artifacts. SHA-256:
+`3d3b9fb4e4556de16d0d8ffb33c3c7c70130b8f20b550ea1a61baa4e85a8c2bb`.
+No endpoint values were inspected for this checkpoint. The next decision
+remains validation of the complete task matrix, not inspection of interim
+policy performance.
+
 The source is prepared from a clean public commit. Each task receives one
 CPU for vectorized sampling and a 64 GB memory limit; up to ten tasks run
 concurrently. These are resource allocations, not laboratory-time estimates.

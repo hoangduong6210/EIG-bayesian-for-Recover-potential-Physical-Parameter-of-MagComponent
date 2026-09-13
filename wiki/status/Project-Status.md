@@ -84,6 +84,13 @@ dependent aggregate `7273252` are recorded in the
 [execution register](../experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval).
 Submission is not completion; no MM-3 endpoint or comparison is admitted yet.
 
+At 12:19 UTC on 13 September, 20/120 tasks had completed, ten were running,
+and 90 were pending. No failure marker or sampler rejection was present;
+the aggregate remained absent. The
+[progress checkpoint](../experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z)
+binds these execution counts to scheduler accounting and result-file hashes.
+No interim endpoint analysis was performed.
+
 ## Primary direct contrasts
 
 The difference is comparator minus EIG; positive values favor EIG.

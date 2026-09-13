@@ -136,7 +136,7 @@ library. It does not establish universal predictive-variance superiority.
 | SparseMix-Pilot-1 | `20260912T054816Z_efbc1c2f169e` | 24/24 tasks; 72 artifacts independently audited; [E13](../evidence/Evidence-Sources.md#e13) |
 | SparseMix-2 | `20260912T060428Z_7a00dff3106f` | 16/16 tasks and 48 artifacts audited; both locked states pass; [E14](../evidence/Evidence-Sources.md#e14) |
 | Production integration | `20260913_ee35ebd` | Both locked states pass; endpoint-free check, [E15](../evidence/Evidence-Sources.md#e15) |
-| MM-3 | `20260913T065150Z_a75d737c9d50` | Submitted: array `7273251`, aggregate `7273252` with `afterok`; [execution record](../experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval), no admitted result yet |
+| MM-3 | `20260913T065150Z_a75d737c9d50` | At 13 September 12:19 UTC: 20/120 complete, ten running, 90 pending; no recorded failure or rejection; [progress record](../experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z), no admitted result yet |
 
 The subsequent endpoint-free sampler pilot completed all 24 tasks and 72
 audited artifacts. [Source E13](../evidence/Evidence-Sources.md#e13) provides
