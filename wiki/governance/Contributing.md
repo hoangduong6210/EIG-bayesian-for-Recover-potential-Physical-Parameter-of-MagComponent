@@ -16,3 +16,11 @@ export.
 Update the evidence projection and its hashes before changing a quantitative
 claim. Preserve ties, losses, exclusions, and model inadequacy. Run the wiki
 contract and tests before review.
+
+Every scientific change must include a detailed update to the canonical Wiki
+in the same commit: the question, method or protocol change, execution status,
+evidence paths and checksums, limitations, and next decision. New readers must
+be able to retrieve that record through the Index. A submitted job is not a
+completed result; a completed computation is not an admitted scientific claim.
+The README is regenerated from the Wiki after a research-state change. Routine
+updates do not rebuild or replace document-release snapshots.

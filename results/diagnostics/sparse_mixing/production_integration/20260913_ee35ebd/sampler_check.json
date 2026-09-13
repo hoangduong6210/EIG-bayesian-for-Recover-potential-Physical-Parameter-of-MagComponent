@@ -1,0 +1,831 @@
+{
+  "all_checks_passed": true,
+  "new_mismatch_campaign_admitted": false,
+  "parent_config_sha256": "88817e15908b2fd476f3c08efdf6ac080f8ba216b1643351bf7bf4217d7c9435",
+  "record_class": "endpoint_free_production_sampler_integration_check",
+  "scientific_endpoints_included": false,
+  "source_sha256": "441f671888358d0d859ee04dfb527b48b37c2176ffa3d19b7daa62790e2bb7bb",
+  "states": [
+    {
+      "diagnostics": {
+        "acceptance_fraction": 0.16885911458333336,
+        "adaptive_sampling": {
+          "actual_retained_steps": 80000,
+          "check_interval_steps": 20000,
+          "checkpoint_history": [
+            {
+              "acceptance_fraction": 0.171396875,
+              "ess": {
+                "alpha": 18923.349723121875,
+                "alpha_cc": 1731.1486837856949,
+                "beta": 19545.53900626243,
+                "ln_f_rel_hz": 1874.4954061734484,
+                "ln_k": 19165.52065540432,
+                "ln_mu_s": 1787.7499263516895
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 20000,
+              "steps_per_tau": {
+                "alpha": 394.23645256503903,
+                "alpha_cc": 36.06559757886864,
+                "beta": 407.1987292971339,
+                "ln_f_rel_hz": 39.0519876286135,
+                "ln_k": 399.2816803209234,
+                "ln_mu_s": 37.24479013232686
+              },
+              "tau": {
+                "alpha": 50.730975966004834,
+                "alpha_cc": 554.5450884673069,
+                "beta": 49.11606682693243,
+                "ln_f_rel_hz": 512.1378248452056,
+                "ln_k": 50.089951494706604,
+                "ln_mu_s": 536.9878559911891
+              },
+              "tau_stability": {
+                "comparison_available": false,
+                "consecutive_stable_changes": 0,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": null,
+                  "alpha_cc": null,
+                  "beta": null,
+                  "ln_f_rel_hz": null,
+                  "ln_k": null,
+                  "ln_mu_s": null
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.16551510416666668,
+              "ess": {
+                "alpha": 35894.159164805744,
+                "alpha_cc": 3121.0052486677914,
+                "beta": 36996.49581409698,
+                "ln_f_rel_hz": 3340.672711322011,
+                "ln_k": 37252.7948273907,
+                "ln_mu_s": 3209.6197871145173
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 40000,
+              "steps_per_tau": {
+                "alpha": 747.7949826001196,
+                "alpha_cc": 65.020942680579,
+                "beta": 770.7603294603538,
+                "ln_f_rel_hz": 69.5973481525419,
+                "ln_k": 776.0998922373063,
+                "ln_mu_s": 66.8670788982191
+              },
+              "tau": {
+                "alpha": 53.49059692927873,
+                "alpha_cc": 615.1864053479425,
+                "beta": 51.89680692051953,
+                "ln_f_rel_hz": 574.7345417864041,
+                "ln_k": 51.5397571885879,
+                "ln_mu_s": 598.2016959479492
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 0,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": 0.051590767755358216,
+                  "alpha_cc": 0.09857388972426587,
+                  "beta": 0.05358210376692018,
+                  "ln_f_rel_hz": 0.10891413755406765,
+                  "ln_k": 0.028129851069657655,
+                  "ln_mu_s": 0.10232976665129091
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.16682013888888889,
+              "ess": {
+                "alpha": 54814.89886776545,
+                "alpha_cc": 4372.388495393178,
+                "beta": 55639.19030743211,
+                "ln_f_rel_hz": 4716.771819803894,
+                "ln_k": 56687.43599104977,
+                "ln_mu_s": 4479.806391826147
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 60000,
+              "steps_per_tau": {
+                "alpha": 1141.9770597451136,
+                "alpha_cc": 91.09142698735789,
+                "beta": 1159.1497980715023,
+                "ln_f_rel_hz": 98.26607957924779,
+                "ln_k": 1180.9882498135369,
+                "ln_mu_s": 93.32929982971139
+              },
+              "tau": {
+                "alpha": 52.54045997508203,
+                "alpha_cc": 658.6788898183261,
+                "beta": 51.76207604903443,
+                "ln_f_rel_hz": 610.5870943148019,
+                "ln_k": 50.80490852425775,
+                "ln_mu_s": 642.8849258429666
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 1,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": 0.018083910088478768,
+                  "alpha_cc": 0.06602987456054574,
+                  "beta": 0.002602887707932595,
+                  "ln_f_rel_hz": 0.05871816299791172,
+                  "ln_k": 0.01446412729941801,
+                  "ln_mu_s": 0.06950424267053329
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.16885911458333336,
+              "ess": {
+                "alpha": 72660.79001430955,
+                "alpha_cc": 5797.777783237798,
+                "beta": 74299.65172701477,
+                "ln_f_rel_hz": 6250.932767626435,
+                "ln_k": 75351.89763023064,
+                "ln_mu_s": 5962.785760063008
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 80000,
+              "steps_per_tau": {
+                "alpha": 1513.766458631449,
+                "alpha_cc": 120.78703715078746,
+                "beta": 1547.9094109794744,
+                "ln_f_rel_hz": 130.22776599221737,
+                "ln_k": 1569.831200629805,
+                "ln_mu_s": 124.22470333464598
+              },
+              "tau": {
+                "alpha": 52.84831061214397,
+                "alpha_cc": 662.32272839121,
+                "beta": 51.68261103172582,
+                "ln_f_rel_hz": 614.3083188939978,
+                "ln_k": 50.96089309978333,
+                "ln_mu_s": 643.9942930231026
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 2,
+                "denominator": "current_checkpoint_tau",
+                "eligible": true,
+                "relative_change": {
+                  "alpha": 0.005825174608158594,
+                  "alpha_cc": 0.005501605813430098,
+                  "beta": 0.0015375581016954928,
+                  "ln_f_rel_hz": 0.006057584546300149,
+                  "ln_k": 0.003060868168463133,
+                  "ln_mu_s": 0.0017226351105198714
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": true
+            }
+          ],
+          "extension_count": 3,
+          "maximum_retained_steps": 800000,
+          "minimum_retained_steps": 20000,
+          "stopped_reason": "converged"
+        },
+        "ess": {
+          "alpha": 72660.79001430955,
+          "alpha_cc": 5797.777783237798,
+          "beta": 74299.65172701477,
+          "ln_f_rel_hz": 6250.932767626435,
+          "ln_k": 75351.89763023064,
+          "ln_mu_s": 5962.785760063008
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 80000,
+        "sampler": {
+          "acceptance_window": "retained_only",
+          "density_parity": {
+            "final": {
+              "atol": 1e-08,
+              "maximum_absolute_difference": 0.0,
+              "rows": 48,
+              "rtol": 1e-11
+            },
+            "initial": {
+              "atol": 1e-08,
+              "maximum_absolute_difference": 0.0,
+              "rows": 48,
+              "rtol": 1e-11
+            }
+          },
+          "implementation": "emcee.EnsembleSampler",
+          "method": "de_snooker",
+          "move_parameters": {
+            "DEMove": {
+              "gamma0": 0.6870468203356547,
+              "nsplits": 2,
+              "randomize_split": true,
+              "sigma": 1e-05,
+              "weight": 0.8
+            },
+            "DESnookerMove": {
+              "gammas": 1.7,
+              "nsplits": 4,
+              "randomize_split": true,
+              "weight": 0.2
+            }
+          },
+          "qualification_scope": "SparseMix-2 evaluated eight independent ensembles per locked n3/n4 state. Production checks evaluate one adaptive ensemble per posterior state and do not establish the same cross-ensemble agreement.",
+          "vectorize": true,
+          "version": "3.1.6",
+          "warmup_steps": 80000
+        },
+        "steps_per_tau": {
+          "alpha": 1513.766458631449,
+          "alpha_cc": 120.78703715078746,
+          "beta": 1547.9094109794744,
+          "ln_f_rel_hz": 130.22776599221737,
+          "ln_k": 1569.831200629805,
+          "ln_mu_s": 124.22470333464598
+        },
+        "tau": {
+          "alpha": 52.84831061214397,
+          "alpha_cc": 662.32272839121,
+          "beta": 51.68261103172582,
+          "ln_f_rel_hz": 614.3083188939978,
+          "ln_k": 50.96089309978333,
+          "ln_mu_s": 643.9942930231026
+        },
+        "tau_stability": {
+          "comparison_available": true,
+          "consecutive_stable_changes": 2,
+          "denominator": "current_checkpoint_tau",
+          "eligible": true,
+          "relative_change": {
+            "alpha": 0.005825174608158594,
+            "alpha_cc": 0.005501605813430098,
+            "beta": 0.0015375581016954928,
+            "ln_f_rel_hz": 0.006057584546300149,
+            "ln_k": 0.003060868168463133,
+            "ln_mu_s": 0.0017226351105198714
+          }
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.05,
+            0.8
+          ],
+          "maximum_relative_tau_change": 0.1,
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0,
+          "minimum_finite_log_probability_fraction": 1.0,
+          "required_consecutive_stable_changes": 2
+        },
+        "valid": true
+      },
+      "seed": 2026091300,
+      "state_identity_sha256": "4ef1263722e4af3968932b0f38b7e10839f4474d5bc4604aed40f481b385ad64",
+      "target_id": "n3"
+    },
+    {
+      "diagnostics": {
+        "acceptance_fraction": 0.15792854166666667,
+        "adaptive_sampling": {
+          "actual_retained_steps": 100000,
+          "check_interval_steps": 20000,
+          "checkpoint_history": [
+            {
+              "acceptance_fraction": 0.15506875,
+              "ess": {
+                "alpha": 17168.588006910595,
+                "alpha_cc": 1034.7405406179873,
+                "beta": 18099.129866476283,
+                "ln_f_rel_hz": 1196.8705815912758,
+                "ln_k": 17482.07480252287,
+                "ln_mu_s": 1035.667879409669
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 20000,
+              "steps_per_tau": {
+                "alpha": 357.6789168106374,
+                "alpha_cc": 21.55709459620807,
+                "beta": 377.06520555158926,
+                "ln_f_rel_hz": 24.934803783151576,
+                "ln_k": 364.20989171922645,
+                "ln_mu_s": 21.576414154368102
+              },
+              "tau": {
+                "alpha": 55.91607181753017,
+                "alpha_cc": 927.7688099730301,
+                "beta": 53.041223919727706,
+                "ln_f_rel_hz": 802.0917338645344,
+                "ln_k": 54.91339047819774,
+                "ln_mu_s": 926.9380841927823
+              },
+              "tau_stability": {
+                "comparison_available": false,
+                "consecutive_stable_changes": 0,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": null,
+                  "alpha_cc": null,
+                  "beta": null,
+                  "ln_f_rel_hz": null,
+                  "ln_k": null,
+                  "ln_mu_s": null
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.15325208333333332,
+              "ess": {
+                "alpha": 33027.01547679694,
+                "alpha_cc": 1592.3145065282679,
+                "beta": 33599.77392190578,
+                "ln_f_rel_hz": 1836.9729417643446,
+                "ln_k": 33909.58879359867,
+                "ln_mu_s": 1579.7681589367448
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 40000,
+              "steps_per_tau": {
+                "alpha": 688.0628224332697,
+                "alpha_cc": 33.173218886005586,
+                "beta": 699.9952900397037,
+                "ln_f_rel_hz": 38.27026962009051,
+                "ln_k": 706.4497665333056,
+                "ln_mu_s": 32.91183664451552
+              },
+              "tau": {
+                "alpha": 58.13422655004633,
+                "alpha_cc": 1205.7919413082448,
+                "beta": 57.14324163199898,
+                "ln_f_rel_hz": 1045.1977578700266,
+                "ln_k": 56.62115255029134,
+                "ln_mu_s": 1215.3682102899495
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 0,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": 0.03815574514621962,
+                  "alpha_cc": 0.23057305477889384,
+                  "beta": 0.07178482695623335,
+                  "ln_f_rel_hz": 0.23259332712395964,
+                  "ln_k": 0.030161202928123968,
+                  "ln_mu_s": 0.23731912983667447
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.16172743055555558,
+              "ess": {
+                "alpha": 51223.780272388896,
+                "alpha_cc": 2195.1926163764256,
+                "beta": 51605.37070638586,
+                "ln_f_rel_hz": 2415.7517309455425,
+                "ln_k": 51964.78422955333,
+                "ln_mu_s": 2175.280789097606
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 60000,
+              "steps_per_tau": {
+                "alpha": 1067.162089008102,
+                "alpha_cc": 45.733179507842195,
+                "beta": 1075.1118897163722,
+                "ln_f_rel_hz": 50.32816106136546,
+                "ln_k": 1082.5996714490277,
+                "ln_mu_s": 45.31834977286679
+              },
+              "tau": {
+                "alpha": 56.223886341172744,
+                "alpha_cc": 1311.9577655804878,
+                "beta": 55.808144783729205,
+                "ln_f_rel_hz": 1192.1754885270216,
+                "ln_k": 55.42214872436805,
+                "ln_mu_s": 1323.9670089647323
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 0,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": 0.03397737746696181,
+                  "alpha_cc": 0.08092167831734204,
+                  "beta": 0.02392297492496156,
+                  "ln_f_rel_hz": 0.1232853150156539,
+                  "ln_k": 0.02163401913351138,
+                  "ln_mu_s": 0.08202530572094913
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.15887057291666667,
+              "ess": {
+                "alpha": 67908.58700393373,
+                "alpha_cc": 2866.533437245593,
+                "beta": 68309.06798767431,
+                "ln_f_rel_hz": 3187.3044560953276,
+                "ln_k": 67243.32771878791,
+                "ln_mu_s": 2841.2402420196527
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 80000,
+              "steps_per_tau": {
+                "alpha": 1414.7622292486194,
+                "alpha_cc": 59.71944660928319,
+                "beta": 1423.105583076548,
+                "ln_f_rel_hz": 66.40217616865266,
+                "ln_k": 1400.9026608080817,
+                "ln_mu_s": 59.1925050420761
+              },
+              "tau": {
+                "alpha": 56.546604331165966,
+                "alpha_cc": 1339.5971420064075,
+                "beta": 56.2150840748243,
+                "ln_f_rel_hz": 1204.7797921081785,
+                "ln_k": 57.10603758426275,
+                "ln_mu_s": 1351.5224595264756
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 1,
+                "denominator": "current_checkpoint_tau",
+                "eligible": false,
+                "relative_change": {
+                  "alpha": 0.005707115286768063,
+                  "alpha_cc": 0.02063260330976985,
+                  "beta": 0.007238969714132982,
+                  "ln_f_rel_hz": 0.010461914835989548,
+                  "ln_k": 0.029487054804144666,
+                  "ln_mu_s": 0.020388451828908385
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": false
+            },
+            {
+              "acceptance_fraction": 0.15792854166666667,
+              "ess": {
+                "alpha": 84460.48357463944,
+                "alpha_cc": 3531.2755513939787,
+                "beta": 84763.89839344154,
+                "ln_f_rel_hz": 3906.4811935075554,
+                "ln_k": 84043.7305140068,
+                "ln_mu_s": 3508.3165285233713
+              },
+              "finite_log_probability_fraction": 1.0,
+              "method": "emcee_integrated_autocorrelation_time",
+              "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+              "parameter_names": [
+                "ln_k",
+                "alpha",
+                "beta",
+                "ln_mu_s",
+                "ln_f_rel_hz",
+                "alpha_cc"
+              ],
+              "retained_steps": 100000,
+              "steps_per_tau": {
+                "alpha": 1759.5934078049884,
+                "alpha_cc": 73.56824065404122,
+                "beta": 1765.9145498633654,
+                "ln_f_rel_hz": 81.38502486474074,
+                "ln_k": 1750.911052375142,
+                "ln_mu_s": 73.08992767757023
+              },
+              "tau": {
+                "alpha": 56.83131089059113,
+                "alpha_cc": 1359.2821999136231,
+                "beta": 56.62788157430229,
+                "ln_f_rel_hz": 1228.7272771151295,
+                "ln_k": 57.1131239730015,
+                "ln_mu_s": 1368.1775749066435
+              },
+              "tau_stability": {
+                "comparison_available": true,
+                "consecutive_stable_changes": 2,
+                "denominator": "current_checkpoint_tau",
+                "eligible": true,
+                "relative_change": {
+                  "alpha": 0.005009677851233638,
+                  "alpha_cc": 0.01448195077406778,
+                  "beta": 0.007289651104754084,
+                  "ln_f_rel_hz": 0.019489666627387096,
+                  "ln_k": 0.00012407636364102182,
+                  "ln_mu_s": 0.012173211785980595
+                }
+              },
+              "thresholds": {
+                "acceptance_range": [
+                  0.05,
+                  0.8
+                ],
+                "maximum_relative_tau_change": 0.1,
+                "min_ess": 400.0,
+                "min_steps_per_tau": 50.0,
+                "minimum_finite_log_probability_fraction": 1.0,
+                "required_consecutive_stable_changes": 2
+              },
+              "valid": true
+            }
+          ],
+          "extension_count": 4,
+          "maximum_retained_steps": 800000,
+          "minimum_retained_steps": 20000,
+          "stopped_reason": "converged"
+        },
+        "ess": {
+          "alpha": 84460.48357463944,
+          "alpha_cc": 3531.2755513939787,
+          "beta": 84763.89839344154,
+          "ln_f_rel_hz": 3906.4811935075554,
+          "ln_k": 84043.7305140068,
+          "ln_mu_s": 3508.3165285233713
+        },
+        "finite_log_probability_fraction": 1.0,
+        "method": "emcee_integrated_autocorrelation_time",
+        "note": "R-hat is not claimed for interacting affine-invariant walkers.",
+        "parameter_names": [
+          "ln_k",
+          "alpha",
+          "beta",
+          "ln_mu_s",
+          "ln_f_rel_hz",
+          "alpha_cc"
+        ],
+        "retained_steps": 100000,
+        "sampler": {
+          "acceptance_window": "retained_only",
+          "density_parity": {
+            "final": {
+              "atol": 1e-08,
+              "maximum_absolute_difference": 0.0,
+              "rows": 48,
+              "rtol": 1e-11
+            },
+            "initial": {
+              "atol": 1e-08,
+              "maximum_absolute_difference": 0.0,
+              "rows": 48,
+              "rtol": 1e-11
+            }
+          },
+          "implementation": "emcee.EnsembleSampler",
+          "method": "de_snooker",
+          "move_parameters": {
+            "DEMove": {
+              "gamma0": 0.6870468203356547,
+              "nsplits": 2,
+              "randomize_split": true,
+              "sigma": 1e-05,
+              "weight": 0.8
+            },
+            "DESnookerMove": {
+              "gammas": 1.7,
+              "nsplits": 4,
+              "randomize_split": true,
+              "weight": 0.2
+            }
+          },
+          "qualification_scope": "SparseMix-2 evaluated eight independent ensembles per locked n3/n4 state. Production checks evaluate one adaptive ensemble per posterior state and do not establish the same cross-ensemble agreement.",
+          "vectorize": true,
+          "version": "3.1.6",
+          "warmup_steps": 80000
+        },
+        "steps_per_tau": {
+          "alpha": 1759.5934078049884,
+          "alpha_cc": 73.56824065404122,
+          "beta": 1765.9145498633654,
+          "ln_f_rel_hz": 81.38502486474074,
+          "ln_k": 1750.911052375142,
+          "ln_mu_s": 73.08992767757023
+        },
+        "tau": {
+          "alpha": 56.83131089059113,
+          "alpha_cc": 1359.2821999136231,
+          "beta": 56.62788157430229,
+          "ln_f_rel_hz": 1228.7272771151295,
+          "ln_k": 57.1131239730015,
+          "ln_mu_s": 1368.1775749066435
+        },
+        "tau_stability": {
+          "comparison_available": true,
+          "consecutive_stable_changes": 2,
+          "denominator": "current_checkpoint_tau",
+          "eligible": true,
+          "relative_change": {
+            "alpha": 0.005009677851233638,
+            "alpha_cc": 0.01448195077406778,
+            "beta": 0.007289651104754084,
+            "ln_f_rel_hz": 0.019489666627387096,
+            "ln_k": 0.00012407636364102182,
+            "ln_mu_s": 0.012173211785980595
+          }
+        },
+        "thresholds": {
+          "acceptance_range": [
+            0.05,
+            0.8
+          ],
+          "maximum_relative_tau_change": 0.1,
+          "min_ess": 400.0,
+          "min_steps_per_tau": 50.0,
+          "minimum_finite_log_probability_fraction": 1.0,
+          "required_consecutive_stable_changes": 2
+        },
+        "valid": true
+      },
+      "seed": 2026091301,
+      "state_identity_sha256": "c53fb8373ff54b01ce874bf363af024715348b6f898a059704a7e29ac43b4869",
+      "target_id": "n4"
+    }
+  ]
+}

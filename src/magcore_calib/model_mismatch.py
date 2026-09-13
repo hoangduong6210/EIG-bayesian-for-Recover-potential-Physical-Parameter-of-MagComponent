@@ -741,11 +741,29 @@ def validate_mismatch_result(record: dict[str, Any]) -> None:
             for row in trajectory:
                 diagnostic = row.get("decision_state", {}).get("sampler_diagnostics", {})
                 sampler = diagnostic.get("sampler", {})
+                if diagnostic.get("valid") is False:
+                    _validate_de_rejection_diagnostic(
+                        diagnostic,
+                        {"acceptance_fraction", "adaptive_sampling", "ess", "finite_log_probability_fraction",
+                         "method", "note", "parameter_names", "steps_per_tau", "tau", "thresholds", "valid"},
+                        {"actual_retained_steps", "check_interval_steps", "extension_count",
+                         "maximum_retained_steps", "minimum_retained_steps", "stopped_reason"},
+                        {"ln_k", "alpha", "beta", "ln_mu_s", "ln_f_rel_hz", "alpha_cc"},
+                    )
+                    if row.get("decision_state", {}).get("valid") is not False \
+                            or record.get("validity", {}).get(f"{policy}_convergence_valid") is not False:
+                        raise ValueError("MM-3 failed-state validity flags disagree")
+                    # The experiment uses this established reason to persist a
+                    # validated endpoint-free rejection sidecar.
+                    raise ValueError("model-mismatch result contains a nonconverged policy")
                 if sampler.get("method") != "de_snooker" or sampler.get("version") != "3.1.6" \
                         or sampler.get("warmup_steps") != 80000 or sampler.get("vectorize") is not True \
                         or diagnostic.get("valid") is not True \
                         or diagnostic.get("tau_stability", {}).get("eligible") is not True:
                     raise ValueError("MM-3 policy state did not use the qualified production sampler")
+                _validate_de_admission_diagnostic(diagnostic)
+                if row.get("decision_state", {}).get("valid") is not True:
+                    raise ValueError("MM-3 decision state validity disagrees with diagnostics")
         if set(result.get("mismatch_endpoints", {})) != {
             "holdout_latent_mean", "holdout_pcv_by_temperature_c",
             "holdout_point_records", "gate_truth_accuracy",
@@ -765,6 +783,95 @@ def validate_mismatch_result(record: dict[str, Any]) -> None:
         raise ValueError("model-mismatch convergence-validity registry is incomplete")
     if any(value is not True for value in record["validity"].values()):
         raise ValueError("model-mismatch result contains a nonconverged policy")
+
+
+def _validate_de_admission_diagnostic(diagnostic: Any) -> None:
+    """Reconstruct the registered numerical admission rule from checkpoint records.
+
+    Proposal acceptance and autocorrelation estimates are recorded inputs;
+    recomputing them from raw chains is outside this structural validator.
+    """
+    names = ("ln_k", "alpha", "beta", "ln_mu_s", "ln_f_rel_hz", "alpha_cc")
+    report_keys = {"method", "parameter_names", "tau", "ess", "steps_per_tau",
+                   "acceptance_fraction", "thresholds", "valid", "note",
+                   "finite_log_probability_fraction", "retained_steps", "tau_stability"}
+    if not isinstance(diagnostic, dict) or set(diagnostic) != report_keys | {"adaptive_sampling", "sampler"}:
+        raise ValueError("MM-3 admitted diagnostic schema differs")
+    adaptive = diagnostic["adaptive_sampling"]
+    adaptive_keys = {"minimum_retained_steps", "maximum_retained_steps", "check_interval_steps",
+                     "actual_retained_steps", "extension_count", "stopped_reason", "checkpoint_history"}
+    if not isinstance(adaptive, dict) or set(adaptive) != adaptive_keys:
+        raise ValueError("MM-3 admitted adaptive schema differs")
+    actual = adaptive.get("actual_retained_steps")
+    if type(actual) is not int or not 60000 <= actual <= 800000 or actual % 20000:
+        raise ValueError("MM-3 admitted retained horizon is invalid")
+    expected_adaptive = {"minimum_retained_steps": 20000, "maximum_retained_steps": 800000,
+                         "check_interval_steps": 20000, "actual_retained_steps": actual,
+                         "extension_count": actual // 20000 - 1, "stopped_reason": "converged"}
+    if any(adaptive.get(key) != value for key, value in expected_adaptive.items()):
+        raise ValueError("MM-3 admitted adaptive contract differs")
+    history = adaptive["checkpoint_history"]
+    if not isinstance(history, list) or len(history) != actual // 20000:
+        raise ValueError("MM-3 admitted checkpoint history is incomplete")
+    thresholds = {"min_ess": 400.0, "min_steps_per_tau": 50.0, "acceptance_range": [0.05, 0.80],
+                  "maximum_relative_tau_change": 0.10, "required_consecutive_stable_changes": 2,
+                  "minimum_finite_log_probability_fraction": 1.0}
+
+    def numeric(value: Any) -> bool:
+        return type(value) in (int, float) and math.isfinite(value)
+
+    def same(value: Any, expected: float | None) -> bool:
+        if expected is None:
+            return value is None
+        return numeric(value) and math.isclose(value, expected, rel_tol=1e-12, abs_tol=1e-12)
+
+    previous = None
+    streak = 0
+    for index, report in enumerate(history, 1):
+        n = index * 20000
+        if not isinstance(report, dict) or set(report) != report_keys or report.get("parameter_names") != list(names) \
+                or report.get("method") != "emcee_integrated_autocorrelation_time" \
+                or report.get("thresholds") != thresholds or type(report.get("retained_steps")) is not int \
+                or report["retained_steps"] != n or not isinstance(report.get("note"), str):
+            raise ValueError("MM-3 admitted checkpoint contract differs")
+        acceptance, finite = report["acceptance_fraction"], report["finite_log_probability_fraction"]
+        if not numeric(acceptance) or not 0 <= acceptance <= 1 or not numeric(finite) or finite != 1.0:
+            raise ValueError("MM-3 admitted checkpoint fraction is invalid")
+        for key in ("tau", "ess", "steps_per_tau"):
+            if not isinstance(report.get(key), dict) or set(report[key]) != set(names):
+                raise ValueError("MM-3 admitted diagnostic parameter registry differs")
+        tau = report["tau"]
+        if any(value is not None and not numeric(value) for value in tau.values()):
+            raise ValueError("MM-3 admitted autocorrelation estimate is malformed")
+        positive = all(value is not None and value > 0 for value in tau.values())
+        for name in names:
+            ratio = n / tau[name] if tau[name] is not None and tau[name] != 0 else None
+            ess = n * 48 / tau[name] if tau[name] is not None and tau[name] != 0 else None
+            if not same(report["steps_per_tau"][name], ratio) or not same(report["ess"][name], ess):
+                raise ValueError("MM-3 admitted ESS or steps-per-tau contradicts its checkpoint")
+        comparable = positive and previous is not None and all(value is not None and value > 0 for value in previous.values())
+        changes = {name: abs(tau[name] - previous[name]) / tau[name] if comparable else None for name in names}
+        stable = comparable and all(value <= 0.10 for value in changes.values())
+        streak = streak + 1 if stable else 0
+        stability = report["tau_stability"]
+        if not isinstance(stability, dict) or set(stability) != {"comparison_available", "relative_change", "denominator", "consecutive_stable_changes", "eligible"} \
+                or stability.get("comparison_available") is not bool(comparable) \
+                or stability.get("eligible") is not (streak >= 2) \
+                or type(stability.get("consecutive_stable_changes")) is not int \
+                or stability["consecutive_stable_changes"] != streak \
+                or stability.get("denominator") != "current_checkpoint_tau" \
+                or not isinstance(stability.get("relative_change"), dict) or set(stability["relative_change"]) != set(names) \
+                or any(not same(stability["relative_change"][name], changes[name]) for name in names):
+            raise ValueError("MM-3 admitted tau stability contradicts its history")
+        valid = bool(positive and min(report["ess"].values()) >= 400 \
+                     and min(report["steps_per_tau"].values()) >= 50 \
+                     and 0.05 <= acceptance <= 0.80 and streak >= 2)
+        if report.get("valid") is not valid or valid != (n == actual):
+            raise ValueError("MM-3 admitted validity or first-stop decision contradicts diagnostics")
+        previous = tau
+    if {key: diagnostic[key] for key in report_keys} != history[-1]:
+        raise ValueError("MM-3 admitted final diagnostics differ from last checkpoint")
+    _validate_de_sampler_metadata(diagnostic["sampler"])
 
 
 def validate_mismatch_rejection(record: dict[str, Any]) -> None:
@@ -921,7 +1028,11 @@ def _validate_de_rejection_diagnostic(diagnostic: Any, legacy_keys: set[str],
     if [row["retained_steps"] for row in history] != list(range(20000, 800001, 20000)) \
             or reports[0] != history[-1]:
         raise ValueError("MM-3 rejection checkpoints disagree with final diagnostics")
-    sampler = diagnostic["sampler"]
+    _validate_de_sampler_metadata(diagnostic["sampler"])
+
+
+def _validate_de_sampler_metadata(sampler: Any) -> None:
+    """Pin production move and density metadata for both admission outcomes."""
     if not isinstance(sampler, dict) or set(sampler) != {
         "method", "implementation", "version", "vectorize", "acceptance_window",
         "warmup_steps", "move_parameters", "density_parity", "qualification_scope",

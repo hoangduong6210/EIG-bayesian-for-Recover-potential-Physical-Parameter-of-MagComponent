@@ -60,6 +60,48 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def check_mm3_readiness(manifest: dict) -> dict:
+    """Bind the campaign protocol and its separate production integration record."""
+    root = WIKI_ROOT.parent.resolve()
+    report = {}
+    for section, key, field in (
+        ("diagnostics", "production_integration", "record"),
+        ("campaigns", "model_mismatch_v3", "config"),
+    ):
+        contract = manifest.get(section, {}).get(key)
+        if contract is None:
+            continue
+        relative = contract.get(field)
+        if not isinstance(relative, str) or Path(relative).is_absolute():
+            raise WikiError("MM-3 evidence path must be repository-relative")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root) or not path.is_file() \
+                or sha256(path) != contract.get(field + "_sha256"):
+            raise WikiError("MM-3 evidence checksum or path mismatch")
+        if field == "record":
+            record = json.loads(path.read_text(encoding="utf-8"))
+            rows = record.get("states", [])
+            if record.get("record_class") != "endpoint_free_production_sampler_integration_check" \
+                    or record.get("all_checks_passed") is not True \
+                    or record.get("scientific_endpoints_included") is not False \
+                    or record.get("new_mismatch_campaign_admitted") is not False \
+                    or len(rows) != 2 or {r.get("target_id") for r in rows} != {"n3", "n4"} \
+                    or any(r.get("diagnostics", {}).get("valid") is not True for r in rows):
+                raise WikiError("MM-3 integration evidence is not a complete endpoint-free pass")
+        else:
+            with path.open("rb") as stream:
+                config = tomllib.load(stream)
+            qualification = manifest.get("diagnostics", {}).get("sparse_mixing_v2", {})
+            if config.get("campaign_id") != "MM-3" \
+                    or config.get("status") != "preregistered_before_confirmatory_outcomes" \
+                    or config.get("seeds") != list(range(10100, 10130)) \
+                    or config.get("sampler_qualification_manifest_sha256") != qualification.get("manifest_sha256") \
+                    or config.get("sampler_qualification_config_sha256") != qualification.get("config_sha256"):
+                raise WikiError("MM-3 campaign identity or qualification binding differs")
+        report[key + "_sha256"] = contract[field + "_sha256"]
+    return report
+
+
 def check_sparse_pilot_contract(contract: dict) -> dict:
     """Validate optional pilot evidence before allowing Wiki claims to use it."""
     if not isinstance(contract, dict):
@@ -670,6 +712,7 @@ def check() -> dict:
     return {
         **pilot_report,
         **sparse_v2_report,
+        **check_mm3_readiness(manifest),
         "abstract_words": len(abstract.split()),
         "body_words": len(body.split()),
         "citation_count": len(cited),

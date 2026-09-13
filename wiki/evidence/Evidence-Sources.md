@@ -204,6 +204,20 @@ source label.
   or convergence at every possible posterior state. MM-1 and MM-2 remain
   non-admitted; a new mismatch campaign needs its own registration and checks.
 
+<a id="e15"></a>
+## E15 — Endpoint-free production integration check
+
+- Artifact: [`sampler_check.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/sparse_mixing/production_integration/20260913_ee35ebd/sampler_check.json)
+- SHA-256: `07fa4edcc02ec2dd6a795cb07cab85c5978906e5c93f4d96294c47637344eb60`.
+- Source revision: `ee35ebdba11dbfae6a16e5d63fe87a47a8808ed2`.
+- Pointers: `/all_checks_passed` is true. `/states` binds each locked state,
+  technical check seed and full recorded diagnostic history. The production
+  sampler reached its gate at 80,000 retained steps for n3 and 100,000 for n4.
+- Scope: this is a two-state integration check of adaptive production
+  inference, with no acquisition or mismatch endpoint. It is not the
+  eight-ensemble SparseMix-2 confirmation, nor an MM-3 result. The record
+  retains reported diagnostics, not full chains for independent recomputation.
+
 ## Verification rule
 
 [`build.py`](../build.py) rejects the wiki if the projection hash, release ID,

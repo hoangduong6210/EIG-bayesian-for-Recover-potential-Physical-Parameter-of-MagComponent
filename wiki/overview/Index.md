@@ -8,7 +8,7 @@ paper_source: false
 # Research Wiki index
 
 This directory routes each question to one canonical page. Numerical statements
-use evidence labels E1--E14; the evidence page records the corresponding JSON
+use evidence labels E1--E15; the evidence page records the corresponding JSON
 pointer, scope, release identity, and checksum.
 
 ## Recommended reading paths
@@ -42,8 +42,10 @@ pointer, scope, release identity, and checksum.
 
 The completed [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) motivates
 the prospective [SparseMix-2 protocol](../experiments/Sparse-Mixing-V2-Preregistration.md).
-The [MM-3 design](../experiments/Model-Mismatch-V3-Design.md) describes the
-proposed transition to production inference; it is not yet a campaign release.
+The [MM-3 protocol](../experiments/Model-Mismatch-V3-Preregistration.md)
+specifies the new campaign, its checked prerequisites, analysis, failure rule
+and execution record. [E15](../evidence/Evidence-Sources.md#e15) identifies the
+production integration check, not an MM-3 outcome.
 
 | Area | Canonical pages |
 |---|---|
@@ -73,5 +75,5 @@ proposed transition to production inference; it is not yet a campaign release.
    raw-to-aggregate chain.
 
 If a result-bearing sentence lacks an evidence label, treat it as unverified.
-Literature citations support scientific background; E1--E14 support numerical
+Literature citations support scientific background; E1--E15 support numerical
 results produced by this project.

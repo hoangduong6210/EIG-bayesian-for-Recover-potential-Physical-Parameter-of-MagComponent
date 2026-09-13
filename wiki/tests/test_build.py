@@ -114,7 +114,7 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E14" in index
+    assert "E1--E15" in index
 
 
 def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():

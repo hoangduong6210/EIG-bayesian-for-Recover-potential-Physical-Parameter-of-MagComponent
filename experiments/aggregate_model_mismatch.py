@@ -69,6 +69,19 @@ def _bootstrap_seed(*parts: str) -> int:
     return int.from_bytes(hashlib.sha256(key).digest()[:8], "big")
 
 
+def _validate_plan_provenance(record: dict[str, Any], plan: Any) -> None:
+    """Bind record qualification evidence to the registered campaign inputs."""
+    provenance = record.get("provenance", {})
+    if provenance.get("estimator_decision_sha256") != plan.estimator_decision_sha256:
+        raise ValueError("record uses the wrong estimator decision")
+    if plan.campaign_id == "MM-3":
+        expected = {"sampler_method": plan.sampler_method,
+                    "sampler_qualification_manifest_sha256": plan.sampler_qualification_manifest_sha256,
+                    "sampler_qualification_config_sha256": plan.sampler_qualification_config_sha256}
+        if any(provenance.get(key) != value for key, value in expected.items()):
+            raise ValueError("record sampler qualification differs from the MM-3 registration")
+
+
 def _policy_summary(records: list[dict[str, Any]], policy: str) -> dict[str, Any]:
     results = [record["policies"][policy] for record in records]
     reached = [result for result in results if result["reached"]]
@@ -200,9 +213,7 @@ def main() -> None:
         key = record["scenario"]["name"], record["seed"]
         if record["scenario"] != plan.scenario(key[0]).as_dict():
             raise ValueError(f"record scenario differs from the preregistration: {path}")
-        if record["provenance"].get("estimator_decision_sha256") \
-                != plan.estimator_decision_sha256:
-            raise ValueError(f"record uses the wrong estimator decision: {path}")
+        _validate_plan_provenance(record, plan)
         if key in by_key:
             raise ValueError(f"duplicate model-mismatch result: {key}")
         by_key[key] = path, record

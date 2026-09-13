@@ -67,6 +67,17 @@ two fail autocorrelation stability, and the cross-ensemble tail criterion also
 fails. This diagnostic neither retroactively admits MM-2 nor supplies a
 model-mismatch endpoint. [Source E12](../evidence/Evidence-Sources.md#e12)
 
+## MM-3 registration
+
+The [new protocol](../experiments/Model-Mismatch-V3-Preregistration.md) fixes
+30 new seeds and four generating scenarios, retaining the eight-policy
+comparison and original scientific endpoints. The sampler prerequisite is
+the passing SparseMix-2 decision, and the adaptive production implementation
+also passed its two-state integration check. [Sources E14](../evidence/Evidence-Sources.md#e14)
+and [E15](../evidence/Evidence-Sources.md#e15). Neither diagnostic is a
+model-mismatch outcome. The campaign has no admitted result at registration;
+all 120 planned tasks must validate before aggregation.
+
 ## Primary direct contrasts
 
 The difference is comparator minus EIG; positive values favor EIG.

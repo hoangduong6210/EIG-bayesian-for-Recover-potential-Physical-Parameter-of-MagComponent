@@ -21,7 +21,7 @@ public_pages = [
   "datasets/Dataset-Registry.md",
   "experiments/Model-Mismatch-Preregistration.md",
   "experiments/Model-Mismatch-V2-Preregistration.md",
-  "experiments/Model-Mismatch-V3-Design.md",
+  "experiments/Model-Mismatch-V3-Preregistration.md",
   "experiments/Sparse-Posterior-Mixing-Preregistration.md",
   "experiments/Sparse-Sampler-Pilot.md",
   "experiments/Sparse-Mixing-V2-Preregistration.md",
@@ -90,6 +90,14 @@ manifest = "results/diagnostics/sparse_mixing/SparseMix-2/20260912T060428Z_7a00d
 manifest_sha256 = "1f73174325341bd1638e5ac6f8c503ce75ee42022b0da42124799c766b14d1db"
 config = "configs/sparse_mixing_v2.toml"
 config_sha256 = "89ac040be89cc248088c5ed42288645717e792b9cf2113cf413298db8a41092c"
+
+[diagnostics.production_integration]
+record = "results/diagnostics/sparse_mixing/production_integration/20260913_ee35ebd/sampler_check.json"
+record_sha256 = "07fa4edcc02ec2dd6a795cb07cab85c5978906e5c93f4d96294c47637344eb60"
+
+[campaigns.model_mismatch_v3]
+config = "configs/model_mismatch_v3.toml"
+config_sha256 = "cf4496117e72e9f79b0770f4181ef0db32c0498096f089429aa4909adc00d2e0"
 
 [snapshot]
 format = "A4, 10 point, two column"
