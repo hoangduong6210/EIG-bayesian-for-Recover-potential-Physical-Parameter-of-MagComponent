@@ -525,10 +525,19 @@ def test_historical_public_bundle_contains_no_machine_or_credential_material():
             assert not forbidden.search(path.read_text(encoding="utf-8")), path.relative_to(ROOT)
 
 
-def test_public_paper_layout_has_exactly_two_version_directories():
+def test_public_paper_layout_preserves_archives_and_verifiable_snapshots():
+    from wiki.build import verify_snapshot
+
     paper_root = ROOT / "paper"
     directories = {path.name for path in paper_root.iterdir() if path.is_dir()}
-    assert directories == {"current_state", "conference_snapshot"}
+    historical = {"current_state", "conference_snapshot"}
+    assert historical <= directories
+    releases = []
+    for name in sorted(directories - historical):
+        directory = paper_root / name
+        assert (directory / "README.md").is_file()
+        releases.append(verify_snapshot(directory)["release"])
+    assert len(releases) == len(set(releases))
     assert not any(paper_root.glob("main.*"))
 
 

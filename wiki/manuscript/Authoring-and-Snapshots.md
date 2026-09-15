@@ -69,6 +69,12 @@ document assets. Run `python wiki/build.py verify-snapshot --directory PATH`
 after archival. This checks artifact hashes and the snapshot input-manifest
 digest without comparing the old document to a subsequently edited Wiki.
 
+Archive checks preserve the historical conference and legacy directories.
+Each additional document directory must have a README and a valid,
+checksum-verifiable snapshot with a unique release identity. A fixed count of
+directories is not a document-versioning rule; adding a requested submission
+snapshot must not require removing an earlier record.
+
 The journal exporter uses numbered IEEEtran references with explicit DOI
 links derived from the canonical bibliography. Layout transformations turn
 Wiki tables and figure captions into full-width floats within the two-column
