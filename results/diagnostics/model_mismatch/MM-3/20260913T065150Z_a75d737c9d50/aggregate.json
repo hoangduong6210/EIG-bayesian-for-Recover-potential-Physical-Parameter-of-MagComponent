@@ -1,0 +1,3409 @@
+{
+  "aggregation_rules": {
+    "count_and_cost_summaries_conditioned_on_reaching_gate": true,
+    "false_confidence_denominators": [
+      "all_seeds",
+      "reached_gate"
+    ],
+    "gate_failures_reported_separately": true,
+    "holdout_used_for_stopping": false,
+    "paired_differences_exclude_pairs_with_either_gate_failure": true
+  },
+  "campaign_id": "MM-3",
+  "config_sha256": "cf4496117e72e9f79b0770f4181ef0db32c0498096f089429aa4909adc00d2e0",
+  "estimator_decision_sha256": "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6",
+  "estimator_source_release_id": "20260817T072230Z_401e3030fe13",
+  "policy_count": 8,
+  "scenario_count": 4,
+  "scenarios": {
+    "combined_mismatch": {
+      "data_generating_contract": {
+        "first_pole_alpha_offset": -0.1,
+        "first_pole_frequency_multiplier": 0.55,
+        "matched": false,
+        "name": "combined_mismatch",
+        "pcv_log_frequency_curvature": 0.14,
+        "pcv_log_frequency_flux_interaction": 0.1,
+        "pcv_temperature_log_slope_per_c": 0.0055,
+        "second_pole_alpha_offset": 0.25,
+        "second_pole_fraction": 0.35,
+        "second_pole_frequency_multiplier": 7.0
+      },
+      "paired_strong_comparator_contrasts": {
+        "eig_per_cost_vs_laplace_d_opt_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 2.5,
+            "bootstrap_mean_ci95_low": -0.16666666666666666,
+            "mean": 1.0,
+            "median": 0.0,
+            "sample_sd": 4.025778999364488
+          },
+          "paired_differences": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -5.0,
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 1,
+          "policy_wins": 3,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 26,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.1
+        },
+        "eig_per_cost_vs_predictive_variance_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": -15.0,
+            "bootstrap_mean_ci95_low": -15.5,
+            "mean": -15.166666666666666,
+            "median": -15.0,
+            "sample_sd": 0.9128709291752769
+          },
+          "paired_differences": [
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -20.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 30,
+          "policy_wins": 0,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 0,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.0
+        },
+        "eig_raw_vs_laplace_d_opt_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.2,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.1,
+            "median": 0.0,
+            "sample_sd": 0.30512857662936466
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 3,
+          "positive_difference_favors": "eig_raw",
+          "ties": 27,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.1
+        },
+        "eig_raw_vs_predictive_variance_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.2,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.1,
+            "median": 0.0,
+            "sample_sd": 0.30512857662936466
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 3,
+          "positive_difference_favors": "eig_raw",
+          "ties": 27,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.1
+        }
+      },
+      "policies": {
+        "eig_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 22,
+          "false_confidence_rate_all_seeds": 0.7333333333333333,
+          "false_confidence_rate_given_gate": 0.7333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.24444444444444444,
+              "mean_relative_rmse_pct": 6.167941086394504
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.24444444444444444,
+              "mean_relative_rmse_pct": 40.28775858132161
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.35,
+              "mean_relative_rmse_pct": 5.977894756775098
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15416666666666667,
+              "mean_relative_rmse_pct": 19.627220295674782
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.481051099154847
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4625,
+              "mean_relative_rmse_pct": 6.124782763725018
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.556893306773244
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.16666666666666,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "eig_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 22,
+          "false_confidence_rate_all_seeds": 0.7333333333333333,
+          "false_confidence_rate_given_gate": 0.7333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.35555555555555557,
+              "mean_relative_rmse_pct": 6.3611665436281575
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.35,
+              "mean_relative_rmse_pct": 39.755244167266405
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.4388888888888889,
+              "mean_relative_rmse_pct": 6.52943607082312
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15694444444444444,
+              "mean_relative_rmse_pct": 19.676738864123188
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.550762261774494
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4708333333333333,
+              "mean_relative_rmse_pct": 6.054803301749153
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.645303359408045
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.9,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 173.0,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "fixed_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 6,
+          "false_confidence_rate_all_seeds": 0.2,
+          "false_confidence_rate_given_gate": 0.2,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8111111111111111,
+              "mean_relative_rmse_pct": 9.030606003684616
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.4888888888888889,
+              "mean_relative_rmse_pct": 18.68505389262092
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.7666666666666667,
+              "mean_relative_rmse_pct": 13.055389816162814
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.29444444444444445,
+              "mean_relative_rmse_pct": 21.675353637063182
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 32.932791532328274
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8041666666666667,
+              "mean_relative_rmse_pct": 5.707997594791745
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.07916666666666666,
+              "mean_relative_rmse_pct": 16.62118570180349
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 9.0,
+            "mean": 9.0,
+            "median": 9.0,
+            "minimum": 9.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 290.0,
+            "mean": 290.0,
+            "median": 290.0,
+            "minimum": 290.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 23,
+          "false_confidence_rate_all_seeds": 0.7666666666666667,
+          "false_confidence_rate_given_gate": 0.7666666666666667,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.2333333333333333,
+              "mean_relative_rmse_pct": 5.572784846611673
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.25555555555555554,
+              "mean_relative_rmse_pct": 38.14057048102983
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.35,
+              "mean_relative_rmse_pct": 5.513246781481294
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15416666666666667,
+              "mean_relative_rmse_pct": 19.627032055356704
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.480820577488675
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4625,
+              "mean_relative_rmse_pct": 6.125069320090717
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.556629053333777
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 7.0,
+            "mean": 6.066666666666666,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 205.0,
+            "mean": 191.16666666666666,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 21,
+          "false_confidence_rate_all_seeds": 0.7,
+          "false_confidence_rate_given_gate": 0.7,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.3555555555555555,
+              "mean_relative_rmse_pct": 6.802338953636888
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.26666666666666666,
+              "mean_relative_rmse_pct": 37.58367697492731
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.45,
+              "mean_relative_rmse_pct": 6.372187694446402
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15416666666666667,
+              "mean_relative_rmse_pct": 19.627161649196793
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.481041989767128
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4625,
+              "mean_relative_rmse_pct": 6.124138423962818
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.556892914831074
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 177.16666666666666,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 23,
+          "false_confidence_rate_all_seeds": 0.7666666666666667,
+          "false_confidence_rate_given_gate": 0.7666666666666667,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.26666666666666666,
+              "mean_relative_rmse_pct": 6.338565557312959
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.3111111111111111,
+              "mean_relative_rmse_pct": 39.194211424974725
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.3833333333333333,
+              "mean_relative_rmse_pct": 6.040876969922464
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15416666666666667,
+              "mean_relative_rmse_pct": 19.627707547648054
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.481710884559053
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4625,
+              "mean_relative_rmse_pct": 6.1241066222921345
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.557857416554095
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 175.0,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 23,
+          "false_confidence_rate_all_seeds": 0.7666666666666667,
+          "false_confidence_rate_given_gate": 0.7666666666666667,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.3,
+              "mean_relative_rmse_pct": 6.315604722020627
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.3,
+              "mean_relative_rmse_pct": 39.20035129285993
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.4111111111111111,
+              "mean_relative_rmse_pct": 5.992625931153978
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.15416666666666667,
+              "mean_relative_rmse_pct": 19.627674651019444
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 30.48168432204526
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.4625,
+              "mean_relative_rmse_pct": 6.124014525291869
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 13.557814953862765
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 175.33333333333334,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "random_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 11,
+          "false_confidence_rate_all_seeds": 0.36666666666666664,
+          "false_confidence_rate_given_gate": 0.36666666666666664,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.5,
+              "mean_relative_rmse_pct": 6.376885085213163
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.37222222222222223,
+              "mean_relative_rmse_pct": 21.005845893173426
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.49444444444444446,
+              "mean_relative_rmse_pct": 9.131717870126927
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.24583333333333332,
+              "mean_relative_rmse_pct": 21.740162611314254
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 33.131085999056126
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.7041666666666667,
+              "mean_relative_rmse_pct": 5.1456266165554245
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.03333333333333333,
+              "mean_relative_rmse_pct": 16.85582958983179
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 18.0,
+            "mean": 8.6,
+            "median": 8.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 545.0,
+            "mean": 262.0,
+            "median": 230.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        }
+      }
+    },
+    "core_loss_temperature_curvature": {
+      "data_generating_contract": {
+        "first_pole_alpha_offset": 0.0,
+        "first_pole_frequency_multiplier": 1.0,
+        "matched": false,
+        "name": "core_loss_temperature_curvature",
+        "pcv_log_frequency_curvature": 0.08,
+        "pcv_log_frequency_flux_interaction": 0.05,
+        "pcv_temperature_log_slope_per_c": 0.0035,
+        "second_pole_alpha_offset": 0.0,
+        "second_pole_fraction": 0.0,
+        "second_pole_frequency_multiplier": 1.0
+      },
+      "paired_strong_comparator_contrasts": {
+        "eig_per_cost_vs_laplace_d_opt_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.5,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.9128709291752769
+          },
+          "paired_differences": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 1,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 29,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.03333333333333333
+        },
+        "eig_per_cost_vs_predictive_variance_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": -15.0,
+            "bootstrap_mean_ci95_low": -15.833333333333334,
+            "mean": -15.333333333333334,
+            "median": -15.0,
+            "sample_sd": 1.2685406585123125
+          },
+          "paired_differences": [
+            -15.0,
+            -20.0,
+            -20.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 30,
+          "policy_wins": 0,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 0,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.0
+        },
+        "eig_raw_vs_laplace_d_opt_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.3,
+            "bootstrap_mean_ci95_low": 0.03333333333333333,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.3790490217894517
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 5,
+          "positive_difference_favors": "eig_raw",
+          "ties": 25,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.16666666666666666
+        },
+        "eig_raw_vs_predictive_variance_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.16666666666666666,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.06666666666666667,
+            "median": 0.0,
+            "sample_sd": 0.2537081317024624
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 2,
+          "positive_difference_favors": "eig_raw",
+          "ties": 28,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.06666666666666667
+        }
+      },
+      "policies": {
+        "eig_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.0411042554367758
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8055555555555556,
+              "mean_relative_rmse_pct": 2.9291756424216677
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 1.1298312521120042
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.25277777777777777,
+              "mean_relative_rmse_pct": 13.593654724376163
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.077791617072656
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.675,
+              "mean_relative_rmse_pct": 4.067536058559617
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.43677837177512
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.33333333333334,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "eig_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.7999999999999999,
+              "mean_relative_rmse_pct": 1.806499968491111
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8666666666666667,
+              "mean_relative_rmse_pct": 6.34204154445608
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 2.456049974062271
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.25416666666666665,
+              "mean_relative_rmse_pct": 13.71041966569095
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.227177432582547
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.6791666666666667,
+              "mean_relative_rmse_pct": 4.052668517384438
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.604198264120424
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.833333333333333,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 171.66666666666666,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "fixed_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 5,
+          "false_confidence_rate_all_seeds": 0.16666666666666666,
+          "false_confidence_rate_given_gate": 0.16666666666666666,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 7.711525368886239
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.7944444444444444,
+              "mean_relative_rmse_pct": 6.989132518045576
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8166666666666667,
+              "mean_relative_rmse_pct": 9.548795391314757
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.3611111111111111,
+              "mean_relative_rmse_pct": 15.083641202555123
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.008333333333333333,
+              "mean_relative_rmse_pct": 22.60403971577797
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.85,
+              "mean_relative_rmse_pct": 5.115277512812376
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.225,
+              "mean_relative_rmse_pct": 11.31397181881365
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 9.0,
+            "mean": 9.0,
+            "median": 9.0,
+            "minimum": 9.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 290.0,
+            "mean": 290.0,
+            "median": 290.0,
+            "minimum": 290.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 1.0623458132782106
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.7888888888888889,
+              "mean_relative_rmse_pct": 3.0081426161835303
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.1240644867985692
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.2569444444444444,
+              "mean_relative_rmse_pct": 13.63570033383761
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.139543243832012
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.6875,
+              "mean_relative_rmse_pct": 3.9927490052444776
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.504449633978702
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.5,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.4946286610217738
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8388888888888889,
+              "mean_relative_rmse_pct": 3.643364972026701
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 1.5596010150778747
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.2569444444444444,
+              "mean_relative_rmse_pct": 13.636675344664553
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.140901992053635
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.6875,
+              "mean_relative_rmse_pct": 3.9913804160788944
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.50593881720394
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 176.83333333333334,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.7888888888888889,
+              "mean_relative_rmse_pct": 1.407699873122677
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8611111111111112,
+              "mean_relative_rmse_pct": 4.284725437873647
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8166666666666667,
+              "mean_relative_rmse_pct": 1.4765352740358841
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.2569444444444444,
+              "mean_relative_rmse_pct": 13.636234939669022
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.140378627221505
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.6875,
+              "mean_relative_rmse_pct": 3.991455419477052
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.505434795873228
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 175.0,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 1.6880342472420309
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8722222222222222,
+              "mean_relative_rmse_pct": 5.238716234485498
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 2.1586887573139855
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.2569444444444444,
+              "mean_relative_rmse_pct": 13.63635628654217
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 21.140496635754577
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.6875,
+              "mean_relative_rmse_pct": 3.991808433828905
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.08333333333333333,
+              "mean_relative_rmse_pct": 9.505526981366875
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.9,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 173.66666666666666,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "random_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 3,
+          "false_confidence_rate_all_seeds": 0.1,
+          "false_confidence_rate_given_gate": 0.1,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.8235614212189541
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8666666666666667,
+              "mean_relative_rmse_pct": 4.189061220440916
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 2.3671019897691723
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.3111111111111111,
+              "mean_relative_rmse_pct": 14.928168464666825
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.0,
+              "mean_relative_rmse_pct": 22.726481147174518
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8291666666666667,
+              "mean_relative_rmse_pct": 3.9981752611761068
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.10416666666666667,
+              "mean_relative_rmse_pct": 11.313731880315098
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 18.0,
+            "mean": 8.633333333333333,
+            "median": 8.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 545.0,
+            "mean": 262.6666666666667,
+            "median": 230.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        }
+      }
+    },
+    "matched_control": {
+      "data_generating_contract": {
+        "first_pole_alpha_offset": 0.0,
+        "first_pole_frequency_multiplier": 1.0,
+        "matched": true,
+        "name": "matched_control",
+        "pcv_log_frequency_curvature": 0.0,
+        "pcv_log_frequency_flux_interaction": 0.0,
+        "pcv_temperature_log_slope_per_c": 0.0,
+        "second_pole_alpha_offset": 0.0,
+        "second_pole_fraction": 0.0,
+        "second_pole_frequency_multiplier": 1.0
+      },
+      "paired_strong_comparator_contrasts": {
+        "eig_per_cost_vs_laplace_d_opt_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.5,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.9128709291752769
+          },
+          "paired_differences": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 1,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 29,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.03333333333333333
+        },
+        "eig_per_cost_vs_predictive_variance_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": -15.0,
+            "bootstrap_mean_ci95_low": -15.833333333333334,
+            "mean": -15.333333333333334,
+            "median": -15.0,
+            "sample_sd": 1.2685406585123125
+          },
+          "paired_differences": [
+            -15.0,
+            -20.0,
+            -20.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 30,
+          "policy_wins": 0,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 0,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.0
+        },
+        "eig_raw_vs_laplace_d_opt_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.3,
+            "bootstrap_mean_ci95_low": 0.03333333333333333,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.3790490217894517
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 5,
+          "positive_difference_favors": "eig_raw",
+          "ties": 25,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.16666666666666666
+        },
+        "eig_raw_vs_predictive_variance_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.16666666666666666,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.06666666666666667,
+            "median": 0.0,
+            "sample_sd": 0.2537081317024624
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 2,
+          "positive_difference_favors": "eig_raw",
+          "ties": 28,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.06666666666666667
+        }
+      },
+      "policies": {
+        "eig_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.0416457478529695
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8055555555555556,
+              "mean_relative_rmse_pct": 2.928142668946728
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 1.1301390322904044
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.87986188869516
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.87986188869516
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.87986188869516
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.87986188869516
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.33333333333334,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "eig_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.7999999999999999,
+              "mean_relative_rmse_pct": 1.805928330290797
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8666666666666667,
+              "mean_relative_rmse_pct": 6.3441922228374255
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 2.4560885585167265
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8794991454569367
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8794991454569367
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8794991454569367
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8794991454569367
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.833333333333333,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 171.66666666666666,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "fixed_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 2,
+          "false_confidence_rate_all_seeds": 0.06666666666666667,
+          "false_confidence_rate_given_gate": 0.06666666666666667,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 7.71040961993792
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.7944444444444444,
+              "mean_relative_rmse_pct": 6.992972495562081
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8166666666666667,
+              "mean_relative_rmse_pct": 9.546252319373034
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 4.817384472602042
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 4.817384472602042
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 4.817384472602042
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 4.817384472602042
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 9.0,
+            "mean": 9.0,
+            "median": 9.0,
+            "minimum": 9.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 290.0,
+            "mean": 290.0,
+            "median": 290.0,
+            "minimum": 290.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 1.0625639846019808
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.7888888888888889,
+              "mean_relative_rmse_pct": 3.006633008632533
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.1240650176228766
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.879877978758177
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.879877978758177
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.879877978758177
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.879877978758177
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.5,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.4932774724046078
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8388888888888889,
+              "mean_relative_rmse_pct": 3.638833808484314
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 1.5584364336123913
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8789804542832282
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8789804542832282
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8789804542832282
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8789804542832282
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 176.83333333333334,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.7888888888888889,
+              "mean_relative_rmse_pct": 1.4073930355499213
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8611111111111112,
+              "mean_relative_rmse_pct": 4.283723316648428
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8166666666666667,
+              "mean_relative_rmse_pct": 1.4765008467981018
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.879574394752547
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.879574394752547
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.879574394752547
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.879574394752547
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 175.0,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 0,
+          "false_confidence_rate_all_seeds": 0.0,
+          "false_confidence_rate_given_gate": 0.0,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8111111111111111,
+              "mean_relative_rmse_pct": 1.699803414264964
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8722222222222222,
+              "mean_relative_rmse_pct": 5.318023344768384
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8277777777777777,
+              "mean_relative_rmse_pct": 2.1668522665247423
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880015923082648
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880015923082648
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880015923082648
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880015923082648
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.9,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 173.33333333333334,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "random_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 1,
+          "false_confidence_rate_all_seeds": 0.03333333333333333,
+          "false_confidence_rate_given_gate": 0.03333333333333333,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.8333333333333334,
+              "mean_relative_rmse_pct": 1.8249496551259554
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.8666666666666667,
+              "mean_relative_rmse_pct": 4.190041362860977
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8444444444444444,
+              "mean_relative_rmse_pct": 2.3683397628625675
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1709427611686514
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1709427611686514
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1709427611686514
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1709427611686514
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 18.0,
+            "mean": 8.633333333333333,
+            "median": 8.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 545.0,
+            "mean": 262.6666666666667,
+            "median": 230.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        }
+      }
+    },
+    "permeability_two_pole": {
+      "data_generating_contract": {
+        "first_pole_alpha_offset": -0.05,
+        "first_pole_frequency_multiplier": 0.75,
+        "matched": false,
+        "name": "permeability_two_pole",
+        "pcv_log_frequency_curvature": 0.0,
+        "pcv_log_frequency_flux_interaction": 0.0,
+        "pcv_temperature_log_slope_per_c": 0.0,
+        "second_pole_alpha_offset": 0.18,
+        "second_pole_fraction": 0.25,
+        "second_pole_frequency_multiplier": 5.0
+      },
+      "paired_strong_comparator_contrasts": {
+        "eig_per_cost_vs_laplace_d_opt_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.5,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.9128709291752769
+          },
+          "paired_differences": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 1,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 29,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.03333333333333333
+        },
+        "eig_per_cost_vs_predictive_variance_per_cost": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_per_cost",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "modeled_cost_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": -15.0,
+            "bootstrap_mean_ci95_low": -15.833333333333334,
+            "mean": -15.333333333333334,
+            "median": -15.0,
+            "sample_sd": 1.2685406585123125
+          },
+          "paired_differences": [
+            -15.0,
+            -20.0,
+            -20.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0,
+            -15.0
+          ],
+          "policy": "eig_per_cost",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 30,
+          "policy_wins": 0,
+          "positive_difference_favors": "eig_per_cost",
+          "ties": 0,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.0
+        },
+        "eig_raw_vs_laplace_d_opt_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "laplace_d_opt_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.3,
+            "bootstrap_mean_ci95_low": 0.03333333333333333,
+            "mean": 0.16666666666666666,
+            "median": 0.0,
+            "sample_sd": 0.3790490217894517
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 5,
+          "positive_difference_favors": "eig_raw",
+          "ties": 25,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.16666666666666666
+        },
+        "eig_raw_vs_predictive_variance_raw": {
+          "both_gate_failure_count": 0,
+          "comparator": "predictive_variance_raw",
+          "comparator_gate_failure_count": 0,
+          "complete_pair_count": 30,
+          "difference_definition": "comparator_minus_policy",
+          "endpoint": "n_measurements_to_gate",
+          "excluded_pair_count_due_to_gate_failure": 0,
+          "paired_difference": {
+            "bootstrap_mean_ci95_high": 0.16666666666666666,
+            "bootstrap_mean_ci95_low": 0.0,
+            "mean": 0.06666666666666667,
+            "median": 0.0,
+            "sample_sd": 0.2537081317024624
+          },
+          "paired_differences": [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "policy": "eig_raw",
+          "policy_gate_failure_count": 0,
+          "policy_losses": 0,
+          "policy_wins": 2,
+          "positive_difference_favors": "eig_raw",
+          "ties": 28,
+          "total_pair_count": 30,
+          "win_rate_complete_pairs": 0.06666666666666667
+        }
+      },
+      "policies": {
+        "eig_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.4222222222222222,
+              "mean_relative_rmse_pct": 3.4667676935643446
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.4222222222222222,
+              "mean_relative_rmse_pct": 18.685616697767966
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5111111111111111,
+              "mean_relative_rmse_pct": 3.1105890601732678
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8801394679773944
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8801394679773944
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8801394679773944
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.8801394679773944
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.33333333333334,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "eig_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.5111111111111111,
+              "mean_relative_rmse_pct": 3.9119865143407377
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.5388888888888889,
+              "mean_relative_rmse_pct": 20.60403364236659
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5944444444444444,
+              "mean_relative_rmse_pct": 4.072290174052586
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8804751206447716
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8804751206447716
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8804751206447716
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8804751206447716
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.833333333333333,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 171.66666666666666,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "fixed_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 2,
+          "false_confidence_rate_all_seeds": 0.06666666666666667,
+          "false_confidence_rate_given_gate": 0.06666666666666667,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.7999999999999999,
+              "mean_relative_rmse_pct": 7.237075228098653
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.6,
+              "mean_relative_rmse_pct": 11.028409697858727
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.8222222222222222,
+              "mean_relative_rmse_pct": 10.091717909944657
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 4.818809212124047
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 4.818809212124047
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 4.818809212124047
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 4.818809212124047
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 9.0,
+            "mean": 9.0,
+            "median": 9.0,
+            "minimum": 9.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 290.0,
+            "mean": 290.0,
+            "median": 290.0,
+            "minimum": 290.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.4222222222222222,
+              "mean_relative_rmse_pct": 3.497993904976447
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.43333333333333335,
+              "mean_relative_rmse_pct": 18.658941263948922
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5055555555555555,
+              "mean_relative_rmse_pct": 3.0967964624975615
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880093287900407
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880093287900407
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880093287900407
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8875,
+              "mean_relative_rmse_pct": 2.880093287900407
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 6.0,
+            "mean": 6.0,
+            "median": 6.0,
+            "minimum": 6.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 195.0,
+            "mean": 190.5,
+            "median": 190.0,
+            "minimum": 190.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "laplace_d_opt_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.5,
+              "mean_relative_rmse_pct": 3.7530352287497593
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.4388888888888889,
+              "mean_relative_rmse_pct": 18.36084171507103
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5777777777777777,
+              "mean_relative_rmse_pct": 3.364236023606294
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8803368377615777
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8803368377615777
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8803368377615777
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8803368377615777
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 176.83333333333334,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_per_cost": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.4444444444444444,
+              "mean_relative_rmse_pct": 3.679000996034065
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.4944444444444444,
+              "mean_relative_rmse_pct": 18.88001851296752
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5388888888888889,
+              "mean_relative_rmse_pct": 3.302905145616035
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8806976299771585
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8806976299771585
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8806976299771585
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8806976299771585
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 5.0,
+            "median": 5.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 175.0,
+            "mean": 175.0,
+            "median": 175.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "predictive_variance_raw": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 9,
+          "false_confidence_rate_all_seeds": 0.3,
+          "false_confidence_rate_given_gate": 0.3,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.5111111111111111,
+              "mean_relative_rmse_pct": 3.8267876036840462
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.5166666666666666,
+              "mean_relative_rmse_pct": 19.702953500234393
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.6,
+              "mean_relative_rmse_pct": 3.744154484511284
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8807410864180354
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8807410864180354
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8807410864180354
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.8833333333333333,
+              "mean_relative_rmse_pct": 2.8807410864180354
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 5.0,
+            "mean": 4.9,
+            "median": 5.0,
+            "minimum": 4.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 180.0,
+            "mean": 173.5,
+            "median": 175.0,
+            "minimum": 155.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        },
+        "random_channel_balanced": {
+          "failure_to_gate_count": 0,
+          "failure_to_gate_rate": 0.0,
+          "false_confidence_count": 3,
+          "false_confidence_rate_all_seeds": 0.1,
+          "false_confidence_rate_given_gate": 0.1,
+          "holdout": {
+            "lm": {
+              "mean_latent_ci90_coverage_fraction": 0.5666666666666667,
+              "mean_relative_rmse_pct": 4.130878093732307
+            },
+            "mu_imag": {
+              "mean_latent_ci90_coverage_fraction": 0.4666666666666667,
+              "mean_relative_rmse_pct": 11.545294195110309
+            },
+            "mu_real": {
+              "mean_latent_ci90_coverage_fraction": 0.5555555555555556,
+              "mean_relative_rmse_pct": 5.917179785830998
+            },
+            "pcv": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1699313187981235
+            }
+          },
+          "holdout_pcv_by_temperature_c": {
+            "100.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1699313187981235
+            },
+            "25.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1699313187981235
+            },
+            "60.0": {
+              "mean_latent_ci90_coverage_fraction": 0.9375,
+              "mean_relative_rmse_pct": 3.1699313187981235
+            }
+          },
+          "measurement_count_reached_only": {
+            "maximum": 18.0,
+            "mean": 8.633333333333333,
+            "median": 8.0,
+            "minimum": 5.0
+          },
+          "modeled_cost_reached_only": {
+            "maximum": 545.0,
+            "mean": 262.6666666666667,
+            "median": 230.0,
+            "minimum": 175.0
+          },
+          "n_seeds": 30,
+          "reached_gate_count": 30
+        }
+      }
+    }
+  },
+  "schema_version": "magcore-model-mismatch-aggregate/1.0",
+  "seed_count_per_scenario": 30,
+  "source_files": [
+    {
+      "path": "combined_mismatch_seed10100/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10100,
+      "sha256": "6f41d1554a0dae023772c57a7925251c0edbd5f08f1bdcdfa6aec6c96ad2d9c6"
+    },
+    {
+      "path": "combined_mismatch_seed10101/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10101,
+      "sha256": "795df860896a48dc91e1ca71135188e91dcf0f6099f7149703e32a9bdeda9aab"
+    },
+    {
+      "path": "combined_mismatch_seed10102/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10102,
+      "sha256": "dfbc228cf7232f3c9661fc7f703b0278c07a6e84e555e840501c8aba15f2d0ab"
+    },
+    {
+      "path": "combined_mismatch_seed10103/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10103,
+      "sha256": "3942026fc417f6cbf575450698069929ddf6a0d83d6c39aa470dd6e29512f459"
+    },
+    {
+      "path": "combined_mismatch_seed10104/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10104,
+      "sha256": "e754b94f127525c678fc02c7d5e2bc5c3301e0e51d3a3ba7b32eeee388c93c72"
+    },
+    {
+      "path": "combined_mismatch_seed10105/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10105,
+      "sha256": "4efe0a8a47d573f4c36416c7b56f428928c0be1e76bdb64596fc515f00c7dc32"
+    },
+    {
+      "path": "combined_mismatch_seed10106/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10106,
+      "sha256": "5ccb8e9c2e5a22cc15e94aedab96eda6678ec8341034bd055b59508f96b2ce05"
+    },
+    {
+      "path": "combined_mismatch_seed10107/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10107,
+      "sha256": "442fcf688c1ba1662de34698c9d3196786c3b1d574e4141c74d854d2f0c6a1ca"
+    },
+    {
+      "path": "combined_mismatch_seed10108/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10108,
+      "sha256": "c80c2e564baf9bd333c064801fdd9dcac1413d093b6ec241a8e88486cd110304"
+    },
+    {
+      "path": "combined_mismatch_seed10109/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10109,
+      "sha256": "7613defe58ae3c19b33f805421106a2b35c0b011af467056dff0dcc911614d9c"
+    },
+    {
+      "path": "combined_mismatch_seed10110/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10110,
+      "sha256": "c0041776002583a79614343c00905e0bd8c5016828ee92da44c194905c02aade"
+    },
+    {
+      "path": "combined_mismatch_seed10111/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10111,
+      "sha256": "6ed53c8068b1c51912997188cd26ab05cf342c8edf5cd0486a1cab071165093f"
+    },
+    {
+      "path": "combined_mismatch_seed10112/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10112,
+      "sha256": "eb77a21b4ab6effe6465ef69a36d4123b3bb68879cb7bf39a1dafc9bb0472099"
+    },
+    {
+      "path": "combined_mismatch_seed10113/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10113,
+      "sha256": "d6c8af6c92840a7458fd29c5137e4599b643f0a36e93e975af3ed83b4643cd2b"
+    },
+    {
+      "path": "combined_mismatch_seed10114/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10114,
+      "sha256": "dc4049f3f0a95109d9aa4328dca5ad6dd2624d3a8b083778b03f4dfc1444c7ea"
+    },
+    {
+      "path": "combined_mismatch_seed10115/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10115,
+      "sha256": "515f2a95dd88c50ad6052b2e7527e574c2fa650809a1bcd7353bbea56b798eb8"
+    },
+    {
+      "path": "combined_mismatch_seed10116/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10116,
+      "sha256": "63a7abad738b2cb0ec6d083d7dff83a594630a429445de96512d92547959ce4b"
+    },
+    {
+      "path": "combined_mismatch_seed10117/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10117,
+      "sha256": "34db9a3b4d6180702e45f0423207178394a3a9a077ced9cbd718822fe5c80716"
+    },
+    {
+      "path": "combined_mismatch_seed10118/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10118,
+      "sha256": "9e4f9338712a5682c4c4bdf17006788c2449871069f67741bc09cf320342ffb9"
+    },
+    {
+      "path": "combined_mismatch_seed10119/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10119,
+      "sha256": "774db06302c6ef70e92a9d8ea182cdc0d81b06e7e7842d43eb1e85c00ef4b41a"
+    },
+    {
+      "path": "combined_mismatch_seed10120/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10120,
+      "sha256": "fffd7906e89e540aca2801f8ff8ad5a23a9ae3399115353d3d4e8758e80f8a4d"
+    },
+    {
+      "path": "combined_mismatch_seed10121/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10121,
+      "sha256": "c2905f5f120cdb8c6fe2d282040358c0ef4b681854aea092c529d3615fa9e3be"
+    },
+    {
+      "path": "combined_mismatch_seed10122/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10122,
+      "sha256": "b6c079428615119beb1f40e43518d77253e54e4525dc196def27aa98c6e4e0bf"
+    },
+    {
+      "path": "combined_mismatch_seed10123/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10123,
+      "sha256": "3be51b0358f50f11ae9887a03a47c2bf31aca82b322958738db0a49167745ebb"
+    },
+    {
+      "path": "combined_mismatch_seed10124/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10124,
+      "sha256": "2bbc3d3a0fa8a98bddf8a49ff7275c6e3c06ec8b3e448f4d9695c14d8c0a902b"
+    },
+    {
+      "path": "combined_mismatch_seed10125/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10125,
+      "sha256": "243abe66899f23a03e9eed28c2e2521a4e90e65abfb3d9389c18a2fcae3037f4"
+    },
+    {
+      "path": "combined_mismatch_seed10126/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10126,
+      "sha256": "585959347c517988d971c3211bd61a3d4327c44d55cd0a83031b9d6a7c38500e"
+    },
+    {
+      "path": "combined_mismatch_seed10127/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10127,
+      "sha256": "473f2f6494c345534f05a124ba9e4e289406c34845c2360b43a5655644f9742d"
+    },
+    {
+      "path": "combined_mismatch_seed10128/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10128,
+      "sha256": "3e78b1bf40d3e012a2fd6adfddaea2fde3d5deedfa5ea664e3c7ffc5b696cd2e"
+    },
+    {
+      "path": "combined_mismatch_seed10129/result.json",
+      "scenario": "combined_mismatch",
+      "seed": 10129,
+      "sha256": "0aedaa9f9fd50e4cb4f0c99d42eb86d0da4564f4ad1d51cb1be4e2bd1d43d40c"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10100/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10100,
+      "sha256": "7c31d03308665fce5a317ad04a690d9f0f856233c6154fc74a166f5bd4686702"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10101/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10101,
+      "sha256": "9a9d36bccd3f54edd82e0b27122475db56f5484e6d866364f1282e69bd01e942"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10102/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10102,
+      "sha256": "65005fd9fbe4e0f590e639eea5bf1c87415fbf838c29cd282704ce3482b8fed8"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10103/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10103,
+      "sha256": "6d33effb6b4470479c9ba01d609a66c23f5797c50f957e1013bd95c4ef77ec88"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10104/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10104,
+      "sha256": "f78c219b369622ca35c76eadd865b55f9046f259ebff3efafeb6a99f42cc6ef6"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10105/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10105,
+      "sha256": "b568949b5eabd7345917d8518b5b69e8911549c0a95bb1fba12fe0671eb44689"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10106/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10106,
+      "sha256": "338468cffa9b4421e17459bfccb57c7deeb21770e05dc5c8ef17ceafdd82b9cc"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10107/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10107,
+      "sha256": "d5030af66c4ed054794a45c26f6fde410a87779cd769e5ed4c85b9302de2a12a"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10108/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10108,
+      "sha256": "0f1384a2bcb2a6815581442b0991c38814a20fe0e77325b967b66823b1eb17dd"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10109/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10109,
+      "sha256": "21b6174e5f879eda665b9968172df6296436595fc67666111e30268d112792f9"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10110/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10110,
+      "sha256": "46c77985b90a402cc9f4bcc6637d73ccf05b7d50b13b3c88ee08e27ed9e0039f"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10111/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10111,
+      "sha256": "2650adb2aa4c896e513cd45a06b50349d70b1a35059d0bbdb3a482cce0118a23"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10112/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10112,
+      "sha256": "66bed49f403478792b8d9b4fe91c41c1e9d9d5979de36d4082786b840e0eb485"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10113/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10113,
+      "sha256": "b66d02239021a131b0993b68d2f80f825ed10658579cf84e6a3fa5fa9b8588f0"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10114/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10114,
+      "sha256": "adad580c180bbe1761324f663739239f49fcde39654505c2c2dfa80d0a8cfd7b"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10115/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10115,
+      "sha256": "51aacac28c04d97b71132467e28ab744fe26150bcbc3865abc7f1a3421fb3b16"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10116/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10116,
+      "sha256": "fb4e33af458b9c4149d496f55bcdf02c0250c11387de57ab4f9510c7cc0f63e8"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10117/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10117,
+      "sha256": "dc04e77bac08c26a79601fe0960d0c1d1aadd1c4bcfc58fcb66843cd9d700cef"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10118/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10118,
+      "sha256": "2cdc25240debddd56650b3d4c9bc8aafd0a84cf3dfcb4f9e6408b114ed6663d5"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10119/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10119,
+      "sha256": "92a276fb857dec7e13308d640648527a0ed5d7f3434d9dfa662e203b7197090e"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10120/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10120,
+      "sha256": "14117372d75f78e949ced4b1e766a750373775e86407048108d81a09220672d4"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10121/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10121,
+      "sha256": "1fe3ea707431df9aa8e7cda2d0ec72ea170825b53c7d6be59ada6a75a63cf94b"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10122/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10122,
+      "sha256": "18127162404ffef41fe259409b3f6ccc3703f99b51697c1d99a07fbc49c33074"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10123/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10123,
+      "sha256": "a403459aecb61cf5043cdc83d6649d3a7d750b81af560c4a90a19a8eda527743"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10124/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10124,
+      "sha256": "0d7d9e46210cc4f45c9c5bc6053fa1a5f7b40c3ae5f2b0ca1ec94add63f63801"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10125/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10125,
+      "sha256": "18ebd09833ed27bf0ab34de620d91d5c51c593b5bf5cfa7992247705bd8a05ec"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10126/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10126,
+      "sha256": "8e93e32103799efe3011f1ec10fa8262d912a9cbe82405100976041905fe6a9c"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10127/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10127,
+      "sha256": "9d7b7589a2976450ce077f2e78ab6936c7cbc429f123d23cf3872697d4d86bb4"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10128/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10128,
+      "sha256": "3cb7b64239dd9ee5fe932c42329ee15c63d529163e9908ac56cc93d88768c2a0"
+    },
+    {
+      "path": "core_loss_temperature_curvature_seed10129/result.json",
+      "scenario": "core_loss_temperature_curvature",
+      "seed": 10129,
+      "sha256": "042ddd897a28a5b442144bc15b9c3c215d5492abc108edb1c1e22cf0e62b8f68"
+    },
+    {
+      "path": "matched_control_seed10100/result.json",
+      "scenario": "matched_control",
+      "seed": 10100,
+      "sha256": "a4e5ce94dc8d603ec5a93fa3dd3f61e8e4c48b33ca1b0c0f36a190d74e04eed2"
+    },
+    {
+      "path": "matched_control_seed10101/result.json",
+      "scenario": "matched_control",
+      "seed": 10101,
+      "sha256": "336e68263eda2a25175e89c5bfa568a3b0242bb1513b0fb2dca919c9a6577008"
+    },
+    {
+      "path": "matched_control_seed10102/result.json",
+      "scenario": "matched_control",
+      "seed": 10102,
+      "sha256": "3e6ee6f85dafdb60126d2e9bcad3cb6718c9ea71a49cf4c4bfa43457b7af3426"
+    },
+    {
+      "path": "matched_control_seed10103/result.json",
+      "scenario": "matched_control",
+      "seed": 10103,
+      "sha256": "44bd10ec29af256b4e2fe5d602a5f2e8544952a266d609073a616b97332aa4cb"
+    },
+    {
+      "path": "matched_control_seed10104/result.json",
+      "scenario": "matched_control",
+      "seed": 10104,
+      "sha256": "d08ffa6fe00800ac1db4f7f34cdcc7d68406f054cd78f3643321189215eb9841"
+    },
+    {
+      "path": "matched_control_seed10105/result.json",
+      "scenario": "matched_control",
+      "seed": 10105,
+      "sha256": "376922432a7f1cb235e7b8609266d1c0c7ec118a1bccaa78432238ae7f6ed7f1"
+    },
+    {
+      "path": "matched_control_seed10106/result.json",
+      "scenario": "matched_control",
+      "seed": 10106,
+      "sha256": "029162f20fec0977407744c01efb6a01b38c8f560789632abb2064af79376280"
+    },
+    {
+      "path": "matched_control_seed10107/result.json",
+      "scenario": "matched_control",
+      "seed": 10107,
+      "sha256": "ab8470c8f3fb0760737fad7c976e2213857304f1bbce20e5f7923a34ab14f5e9"
+    },
+    {
+      "path": "matched_control_seed10108/result.json",
+      "scenario": "matched_control",
+      "seed": 10108,
+      "sha256": "e36582345256a92096a80fb71dc2d149509007acf5b013adb3e1d7aa4e5df484"
+    },
+    {
+      "path": "matched_control_seed10109/result.json",
+      "scenario": "matched_control",
+      "seed": 10109,
+      "sha256": "72ba9324a230ec85c1d829914bae6610120b683fb7f4912eb6702272004a4400"
+    },
+    {
+      "path": "matched_control_seed10110/result.json",
+      "scenario": "matched_control",
+      "seed": 10110,
+      "sha256": "4d9586969c2d2a3546d80229f837f0a9be3aba87ba97988149f32aee50048b97"
+    },
+    {
+      "path": "matched_control_seed10111/result.json",
+      "scenario": "matched_control",
+      "seed": 10111,
+      "sha256": "4538ba658f7ce329789bac321ca4bfb2f29a0e76445be1ca813223f2d8e40819"
+    },
+    {
+      "path": "matched_control_seed10112/result.json",
+      "scenario": "matched_control",
+      "seed": 10112,
+      "sha256": "57aa7f354eccbd64afde6623cf6b23972b5930d25ac8dd63ddeffa1f85d8d1e7"
+    },
+    {
+      "path": "matched_control_seed10113/result.json",
+      "scenario": "matched_control",
+      "seed": 10113,
+      "sha256": "2d5edad2d74125f42f4569089eb2854f81386c376ece0fa9ae825c737ec8030b"
+    },
+    {
+      "path": "matched_control_seed10114/result.json",
+      "scenario": "matched_control",
+      "seed": 10114,
+      "sha256": "c69c0a13095c88f4c72381fb86eadaafbe0117abd1c0b5ac63bc36f87a2156bb"
+    },
+    {
+      "path": "matched_control_seed10115/result.json",
+      "scenario": "matched_control",
+      "seed": 10115,
+      "sha256": "84f4f1ac6da045f6f11f2bfdea8d405840b92a74262779c3fbcb4147bb2886f8"
+    },
+    {
+      "path": "matched_control_seed10116/result.json",
+      "scenario": "matched_control",
+      "seed": 10116,
+      "sha256": "82ed6bded2c34ee05cca8f84a61de3e7f364e589a5dadc1b9604ab3ac45e0088"
+    },
+    {
+      "path": "matched_control_seed10117/result.json",
+      "scenario": "matched_control",
+      "seed": 10117,
+      "sha256": "61c27a7151d1f0be2d6f25961eb184991b4e50cca0349d533dacc5a2a1f27a56"
+    },
+    {
+      "path": "matched_control_seed10118/result.json",
+      "scenario": "matched_control",
+      "seed": 10118,
+      "sha256": "b4cddcd102ae05e82eb96e0353424b46c098f18c29af4af5a6db829ec80560d6"
+    },
+    {
+      "path": "matched_control_seed10119/result.json",
+      "scenario": "matched_control",
+      "seed": 10119,
+      "sha256": "59eb37f429a1d52e5b5bda4b4cf205f47839d35e50506dd9745429d47d412dd4"
+    },
+    {
+      "path": "matched_control_seed10120/result.json",
+      "scenario": "matched_control",
+      "seed": 10120,
+      "sha256": "2ad3c7f79ede77f20e0739e80bf466bb7e66e97df5080d067ebb380acf4f45d0"
+    },
+    {
+      "path": "matched_control_seed10121/result.json",
+      "scenario": "matched_control",
+      "seed": 10121,
+      "sha256": "5988170aac64e145e0ebf91cf44eb80ab03db282e41b15fde90fd7764cabb829"
+    },
+    {
+      "path": "matched_control_seed10122/result.json",
+      "scenario": "matched_control",
+      "seed": 10122,
+      "sha256": "2452a55eef05fd716efde1ab7c4d398e2e5ce5a32cb5b55d46d53ff7a099984b"
+    },
+    {
+      "path": "matched_control_seed10123/result.json",
+      "scenario": "matched_control",
+      "seed": 10123,
+      "sha256": "a4054f74c2434106fc7003861bcfd0469eca77d26ebd9b3a9ea056e5ff213be2"
+    },
+    {
+      "path": "matched_control_seed10124/result.json",
+      "scenario": "matched_control",
+      "seed": 10124,
+      "sha256": "1f33a0deaf875f5bf52eb021dc2997eba56787ddf501a22455e58c73ae1860e0"
+    },
+    {
+      "path": "matched_control_seed10125/result.json",
+      "scenario": "matched_control",
+      "seed": 10125,
+      "sha256": "80b2782840cc7e4751aaeefabb80511b85edcf6f51e47cb740a810fa9cc69f1c"
+    },
+    {
+      "path": "matched_control_seed10126/result.json",
+      "scenario": "matched_control",
+      "seed": 10126,
+      "sha256": "9e1f3d067380ebec8362328bc857250b2bda9ebaffa8bb367ae6dd160aebba98"
+    },
+    {
+      "path": "matched_control_seed10127/result.json",
+      "scenario": "matched_control",
+      "seed": 10127,
+      "sha256": "1c9b7e5f5211b2bcdac391c68ed8a48c07041409175fb0a26e1bb705569a7773"
+    },
+    {
+      "path": "matched_control_seed10128/result.json",
+      "scenario": "matched_control",
+      "seed": 10128,
+      "sha256": "76d823485c565cfbfc1279a18cbb5dcb82cfeaae8fc69767d3034d3e7f4a8e4f"
+    },
+    {
+      "path": "matched_control_seed10129/result.json",
+      "scenario": "matched_control",
+      "seed": 10129,
+      "sha256": "c3aca10495dca933702ba4f7f002100954299ce4b85c1ba4fc560a52199abe34"
+    },
+    {
+      "path": "permeability_two_pole_seed10100/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10100,
+      "sha256": "894a74f0e92e0c8fcc17a91bf00414e48173a1d00fe755b67206ceb9d0bdf760"
+    },
+    {
+      "path": "permeability_two_pole_seed10101/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10101,
+      "sha256": "9798d816610f63cc7e26babc8c0618572fb2cfa47ff843ce473621323f01a569"
+    },
+    {
+      "path": "permeability_two_pole_seed10102/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10102,
+      "sha256": "1975bf2ac11c1543bb67c18694a2adcab549173110b534388de9b2b7f785f2a1"
+    },
+    {
+      "path": "permeability_two_pole_seed10103/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10103,
+      "sha256": "761934ecf3b65d1062d7622396f634539881634a713f77cc0a8a6e44ac95aeea"
+    },
+    {
+      "path": "permeability_two_pole_seed10104/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10104,
+      "sha256": "dc612142d7cc5391faa0a5f547692a636b28c05fcd84d7eb56dc2e0b7454c149"
+    },
+    {
+      "path": "permeability_two_pole_seed10105/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10105,
+      "sha256": "805121a22bc31dcb6717df6e051759af03365c45ae463189d326e486179c2d53"
+    },
+    {
+      "path": "permeability_two_pole_seed10106/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10106,
+      "sha256": "7e39dafc23a3c9ccd9d6e8bf54608f0785e4b66dfdad27a6cbba24f811f37741"
+    },
+    {
+      "path": "permeability_two_pole_seed10107/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10107,
+      "sha256": "c059e5969c13c0115ec5c8498a36fc0b2fc118af07dc51fa67c01f4ca140d864"
+    },
+    {
+      "path": "permeability_two_pole_seed10108/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10108,
+      "sha256": "d1d45cd589bebca52729e3588e6b83351ed3734850d2b2e1716b5f8371b84d76"
+    },
+    {
+      "path": "permeability_two_pole_seed10109/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10109,
+      "sha256": "20b29637322d4d730931f556ca1ff9e6f6caff4bf02c588c8aade942e47c05a8"
+    },
+    {
+      "path": "permeability_two_pole_seed10110/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10110,
+      "sha256": "0b3043ca593e322df43fe2feeed085bc779391f005670d4b57fee7bd1b925127"
+    },
+    {
+      "path": "permeability_two_pole_seed10111/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10111,
+      "sha256": "de369f95ea8493dafca387893bf0e561f9e6fba3cf02b87fa81f0fcc6434cdd5"
+    },
+    {
+      "path": "permeability_two_pole_seed10112/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10112,
+      "sha256": "529f0997bfb720513031259adffc8d70d88635ae622f633b73663f20f1a11ed5"
+    },
+    {
+      "path": "permeability_two_pole_seed10113/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10113,
+      "sha256": "8b346e3b9b840a69de851249c5b407047cdf7c9112b269e5668600002dab6649"
+    },
+    {
+      "path": "permeability_two_pole_seed10114/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10114,
+      "sha256": "731471173504dd5f207e0c591573a9825d0a882dd4db9f4bcbbc82a4a6b3a5cf"
+    },
+    {
+      "path": "permeability_two_pole_seed10115/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10115,
+      "sha256": "5369be404e3820e7251bf102c7ceda5bae7e771347895c9fd34cd1404c434d05"
+    },
+    {
+      "path": "permeability_two_pole_seed10116/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10116,
+      "sha256": "080f004f4e6cf849b74386ffd1915083433da62d2074b976d4316d1f4217593b"
+    },
+    {
+      "path": "permeability_two_pole_seed10117/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10117,
+      "sha256": "fe6b24a184e1495ccdbb29c75a941ffd1d687d6ab39c6502201d9046ffaf1bc8"
+    },
+    {
+      "path": "permeability_two_pole_seed10118/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10118,
+      "sha256": "316db200ddeb38ba28b04402b3608d3ed8d1372bc0e608c7c0cf294434928a0c"
+    },
+    {
+      "path": "permeability_two_pole_seed10119/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10119,
+      "sha256": "b9820d54e9909b614a119c1887c87c6d323ac51382353ace2299085d9abb063c"
+    },
+    {
+      "path": "permeability_two_pole_seed10120/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10120,
+      "sha256": "5f4186a5c291f79523785c0b50217d8292c01fbe0a23a67e400e84d69f809d81"
+    },
+    {
+      "path": "permeability_two_pole_seed10121/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10121,
+      "sha256": "274a14d6d56e806aa93d16ab850739fbdbc7c3700bb6da95d57ce501a361a266"
+    },
+    {
+      "path": "permeability_two_pole_seed10122/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10122,
+      "sha256": "64e3abbb092ba7f8a828a7245cd090bac98f200720df1f9b38db2f3bc374a341"
+    },
+    {
+      "path": "permeability_two_pole_seed10123/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10123,
+      "sha256": "f82b92a1cef2be144002e96f0d787690505d64aac78334335b7602ff1ff2c375"
+    },
+    {
+      "path": "permeability_two_pole_seed10124/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10124,
+      "sha256": "6944ad7083314a55b88d58108082f7f0bae5ce6a220343a506ded5c4d388a666"
+    },
+    {
+      "path": "permeability_two_pole_seed10125/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10125,
+      "sha256": "5a550e89aa33b159249a08e6ea57b599b8d67882c790fb84275fc3f4aa1f72de"
+    },
+    {
+      "path": "permeability_two_pole_seed10126/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10126,
+      "sha256": "649031b636c3c9451d348eab46c67185144db5c128d7a81ab16f06c4821c84e4"
+    },
+    {
+      "path": "permeability_two_pole_seed10127/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10127,
+      "sha256": "01a16c3ccc705e0f05ff78740b2166be3cdf813cada0ab8f4d26783fe65b5b3c"
+    },
+    {
+      "path": "permeability_two_pole_seed10128/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10128,
+      "sha256": "382a09f10fb9aa50d1249415f2ffc190fe169eb35e4074c6b2d23ad31693d98b"
+    },
+    {
+      "path": "permeability_two_pole_seed10129/result.json",
+      "scenario": "permeability_two_pole",
+      "seed": 10129,
+      "sha256": "013ef6f132d7e0cde8d2f5eaac7cb3be833ec0c51037690571f7cab09984dfb0"
+    }
+  ],
+  "source_result_count": 120
+}

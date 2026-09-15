@@ -1,7 +1,7 @@
 ---
 title: Reproduce and Audit
 status: audit guide
-last_updated: 2026-09-12
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -49,6 +49,20 @@ This verifies the portable file registry, task identities, hashes, array
 contracts, and disclosure boundary. It cannot reconstruct full-chain
 autocorrelation diagnostics from the thinned arrays; that audit requires a
 rerun of the locked source and configuration. [Source E12](../evidence/Evidence-Sources.md#e12)
+
+MM-3 has a separate result-bearing public asset. After downloading and
+extracting `magcore-mm3-20260913-audit-v1.tar.gz`, run:
+
+```bash
+python scripts/public_model_mismatch_bundle.py verify \
+  --bundle-dir mm3-20260913-audit-v1
+```
+
+The verifier checks all 120 public task hashes, reconstructs the registered
+four-scenario × 30-seed matrix, validates every stored sampler decision, and
+rebuilds every policy summary and paired contrast before comparing them with
+the published aggregate. The task records contain checkpoint histories but no
+full walker-by-iteration chains. [Source E16](../evidence/Evidence-Sources.md#e16)
 
 The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for all 222
 result artifacts, and [Evidence Sources](../evidence/Evidence-Sources.md) gives the exact

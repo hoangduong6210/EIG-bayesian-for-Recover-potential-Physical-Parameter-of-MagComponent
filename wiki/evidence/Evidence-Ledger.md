@@ -1,7 +1,7 @@
 ---
 title: Evidence Ledger
 status: canonical evidence registry
-last_updated: 2026-09-12
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -21,6 +21,11 @@ paper_source: false
 | `E10` | MM-1 endpoint-blind non-admission record | [Detailed E10](Evidence-Sources.md#e10) |
 | `E11` | MM-2 endpoint-blind non-admission record | [Detailed E11](Evidence-Sources.md#e11) |
 | `E12` | SparseMix-1 endpoint-free sampler diagnostic | [Detailed E12](Evidence-Sources.md#e12) |
+| `E13` | Endpoint-free sampler pilot and exploratory selection | [Detailed E13](Evidence-Sources.md#e13) |
+| `E14` | SparseMix-2 prospective sampler validation | [Detailed E14](Evidence-Sources.md#e14) |
+| `E15` | Endpoint-free production integration check | [Detailed E15](Evidence-Sources.md#e15) |
+| `E16` | Preregistered MM-3 model-mismatch campaign | [Detailed E16](Evidence-Sources.md#e16) |
 
-The disclosure-safe projection is `evidence/results.json`; its hash and release
-binding are enforced by the wiki build.
+The matched-model disclosure-safe projection is `evidence/results.json`. MM-3
+uses its separately hashed aggregate, admission record, audit manifest and
+external raw-record asset. Both evidence chains are enforced by the Wiki build.

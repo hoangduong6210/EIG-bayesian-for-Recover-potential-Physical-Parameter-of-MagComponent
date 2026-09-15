@@ -1,7 +1,7 @@
 ---
 title: Scientific Job Results
 status: canonical computation ledger
-last_updated: 2026-09-13
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -50,6 +50,28 @@ and a prospective sampler-escalation rule. It closed with 119 validated
 records and one task-level sampler rejection. The aggregate was not created,
 no endpoint was admitted, and these diagnostic records are not included in
 either artifact total. [Source E11](../evidence/Evidence-Sources.md#e11)
+
+## MM-3 admitted campaign outside the earlier evidence freeze
+
+MM-3 used independent seeds 10100--10129 and the prospectively qualified
+DE/snooker sampler. All 120 scenario--seed tasks completed with valid records;
+the dependent aggregate reconstructed the exact four-scenario, eight-policy
+matrix. These records form a separate evidence release and are not added to
+the 213-task, 222-artifact accounting of the earlier matched-model freeze.
+[Source E16](../evidence/Evidence-Sources.md#e16)
+
+| Scenario | Raw EIG gate | False confidence | Mean count | EIG−PV advantage | EIG−Laplace advantage |
+|---|---:|---:|---:|---:|---:|
+| Matched control | 30/30 | 0/30 | 4.833 | 0.067 | 0.167 |
+| Two-pole permeability | 30/30 | 9/30 | 4.833 | 0.067 | 0.167 |
+| Core-loss temperature/curvature | 30/30 | 1/30 | 4.833 | 0.067 | 0.167 |
+| Combined mismatch | 30/30 | 22/30 | 4.900 | 0.100 | 0.100 |
+
+The advantages use comparator-minus-EIG measurement count. In the first three
+scenarios raw EIG versus predictive variance recorded 2/28/0 wins/ties/losses,
+and versus Laplace D-optimality 5/25/0. Both combined-mismatch comparisons were
+3/27/0. EIG/cost lost the paired modeled-cost endpoint to predictive-
+variance/cost in all 30 seeds of every scenario. [Source E16](../evidence/Evidence-Sources.md#e16)
 
 ## SparseMix-1 work outside the admitted artifact total
 
@@ -136,7 +158,7 @@ library. It does not establish universal predictive-variance superiority.
 | SparseMix-Pilot-1 | `20260912T054816Z_efbc1c2f169e` | 24/24 tasks; 72 artifacts independently audited; [E13](../evidence/Evidence-Sources.md#e13) |
 | SparseMix-2 | `20260912T060428Z_7a00dff3106f` | 16/16 tasks and 48 artifacts audited; both locked states pass; [E14](../evidence/Evidence-Sources.md#e14) |
 | Production integration | `20260913_ee35ebd` | Both locked states pass; endpoint-free check, [E15](../evidence/Evidence-Sources.md#e15) |
-| MM-3 | `20260913T065150Z_a75d737c9d50` | At 13 September 12:19 UTC: 20/120 complete, ten running, 90 pending; no recorded failure or rejection; [progress record](../experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z), no admitted result yet |
+| MM-3 | `20260913T065150Z_a75d737c9d50` | 120/120 validated; exact aggregate and public raw-record audit; admitted within the preregistered synthetic scope, [E16](../evidence/Evidence-Sources.md#e16) |
 
 The subsequent endpoint-free sampler pilot completed all 24 tasks and 72
 audited artifacts. [Source E13](../evidence/Evidence-Sources.md#e13) provides

@@ -1,10 +1,10 @@
 ---
 title: Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters
 status: canonical manuscript source
-last_updated: 2026-08-19
+last_updated: 2026-09-15
 paper_source: true
 prose_reviewed: true
-claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-ADEQ-001
+claim_ids: C-EIG-RAW-001, C-EIG-COST-001, C-FIXED-001, C-ADEQ-001, C-MM3-GATE-001
 ---
 
 # Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss and Permeability Models for Power Converters
@@ -34,11 +34,16 @@ in favor of predictive variance). No policy failed the gate. On accepted
 public measured records, in-sample RRMSE was 8.79%--18.21% for core loss,
 6.89%--9.33% for $\mu'$, and 36.77%--52.42% for $\mu''$; the loss-component
 residuals expose substantial one-pole model discrepancy. The evidence supports
-a reproducible, model-conditional acquisition benchmark. It does not show EIG
-superiority over strong comparators, measured laboratory-time savings, global
+a reproducible, model-conditional acquisition benchmark. A separate
+preregistered 120-task synthetic mismatch campaign found that raw EIG reached
+the same local gate in every combined-mismatch seed but was false-confident in
+22 of 30; its strong-comparator count advantages were only 0.10 measurements.
+This shows that local posterior width did not protect truth accuracy under the
+locked departures. It does not show EIG superiority over strong comparators,
+measured laboratory-time savings, global
 six-parameter identification, or a validated optimal laboratory plan.
-[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4), and
-[E7](../evidence/Evidence-Sources.md#e7)
+[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4),
+[E7](../evidence/Evidence-Sources.md#e7), and [E16](../evidence/Evidence-Sources.md#e16)
 
 *Keywords:* Bayesian calibration; magnetic core; core loss; complex
 permeability; sequential experimental design; expected information gain.
@@ -72,7 +77,8 @@ predictive variance, and Laplace D-optimality under raw and modeled-cost
 objectives. The evidence also exposes estimator convergence, adaptive MCMC
 diagnostics at every acquisition state, paired candidate outcomes, disjoint
 holdout prediction, six-parameter recovery, measured-data acceptance gates,
-and the raw-to-aggregate evidence chain. These elements answer distinct
+the raw-to-aggregate evidence chain, and a preregistered synthetic model-
+mismatch evaluation. These elements answer distinct
 questions and cannot be substituted for one another.
 
 The remainder of the paper reviews magnetic and Bayesian design
@@ -94,7 +100,9 @@ policy sees identical candidate outcomes. *RQ3* asks the corresponding
 question for EIG per prespecified modeled cost. *RQ4* asks whether the final
 posterior predicts a disjoint 23-point latent holdout and recovers all six
 generating parameters. *RQ5* asks how well the low-order forward laws describe
-accepted public measured records in sample.
+accepted public measured records in sample. *RQ6* asks whether the same local
+precision gate remains truth-accurate under three fixed structural departures
+and whether EIG separates from strong acquisition comparators there.
 
 The evidence ladder shown above prevents answers from being combined
 beyond their design. Local Fisher rank is not global identifiability;
@@ -680,6 +688,43 @@ must therefore not be described as uniformly precise global six-parameter
 recovery.
 [Result source E6](../evidence/Evidence-Sources.md#e6)
 
+## Preregistered model-mismatch campaign
+
+MM-3 evaluated the matched control and three fixed structural departures over
+30 new paired seeds. All 120 scenario--seed tasks passed the registered
+sampler contract, all eight policies reached the local precision gate in every
+scenario, and the complete sanitized record set reconstructed the aggregate.
+This is a synthetic robustness experiment with latent truth, not a measured-
+material validation. [Result source E16](../evidence/Evidence-Sources.md#e16)
+
+| Scenario | Raw EIG false confidence | Mean measurements | Advantage vs predictive variance | Advantage vs Laplace D-optimality |
+|---|---:|---:|---:|---:|
+| Matched control | 0/30 | 4.833 | 0.067 | 0.167 |
+| Two-pole permeability | 9/30 | 4.833 | 0.067 | 0.167 |
+| Core-loss temperature/curvature | 1/30 | 4.833 | 0.067 | 0.167 |
+| Combined mismatch | 22/30 | 4.900 | 0.100 | 0.100 |
+
+The advantages are paired comparator-minus-EIG measurement counts; positive
+values favor EIG. Raw EIG versus predictive variance recorded 2/28/0
+wins/ties/losses in each of the first three scenarios and 3/27/0 under combined
+mismatch. Versus Laplace D-optimality the corresponding counts were 5/25/0 and
+3/27/0. Thus the observed advantages were substantially below one measurement
+and arose mostly from ties. EIG/cost lost to predictive-variance/cost in all
+30 pairs in every scenario, by a mean 15.33 modeled-cost units in the first
+three and 15.17 in combined mismatch. [Table source E16](../evidence/Evidence-Sources.md#e16)
+
+Combined-mismatch raw EIG produced mean latent-holdout core-loss RRMSE of
+19.68% and 90% interval inclusion of 15.69%. Loss-permeability RRMSE and
+inclusion were 39.76% and 35.00%; core loss at 100°C had 30.55% RRMSE and zero
+interval inclusion. Because the precision gate was nevertheless reached in
+30/30 seeds, the gate cannot be used as a proxy for truth accuracy under these
+departures. The strong adaptive policies also recorded 21--23 false-confident
+seeds in combined mismatch. The experiment therefore does not establish that
+EIG uniquely causes false confidence or that either balanced traversal is
+generally safer. [Result source E16](../evidence/Evidence-Sources.md#e16)
+
+![MM-3 results. Positive paired differences favor EIG; negative modeled-cost differences favor the comparator. False-confidence counts are descriptive and are not a causal comparison among policies.](../assets/model-mismatch-v3.png)
+
 ## Measured-data model adequacy
 
 For LEA Material Database permeability records that satisfied the convergence
@@ -730,6 +775,15 @@ inside the matched model. It does not establish accurate recovery of a
 physical component, global predictive accuracy, or robustness to model
 misspecification.
 [Contrast source E4](../evidence/Evidence-Sources.md#e4)
+
+MM-3 sharpens this boundary. The local width gate remained easy to satisfy
+under the locked discrepancy terms, while truth accuracy and fixed latent-
+holdout inclusion deteriorated. In combined mismatch, raw EIG was false-
+confident in 22 of 30 seeds, yet the other strong adaptive policies produced
+similar counts. Model adequacy and stopping-rule design therefore affected the
+interpretation more than the small between-policy count differences. This is
+evidence about the three registered departures, not a theorem for arbitrary
+misspecification. [Model-mismatch source E16](../evidence/Evidence-Sources.md#e16)
 
 ## Why the strong comparators tie or win
 
@@ -804,6 +858,15 @@ nested Monte Carlo variance nevertheless remains. Synthetic recovery is
 matched-model, and the observed interval-inclusion count is too small to
 establish calibrated coverage.
 
+The independent MM-3 seed set adds a controlled structural-mismatch test, but
+only for one two-pole permeability departure, one temperature/curvature loss
+departure, and their combination. Its 90% latent-holdout inclusion is a fixed-
+point summary, not simulation-based calibration. Production records retain
+sampler checkpoint histories but not full chains, so the stored convergence
+decision can be reconstructed while autocorrelation and acceptance cannot be
+independently recomputed without rerunning the locked source.
+[Source E16](../evidence/Evidence-Sources.md#e16)
+
 The policy comparison now includes deterministic and randomized balanced
 traversals, predictive variance, and Laplace D-optimality. It does not include
 a full nonlinear Fisher-greedy implementation, space-filling designs,
@@ -836,13 +899,12 @@ than broader interpretation of the present results.
 
 ## Evidence required for broader claims
 
-Three additions would materially change the evidential scope. First, a
-model-mismatch campaign should generate observations from higher-order loss
-and permeability laws while inference retains the present low-order family.
-This would test whether the policy ordering survives structural discrepancy.
-Second, a larger simulation-based calibration campaign should evaluate
+Three additions would materially change the evidential scope. First, a new
+gate-aligned utility should be preregistered without altering the frozen MM-3
+outcome, then evaluated against the same count, cost, truth-error and holdout
+endpoints. Second, a larger simulation-based calibration campaign should evaluate
 parameter ranks and predictive coverage over many prior-predictive cases; the
-current five recovery seeds and 30 secondary acquisition endpoints are not a
+current five recovery seeds and MM-3's fixed holdout inclusion are not a
 calibration study. Third, a laboratory study needs
 independently calibrated noise, measured acquisition durations, multiple
 lots, and held-out temperature/frequency/flux regions. Only that third
@@ -868,11 +930,16 @@ count comparisons. EIG/cost tied Laplace D-optimality and lost to predictive
 variance/cost by a mean 15.17 modeled-cost units. The accepted measured records
 produced substantially larger RRMSE for $\mu''$ than for $\mu'$, showing that
 posterior concentration cannot compensate for an inadequate permeability law.
+MM-3 reinforces that conclusion synthetically: combined-mismatch raw EIG
+reached the precision gate in every seed but was false-confident in 22 of 30,
+while its count advantage over either strong comparator was only 0.10
+measurements. The local gate is therefore not evidence of truth accuracy under
+the locked structural departures.
 The defensible conclusion is therefore a reproducible model-conditional
 benchmark with informative positive and negative results, not proof of EIG
 superiority or laboratory efficiency.
-[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4), and
-[E7](../evidence/Evidence-Sources.md#e7)
+[Evidence E2](../evidence/Evidence-Sources.md#e2), [E4](../evidence/Evidence-Sources.md#e4),
+[E7](../evidence/Evidence-Sources.md#e7), and [E16](../evidence/Evidence-Sources.md#e16)
 
 # Exact Sequential Evaluation Logic
 
@@ -937,6 +1004,12 @@ must pass the disclosure gate before it is published; the private production
 tree is not a public artifact. Raw measured curves remain governed by the
 cited upstream sources and are not redistributed as if produced by this study.
 [Release source E8](../evidence/Evidence-Sources.md#e8)
+
+The separate MM-3 result is bound to aggregate SHA-256
+`03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d`.
+Its public audit asset contains all 120 sanitized task records and reconstructs
+the aggregate; it omits full walker-by-iteration chains.
+[Model-mismatch source E16](../evidence/Evidence-Sources.md#e16)
 
 The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for every
 result artifact in the release, and [Evidence Sources](../evidence/Evidence-Sources.md)

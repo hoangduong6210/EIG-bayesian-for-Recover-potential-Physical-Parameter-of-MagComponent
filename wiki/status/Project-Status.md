@@ -1,13 +1,13 @@
 ---
 title: Project Status
 status: canonical current status
-last_updated: 2026-09-13
+last_updated: 2026-09-15
 paper_source: false
 ---
 
 # Project Status
 
-Status date: 2026-09-13.
+Status date: 2026-09-15.
 
 ## Completed scientific work
 
@@ -67,29 +67,29 @@ two fail autocorrelation stability, and the cross-ensemble tail criterion also
 fails. This diagnostic neither retroactively admits MM-2 nor supplies a
 model-mismatch endpoint. [Source E12](../evidence/Evidence-Sources.md#e12)
 
-## MM-3 registration
+## MM-3 completion
 
-The [new protocol](../experiments/Model-Mismatch-V3-Preregistration.md) fixes
-30 new seeds and four generating scenarios, retaining the eight-policy
-comparison and original scientific endpoints. The sampler prerequisite is
-the passing SparseMix-2 decision, and the adaptive production implementation
-also passed its two-state integration check. [Sources E14](../evidence/Evidence-Sources.md#e14)
-and [E15](../evidence/Evidence-Sources.md#e15). Neither diagnostic is a
-model-mismatch outcome. The campaign has no admitted result at registration;
-all 120 planned tasks must validate before aggregation.
+The [prospective protocol](../experiments/Model-Mismatch-V3-Preregistration.md)
+fixed 30 new seeds, four generating scenarios, eight policies and the original
+scientific endpoints. Run `20260913T065150Z_a75d737c9d50` completed all 120
+tasks; array `7273251` and aggregate `7273252` both exited successfully. Every
+stored sampler decision passed, and the exact registered matrix reconstructed
+the published aggregate. The campaign is admitted under this numerical
+contract. [Source E16](../evidence/Evidence-Sources.md#e16)
 
-Run `20260913T065150Z_a75d737c9d50` has been submitted from public registration
-commit `a75d737c9d5058798edc1508cb9ae7c961bc9544`. Array `7273251` and
-dependent aggregate `7273252` are recorded in the
-[execution register](../experiments/Model-Mismatch-V3-Preregistration.md#execution-and-retrieval).
-Submission is not completion; no MM-3 endpoint or comparison is admitted yet.
+The earlier endpoint-free checkpoint at 20/120 remains in the protocol as
+execution history. No partial endpoint was used to change the campaign. The
+final public audit bundle contains all 120 sanitized records, acquisition
+trajectories, candidate scores and sampler checkpoint histories. It does not
+contain full walker-by-iteration chains. [Source E16](../evidence/Evidence-Sources.md#e16)
 
-At 12:19 UTC on 13 September, 20/120 tasks had completed, ten were running,
-and 90 were pending. No failure marker or sampler rejection was present;
-the aggregate remained absent. The
-[progress checkpoint](../experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z)
-binds these execution counts to scheduler accounting and result-file hashes.
-No interim endpoint analysis was performed.
+In combined mismatch, raw EIG reached the local precision gate in all 30 seeds
+but was false-confident in 22. Its core-loss holdout mean RRMSE and latent 90%
+interval inclusion were 19.68% and 15.69%; at 100°C they were 30.55% and 0%.
+Loss-permeability holdout RRMSE and inclusion were 39.76% and 35.00%. This
+supports a failure of the local width gate under the specified discrepancy,
+not a general claim about every form of model mismatch.
+[Source E16](../evidence/Evidence-Sources.md#e16)
 
 ## Primary direct contrasts
 
@@ -161,14 +161,13 @@ mismatch campaign; it does not admit a mismatch endpoint or qualify all future
 posterior states. [Source E14](../evidence/Evidence-Sources.md#e14)
 
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
-2. Preserve the completed SparseMix-2 qualification and its original criteria.
-3. Register a new independent mismatch campaign using the qualified sampler,
-   with prospective checks at every new posterior state.
-4. Preregister gate-aligned utility after a valid mismatch campaign establishes
-   the evaluation path.
-5. Run larger simulation-based calibration for parameter and predictive
-   coverage.
-6. Controlled laboratory timing and multi-lot measurements before any
+2. Preserve MM-3, SparseMix-2 and their original criteria without post hoc
+   retuning.
+3. Preregister a gate-aligned utility as a new experiment, using MM-3 only to
+   define the motivation and evaluation boundary.
+4. Run simulation-based calibration under matched and prespecified mismatch
+   conditions after its design and acceptance criteria are frozen.
+5. Controlled laboratory timing and multi-lot measurements before any
    real-world time-saving claim.
-7. Stable measured-data acquisition ranking only after the forward model and
+6. Stable measured-data acquisition ranking only after the forward model and
    observation model pass adequacy checks.

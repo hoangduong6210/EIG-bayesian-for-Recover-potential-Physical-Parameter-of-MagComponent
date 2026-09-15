@@ -50,6 +50,8 @@ public_assets = [
   "assets/acquisition-diagnostics.json",
   "assets/acquisition-diagnostics.png",
   "assets/measured-adequacy.png",
+  "assets/model-mismatch-v3.json",
+  "assets/model-mismatch-v3.png",
   "assets/study-workflow.png",
   "assets/synthetic-diagnostics.png",
   "evidence/results.json",
@@ -100,6 +102,14 @@ config = "configs/model_mismatch_v3.toml"
 config_sha256 = "cf4496117e72e9f79b0770f4181ef0db32c0498096f089429aa4909adc00d2e0"
 registration = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/registration.json"
 registration_sha256 = "09df403319d6ea8ca7f2793d3a1092e5fce633c5f137900cd9d794aff8d06971"
+aggregate = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/aggregate.json"
+aggregate_sha256 = "03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d"
+audit_manifest = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/audit_manifest.json"
+audit_manifest_sha256 = "fdfb7bed6c3f0a818252dd47fd48d4b7dea5de5e7ee9e1faa943965dd2a9fb08"
+admission = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/admission.json"
+admission_sha256 = "1677f864d8b2d8c6c0567e0483f6259b737bd169c1c02054056d616d6f87e2de"
+asset_descriptor = "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/asset.json"
+asset_descriptor_sha256 = "a25e1c24665bea2e95f46599c909c8d2635944ed1240162a4d4a1a9b9c54456d"
 
 [snapshot]
 format = "A4, 10 point, two column"

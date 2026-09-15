@@ -21,6 +21,59 @@ def test_current_mm3_prerequisites_are_hash_bound():
     assert report["production_integration_sha256"] == manifest["diagnostics"]["production_integration"]["record_sha256"]
 
 
+def test_current_mm3_result_is_hash_bound_and_admitted():
+    with (WIKI / "manuscript.toml").open("rb") as stream:
+        manifest = tomllib.load(stream)
+    contract = manifest["campaigns"]["model_mismatch_v3"]
+    report = build.check_mm3_result_contract(contract)
+    assert report["model_mismatch_v3_aggregate_sha256"] == contract["aggregate_sha256"]
+    assert report["model_mismatch_v3_audit_manifest_sha256"] == contract["audit_manifest_sha256"]
+
+
+@pytest.mark.parametrize(
+    "label", ["aggregate", "audit_manifest", "admission", "asset_descriptor"]
+)
+def test_mm3_result_record_is_not_allowed_to_drift(label):
+    with (WIKI / "manuscript.toml").open("rb") as stream:
+        manifest = tomllib.load(stream)
+    contract = copy.deepcopy(manifest["campaigns"]["model_mismatch_v3"])
+    contract[f"{label}_sha256"] = "0" * 64
+    with pytest.raises(build.WikiError, match="SHA-256 mismatch"):
+        build.check_mm3_result_contract(contract)
+
+
+@pytest.mark.parametrize("change", ["task_count", "scenario", "source_hash", "decision"])
+def test_mm3_result_contract_rejects_semantic_tampering(tmp_path, monkeypatch, change):
+    with (WIKI / "manuscript.toml").open("rb") as stream:
+        manifest = tomllib.load(stream)
+    original = manifest["campaigns"]["model_mismatch_v3"]
+    contract = copy.deepcopy(original)
+    repository = tmp_path
+    (repository / "wiki").mkdir()
+    payloads = {}
+    for label in ("aggregate", "audit_manifest", "admission", "asset_descriptor"):
+        source = WIKI.parent / original[label]
+        payloads[label] = json.loads(source.read_text(encoding="utf-8"))
+    if change == "task_count":
+        payloads["audit_manifest"]["matrix"]["task_record_count"] = 119
+    elif change == "scenario":
+        payloads["aggregate"]["scenarios"].pop("combined_mismatch")
+    elif change == "source_hash":
+        payloads["audit_manifest"]["task_records"][0]["source_sha256"] = "0" * 64
+    else:
+        payloads["admission"]["decision"] = "not_admitted"
+    for label, payload in payloads.items():
+        relative = Path("records") / f"{label}.json"
+        path = repository / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        contract[label] = relative.as_posix()
+        contract[f"{label}_sha256"] = build.sha256(path)
+    monkeypatch.setattr(build, "WIKI_ROOT", repository / "wiki")
+    with pytest.raises(build.WikiError):
+        build.check_mm3_result_contract(contract)
+
+
 def test_submission_record_is_not_allowed_to_drift():
     with (WIKI / "manuscript.toml").open("rb") as stream:
         manifest = tomllib.load(stream)

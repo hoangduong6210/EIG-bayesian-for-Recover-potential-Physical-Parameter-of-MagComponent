@@ -119,6 +119,165 @@ def check_mm3_readiness(manifest: dict) -> dict:
     return report
 
 
+def check_mm3_result_contract(contract: dict) -> dict:
+    """Validate the admitted MM-3 aggregate and its public audit binding."""
+
+    if not isinstance(contract, dict):
+        raise WikiError("MM-3 result contract must be a table")
+    root = WIKI_ROOT.parent.resolve()
+    records = {}
+    for label in ("aggregate", "audit_manifest", "admission", "asset_descriptor"):
+        relative, digest = contract.get(label), contract.get(f"{label}_sha256")
+        if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
+            raise WikiError(f"invalid MM-3 {label} path")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise WikiError(f"missing or unsafe MM-3 {label}")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise WikiError(f"invalid MM-3 {label} SHA-256")
+        if sha256(path) != digest:
+            raise WikiError(f"MM-3 {label} SHA-256 mismatch")
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (ValueError, UnicodeError) as exc:
+            raise WikiError(f"invalid MM-3 {label} JSON") from exc
+        if not isinstance(value, dict):
+            raise WikiError(f"MM-3 {label} must contain an object")
+        records[label] = value
+
+    aggregate = records["aggregate"]
+    expected_scenarios = {
+        "matched_control",
+        "permeability_two_pole",
+        "core_loss_temperature_curvature",
+        "combined_mismatch",
+    }
+    expected_policies = {
+        "eig_raw",
+        "eig_per_cost",
+        "fixed_channel_balanced",
+        "random_channel_balanced",
+        "predictive_variance_raw",
+        "predictive_variance_per_cost",
+        "laplace_d_opt_raw",
+        "laplace_d_opt_per_cost",
+    }
+    expected_contrasts = {
+        "eig_raw_vs_predictive_variance_raw",
+        "eig_raw_vs_laplace_d_opt_raw",
+        "eig_per_cost_vs_predictive_variance_per_cost",
+        "eig_per_cost_vs_laplace_d_opt_per_cost",
+    }
+    if aggregate.get("schema_version") != "magcore-model-mismatch-aggregate/1.0" \
+            or aggregate.get("campaign_id") != "MM-3" \
+            or aggregate.get("config_sha256") != contract.get("config_sha256") \
+            or aggregate.get("estimator_decision_sha256") \
+            != "eb334ae2c188f12e7f544be71b6f0c40be15913ceec0df60e5bf9a9258ed82b6" \
+            or aggregate.get("source_result_count") != 120 \
+            or aggregate.get("scenario_count") != 4 \
+            or aggregate.get("seed_count_per_scenario") != 30 \
+            or aggregate.get("policy_count") != 8:
+        raise WikiError("MM-3 aggregate identity or matrix differs")
+    scenarios = aggregate.get("scenarios")
+    if not isinstance(scenarios, dict) or set(scenarios) != expected_scenarios:
+        raise WikiError("MM-3 aggregate scenario registry differs")
+    source_files = aggregate.get("source_files")
+    if not isinstance(source_files, list) or len(source_files) != 120:
+        raise WikiError("MM-3 aggregate source inventory is incomplete")
+    source_keys = set()
+    for row in source_files:
+        if not isinstance(row, dict) or row.get("scenario") not in expected_scenarios \
+                or type(row.get("seed")) is not int \
+                or row["seed"] not in range(10100, 10130) \
+                or not re.fullmatch(r"[0-9a-f]{64}", str(row.get("sha256", ""))):
+            raise WikiError("MM-3 aggregate source entry is malformed")
+        source_keys.add((row["scenario"], row["seed"]))
+    if len(source_keys) != 120:
+        raise WikiError("MM-3 aggregate source identities are not unique and complete")
+    for scenario in scenarios.values():
+        policies = scenario.get("policies")
+        contrasts = scenario.get("paired_strong_comparator_contrasts")
+        if not isinstance(policies, dict) or set(policies) != expected_policies:
+            raise WikiError("MM-3 policy registry differs")
+        if not isinstance(contrasts, dict) or set(contrasts) != expected_contrasts:
+            raise WikiError("MM-3 contrast registry differs")
+        for policy in policies.values():
+            reached, failed = policy.get("reached_gate_count"), policy.get("failure_to_gate_count")
+            if policy.get("n_seeds") != 30 or type(reached) is not int \
+                    or type(failed) is not int or reached + failed != 30:
+                raise WikiError("MM-3 policy denominator differs")
+        for contrast in contrasts.values():
+            wins, ties, losses = (
+                contrast.get("policy_wins"), contrast.get("ties"), contrast.get("policy_losses")
+            )
+            complete, excluded = (
+                contrast.get("complete_pair_count"),
+                contrast.get("excluded_pair_count_due_to_gate_failure"),
+            )
+            if any(type(value) is not int for value in (wins, ties, losses, complete, excluded)) \
+                    or wins + ties + losses != complete or complete + excluded != 30:
+                raise WikiError("MM-3 paired contrast accounting differs")
+
+    audit = records["audit_manifest"]
+    if audit.get("schema_version") != "magcore-model-mismatch-public-audit/1.0" \
+            or audit.get("campaign_id") != "MM-3" \
+            or audit.get("config_sha256") != contract.get("config_sha256") \
+            or audit.get("matrix") != {
+                "scenario_count": 4,
+                "seed_count_per_scenario": 30,
+                "policy_count": 8,
+                "task_record_count": 120,
+            }:
+        raise WikiError("MM-3 audit manifest identity or matrix differs")
+    task_records = audit.get("task_records")
+    if not isinstance(task_records, list) or len(task_records) != 120:
+        raise WikiError("MM-3 audit task inventory is incomplete")
+    audit_sources = {
+        (row.get("scenario"), row.get("seed")): row.get("source_sha256")
+        for row in task_records if isinstance(row, dict)
+    }
+    aggregate_sources = {
+        (row["scenario"], row["seed"]): row["sha256"] for row in source_files
+    }
+    if audit_sources != aggregate_sources or any(
+        not re.fullmatch(r"[0-9a-f]{64}", str(row.get("sha256", "")))
+        for row in task_records
+    ):
+        raise WikiError("MM-3 public task hashes do not bind the aggregate sources")
+    scope = audit.get("scope", {})
+    if scope.get("contains_scientific_endpoints") is not True \
+            or scope.get("contains_acquisition_trajectories") is not True \
+            or scope.get("contains_sampler_checkpoint_histories") is not True \
+            or scope.get("contains_full_walker_iteration_chains") is not False \
+            or scope.get("supports_independent_full_chain_diagnostic_recomputation") is not False:
+        raise WikiError("MM-3 public audit scope differs")
+
+    admission, asset = records["admission"], records["asset_descriptor"]
+    if admission.get("schema_version") != "magcore-model-mismatch-admission/1.0" \
+            or admission.get("campaign_id") != "MM-3" \
+            or admission.get("decision") != "admitted" \
+            or admission.get("aggregate_sha256") != contract["aggregate_sha256"] \
+            or admission.get("audit_manifest_sha256") != contract["audit_manifest_sha256"] \
+            or admission.get("basis", {}).get("validated_task_record_count") != 120 \
+            or admission.get("basis", {}).get("raw_to_aggregate_scientific_match") is not True:
+        raise WikiError("MM-3 admission record differs")
+    declared_asset = asset.get("asset", {})
+    if asset.get("schema_version") != "magcore-model-mismatch-audit-assets/1.0" \
+            or asset.get("campaign_id") != "MM-3" \
+            or asset.get("aggregate_sha256") != contract["aggregate_sha256"] \
+            or asset.get("audit_manifest_sha256") != contract["audit_manifest_sha256"] \
+            or declared_asset.get("task_record_count") != 120 \
+            or not re.fullmatch(r"[0-9a-f]{64}", str(declared_asset.get("sha256", ""))) \
+            or not str(declared_asset.get("url", "")).startswith("https://github.com/"):
+        raise WikiError("MM-3 public asset descriptor differs")
+    return {
+        "model_mismatch_v3_aggregate_sha256": contract["aggregate_sha256"],
+        "model_mismatch_v3_audit_manifest_sha256": contract["audit_manifest_sha256"],
+        "model_mismatch_v3_admission_sha256": contract["admission_sha256"],
+        "model_mismatch_v3_asset_descriptor_sha256": contract["asset_descriptor_sha256"],
+    }
+
+
 def check_sparse_pilot_contract(contract: dict) -> dict:
     """Validate optional pilot evidence before allowing Wiki claims to use it."""
     if not isinstance(contract, dict):
@@ -578,6 +737,11 @@ def check() -> dict:
     sparse_v2_report = {}
     if "sparse_mixing_v2" in manifest.get("diagnostics", {}):
         sparse_v2_report = check_sparse_mixing_v2_contract(manifest["diagnostics"]["sparse_mixing_v2"])
+    mm3_result_report = {}
+    if "model_mismatch_v3" in manifest.get("campaigns", {}):
+        mm3_result_report = check_mm3_result_contract(
+            manifest["campaigns"]["model_mismatch_v3"]
+        )
     sparse_contract = manifest.get("diagnostics", {}).get("sparse_mixing", {})
     if sparse_contract.get("protocol_id") != "SparseMix-1":
         raise WikiError("unexpected sparse-mixing protocol identity")
@@ -696,7 +860,7 @@ def check() -> dict:
         raise WikiError("acquisition figure has unexpected evidence sources")
     source_page_path = WIKI_ROOT / "evidence" / "Evidence-Sources.md"
     source_page = texts[source_page_path]
-    for source_id in range(1, 13):
+    for source_id in range(1, 17):
         anchor = f'<a id="e{source_id}"></a>'
         if anchor not in source_page:
             raise WikiError(f"missing evidence source anchor E{source_id}")
@@ -729,6 +893,7 @@ def check() -> dict:
     return {
         **pilot_report,
         **sparse_v2_report,
+        **mm3_result_report,
         **check_mm3_readiness(manifest),
         "abstract_words": len(abstract.split()),
         "body_words": len(body.split()),

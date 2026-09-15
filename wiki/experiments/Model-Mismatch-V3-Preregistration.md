@@ -1,7 +1,7 @@
 ---
 title: Model-mismatch campaign MM-3
-status: registered and submitted; campaign validation pending
-last_updated: 2026-09-13
+status: complete and admitted under the preregistered numerical contract
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -195,15 +195,54 @@ the Wiki build checks that binding alongside the protocol configuration.
 | Stage | Identifier | Status at submission | Expected output |
 |---|---|---|---|
 | Release checks | `7273241` | Completed successfully | Full tests and Wiki contract |
-| Scenario--seed array | `7273251` | Submitted, 120 tasks | One validated record per scenario--seed |
-| Aggregate | `7273252` | Dependent on successful completion of the entire array | Exact-matrix aggregate or no admitted result |
+| Scenario--seed array | `7273251` | Completed successfully, 120 tasks | One validated record per scenario--seed |
+| Aggregate | `7273252` | Completed successfully | Exact-matrix aggregate |
 
-This is an execution record, not a result table. No gate-reach, error,
-coverage or policy contrast is claimed from submission. The read-only watcher
+At submission this was an execution record, not a result table. No gate-reach,
+error, coverage or policy contrast was inspected from partial output. The read-only watcher
 separates task and aggregate failures and checks scheduler terminal states,
 including out-of-memory, timeout and cancellation when a shell failure marker
 is missing. Transient accounting absence is retried rather than reported as a
 numerical rejection. It never launches replacements or changes admission.
+
+<a id="result"></a>
+## Completed campaign and admission
+
+The array and dependent aggregate completed successfully. All 120 registered
+scenario--seed records passed the stored diagnostic contract; the matrix has
+four scenarios, 30 independent seeds per scenario and all eight policies.
+There were no missing or duplicate records, sampler rejections, or gate
+failures. The audit independently matched every production source hash and
+reconstructed the complete scientific aggregate from the sanitized task
+records. Aggregate SHA-256:
+`03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d`.
+[Evidence E16](../evidence/Evidence-Sources.md#e16)
+
+The central robustness result is a separation between local precision and
+truth accuracy. Raw EIG reached the local two-target width gate in all 30
+combined-mismatch seeds, but met the preregistered false-confidence definition
+in 22. Its mean latent-holdout RRMSE and 90% interval inclusion were 19.68% and
+15.69% for core loss and 39.76% and 35.00% for loss permeability. At 100°C,
+core-loss RRMSE was 30.55% and interval inclusion was zero. These are fixed
+synthetic holdout summaries, not empirical calibration estimates.
+[Evidence E16](../evidence/Evidence-Sources.md#e16)
+
+Raw EIG retained only a small measurement-count advantage over the strong
+comparators. In the matched, two-pole and temperature/curvature scenarios its
+mean advantage was 0.067 measurements over predictive variance and 0.167 over
+Laplace D-optimality; the corresponding win/tie/loss counts were 2/28/0 and
+5/25/0. In combined mismatch both advantages were 0.10 measurements, with
+3/27/0. EIG/cost lost to predictive-variance/cost in every seed: the mean
+comparator-minus-EIG difference was −15.33 modeled-cost units in the first
+three scenarios and −15.17 in combined mismatch. These bootstrap contrasts
+are descriptive and not multiplicity-adjusted.
+[Evidence E16](../evidence/Evidence-Sources.md#e16)
+
+This admission establishes results only for the three locked discrepancy
+families and their matched control. It does not show that EIG causes false
+confidence, that a fixed traversal is generally safer, or that any comparator
+is optimal. It also does not establish laboratory-time savings, global
+six-parameter identification, or measured-data robustness.
 
 <a id="progress-20260913t1219z"></a>
 ### Progress checkpoint — 13 September 2026, 12:19 UTC
@@ -218,9 +257,10 @@ The [endpoint-free progress record](https://github.com/hoangduong6210/EIG-bayesi
 contains the observation timestamp, scheduler accounting and hashes of all
 20 result artifacts. SHA-256:
 `3d3b9fb4e4556de16d0d8ffb33c3c7c70130b8f20b550ea1a61baa4e85a8c2bb`.
-No endpoint values were inspected for this checkpoint. The next decision
-remains validation of the complete task matrix, not inspection of interim
-policy performance.
+No endpoint values were inspected for this checkpoint. The next decision at
+that time remained validation of the complete task matrix, not inspection of
+interim policy performance. This checkpoint is retained as execution history;
+the completed result above supersedes it as the current state.
 
 The source is prepared from a clean public commit. Each task receives one
 CPU for vectorized sampling and a 64 GB memory limit; up to ten tasks run
@@ -236,7 +276,6 @@ bash scripts/watch_model_mismatch_v3.sh runs/<prepared-run>
 ```
 
 The [scientific job register](../results/Scientific-Job-Results.md) records the
-submitted run separately from results. The
-[project status](../status/Project-Status.md) records admission only after
-validation and evidence freezing. The Wiki is the current scientific source;
-document snapshots are not rebuilt as part of this campaign launch.
+completed run and the [project status](../status/Project-Status.md) states its
+claim boundary. The Wiki is the current scientific source; document snapshots
+are not rebuilt by this evidence release.

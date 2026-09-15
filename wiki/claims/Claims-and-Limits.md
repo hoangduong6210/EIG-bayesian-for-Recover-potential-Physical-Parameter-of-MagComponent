@@ -1,7 +1,7 @@
 ---
 title: Claims and Limits
 status: canonical claim boundary
-last_updated: 2026-08-19
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -17,6 +17,8 @@ paper_source: false
 | EIG/cost ties Laplace D-optimality and loses to predictive variance/cost | Prespecified modeled-cost table, not measured time | [E4](../evidence/Evidence-Sources.md#e4) |
 | Secondary holdout error and six-parameter interval inclusion are reconstructable | Disjoint 23-point latent holdout; matched model | [E6](../evidence/Evidence-Sources.md#e6) |
 | Measured fits expose substantial \(\mu''\) model discrepancy | Accepted public records; in-sample RRMSE | [E7](../evidence/Evidence-Sources.md#e7) |
+| The local precision gate can be false-confident under the three locked structural departures | Four scenarios, 30 paired seeds each; synthetic latent truth | [E16](../evidence/Evidence-Sources.md#e16) |
+| Raw EIG has only small count advantages over predictive variance and Laplace D-optimality in MM-3 | Preregistered paired descriptive contrasts; not a general superiority claim | [E16](../evidence/Evidence-Sources.md#e16) |
 
 ## Not supported
 
@@ -25,7 +27,8 @@ paper_source: false
 - A validated optimal laboratory plan.
 - Global or physically unique six-parameter identification.
 - Empirical uncertainty calibration from five recovery seeds.
-- Robustness under structural model mismatch.
+- Robust EIG performance under structural model mismatch.
+- Generalization beyond the three MM-3 discrepancy families.
 - Temperature-dependent prediction from the present isothermal model.
 - Stable EIG ranking on measured data.
 - Replacement of qualification testing or component-level validation.
@@ -37,3 +40,5 @@ precision gate,” and “modeled cost” wherever those qualifiers affect a cla
 Do not shorten “deterministic fixed channel-balanced traversal” to “uniform
 grid.” Report negative and tied strong-comparator outcomes next to the
 fixed-traversal comparison.
+Describe latent 90% holdout interval inclusion as inclusion or coverage on the
+fixed synthetic holdout, not as empirical uncertainty calibration.

@@ -10,10 +10,69 @@ checks, and frozen evidence for the magnetic-component case study.
 
 Authors: Viet Hoang Duong, Viet Huy Duong, and Lun-Min Shih.
 
-## Current result
+## Why this study
 
-The validated 30-paired-seed matched-model benchmark does not show an EIG
-advantage over the two strong acquisition comparators.
+Magnetic-core characterization couples several responses—core-loss density,
+complex permeability and magnetizing inductance—over frequency, flux density
+and temperature. Dense measurement sweeps are expensive, while a posterior
+that is narrow inside an inadequate forward model can still be physically
+wrong. This project asks when Bayesian sequential design genuinely reduces
+the measurements needed for a stated prediction target, and when apparent
+precision is instead caused by the model or stopping rule.
+
+The present implementation uses an isothermal Steinmetz core-loss law and a
+one-pole Cole--Cole permeability law. These low-order models make the
+six-parameter inference and acquisition problem explicit, but their adequacy
+must be tested separately from posterior computation.
+
+## Research questions
+
+1. Can the six-coordinate posterior be recovered without centering the prior
+   or sampler on the hidden generating value?
+2. Does EIG reach a declared local predictive-precision gate sooner than
+   fixed, randomized, predictive-variance and Laplace D-optimal policies?
+3. Does dividing utility by modeled acquisition cost improve cost to gate?
+4. Does a narrow local posterior interval remain truth-accurate when the data
+   generator departs from the inference model?
+5. Which conclusions survive measured-data adequacy checks?
+
+## Contributions
+
+- A joint Bayesian calibration pipeline for three Steinmetz and three
+  Cole--Cole coordinates, with transformed priors and state-level convergence
+  checks. [E1](wiki/evidence/Evidence-Sources.md#e1)
+- A paired 30-seed benchmark in which every policy receives the same
+  candidate-indexed outcomes and the candidate library contains 37 unique
+  isothermal designs. [E1](wiki/evidence/Evidence-Sources.md#e1)
+- An eight-policy comparison separating raw information gain from modeled-
+  cost objectives and including randomized, predictive-variance and Laplace
+  D-optimal comparators. [E4](wiki/evidence/Evidence-Sources.md#e4)
+- A preregistered 120-task model-mismatch campaign that distinguishes local
+  posterior precision from truth accuracy and latent-holdout performance.
+  [E16](wiki/evidence/Evidence-Sources.md#e16)
+- A public evidence chain from registered configurations and sanitized task
+  records to reconstructed aggregates, claim language and document releases.
+  [E8](wiki/evidence/Evidence-Sources.md#e8), [E16](wiki/evidence/Evidence-Sources.md#e16)
+
+## Study design at a glance
+
+| Layer | Purpose | Evaluation |
+|---|---|---|
+| Identifiability and recovery | Check the six-coordinate inference implementation | Fisher spectrum and five prior-predictive matched-model seeds |
+| Sequential acquisition | Compare where each policy measures next | 30 paired seeds, eight policies, shared candidate outcomes |
+| Model mismatch | Test whether local precision remains truth-accurate | Matched control plus three locked structural departures |
+| Measured-data adequacy | Test the low-order laws against public material records | Channel-specific in-sample residuals and convergence gates |
+| Evidence audit | Prevent claims from outrunning their source records | Hash-bound aggregates, raw-record bundles and Wiki checks |
+
+![Study structure separating recovery, acquisition comparison, and measured-data adequacy.](wiki/assets/study-workflow.png)
+
+## Main findings
+
+The validated 30-paired-seed matched-model benchmark does not show a material
+EIG advantage over the two strong acquisition comparators. The subsequently
+preregistered MM-3 campaign shows that reaching the local precision gate does
+not protect against false confidence under the three locked structural
+departures. [Model-mismatch evidence E16](wiki/evidence/Evidence-Sources.md#e16)
 
 | Comparison | Paired result | Defensible interpretation | Evidence |
 |---|---|---|---|
@@ -33,7 +92,17 @@ post hoc descriptive result for the present benchmark, not a general ordering
 of acquisition methods. [Trajectory evidence E5](wiki/evidence/Evidence-Sources.md#e5)
 and [selection-path evidence E9](wiki/evidence/Evidence-Sources.md#e9)
 
-## Evidence boundary
+In MM-3 combined mismatch, raw EIG reached the gate in 30/30 seeds but was
+false-confident in 22/30. Core-loss latent-holdout RRMSE was 19.68% with 15.69%
+90% interval inclusion; at 100°C the corresponding values were 30.55% and 0%.
+Raw EIG's mean count advantage over the two strong comparators was only 0.10
+measurements, while EIG/cost lost to predictive-variance/cost in all 30 pairs.
+These results concern the locked synthetic departures, not measured magnetic
+materials. [E16](wiki/evidence/Evidence-Sources.md#e16)
+
+![MM-3 false-confidence counts and paired strong-comparator contrasts. Positive differences favor EIG.](wiki/assets/model-mismatch-v3.png)
+
+## What the evidence means
 
 The current evidence supports:
 
@@ -42,11 +111,13 @@ The current evidence supports:
   two-target precision gate [E4](wiki/evidence/Evidence-Sources.md#e4);
 - modeled acquisition cost under the declared cost table [E4](wiki/evidence/Evidence-Sources.md#e4);
 - in-sample adequacy diagnostics for accepted measured-data fits [E7](wiki/evidence/Evidence-Sources.md#e7).
+- truth-error, latent-holdout and paired-policy outcomes for the three locked
+  synthetic mismatch families [E16](wiki/evidence/Evidence-Sources.md#e16).
 
 It does not establish laboratory-time savings, global six-parameter
-identification, calibrated physical uncertainty, robustness under structural
-model mismatch, stable measured-data EIG rankings, or a validated optimal
-laboratory plan. These boundaries are maintained in the
+identification, calibrated physical uncertainty, robust performance under
+structural model mismatch, stable measured-data EIG rankings, or a validated
+optimal laboratory plan. These boundaries are maintained in the
 [claim registry](wiki/claims/Claims-and-Limits.md).
 
 Accepted measured-data fits retain substantial loss-component discrepancy:
@@ -61,7 +132,7 @@ The one-pole model does not reproduce the retained \(\mu''\) records adequately,
 so measured-data acquisition suggestions remain model-conditional.
 [E7](wiki/evidence/Evidence-Sources.md#e7)
 
-## Research state
+## Project status
 
 | Work product | State | Evidence or protocol |
 |---|---|---|
@@ -75,13 +146,17 @@ so measured-data acquisition suggestions remain model-conditional.
 | Alternative-sampler pilot | Complete 24-task full-chain audit; DE + snooker selected for subsequent confirmation | [E13](wiki/evidence/Evidence-Sources.md#e13), [Sampler comparison](wiki/experiments/Sparse-Sampler-Pilot.md) |
 | SparseMix-2 | Complete 16-task, 48-artifact audit; both locked states pass with DE + snooker | [E14](wiki/evidence/Evidence-Sources.md#e14), [Protocol and result](wiki/experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Production sampler integration | Both locked states pass the adaptive implementation check | [E15](wiki/evidence/Evidence-Sources.md#e15) |
-| Model-mismatch campaign MM-3 | At 13 September 12:19 UTC: 20/120 tasks complete, ten running; no recorded failure or rejection, no admitted result | [Protocol and progress](wiki/experiments/Model-Mismatch-V3-Preregistration.md#progress-20260913t1219z) |
-| Gate-aligned utility and simulation-based calibration | Deferred; neither non-admitted mismatch campaign can authorize these experiments | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
+| Model-mismatch campaign MM-3 | Complete and admitted under its numerical contract: 120/120 validated records; local gate failure under mismatch quantified | [E16](wiki/evidence/Evidence-Sources.md#e16), [protocol and result](wiki/experiments/Model-Mismatch-V3-Preregistration.md#result) |
+| Gate-aligned utility and simulation-based calibration | Next prospective experiments; neither has been preregistered or run | [Decision 0001](wiki/decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release
 `20260817T072230Z_401e3030fe13`, manifest SHA-256
 `85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7`.
 [Release evidence E8](wiki/evidence/Evidence-Sources.md#e8)
+
+MM-3 is bound separately to aggregate SHA-256
+`03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d`
+and its 120-record public audit asset. [Model-mismatch evidence E16](wiki/evidence/Evidence-Sources.md#e16)
 
 ## Research record and document releases
 

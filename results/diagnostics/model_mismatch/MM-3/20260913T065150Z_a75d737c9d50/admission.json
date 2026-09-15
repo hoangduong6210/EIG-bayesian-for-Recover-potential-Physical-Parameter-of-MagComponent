@@ -1,0 +1,22 @@
+{
+  "aggregate_sha256": "03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d",
+  "audit_manifest_sha256": "fdfb7bed6c3f0a818252dd47fd48d4b7dea5de5e7ee9e1faa943965dd2a9fb08",
+  "basis": {
+    "all_sampler_decisions_pass": true,
+    "exact_registered_matrix": true,
+    "expected_task_record_count": 120,
+    "raw_to_aggregate_scientific_match": true,
+    "validated_task_record_count": 120
+  },
+  "campaign_id": "MM-3",
+  "claim_scope": "preregistered synthetic model-mismatch campaign",
+  "decision": "admitted",
+  "does_not_establish": [
+    "laboratory time savings",
+    "global six-parameter identification",
+    "robust uncertainty calibration under structural discrepancy",
+    "general policy superiority"
+  ],
+  "run_id": "20260913T065150Z_a75d737c9d50",
+  "schema_version": "magcore-model-mismatch-admission/1.0"
+}

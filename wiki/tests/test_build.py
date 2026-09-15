@@ -114,7 +114,7 @@ def test_new_reader_index_covers_public_pages_and_evidence_lookup():
     }
     assert expected <= targets
     assert "Verify a number" in index
-    assert "E1--E15" in index
+    assert "E1--E16" in index
 
 
 def test_sparse_mixing_diagnostic_is_hash_bound_and_non_admitting():
@@ -318,7 +318,9 @@ def test_public_disclosure_patterns_are_detected(text: str):
 def test_repository_landing_page_is_evidence_led():
     readme = (WIKI.parent / "README.md").read_text(encoding="utf-8")
     assert readme == MODULE.render_repository_readme()
-    assert "## Current result" in readme
+    assert "## Why this study" in readme
+    assert "## Contributions" in readme
+    assert "## Main findings" in readme
     assert "wiki/evidence/Evidence-Sources.md#e4" in readme
     assert "wiki/evidence/Evidence-Sources.md#e5" in readme
     assert "wiki/evidence/Evidence-Sources.md#e7" in readme

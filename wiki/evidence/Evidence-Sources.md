@@ -1,7 +1,7 @@
 ---
 title: Evidence Sources
 status: canonical evidence source map
-last_updated: 2026-09-13
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -218,11 +218,38 @@ source label.
   eight-ensemble SparseMix-2 confirmation, nor an MM-3 result. The record
   retains reported diagnostics, not full chains for independent recomputation.
 
+<a id="e16"></a>
+## E16 — Preregistered MM-3 model-mismatch campaign
+
+- Aggregate: [`aggregate.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/aggregate.json)
+- Aggregate SHA-256:
+  `03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d`.
+- Admission: [`admission.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/admission.json)
+- Public audit asset: [MM-3 audit v1](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/releases/tag/mm3-20260913-audit-v1)
+  with immutable [`asset.json`](https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/main/results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/asset.json).
+- Pointers: `/scenarios/<scenario>/policies/<policy>` contains gate,
+  false-confidence, holdout and cost summaries;
+  `/scenarios/<scenario>/paired_strong_comparator_contrasts/<contrast>`
+  contains paired differences, bootstrap intervals and win/tie/loss counts.
+- Admission: all 120 registered scenario--seed records are present, unique,
+  sampler-valid and bound to the registered configuration, estimator decision
+  and SparseMix-2 qualification hashes. The public bundle retains all 120
+  sanitized task records and reconstructs the scientific aggregate exactly.
+- Scope: this admits the preregistered synthetic campaign under its numerical
+  contract. It does not validate laboratory time, global physical parameter
+  identification, uncertainty calibration under arbitrary discrepancy, or
+  general policy superiority.
+- Audit boundary: task records retain acquisition trajectories, candidate
+  scores and sampler checkpoint histories. Full walker-by-iteration chains
+  were not retained, so autocorrelation and acceptance can be consistency-
+  checked from reported diagnostics but independently recomputed only by
+  rerunning the locked campaign.
+
 ## Verification rule
 
 [`build.py`](../build.py) rejects the wiki if the projection hash, release ID,
-release-manifest hash, artifact total, acquisition-record count, or source
-labels differ from the declared contract. The exporter can reproduce the
+release-manifest hash, artifact total, acquisition-record count, MM-3 matrix,
+or source labels differ from the declared contract. The exporter can reproduce the
 projection from an independently obtained verified release:
 
 ```bash
