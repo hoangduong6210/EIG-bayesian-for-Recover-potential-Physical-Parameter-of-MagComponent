@@ -21,10 +21,15 @@ result, including negative comparisons.
 [E7](../evidence/Evidence-Sources.md#e7), and
 [E16](../evidence/Evidence-Sources.md#e16)
 
-The requested journal snapshot is identified as `journal-20260915-full`, with
-destination `paper/Latest snapshot`. Its release manifest, once built and
-verified, determines the exact Wiki revision, evidence, figures, bibliography,
-and PDF. The folder name is not an instruction to update an existing snapshot
+The journal snapshot `journal-20260915-full` is archived in
+`paper/Latest snapshot`, exported from reviewed Wiki revision
+`a3e6326621d90123e5661c17e2d562fb0f5e0a41`. Its 15-page PDF contains five figures,
+eight tables and 49 references. The 19-file output registry passed checksum
+verification; the PDF SHA-256 is
+`ecd55c4f3d17146287cbb22140f82e41bfdadfc15403845634068a24f8c00e33`.
+The source revision precedes this closeout entry: document and Wiki versions
+are intentionally distinct. The release manifest determines the exact
+evidence, figures, bibliography and PDF. The folder name is not an instruction to update an existing snapshot
 in place. Later research changes belong in the Wiki; a later submission needs
 another explicit document release. The Wiki remains the canonical scientific
 source. See [authoring and snapshots](../manuscript/Authoring-and-Snapshots.md).

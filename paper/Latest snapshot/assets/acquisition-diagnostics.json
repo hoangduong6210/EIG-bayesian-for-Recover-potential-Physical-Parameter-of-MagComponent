@@ -1,0 +1,14 @@
+{
+  "evidence_projection": "evidence/results.json",
+  "evidence_projection_sha256": "60036e144daf64ad8220377ff7eabc3dbba80afe33ff9c57e3b71ab95162a388",
+  "evidence_sources": [
+    "E4",
+    "E5"
+  ],
+  "figure": "acquisition-diagnostics.png",
+  "figure_sha256": "3bd19073239987305b3bdf90af6903afdb05a6bad8966e47d9c6ea4c4b01ee4e",
+  "release_id": "20260817T072230Z_401e3030fe13",
+  "schema_version": "magnetic-wiki-figure/1.0",
+  "vector_figure": "acquisition-diagnostics.pdf",
+  "vector_figure_sha256": "ef587da4a307da41917ed504ff43074e0f42838c2d7cca5e8375410c301c933f"
+}

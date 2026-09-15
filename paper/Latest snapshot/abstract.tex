@@ -1,0 +1,36 @@
+Magnetic-core models used in power-converter design are commonly fitted
+to nominal material curves despite limited operating-point coverage and
+material variation. We present a Bayesian framework that calibrates
+Steinmetz core-loss and Cole--Cole complex-permeability models and
+evaluates expected information gain (EIG) for sequential measurement
+selection. Five prior-predictive, matched-model recovery cases gave
+per-parameter median absolute relative errors from 0.27\% to 5.85\%,
+with the generating values inside 28 of 30 equal-tailed 90\%
+model-conditional credible intervals. In a separate 30-paired-seed
+benchmark with shared candidate outcomes, raw EIG reached a prespecified
+two-target latent-response precision gate in five measurements, compared
+with nine for a deterministic fixed channel-balanced traversal. Against
+stronger comparators, however, raw EIG tied predictive variance and
+Laplace D-optimality on measurement count in all 30 pairs. EIG per
+modeled cost tied Laplace D-optimality but required a mean 15.17 more
+modeled-cost units than predictive variance (95\% paired-bootstrap
+interval 15.00--15.50 units in favor of predictive variance). No policy
+failed the gate. On accepted public measured records, in-sample RRMSE
+was 8.79\%--18.21\% for core loss, 6.89\%--9.33\% for \(\mu'\), and
+36.77\%--52.42\% for \(\mu''\); the loss-component residuals expose
+substantial one-pole model discrepancy. The evidence supports a
+reproducible, model-conditional acquisition benchmark. A separate
+preregistered 120-task synthetic mismatch campaign found that raw EIG
+reached the same local gate in every combined-mismatch seed but was
+false-confident in 22 of 30; its strong-comparator count advantages were
+only 0.10 measurements. This shows that local posterior width did not
+protect truth accuracy under the locked departures. It does not show EIG
+superiority over strong comparators, measured laboratory-time savings,
+global six-parameter identification, or a validated optimal laboratory
+plan.
+\href{https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/a3e6326621d90123e5661c17e2d562fb0f5e0a41/wiki/evidence/Evidence-Sources.md\#e2}{Evidence
+E2},
+\href{https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/a3e6326621d90123e5661c17e2d562fb0f5e0a41/wiki/evidence/Evidence-Sources.md\#e4}{E4},
+\href{https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/a3e6326621d90123e5661c17e2d562fb0f5e0a41/wiki/evidence/Evidence-Sources.md\#e7}{E7},
+and
+\href{https://github.com/hoangduong6210/EIG-bayesian-for-Recover-potential-Physical-Parameter-of-MagComponent/blob/a3e6326621d90123e5661c17e2d562fb0f5e0a41/wiki/evidence/Evidence-Sources.md\#e16}{E16}
