@@ -54,6 +54,8 @@ jobs:
       - run: python -m pip install -e '.[test]'
       - name: Verify the journal snapshot without rebuilding documents
         run: python wiki/build.py verify-snapshot --directory "paper/Latest snapshot"
+      - name: Verify the corrected journal snapshot
+        run: python wiki/build.py verify-snapshot --directory paper/journal-20260915-full-r1
       - name: Verify evidence used by the archived full-paper render
         run: |
           release_id="$(sed -n 's/^release_id:[[:space:]]*//p' paper/current_state/results.lock.yaml)"

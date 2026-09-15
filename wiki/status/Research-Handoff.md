@@ -36,12 +36,17 @@ source. See [authoring and snapshots](../manuscript/Authoring-and-Snapshots.md).
 
 ## Document revision and submission record
 
-The editorial successor `journal-20260915-full-r1` is prepared from the Wiki
-with unchanged numerical results, evidence releases, figures and bibliography.
+The editorial successor `journal-20260915-full-r1` is archived in
+`paper/journal-20260915-full-r1`, with unchanged numerical results, evidence
+releases, figures and bibliography. It was exported from Wiki commit
+`927bbcb6d0b862598fae87d2575a872bbd79b5f1`. Its 14-page PDF has SHA-256
+`4407294f5203998cb68ce7f14ce9f507fc722ac32ca25482dd070407125cd255`.
 It replaces operational phrasing in the data-availability statement and
 removes discussion of conference publication status from the scientific body.
 The original journal PDF remains a separate record; archive navigation selects
-the revised document once its export has been verified.
+the revised document. All 19 registered output files passed verification,
+and the 12 figure, figure-metadata and bibliography assets are byte-identical
+to the original export.
 
 The legacy full-paper archive retains a layout-description paragraph on
 page 9. That paragraph describes the historical document, not a scientific

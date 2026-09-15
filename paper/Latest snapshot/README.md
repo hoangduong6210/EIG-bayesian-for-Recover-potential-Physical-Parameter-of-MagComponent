@@ -1,6 +1,7 @@
-# Journal snapshot: Bayesian calibration and sequential design
+# Original journal snapshot: Bayesian calibration and sequential design
 
-[Read the full paper](main.pdf)
+[Read the corrected journal paper](../journal-20260915-full-r1/main.pdf).
+The [original journal PDF](main.pdf) remains archived here.
 
 This 15-page journal manuscript presents joint Steinmetz–Cole–Cole calibration,
 the paired acquisition benchmark, estimator qualification, measured-data model
@@ -13,7 +14,7 @@ inaccurate under model mismatch.
 |---|---|
 | Release | `journal-20260915-full` |
 | Source Wiki commit | `a3e6326621d90123e5661c17e2d562fb0f5e0a41` |
-| Format | A4, two columns; three authors; page-number footers |
+| Format | A4, two columns |
 | Contents | 5 figures, 8 tables, 49 references; 40 linked DOIs |
 | Matched-model evidence | `20260817T072230Z_401e3030fe13` |
 | Structural-mismatch evidence | `20260913T065150Z_a75d737c9d50` |
@@ -44,15 +45,5 @@ copy of this directory with `latexmk -pdf main.tex`; routine Wiki changes do
 not rebuild this record. PDF bytes may differ with the TeX distribution and
 compilation timestamp.
 
-The release was inspected page by page. All 17 PDF fonts are embedded, with no
-Type 3 fonts. The final compilation has no missing-character, unresolved-citation,
-or overfull-box warnings. Figures use grayscale and distinguishable line/marker
-styles; three figures have vector originals. Bibliographic identity and metadata
-were checked for all 49 references against publisher, registry, repository or
-library records. Metadata checks do not substitute for assessing each cited
-work's substantive conclusions.
-
-This is a research manuscript snapshot, not a record of journal acceptance.
-Funding, competing-interest and author-contribution declarations require the
-authors' confirmation and the selected journal's submission requirements;
-none has been inferred here.
+Document verification and submission requirements are recorded in the
+[research handoff](../../wiki/status/Research-Handoff.md#document-revision-and-submission-record).

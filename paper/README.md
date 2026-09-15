@@ -7,7 +7,8 @@ scientific state.
 
 | Record | Role | Evidence boundary |
 |---|---|---|
-| [Latest journal snapshot](<Latest snapshot/>) | Full journal export `journal-20260915-full` from the reviewed Wiki | Matched-model freeze and admitted MM-3; exact source and hashes in `snapshot.json` |
+| [Current journal snapshot](journal-20260915-full-r1/) | Editorial revision `journal-20260915-full-r1` | Same scientific evidence, figures and bibliography as the original journal export |
+| [Original journal snapshot](<Latest snapshot/>) | Archived export `journal-20260915-full`; original directory name retained | Matched-model freeze and admitted MM-3; exact source and hashes in `snapshot.json` |
 | [`conference_snapshot/`](conference_snapshot/) | Immutable six-page conference record | Historical release `20260806T112202Z_9a37bcc67637` |
 | [`current_state/`](current_state/) | Legacy full-paper render retained under its original path | Read its local lock; do not infer currency from the directory name |
 

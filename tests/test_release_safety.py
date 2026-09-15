@@ -541,6 +541,26 @@ def test_public_paper_layout_preserves_archives_and_verifiable_snapshots():
     assert not any(paper_root.glob("main.*"))
 
 
+def test_journal_editorial_revision_preserves_scientific_assets():
+    original = json.loads((ROOT / "paper/Latest snapshot/snapshot.json").read_text())
+    revised = json.loads((ROOT / "paper/journal-20260915-full-r1/snapshot.json").read_text())
+    stable = [name for name in original["generated"]
+              if name.startswith("assets/") or name in ("references.bib", "IEEEtran.bst")]
+    assert len(stable) == 12
+    assert all(original["generated"][name] == revised["generated"][name] for name in stable)
+    assert original["evidence_release_id"] == revised["evidence_release_id"]
+    assert original["evidence_projection_sha256"] == revised["evidence_projection_sha256"]
+    assert original["source"]["wiki_commit"] != revised["source"]["wiki_commit"]
+    assert original["generated"]["main.pdf"] != revised["generated"]["main.pdf"]
+
+
+def test_conference_navigation_does_not_treat_legacy_render_as_current():
+    text = (ROOT / "paper/conference_snapshot/README.md").read_text()
+    assert "../current_state/manuscript.pdf" not in text
+    assert "../../wiki/manuscript/Full-Manuscript.md" in text
+    assert "../README.md" in text
+
+
 def test_archived_full_paper_sources_match_their_own_evidence_lock():
     lock_text = (ROOT / "paper" / "current_state" / "results.lock.yaml").read_text(
         encoding="utf-8"

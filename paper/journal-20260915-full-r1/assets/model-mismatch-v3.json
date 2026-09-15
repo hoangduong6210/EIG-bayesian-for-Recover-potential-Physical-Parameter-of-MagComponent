@@ -1,0 +1,18 @@
+{
+  "campaign_id": "MM-3",
+  "difference_definition": "comparator_minus_eig",
+  "figure": "model-mismatch-v3.png",
+  "figure_sha256": "bd1f6170b4c8453235f4a93ef7d8846f6a838b2ef45c0c65b28f0c0bd9440587",
+  "interval": "95% paired-bootstrap mean interval; descriptive, not multiplicity-adjusted",
+  "panels": [
+    "combined-mismatch false-confidence count by policy",
+    "raw EIG paired measurement-count contrasts",
+    "EIG/cost paired modeled-cost contrasts"
+  ],
+  "positive_difference_favors": "eig",
+  "schema_version": "magcore-model-mismatch-figure/1.0",
+  "source": "results/diagnostics/model_mismatch/MM-3/20260913T065150Z_a75d737c9d50/aggregate.json",
+  "source_sha256": "03e8d81c48f3b5eb2c807a47b880972d3ea727b149788c2deffc35f1ac1d222d",
+  "vector_figure": "model-mismatch-v3.pdf",
+  "vector_figure_sha256": "a3a64ed347ad9b7552f5ed826eccfa1d400c01a85deec304181d7b49f49554e2"
+}
