@@ -139,6 +139,11 @@ so measured-data acquisition suggestions remain model-conditional.
 
 ## Project status
 
+The present research phase is closed for the journal snapshot. The
+[handoff and future-work register](status/Research-Handoff.md) records the
+unresolved questions, evidence boundaries, and requirements for a successor
+study; closure does not imply laboratory validation or calibrated uncertainty.
+
 | Work product | State | Evidence or protocol |
 |---|---|---|
 | 30-seed, eight-policy matched-model benchmark | Validated | [E1](evidence/Evidence-Sources.md#e1), [E4](evidence/Evidence-Sources.md#e4) |
@@ -152,7 +157,7 @@ so measured-data acquisition suggestions remain model-conditional.
 | SparseMix-2 | Complete 16-task, 48-artifact audit; both locked states pass with DE + snooker | [E14](evidence/Evidence-Sources.md#e14), [Protocol and result](experiments/Sparse-Mixing-V2-Preregistration.md) |
 | Production sampler integration | Both locked states pass the adaptive implementation check | [E15](evidence/Evidence-Sources.md#e15) |
 | Model-mismatch campaign MM-3 | Complete and admitted under its numerical contract: 120/120 validated records; local gate failure under mismatch quantified | [E16](evidence/Evidence-Sources.md#e16), [protocol and result](experiments/Model-Mismatch-V3-Preregistration.md#result) |
-| Gate-aligned utility and simulation-based calibration | Next prospective experiments; neither has been preregistered or run | [Decision 0001](decisions/0001-gate-aligned-objective.md) |
+| Gate-aligned utility and simulation-based calibration | Proposed successor studies; neither has been preregistered or run | [Decision 0001](decisions/0001-gate-aligned-objective.md) |
 
 The admitted evidence is bound to release
 `20260817T072230Z_401e3030fe13`, manifest SHA-256

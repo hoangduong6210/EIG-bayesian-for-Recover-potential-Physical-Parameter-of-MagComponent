@@ -83,14 +83,14 @@ questions and cannot be substituted for one another.
 
 The remainder of the paper reviews magnetic and Bayesian design
 literature, defines the forward and statistical models, documents the
-reproducible protocol, and then reports synthetic and measured-data
-results from one prespecified evaluation.
+reproducible protocols, and then reports matched-model, structural-mismatch,
+and measured-data results with their distinct evaluation scopes.
 
-![Study structure separating matched-model recovery, acquisition-policy comparison, and measured-data adequacy.](../assets/study-workflow.png)
+![Study structure separating matched-model recovery, acquisition-policy comparison, controlled structural mismatch, and measured-data adequacy.](../assets/study-workflow.png)
 
 # Research Questions and Evidence Scope
 
-The study is organized around five research questions. *RQ1* asks
+The study is organized around six research questions. *RQ1* asks
 whether the implemented six-coordinate inference problem is locally
 sensitive in all active directions and whether the posterior computation
 can recover known matched-model parameters. *RQ2* asks whether greedy
@@ -215,7 +215,8 @@ $(k,\alpha,\beta)$ are inferred parameters  [@steinmetz1892]. The units
 of $k$ depend on the units used for $P_v$, $f$, and $B_{\mathrm{pk}}$.
 The implemented Steinmetz equation is not temperature dependent in the present
 implementation. Measured-data analysis therefore uses a specified
-temperature subset; extrapolation across temperature is out of scope.
+temperature subset; the structural-mismatch experiment separately tests
+the consequences of extrapolating this isothermal model across temperature.
 More general waveform-dependent loss equations remain important for
 converter application studies [@reinert2001; @muehlethaler2012].
 
@@ -266,6 +267,8 @@ temperature, waveform, or excitation regime.
   $\mu_s$              $\log\mu_s$               low-frequency permeability   $\mu',L_m$           fixed rather than inferred geometry
   $f_{\mathrm{rel}}$   $\log f_{\mathrm{rel}}$   relaxation frequency         $\mu',\mu''$         one effective relaxation only
   $a_{\mathrm{cc}}$    $a_{\mathrm{cc}}$         relaxation broadening        $\mu',\mu''$         no multiple resonances
+
+  : Physical parameters and active inference coordinates.
 :::
 
 # Bayesian Calibration and Design
@@ -310,7 +313,7 @@ physical-uncertainty interval.
 Posterior sampling uses the affine-invariant ensemble construction
  [@goodman2010] implemented by `emcee` [@foreman2013]. Recovery and
 measured-data fits retain 5000 steps after 1000 warm-up steps for each of 48
-walkers. Acquisition states use a stricter adaptive contract: 4000 warm-up
+walkers. Matched-model acquisition states use a stricter adaptive contract: 4000 warm-up
 steps, at least 20,000 retained steps, checks every 10,000 additional steps,
 and a hard ceiling of 80,000 retained steps. The same state-keyed chain is
 extended rather than restarted. Initial states are perturbations of the fixed
@@ -408,6 +411,25 @@ rule. The candidate library is isothermal, so it contains no
 temperature-only duplicates of the implemented forward laws. The
 numerical settings are summarized below.
 
+For clarity, predictive variance is noise-normalized, not an unscaled
+comparison of responses with different physical units. With posterior response
+draws $F_d(\theta)$, its score is
+$$U_{\mathrm{PV}}(d)=
+ \frac{\operatorname{Var}[F_d(\theta)\mid\mathcal D_t]}{\sigma_d^2}.$$
+The denominator uses the declared channel noise fraction times the median
+absolute posterior prediction, with the implementation's $10^{-9}$ numerical
+floor. Irreducible observation variance is not added to the numerator. For
+posterior covariance $\Sigma$ in active coordinates and response gradient
+$g_d$ at the posterior-mean coordinate vector, the Laplace score is
+$$U_{\mathrm L}(d)=\tfrac12\log
+ \left(1+\frac{g_d^{\mathsf T}\Sigma g_d}{\sigma_d^2}\right).$$
+It uses central finite differences with relative step $10^{-5}$ and the same
+noise convention. This is a local Gaussian information approximation rather
+than a full nonlinear Fisher-greedy policy. In the linear-Gaussian limit,
+the raw Laplace score is a monotone function of noise-normalized predictive
+variance, explaining why their rankings can agree. Dividing the two scores
+by varying channel costs need not preserve this agreement.
+
 The stopping statistic is the half-width of the central 90% posterior
 interval for the noise-free latent mean response divided by the absolute
 posterior median. Observation noise is not added to this gate. The two
@@ -429,8 +451,10 @@ these two responses.
   $\mu''$   10, 30, 100, 300, 500, 1000, 2000, 3000   0                       8        5%               20
   $L_m$     10, 100, 1000                             0                       3        1%               15
 
+  : Isothermal acquisition library, observation scales, and modeled costs.
+
 All 37 candidates are at $25\,^{\circ}\mathrm C$. Modeled costs are
-positive prespecified units used only for the EIG/cost endpoint; they
+positive prespecified units used for the modeled-cost objective and endpoint; they
 are not measured instrument or laboratory durations. The two initial
 observations belong to the same library and count toward the stopping
 total.
@@ -455,7 +479,7 @@ accepted for aggregation only when all prespecified validity gates pass.
   Temperature cohorts     material and channel specific, as stated in text
   Precision gate          latent mean response: 8% $P_v$; 5% $L_m$
 
-  : Computational settings used for the reported experiments.
+  : Computational settings for the matched-model acquisition experiment. The structural-mismatch sampler is specified separately below.
 :::
 
 The analysis checks all required seed and material cases before forming
@@ -498,6 +522,8 @@ headline comparison.
   Downstream validation      10 seeds                                  10 policy endpoint records                       endpoint stability
   Confirmatory acquisition   30 paired seeds                           30 complete policy trajectories                  count and cost endpoints
   Measured adequacy          declared material/source pairs            aggregate metrics and disclosed exclusions       model discrepancy diagnostic
+
+  : Evidence layers of the matched-model and measured-data evaluation.
 :::
 
 The public audit projection retains the campaign records needed to
@@ -572,6 +598,80 @@ $\mu'$. These metrics assess the selected low-order model on observed
 records; they are neither held-out prediction errors nor component-level
 thermal validation.
 
+## Controlled structural-mismatch experiment
+
+The separate MM-3 experiment holds the inference family fixed while changing
+the data generator. Thirty independent prior-predictive seeds, 10100--10129,
+are crossed with four prespecified scenarios. Within each of the resulting
+120 tasks, all eight policies share the generating parameter vector and the
+candidate-indexed noisy outcomes. The scenarios are a matched control,
+two-pole permeability, temperature/curvature core loss, and a combined
+departure. These are controlled perturbations, not fits of a discrepancy law
+to the measured residuals. The combined case has its own larger coefficients;
+it is not simply the sum of the two single-departure cases.
+
+For the loss generator, define $x=\log_{10}(f/100\,\mathrm{kHz})$ and
+$z=\log_{10}(B_{\mathrm{pk}}/0.1\,\mathrm T)$. The generated latent loss is
+$$P_v^{\star}=k f^\alpha B_{\mathrm{pk}}^\beta
+ \exp\{s_T(T-25)+c_f x^2+c_{fB}xz\}.$$
+Here $T$ is the numerical temperature in degrees Celsius and $s_T$ has units
+of inverse degrees Celsius. The two-pole permeability generator is
+$$\mu_r^{\star}(f)=1+(\mu_s-1)
+ \sum_{r=1}^{2}\frac{w_r}
+ {1+[jf/(m_r f_{\mathrm{rel}})]^{1-\widetilde a_r}},$$
+where $w_1=1-w_2$ and
+$\widetilde a_r=\min\{0.95,\max[0,a_{\mathrm{cc}}+\delta_r]\}$.
+The inductance generator uses the real part of this permeability and the
+same fixed geometry as inference. The registered coefficients are shown
+below; none is inferred by the six-parameter posterior.
+
+::: table*
+  Scenario                 $w_2$   $m_1,m_2$    $\delta_1,\delta_2$   $s_T$       $c_f$   $c_{fB}$
+  ------------------------ ------- ------------ --------------------- ----------- ------- ----------
+  Matched control          0       1, 1         0, 0                  0           0       0
+  Two-pole permeability    0.25    0.75, 5      -0.05, 0.18           0           0       0
+  Temperature/curvature    0       1, 1         0, 0                  0.0035      0.08    0.05
+  Combined mismatch        0.35    0.55, 7      -0.10, 0.25           0.0055      0.14    0.10
+
+  : Fixed structural-departure coefficients in the data generator.
+:::
+
+Acquisition retains exactly the 37 unique $25\,^{\circ}\mathrm C$ candidates
+and the original two-target precision gate. Temperatures of 60 and
+$100\,^{\circ}\mathrm C$ occur only in the disjoint latent holdout: replicating
+temperature-only candidates would add duplicate information under the
+isothermal inference model. The mismatch holdout contains 39 points,
+extending the matched-model 23-point set by repeating its eight core-loss
+points at those two additional temperatures. Holdout truths are never used
+for acquisition or stopping. Thus the cross-temperature result measures
+extrapolation failure, not learning from temperature measurements.
+
+Production sampling uses an 80% differential-evolution and 20% snooker move
+mixture in `emcee` 3.1.6 with 48 walkers, initialized at perturbations of the
+fixed prior center. The differential-evolution scale is $2.38/\sqrt{12}$;
+the snooker scale is 1.7. Each state discards 80,000 warm-up steps and is
+checked every 20,000 retained steps up to a hard limit of 800,000. Every
+coordinate must have ESS at least 400 and retained length divided by
+autocorrelation time at least 50, with finite log probability throughout and
+mean acceptance in $[0.05,0.80]$. Two successive checkpoint changes in every
+autocorrelation estimate must be no greater than 10%, measured relative to
+the current estimate; hence acceptance cannot occur before 60,000 retained
+steps. This contract was qualified on two locked sparse-observation states
+using independent ensembles without acquisition endpoints, then fixed before
+the new seed campaign. Earlier incomplete campaigns are not pooled with MM-3.
+
+A false-confident outcome is defined before evaluation as reaching the local
+width gate while the posterior-median absolute relative error exceeds 8% at
+the core-loss target or 5% at the inductance target. Latent-holdout RRMSE and
+90% interval inclusion are reported separately by channel and temperature.
+The unit for paired inference remains the complete seed, and all bootstrap
+intervals are descriptive, without multiplicity adjustment. A 90% interval's
+inclusion frequency over this fixed holdout is not a parameter-rank calibration
+diagnostic. Complete admission requires all 120 expected tasks and all their
+policy records to satisfy the locked validity checks; a partial matrix is
+not an alternative confirmatory result.
+[Protocol and result source E16](../evidence/Evidence-Sources.md#e16)
+
 # Results
 
 ## Identifiability and synthetic recovery
@@ -595,6 +695,8 @@ not a coverage estimate.
 | $\mu_s$ | 0.35% | 0.38% | 0.17% | 5/5 |
 | $f_{\mathrm{rel}}$ | 0.91% | 0.87% | 0.55% | 5/5 |
 | $a_{\mathrm{cc}}$ | 0.91% | 0.62% | 0.79% | 5/5 |
+
+Table: Five-seed matched-model parameter recovery; errors are absolute relative errors.
 
 [Table source E2](../evidence/Evidence-Sources.md#e2)
 
@@ -629,6 +731,8 @@ results materially narrow its interpretation.
 | Raw EIG vs Laplace D-optimality | measurement count | 0.00 | [0.00, 0.00] | 0/30/0 |
 | EIG/cost vs predictive variance/cost | modeled cost | -15.17 | [-15.50, -15.00] | 0/0/30 |
 | EIG/cost vs Laplace D-optimality/cost | modeled cost | 0.00 | [0.00, 0.00] | 0/30/0 |
+
+Table: Direct strong-comparator contrasts over 30 paired matched-model seeds. W/T/L denotes EIG wins, ties, and losses.
 
 [Table source E4](../evidence/Evidence-Sources.md#e4)
 
@@ -704,6 +808,8 @@ material validation. [Result source E16](../evidence/Evidence-Sources.md#e16)
 | Core-loss temperature/curvature | 1/30 | 4.833 | 0.067 | 0.167 |
 | Combined mismatch | 22/30 | 4.900 | 0.100 | 0.100 |
 
+Table: Raw EIG under the four registered data generators, with 30 paired seeds per scenario.
+
 The advantages are paired comparator-minus-EIG measurement counts; positive
 values favor EIG. Raw EIG versus predictive variance recorded 2/28/0
 wins/ties/losses in each of the first three scenarios and 3/27/0 under combined
@@ -723,7 +829,7 @@ seeds in combined mismatch. The experiment therefore does not establish that
 EIG uniquely causes false confidence or that either balanced traversal is
 generally safer. [Result source E16](../evidence/Evidence-Sources.md#e16)
 
-![MM-3 results. Positive paired differences favor EIG; negative modeled-cost differences favor the comparator. False-confidence counts are descriptive and are not a causal comparison among policies.](../assets/model-mismatch-v3.png)
+![Controlled-mismatch results. Bars and error bars show paired mean differences and descriptive 95% paired-bootstrap intervals without multiplicity adjustment; positive differences favor EIG. The /c policy suffix denotes prespecified modeled cost, not measured laboratory time. Combined-mismatch false-confidence counts are descriptive, not a causal comparison among policies.](../assets/model-mismatch-v3.png)
 
 ## Measured-data model adequacy
 
@@ -739,8 +845,9 @@ residuals, not held-out errors.
 
 ![In-sample measured-data adequacy, with storage and loss permeability reported separately.](../assets/measured-adequacy.png)
 
-All numerical results in this section use the same prespecified models,
-data filters, random seeds, and evaluation criteria.
+Each result family uses its declared models, data filters, seeds, and
+evaluation criteria; the mismatch sampler and holdout differ explicitly from
+those of the earlier matched-model comparison.
 
 # Discussion and Limitations
 
@@ -752,7 +859,8 @@ measured material behavior. Fisher information and posterior width
 address the former locally or conditionally; reported in-sample
 residuals expose, but do not fully quantify, the latter. The disjoint synthetic
 holdout now measures latent prediction within the matched family; held-out
-validation on independently acquired physical material remains future work.
+validation on independently acquired physical material is not established by
+these results.
 
 The synthetic results support implementation-level conclusions. Full
 local rank shows that every active coordinate affects the specified
@@ -897,22 +1005,9 @@ characterization, switching-waveform experiments, or component
 qualification. Those extensions require new experimental evidence rather
 than broader interpretation of the present results.
 
-## Evidence required for broader claims
-
-Three additions would materially change the evidential scope. First, a new
-gate-aligned utility should be preregistered without altering the frozen MM-3
-outcome, then evaluated against the same count, cost, truth-error and holdout
-endpoints. Second, a larger simulation-based calibration campaign should evaluate
-parameter ranks and predictive coverage over many prior-predictive cases; the
-current five recovery seeds and MM-3's fixed holdout inclusion are not a
-calibration study. Third, a laboratory study needs
-independently calibrated noise, measured acquisition durations, multiple
-lots, and held-out temperature/frequency/flux regions. Only that third
-layer could support claims about real-material measurement or time
-savings.
-
 The strong-comparator campaign already produced an important negative result:
-EIG did not beat either strong raw policy and lost the per-cost comparison
+EIG did not beat either strong raw policy in the matched-model count comparison
+and lost the per-cost comparison
 with predictive variance. Publishing this outcome prevents the favorable
 fixed-traversal comparison from being generalized beyond its actual
 comparator.
@@ -955,7 +1050,7 @@ and stored. Each policy is evaluated by the following logic:
     and modeled cost and stop successfully.
 
 4.  Otherwise score or traverse only unrevealed candidates. EIG uses
-    $\widehat U(d)$; predictive variance uses posterior response variance;
+    $\widehat U(d)$; predictive variance uses noise-normalized posterior response variance;
     Laplace D-optimality uses the log-determinant precision increment. Per-cost
     forms divide by $c(d)$. Fixed and randomized policies follow their
     declared channel-balanced traversals.
@@ -999,9 +1094,9 @@ Numerical results are bound to validated scientific freeze
 `85448a2c3c9db2db051c94543d8a336e7157d55289f10c1792e9c57d433812f7`.
 The freeze contains the 30 complete eight-policy trajectories, estimator
 states and scores, point-level 23-point holdouts, parameter-recovery records,
-and reconstructed endpoints. A sanitized public audit bundle for this freeze
-must pass the disclosure gate before it is published; the private production
-tree is not a public artifact. Raw measured curves remain governed by the
+and reconstructed endpoints. The sanitized v2 public audit bundle is available
+as a versioned release asset; the private production tree is not a public
+artifact. Raw measured curves remain governed by the
 cited upstream sources and are not redistributed as if produced by this study.
 [Release source E8](../evidence/Evidence-Sources.md#e8)
 
@@ -1016,6 +1111,7 @@ result artifact in the release, and [Evidence Sources](../evidence/Evidence-Sour
 maps each quantitative result family to an exact pointer in the
 disclosure-safe projection.
 
-The conference paper reports an earlier release and has its own claim ledger.
-It should be cited as submitted; later results are reported here under the
-release identifier above.
+The archived conference snapshot reports an earlier evidence state and is
+distinct from this expanded manuscript. Its archive does not establish
+conference acceptance or publication; the results here are identified by the
+separate evidence releases above.

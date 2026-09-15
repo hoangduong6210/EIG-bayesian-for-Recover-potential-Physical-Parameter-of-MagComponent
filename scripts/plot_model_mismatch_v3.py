@@ -51,8 +51,10 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
         "axes.linewidth": 0.8,
         "figure.facecolor": "white",
         "axes.facecolor": "white",
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
     })
-    figure, axes = plt.subplots(1, 3, figsize=(7.5, 2.75), constrained_layout=True)
+    figure, axes = plt.subplots(1, 3, figsize=(7.25, 3.15), constrained_layout=True)
 
     combined = scenarios["combined_mismatch"]["policies"]
     false_counts = [combined[name]["false_confidence_count"] for name, _ in POLICIES]
@@ -60,8 +62,9 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
     bars = axes[0].bar(x, false_counts, color="0.78", edgecolor="black", linewidth=0.7)
     for index, bar in enumerate(bars):
         bar.set_hatch("///" if index < 6 else "...")
+    axes[0].bar_label(bars, padding=2, fontsize=7)
     axes[0].set_xticks(x, [label for _, label in POLICIES], rotation=55, ha="right")
-    axes[0].set_ylim(0, 30)
+    axes[0].set_ylim(0, 32)
     axes[0].set_ylabel("False-confident seeds (of 30)")
     axes[0].set_title("(a) Combined mismatch")
     axes[0].grid(axis="y", color="0.88", linewidth=0.5)
@@ -78,6 +81,10 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
             ["paired_difference"]["mean"]
             for name, _ in SCENARIOS
         ]
+        bounds = [scenarios[name]["paired_strong_comparator_contrasts"][key]
+                  ["paired_difference"] for name, _ in SCENARIOS]
+        errors = [[value - row["bootstrap_mean_ci95_low"] for value, row in zip(values, bounds)],
+                  [row["bootstrap_mean_ci95_high"] - value for value, row in zip(values, bounds)]]
         axes[1].bar(
             scenario_x + (offset - 0.5) * width,
             values,
@@ -87,13 +94,15 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
             edgecolor="black",
             linewidth=0.7,
             hatch=hatch,
+            yerr=errors,
+            capsize=2,
+            error_kw={"elinewidth": 0.8, "capthick": 0.8},
         )
     axes[1].axhline(0, color="black", linewidth=0.8)
     axes[1].set_xticks(scenario_x, [label for _, label in SCENARIOS], rotation=40, ha="right")
     axes[1].set_ylabel("Comparator − EIG (measurements)")
     axes[1].set_title("(b) Raw count contrast")
-    axes[1].set_ylim(0, 0.215)
-    axes[1].legend(frameon=False, fontsize=7, loc="upper center", ncol=2)
+    axes[1].set_ylim(-0.025, 0.35)
     axes[1].grid(axis="y", color="0.88", linewidth=0.5)
 
     cost_contrasts = (
@@ -106,6 +115,10 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
             ["paired_difference"]["mean"]
             for name, _ in SCENARIOS
         ]
+        bounds = [scenarios[name]["paired_strong_comparator_contrasts"][key]
+                  ["paired_difference"] for name, _ in SCENARIOS]
+        errors = [[value - row["bootstrap_mean_ci95_low"] for value, row in zip(values, bounds)],
+                  [row["bootstrap_mean_ci95_high"] - value for value, row in zip(values, bounds)]]
         axes[2].bar(
             scenario_x + (offset - 0.5) * width,
             values,
@@ -115,13 +128,19 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
             edgecolor="black",
             linewidth=0.7,
             hatch=hatch,
+            yerr=errors,
+            capsize=2,
+            error_kw={"elinewidth": 0.8, "capthick": 0.8},
         )
     axes[2].axhline(0, color="black", linewidth=0.8)
     axes[2].set_xticks(scenario_x, [label for _, label in SCENARIOS], rotation=40, ha="right")
     axes[2].set_ylabel("Comparator − EIG/c (cost units)")
     axes[2].set_title("(c) Modeled-cost contrast")
-    axes[2].set_ylim(-16.2, 2.0)
-    axes[2].legend(frameon=False, fontsize=7, loc="upper center", ncol=2)
+    axes[2].set_ylim(-18, 4)
+    figure.legend(*axes[1].get_legend_handles_labels(), frameon=False,
+                  fontsize=8, loc="outside lower center", ncol=2,
+                  title="Paired mean difference with 95% bootstrap interval (b, c)",
+                  title_fontsize=8)
     axes[2].grid(axis="y", color="0.88", linewidth=0.5)
 
     for axis in axes:
@@ -134,6 +153,10 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
         bbox_inches="tight",
         metadata={"Software": "magcore_calib evidence renderer"},
     )
+    vector_output = output.with_suffix(".pdf")
+    figure.savefig(vector_output, bbox_inches="tight",
+                   metadata={"Creator": "magcore_calib evidence renderer",
+                             "CreationDate": None, "ModDate": None})
     plt.close(figure)
     manifest = {
         "schema_version": "magcore-model-mismatch-figure/1.0",
@@ -142,6 +165,8 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
         "source_sha256": sha256_file(aggregate_path),
         "figure": output.name,
         "figure_sha256": sha256_file(output),
+        "vector_figure": vector_output.name,
+        "vector_figure_sha256": sha256_file(vector_output),
         "panels": [
             "combined-mismatch false-confidence count by policy",
             "raw EIG paired measurement-count contrasts",
@@ -149,6 +174,7 @@ def render(aggregate_path: Path, output: Path, manifest_path: Path) -> dict:
         ],
         "difference_definition": "comparator_minus_eig",
         "positive_difference_favors": "eig",
+        "interval": "95% paired-bootstrap mean interval; descriptive, not multiplicity-adjusted",
     }
     manifest_path.write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"

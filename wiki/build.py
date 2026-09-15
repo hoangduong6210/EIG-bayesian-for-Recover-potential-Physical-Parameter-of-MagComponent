@@ -607,7 +607,7 @@ def check() -> dict:
             raise WikiError(f"missing declared manuscript input: {path.relative_to(WIKI_ROOT)}")
 
     texts: dict[Path, str] = {}
-    public_text_suffixes = {".md", ".json", ".toml", ".py", ".tex", ".bib"}
+    public_text_suffixes = {".md", ".json", ".toml", ".py", ".tex", ".bib", ".lua"}
     paper_sources: list[str] = []
     for path in sorted(
         item
@@ -913,7 +913,11 @@ def check() -> dict:
         "wiki_inputs": {
             str(path.relative_to(WIKI_ROOT)): sha256(path)
             for path in sorted(
-                [*texts, bibliography, template, MANIFEST_PATH],
+                {
+                    *texts, bibliography, template, MANIFEST_PATH,
+                    WIKI_ROOT / "bibliography" / "IEEEtran.bst",
+                    *(WIKI_ROOT / name for name in manifest["wiki"]["public_assets"]),
+                },
                 key=lambda item: str(item),
             )
         },
@@ -1086,6 +1090,82 @@ def committed_wiki_revision() -> str:
     return revision
 
 
+def render_document_markdown(text: str, wiki_commit: str) -> str:
+    """Bind PDF evidence links to the reviewed commit and prefer vector figures."""
+    manifest = load_manifest()
+    source = WIKI_ROOT / manifest["canonical_page"]
+    repository_url = manifest["publication"]["repository_url"].rstrip("/")
+
+    def resolve_target(page: Path, raw_path: str) -> str:
+        target = (page.parent / raw_path).resolve()
+        if target.is_relative_to((WIKI_ROOT / "assets").resolve()):
+            vector = target.with_suffix(".pdf")
+            asset = vector if vector.is_file() else target
+            return asset.relative_to(WIKI_ROOT).as_posix()
+        relative = target.relative_to(WIKI_ROOT.parent).as_posix()
+        return f"{repository_url}/blob/{wiki_commit}/{relative}"
+
+    return rewrite_markdown_links(text, source, resolve_target)
+
+
+def render_document_bibliography(text: str) -> str:
+    """Expose source DOI fields through IEEEtran's supported note field.
+
+    The unmodified upstream style predates DOI-field support. Preserve the
+    canonical DOI and add its linked display only in the document projection.
+    """
+    entries = re.split(r"(?m)(?=^@)", text)
+    for index, entry in enumerate(entries):
+        doi_match = re.search(r"\bdoi\s*=\s*\{([^{}]+)\}", entry, re.IGNORECASE)
+        if doi_match is None:
+            continue
+        if re.search(r"\bnote\s*=", entry, re.IGNORECASE):
+            raise WikiError("DOI-bearing bibliography entry already has a note; review its display")
+        doi = doi_match.group(1)
+        if not re.fullmatch(r"10\.[0-9]{4,9}/[^\s{}\\]+", doi):
+            raise WikiError("invalid DOI in document bibliography")
+        end = entry.rfind("}")
+        note = r"note={doi: \href{https://doi.org/" + doi + r"}{\nolinkurl{" + doi + "}}}"
+        entries[index] = entry[:end].rstrip().rstrip(",") + ",\n  " + note + entry[end:]
+    return "".join(entries)
+
+
+def layout_document_latex(text: str) -> str:
+    """Adapt pinned Pandoc longtables and figures to bounded two-column floats."""
+    def table_float(match: re.Match[str]) -> str:
+        table = match.group(0)
+        caption_match = re.search(r"\\caption\{.*?\\tabularnewline", table, re.DOTALL)
+        caption = ""
+        if caption_match:
+            caption = caption_match.group(0).removesuffix(r"\tabularnewline")
+            table = table[:caption_match.start()] + table[caption_match.end():]
+        table = re.sub(r"\\endfirsthead.*?\\endhead", "", table, flags=re.DOTALL)
+        table = table.replace(r"\endhead", "")
+        table = table.replace(r"\begin{longtable}[]", r"\begin{tabular}")
+        table = table.replace(r"\end{longtable}", r"\end{tabular}")
+        table = table.replace(r"\columnwidth", r"\textwidth")
+        return (
+            "\\begin{table*}[t]\n\\centering\n\\small\n" + caption + "\n"
+            "\\setlength{\\tabcolsep}{4pt}\n" + table + "\n\\end{table*}"
+        )
+
+    text = re.sub(r"\\begin\{longtable\}.*?\\end\{longtable\}", table_float, text, flags=re.DOTALL)
+    text = text.replace(r"\begin{figure}", r"\begin{figure*}[t]")
+    text = text.replace(r"\end{figure}", r"\end{figure*}")
+    text = text.replace(
+        r"\includegraphics{",
+        r"\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{",
+    )
+    text = re.sub(
+        r"\\texttt\{([0-9a-f]{64})\}",
+        lambda match: r"\texttt{" + r"\allowbreak{}".join(
+            match.group(1)[index:index + 8] for index in range(0, 64, 8)
+        ) + "}",
+        text,
+    )
+    return text
+
+
 def run_pandoc(source: Path, output: Path) -> None:
     canonical_parent = (WIKI_ROOT / load_manifest()["canonical_page"]).parent
     subprocess.run(
@@ -1095,6 +1175,8 @@ def run_pandoc(source: Path, output: Path) -> None:
             "--from=markdown+tex_math_dollars+raw_tex",
             "--to=latex",
             "--natbib",
+            "--lua-filter",
+            str(WIKI_ROOT / "paper-layout.lua"),
             "--top-level-division=section",
             "--resource-path",
             os.pathsep.join((str(canonical_parent), str(WIKI_ROOT))),
@@ -1103,6 +1185,7 @@ def run_pandoc(source: Path, output: Path) -> None:
         ],
         check=True,
     )
+    output.write_text(layout_document_latex(output.read_text(encoding="utf-8")), encoding="utf-8")
 
 
 def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
@@ -1120,6 +1203,8 @@ def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
     try:
         canonical = WIKI_ROOT / load_manifest()["canonical_page"]
         abstract, body = split_manuscript(canonical.read_text(encoding="utf-8"))
+        abstract = render_document_markdown(abstract, wiki_commit)
+        body = render_document_markdown(body, wiki_commit)
         abstract_md = output / "abstract.md"
         body_md = output / "body.md"
         abstract_md.write_text(abstract, encoding="utf-8")
@@ -1127,8 +1212,15 @@ def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
         run_pandoc(abstract_md, output / "abstract.tex")
         run_pandoc(body_md, output / "body.tex")
         shutil.copy2(WIKI_ROOT / "paper-template.tex", output / "main.tex")
-        shutil.copy2(WIKI_ROOT / "bibliography" / "references.bib", output / "references.bib")
-        shutil.copytree(WIKI_ROOT / "assets", output / "assets")
+        (output / "references.bib").write_text(
+            render_document_bibliography((WIKI_ROOT / "bibliography" / "references.bib").read_text(encoding="utf-8")),
+            encoding="utf-8",
+        )
+        shutil.copy2(WIKI_ROOT / "bibliography" / "IEEEtran.bst", output / "IEEEtran.bst")
+        (output / "assets").mkdir()
+        for name in load_manifest()["wiki"]["public_assets"]:
+            if name.startswith("assets/"):
+                shutil.copy2(WIKI_ROOT / name, output / name)
         subprocess.run(
             [
                 "latexmk",
@@ -1148,8 +1240,9 @@ def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
         if bbl.read_text(encoding="utf-8", errors="replace").count("\\bibitem") < 45:
             raise WikiError("snapshot bibliography is incomplete")
         generated = {
-            path.name: sha256(path)
-            for path in (output / "main.tex", output / "body.tex", output / "abstract.tex", pdf)
+            path.relative_to(output).as_posix(): sha256(path)
+            for path in sorted(output.rglob("*"))
+            if path.is_file() and path.suffix in {".tex", ".pdf", ".png", ".bib", ".bst", ".bbl", ".json", ".md"}
         }
         snapshot_record = {
             "schema_version": "magnetic-paper-snapshot/1.0",
@@ -1175,6 +1268,35 @@ def snapshot(output: Path, document_kind: str, release_name: str) -> Path:
         raise
 
 
+def verify_snapshot(directory: Path) -> dict:
+    """Verify an archived document independently of the mutable Wiki state."""
+    root = directory.resolve()
+    record = json.loads((root / "snapshot.json").read_text(encoding="utf-8"))
+    if record.get("schema_version") != "magnetic-paper-snapshot/1.0":
+        raise WikiError("unsupported document snapshot schema")
+    release = record.get("document_release", {})
+    validate_document_release(release.get("kind", ""), release.get("name", ""))
+    if release.get("source_direction") != "wiki_to_document":
+        raise WikiError("snapshot is not sourced from Wiki")
+    source = record.get("source", {})
+    if not re.fullmatch(r"[a-f0-9]{40}", source.get("wiki_commit", "")):
+        raise WikiError("snapshot lacks exact Wiki revision")
+    inputs = record.get("wiki_inputs", {})
+    if not inputs or source.get("wiki_tree_sha256") != aggregate_digest(inputs):
+        raise WikiError("snapshot Wiki input manifest digest mismatch")
+    generated = record.get("generated", {})
+    required = {"main.pdf", "main.tex", "body.tex", "abstract.tex", "references.bib", "IEEEtran.bst", "main.bbl"}
+    if not required <= generated.keys():
+        raise WikiError("snapshot omits a required document artifact")
+    for name, digest in generated.items():
+        path = (root / name).resolve()
+        if Path(name).is_absolute() or not path.is_relative_to(root):
+            raise WikiError("snapshot artifact path escapes its directory")
+        if not path.is_file() or not re.fullmatch(r"[a-f0-9]{64}", digest) or sha256(path) != digest:
+            raise WikiError(f"snapshot artifact missing or changed: {name}")
+    return {"release": release["name"], "source_commit": source["wiki_commit"], "verified_files": len(generated)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -1194,6 +1316,8 @@ def main() -> int:
         "--document-kind", choices=sorted(DOCUMENT_RELEASE_TYPES), required=True
     )
     snapshot_parser.add_argument("--release-name", required=True)
+    verify_parser = subparsers.add_parser("verify-snapshot", help="verify a stored document without rebuilding it")
+    verify_parser.add_argument("--directory", type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.command == "check":
@@ -1202,6 +1326,8 @@ def main() -> int:
             print(write_repository_readme())
         elif args.command == "stage-wiki":
             print(stage_public_wiki(args.output))
+        elif args.command == "verify-snapshot":
+            print(json.dumps(verify_snapshot(args.directory), indent=2, sort_keys=True))
         else:
             print(snapshot(args.output, args.document_kind, args.release_name))
     except (WikiError, OSError, subprocess.CalledProcessError) as exc:

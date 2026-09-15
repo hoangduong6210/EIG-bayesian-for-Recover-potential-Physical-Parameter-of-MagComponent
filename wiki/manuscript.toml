@@ -34,6 +34,7 @@ public_pages = [
   "evidence/Evidence-Ledger.md",
   "evidence/Evidence-Sources.md",
   "status/Project-Status.md",
+  "status/Research-Handoff.md",
   "decisions/0001-gate-aligned-objective.md",
   "operations/Reproducibility.md",
   "operations/Reproduce-and-Audit.md",
@@ -49,10 +50,13 @@ public_pages = [
 public_assets = [
   "assets/acquisition-diagnostics.json",
   "assets/acquisition-diagnostics.png",
+  "assets/acquisition-diagnostics.pdf",
   "assets/measured-adequacy.png",
   "assets/model-mismatch-v3.json",
   "assets/model-mismatch-v3.png",
+  "assets/model-mismatch-v3.pdf",
   "assets/study-workflow.png",
+  "assets/study-workflow.pdf",
   "assets/synthetic-diagnostics.png",
   "evidence/results.json",
 ]

@@ -6,7 +6,9 @@
     "E5"
   ],
   "figure": "acquisition-diagnostics.png",
-  "figure_sha256": "a99d366ac03a62d5bbe9f354b7b38e246c1ce2036e27fc26eaaeccf997458c14",
+  "figure_sha256": "3bd19073239987305b3bdf90af6903afdb05a6bad8966e47d9c6ea4c4b01ee4e",
   "release_id": "20260817T072230Z_401e3030fe13",
-  "schema_version": "magnetic-wiki-figure/1.0"
+  "schema_version": "magnetic-wiki-figure/1.0",
+  "vector_figure": "acquisition-diagnostics.pdf",
+  "vector_figure_sha256": "ef587da4a307da41917ed504ff43074e0f42838c2d7cca5e8375410c301c933f"
 }

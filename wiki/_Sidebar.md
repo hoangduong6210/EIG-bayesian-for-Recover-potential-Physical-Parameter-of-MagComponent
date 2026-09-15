@@ -10,6 +10,7 @@ paper_source: false
 - [Home](Home.md)
 - [Index](overview/Index.md)
 - [Project status](status/Project-Status.md)
+- [Research handoff](status/Research-Handoff.md)
 - [Full manuscript](manuscript/Full-Manuscript.md)
 
 ## Evidence

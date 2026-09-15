@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch
 import numpy as np
 
 
@@ -102,19 +103,21 @@ def main():
     evidence, policy_counts, direct_contrasts, policy_costs = load_rows()
     plt.rcParams.update(
         {
-            "font.family": "serif",
-            "font.size": 9,
-            "axes.titlesize": 10,
-            "figure.dpi": 180,
+            "font.family": "DejaVu Sans",
+            "font.size": 8,
+            "axes.titlesize": 8,
+            "figure.dpi": 300,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
         }
     )
-    figure, axes = plt.subplots(1, 3, figsize=(12.0, 3.6), constrained_layout=True)
+    figure, axes = plt.subplots(1, 3, figsize=(7.25, 3.15), constrained_layout=True)
 
     dot_range(axes[0], policy_counts, "Measurements to gate")
     axes[0].set_xlim(4.2, 13.8)
     axes[0].set_title("(a) Count endpoint")
 
-    labels = [row[0] for row in direct_contrasts]
+    labels = ["EIG vs PV", "EIG vs Laplace", "EIG/c vs PV/c", "EIG/c vs Laplace/c"]
     wins = np.asarray([row[1] for row in direct_contrasts])
     ties = np.asarray([row[2] for row in direct_contrasts])
     losses = np.asarray([row[3] for row in direct_contrasts])
@@ -135,10 +138,9 @@ def main():
     axes[1].set_yticks(y, labels)
     axes[1].set_xlim(0, 30)
     axes[1].set_xlabel("Paired seeds")
-    axes[1].set_title("(b) Direct contrasts", pad=38)
-    axes[1].legend(
-        loc="lower center",
-        bbox_to_anchor=(0.5, 1.01),
+    axes[1].set_title("(b) Direct contrasts")
+    figure.legend(*axes[1].get_legend_handles_labels(),
+        loc="outside lower center",
         ncol=3,
         frameon=False,
         fontsize=8,
@@ -149,15 +151,7 @@ def main():
     dot_range(axes[2], policy_costs, "Modeled acquisition cost")
     axes[2].set_xlim(160, 305)
     axes[2].set_title("(c) Cost endpoint")
-    axes[2].text(
-        0.98,
-        0.97,
-        "Prespecified model; not lab time",
-        transform=axes[2].transAxes,
-        ha="right",
-        va="top",
-        fontsize=7.5,
-    )
+    axes[2].set_xlabel("Modeled cost (not lab time)")
 
     output = ASSET_ROOT / "acquisition-diagnostics.png"
     figure.savefig(
@@ -169,11 +163,16 @@ def main():
             "Description": f"Evidence projection SHA-256 {sha256(EVIDENCE_PATH)}",
         },
     )
+    vector_output = output.with_suffix(".pdf")
+    figure.savefig(vector_output, bbox_inches="tight", facecolor="white",
+                   metadata={"CreationDate": None, "ModDate": None})
     plt.close(figure)
     manifest = {
         "schema_version": "magnetic-wiki-figure/1.0",
         "figure": output.name,
         "figure_sha256": sha256(output),
+        "vector_figure": vector_output.name,
+        "vector_figure_sha256": sha256(vector_output),
         "evidence_projection": str(EVIDENCE_PATH.relative_to(WIKI_ROOT)),
         "evidence_projection_sha256": sha256(EVIDENCE_PATH),
         "evidence_sources": ["E4", "E5"],
@@ -182,6 +181,59 @@ def main():
     (ASSET_ROOT / "acquisition-diagnostics.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+    render_workflow()
+
+
+def render_workflow():
+    """Draw the evidence branches separately from the sequential decision loop."""
+    figure, axis = plt.subplots(figsize=(7.25, 4.0))
+    axis.set(xlim=(0, 10), ylim=(0, 6))
+    axis.axis("off")
+
+    def box(x, y, width, height, text, shade="white"):
+        axis.add_patch(FancyBboxPatch((x, y), width, height,
+                       boxstyle="round,pad=0.025,rounding_size=0.09",
+                       facecolor=shade, edgecolor="black", linewidth=0.9))
+        axis.text(x + width / 2, y + height / 2, text,
+                  ha="center", va="center", fontsize=8)
+
+    def arrow(start, end, dashed=False):
+        axis.annotate("", xy=end, xytext=start,
+                      arrowprops={"arrowstyle": "-|>", "color": "black",
+                                  "linewidth": 0.8,
+                                  "linestyle": "--" if dashed else "-"})
+
+    axis.text(0, 5.8, "(a) Separate evidence streams", weight="bold", fontsize=9)
+    branches = [("Matched-model\nrecovery", "Six-parameter\nlocal diagnostics"),
+                ("Paired policy\ncomparison", "Count and\nmodeled cost"),
+                ("Controlled\nmodel mismatch", "False confidence\nand holdout error"),
+                ("Measured-data\nadequacy", "In-sample\nresidual error")]
+    for index, (name, result) in enumerate(branches):
+        x = 0.03 + index * 2.52
+        box(x, 4.65, 2.35, .8, name, "0.92")
+        arrow((x + 1.175, 4.62), (x + 1.175, 4.23))
+        axis.text(x + 1.175, 3.98, result, ha="center", va="center", fontsize=8)
+    axis.text(0, 3.35, "(b) Shared-outcome acquisition loop", weight="bold", fontsize=9)
+    labels = ["Shared two-point\ninitial data", "Posterior\nsampling", "Score unmeasured\ncandidates", "Reveal shared\nnoisy outcome", "Two-target\nprecision gate"]
+    for index, label in enumerate(labels):
+        x = .02 + index * 2.02
+        box(x, 2.13, 1.82, .85, label)
+        if index < 4:
+            arrow((x + 1.84, 2.555), (x + 2.0, 2.555))
+    axis.plot([9.0, 9.0, 2.95, 2.95], [2.10, 1.70, 1.70, 2.1],
+              color="black", linestyle="--", linewidth=.8)
+    arrow((2.95, 1.91), (2.95, 2.13), dashed=True)
+    axis.text(5.95, 1.43, "If gate fails: append outcome and refit", ha="center", fontsize=8)
+    axis.text(0, .99, "(c) Scientific scope", weight="bold", fontsize=9)
+    box(.02, .02, 4.8, .72, "Local precision can be reached quickly;\nstrong comparators often match EIG.", "0.94")
+    box(5.07, .02, 4.8, .72, "Narrow intervals do not establish accuracy\nunder mismatch or laboratory-time savings.")
+    figure.tight_layout(pad=.6)
+    output = ASSET_ROOT / "study-workflow.png"
+    vector_output = output.with_suffix(".pdf")
+    figure.savefig(output, dpi=300, facecolor="white")
+    figure.savefig(vector_output, facecolor="white",
+                   metadata={"CreationDate": None, "ModDate": None})
+    plt.close(figure)
 
 
 if __name__ == "__main__":

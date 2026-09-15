@@ -1,7 +1,12 @@
 \documentclass[10pt,a4paper,twocolumn]{article}
 \usepackage[top=21mm,bottom=21mm,left=18mm,right=18mm,columnsep=7.5mm]{geometry}
 \usepackage{mathptmx}
-\usepackage{amsmath,amssymb,booktabs,graphicx,microtype,url,caption,natbib}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype,url,caption,array,calc}
+\usepackage[numbers,square,sort]{natbib}
+\setcitestyle{citesep={], [}}
+\usepackage[T1]{fontenc}
+\input{glyphtounicode}
+\pdfgentounicode=1
 \usepackage[hidelinks]{hyperref}
 \graphicspath{{assets/}}
 \hypersetup{
@@ -14,6 +19,13 @@
 \renewcommand{\thesection}{\Roman{section}.}
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
 \captionsetup[figure]{name=Fig.,labelsep=period}
+\captionsetup[table]{name=TABLE,labelsep=newline,position=top}
+\renewcommand{\thetable}{\Roman{table}}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\emergencystretch}{1.5em}
+\setcounter{dbltopnumber}{2}
+\renewcommand{\dbltopfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
 
 \begin{document}
 \twocolumn[
@@ -24,7 +36,7 @@ Expected-Information-Gain-Guided Bayesian Calibration of Magnetic-Core Loss
 and Permeability Models for Power Converters\par}
 \vspace{4pt}
 {\fontsize{12}{14}\selectfont
-Viet Hoang Duong\textsuperscript{1,*},
+Viet Hoang Duong\textsuperscript{1},
 Viet Huy Duong\textsuperscript{2},
 Lun-Min Shih\textsuperscript{1}\par}
 {\fontsize{10}{12}\selectfont
@@ -43,7 +55,7 @@ complex permeability; sequential experimental design; expected information gain.
 \input{body.tex}
 
 {\fontsize{8}{8.5}\selectfont
-\bibliographystyle{ieeetr}
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 }
 \end{document}

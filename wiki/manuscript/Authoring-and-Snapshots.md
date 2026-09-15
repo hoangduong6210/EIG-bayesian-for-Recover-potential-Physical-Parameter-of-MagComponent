@@ -1,7 +1,7 @@
 ---
 title: Authoring and Paper Snapshots
 status: publication guide
-last_updated: 2026-09-12
+last_updated: 2026-09-15
 paper_source: false
 ---
 
@@ -61,6 +61,19 @@ Only when a conference or journal version is approved for circulation:
    snapshot manifest.
 5. Copy the approved staged artifact into a newly named directory under
    `paper/` in a dedicated document-release commit.
+
+Retain every file named by the snapshot's `generated` registry, not only the
+PDF: the TeX, bibliography, and figures make the document independently
+rebuildable. Build logs, scheduler records, and temporary files are not
+document assets. Run `python wiki/build.py verify-snapshot --directory PATH`
+after archival. This checks artifact hashes and the snapshot input-manifest
+digest without comparing the old document to a subsequently edited Wiki.
+
+The journal exporter uses numbered IEEEtran references with explicit DOI
+links derived from the canonical bibliography. Layout transformations turn
+Wiki tables and figure captions into full-width floats within the two-column
+article; no numerical content is supplied by the layout layer. Evidence links
+in the PDF select the source commit rather than the moving default branch.
 
 The build stages output outside the paper directory. Copy an approved PDF and
 its `snapshot.json` into `paper/` only as a named release. Do not alter a

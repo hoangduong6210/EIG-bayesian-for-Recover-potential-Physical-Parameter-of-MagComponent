@@ -9,6 +9,13 @@ paper_source: false
 
 Status date: 2026-09-15.
 
+The present research phase is closed with the admitted matched-model and
+MM-3 results below. Closure fixes the evidence and its interpretation; it
+does not establish laboratory savings, global identification, or calibrated
+uncertainty under discrepancy. No successor experiment is admitted by this
+closeout. The [research handoff](Research-Handoff.md) records the reading
+order, reproduction boundary, and future-work decisions.
+
 ## Completed scientific work
 
 - A 30-paired-seed, eight-policy acquisition benchmark is complete.
@@ -146,27 +153,36 @@ contains all 18 endpoint-free task records and all 18 deterministic thinned
 chains. It omits full walker-by-iteration chains, so full-chain diagnostics
 must be reproduced by rerunning the locked workflow. [Source E12](../evidence/Evidence-Sources.md#e12)
 
-## Next scientific experiments
+## Sampler qualification completed before MM-3
 
 The [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) completed 24 tasks
-and a 72-artifact full-chain audit. DE + snooker is selected for SparseMix-2;
-its n4 pilot autocorrelation-stability check is still insufficient, so the
-selection does not yet qualify the sampler. [Source E13](../evidence/Evidence-Sources.md#e13)
+and a 72-artifact full-chain audit. DE + snooker was selected for SparseMix-2;
+the pilot alone did not qualify it because its n4 autocorrelation-stability
+check was insufficient. [Source E13](../evidence/Evidence-Sources.md#e13)
 
 [SparseMix-2](../experiments/Sparse-Mixing-V2-Preregistration.md) completed all
 16 fresh ensembles and a 48-artifact full-chain audit. Both n3 and n4 pass:
 each has eight passing ensembles, with maximum relative autocorrelation-time
-changes of 1.23% and 2.56%, respectively. This permits registration of a new
-mismatch campaign; it does not admit a mismatch endpoint or qualify all future
-posterior states. [Source E14](../evidence/Evidence-Sources.md#e14)
+changes of 1.23% and 2.56%, respectively. This satisfied the prerequisite for
+MM-3 registration; it did not itself admit a mismatch endpoint or qualify all
+future posterior states. [Source E14](../evidence/Evidence-Sources.md#e14)
+
+## Future work at phase closure
+
+Gate-aligned utility and simulation-based calibration remain unregistered
+and unrun. The following sequence is a research agenda, not a record of
+completed results. Detailed entry and completion criteria are maintained in
+the [handoff](Research-Handoff.md#future-work-register).
 
 1. Keep MM-1 and MM-2 permanently separate and non-admitted.
 2. Preserve MM-3, SparseMix-2 and their original criteria without post hoc
    retuning.
 3. Preregister a gate-aligned utility as a new experiment, using MM-3 only to
    define the motivation and evaluation boundary.
-4. Run simulation-based calibration under matched and prespecified mismatch
-   conditions after its design and acceptance criteria are frozen.
+4. Preregister simulation-based calibration under the matched generative
+   model to test inference implementation. Separately preregister coverage
+   and predictive checks under mismatch; these assess robustness, not the
+   standard SBC rank-uniformity claim.
 5. Controlled laboratory timing and multi-lot measurements before any
    real-world time-saving claim.
 6. Stable measured-data acquisition ranking only after the forward model and

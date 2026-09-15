@@ -65,7 +65,8 @@ the published aggregate. The task records contain checkpoint histories but no
 full walker-by-iteration chains. [Source E16](../evidence/Evidence-Sources.md#e16)
 
 The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for all 222
-result artifacts, and [Evidence Sources](../evidence/Evidence-Sources.md) gives the exact
+artifacts in the earlier matched-model campaign; the MM-3 task matrix is
+listed separately. [Evidence Sources](../evidence/Evidence-Sources.md) gives the exact
 JSON pointer for each quantitative result family. [Source E1](../evidence/Evidence-Sources.md#e1)
 
 The exact commands for the current repository remain in

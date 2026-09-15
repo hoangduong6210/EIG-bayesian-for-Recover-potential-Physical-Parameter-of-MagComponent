@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import re
+import shutil
 from pathlib import Path
 
 import pytest
@@ -30,6 +31,95 @@ def test_split_retains_complete_paper_body():
     assert abstract.startswith("Magnetic-core models")
     assert body.startswith("# Introduction")
     assert "# Conclusion" in body
+
+
+def test_document_links_are_revision_bound_and_figures_prefer_vectors():
+    revision = "a" * 40
+    rendered = MODULE.render_document_markdown(
+        "[E16](../evidence/Evidence-Sources.md#e16)\n"
+        "![Study](../assets/study-workflow.png)\n", revision
+    )
+    assert f"/blob/{revision}/wiki/evidence/Evidence-Sources.md#e16" in rendered
+    assert "![Study](assets/study-workflow.pdf)" in rendered
+    assert "../" not in rendered
+
+
+def test_snapshot_inputs_bind_layout_bibliography_and_binary_assets():
+    inputs = MODULE.check()["wiki_inputs"]
+    for name in ("paper-layout.lua", "bibliography/IEEEtran.bst", "assets/study-workflow.pdf"):
+        assert inputs[name] == MODULE.sha256(WIKI / name)
+
+
+def test_ieee_projection_preserves_dois_and_adds_clickable_display():
+    source = (WIKI / "bibliography/references.bib").read_text()
+    rendered = MODULE.render_document_bibliography(source)
+    dois = re.findall(r"\bdoi\s*=\s*\{([^{}]+)\}", source)
+    assert len(dois) == 40
+    assert MODULE.bibliography_keys(WIKI / "bibliography/references.bib") == MODULE.citation_keys(
+        (WIKI / "manuscript/Full-Manuscript.md").read_text()
+    )
+    for doi in dois:
+        assert f"doi={{{doi}}}" in rendered
+        assert f"https://doi.org/{doi}" in rendered
+
+
+def test_ieee_projection_refuses_to_overwrite_an_existing_note():
+    with pytest.raises(MODULE.WikiError, match="already has a note"):
+        MODULE.render_document_bibliography("@article{x, doi={10.1234/example}, note={original}}")
+
+
+@pytest.fixture
+def archived_document(tmp_path):
+    names = ("main.pdf", "main.tex", "body.tex", "abstract.tex", "references.bib", "IEEEtran.bst", "main.bbl")
+    for name in names:
+        (tmp_path / name).write_text("fixture " + name)
+    inputs = {"manuscript/Full-Manuscript.md": "a" * 64}
+    record = {
+        "schema_version": "magnetic-paper-snapshot/1.0",
+        "document_release": {"kind": "journal", "name": "journal-test-2026", "source_direction": "wiki_to_document"},
+        "source": {"wiki_commit": "a" * 40, "wiki_tree_sha256": MODULE.aggregate_digest(inputs)},
+        "wiki_inputs": inputs,
+        "generated": {name: MODULE.sha256(tmp_path / name) for name in names},
+    }
+    (tmp_path / "snapshot.json").write_text(json.dumps(record))
+    return tmp_path
+
+
+def test_archived_snapshot_verification_does_not_depend_on_current_wiki(archived_document):
+    assert MODULE.verify_snapshot(archived_document)["verified_files"] == 7
+
+
+def test_archived_snapshot_rejects_modified_document(archived_document):
+    (archived_document / "main.pdf").write_text("changed")
+    with pytest.raises(MODULE.WikiError, match="missing or changed"):
+        MODULE.verify_snapshot(archived_document)
+
+
+def test_archived_snapshot_rejects_manifest_escape(archived_document):
+    path = archived_document / "snapshot.json"
+    record = json.loads(path.read_text())
+    record["generated"]["../outside.pdf"] = "a" * 64
+    path.write_text(json.dumps(record))
+    with pytest.raises(MODULE.WikiError, match="escapes"):
+        MODULE.verify_snapshot(archived_document)
+
+
+@pytest.mark.skipif(shutil.which("pandoc") is None, reason="optional document toolchain")
+def test_two_column_export_has_bounded_floats_and_retains_caption(tmp_path):
+    source = tmp_path / "body.md"
+    source.write_text(
+        "| Quantity | Result |\n|---|---|\n| Count | 5 |\n\n"
+        "Table: Paired count.\n\n![Evidence diagram](assets/study-workflow.pdf)\n"
+    )
+    output = tmp_path / "body.tex"
+    MODULE.run_pandoc(source, output)
+    rendered = output.read_text()
+    assert "\\begin{table*}" in rendered
+    assert "\\caption{Paired count.}" in rendered
+    assert "\\begin{figure*}" in rendered
+    assert "\\textwidth" in rendered
+    assert "longtable" not in rendered
+    assert "\\endhead" not in rendered
 
 
 def test_unresolved_citation_is_rejected():

@@ -21,6 +21,7 @@ pointer, scope, release identity, and checksum.
 | Reproduce or audit a result | [Reproduce and audit](../operations/Reproduce-and-Audit.md) | [Evidence ledger](../evidence/Evidence-Ledger.md) | Configuration-to-aggregate verification chain |
 | Prepare a submission | [Authoring and snapshots](../manuscript/Authoring-and-Snapshots.md) | [Paper export contract](../manuscript/Paper-Export-Contract.md) | Named conference or journal document release |
 | Join the project | [Start here](Start-Here.md) | [Contributing](../governance/Contributing.md) | Terminology, checks, and contribution boundaries |
+| Resume after the journal snapshot | [Research handoff](../status/Research-Handoff.md) | [Reproduce and audit](../operations/Reproduce-and-Audit.md) | Closed evidence, unfinished studies, and conditions for reopening |
 
 ## Find an answer by scientific question
 
@@ -35,14 +36,14 @@ pointer, scope, release identity, and checksum.
 | What happened in the first structural-mismatch campaign? | [MM-1 closeout](../experiments/Model-Mismatch-Preregistration.md#closeout) | [E10](../evidence/Evidence-Sources.md#e10) |
 | What happened in the independent successor? | [MM-2 protocol and closeout](../experiments/Model-Mismatch-V2-Preregistration.md#closeout) | [E11](../evidence/Evidence-Sources.md#e11) |
 | What did the rejected-state sampler diagnostic find? | [SparseMix-1 record](../experiments/Sparse-Posterior-Mixing-Preregistration.md#results) | [E12](../evidence/Evidence-Sources.md#e12) |
-| Which sampler is being tested next, and why? | [Endpoint-free pilot](../experiments/Sparse-Sampler-Pilot.md) | [E13](../evidence/Evidence-Sources.md#e13) |
+| Which sampler was selected, and why? | [Endpoint-free pilot](../experiments/Sparse-Sampler-Pilot.md) | [E13](../evidence/Evidence-Sources.md#e13) |
 | Did the selected sampler pass independent confirmation? | [SparseMix-2 result](../experiments/Sparse-Mixing-V2-Preregistration.md#result) | [E14](../evidence/Evidence-Sources.md#e14) |
 | What did the admitted model-mismatch campaign find? | [MM-3 result](../experiments/Model-Mismatch-V3-Preregistration.md#result) | [E16](../evidence/Evidence-Sources.md#e16) |
 
 ## Complete page directory
 
 The completed [sampler pilot](../experiments/Sparse-Sampler-Pilot.md) motivates
-the prospective [SparseMix-2 protocol](../experiments/Sparse-Mixing-V2-Preregistration.md).
+the independently completed [SparseMix-2 confirmation](../experiments/Sparse-Mixing-V2-Preregistration.md).
 The [MM-3 protocol and result](../experiments/Model-Mismatch-V3-Preregistration.md)
 records its checked prerequisites, analysis, failure rule, execution history
 and admitted result. [E15](../evidence/Evidence-Sources.md#e15) is the preceding
@@ -60,7 +61,7 @@ separate MM-3 outcome.
 | Results | [Scientific results](../results/Scientific-Results.md), [Scientific job results](../results/Scientific-Job-Results.md) |
 | Claims | [Current claims](../claims/Current-Claim-Language.md), [Claims and limits](../claims/Claims-and-Limits.md), [Limitations](../claims/Limitations.md), [Historical claims](../claims/Historical-Claim-Ledger.md) |
 | Evidence | [Evidence ledger](../evidence/Evidence-Ledger.md), [Evidence sources](../evidence/Evidence-Sources.md) |
-| Status | [Project status](../status/Project-Status.md) |
+| Status | [Project status](../status/Project-Status.md), [Research handoff](../status/Research-Handoff.md) |
 | Decisions | [Decision 0001](../decisions/0001-gate-aligned-objective.md) |
 | Reproduction | [Reproducibility](../operations/Reproducibility.md), [Reproduce and audit](../operations/Reproduce-and-Audit.md), [Research workflow](../operations/Research-Workflow.md) |
 | References | [References](../references/References.md), [Technical source map](../references/Technical-Source-Map.md) |
