@@ -8,12 +8,17 @@ version of the research.
 record. They are not edited to follow later wiki changes. The evidence identity
 used by a rendered record belongs in [`results.lock.yaml`](results.lock.yaml),
 while the current scientific manuscript and its active evidence binding are in
-[`wiki/`](../../wiki/).
+the [canonical Wiki manuscript](../../wiki/manuscript/Full-Manuscript.md).
 
-Future conference and journal documents must be generated from a reviewed
-wiki commit with `python wiki/build.py snapshot`. The generated PDF and
-`snapshot.json` are reviewed in staging and enter this directory only through
-an explicit document-release commit.
+Page 9 contains a historical paragraph about the A4 two-column layout and
+the absence of a page limit. It describes this archived render, not the
+current scientific argument or a current publication requirement. The PDF,
+source, and result lock are preserved without alteration.
+
+Future conference and journal documents are generated from a reviewed Wiki
+commit and archived in separate snapshot directories. They do not replace
+this record. The [document index](../README.md) identifies the available
+snapshots and their evidence boundaries.
 
 The immutable six-page artifact remains separately archived as the
 [`conference snapshot`](../conference_snapshot/README.md).

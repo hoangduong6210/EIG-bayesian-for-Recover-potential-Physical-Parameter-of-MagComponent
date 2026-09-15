@@ -1095,8 +1095,8 @@ Numerical results are bound to validated scientific freeze
 The freeze contains the 30 complete eight-policy trajectories, estimator
 states and scores, point-level 23-point holdouts, parameter-recovery records,
 and reconstructed endpoints. The sanitized v2 public audit bundle is available
-as a versioned release asset; the private production tree is not a public
-artifact. Raw measured curves remain governed by the
+as a versioned release asset. The public bundle omits machine-specific
+operational metadata. Raw measured curves remain governed by the
 cited upstream sources and are not redistributed as if produced by this study.
 [Release source E8](../evidence/Evidence-Sources.md#e8)
 
@@ -1110,8 +1110,3 @@ The [scientific job ledger](../results/Scientific-Job-Results.md) accounts for e
 result artifact in the release, and [Evidence Sources](../evidence/Evidence-Sources.md)
 maps each quantitative result family to an exact pointer in the
 disclosure-safe projection.
-
-The archived conference snapshot reports an earlier evidence state and is
-distinct from this expanded manuscript. Its archive does not establish
-conference acceptance or publication; the results here are identified by the
-separate evidence releases above.

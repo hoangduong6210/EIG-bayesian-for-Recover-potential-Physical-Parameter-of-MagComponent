@@ -29,10 +29,33 @@ verification; the PDF SHA-256 is
 `ecd55c4f3d17146287cbb22140f82e41bfdadfc15403845634068a24f8c00e33`.
 The source revision precedes this closeout entry: document and Wiki versions
 are intentionally distinct. The release manifest determines the exact
-evidence, figures, bibliography and PDF. The folder name is not an instruction to update an existing snapshot
-in place. Later research changes belong in the Wiki; a later submission needs
+evidence, figures, bibliography and PDF. Archived document records are
+immutable. Later research changes belong in the Wiki; a later submission needs
 another explicit document release. The Wiki remains the canonical scientific
 source. See [authoring and snapshots](../manuscript/Authoring-and-Snapshots.md).
+
+## Document revision and submission record
+
+The editorial successor `journal-20260915-full-r1` is prepared from the Wiki
+with unchanged numerical results, evidence releases, figures and bibliography.
+It replaces operational phrasing in the data-availability statement and
+removes discussion of conference publication status from the scientific body.
+The original journal PDF remains a separate record; archive navigation selects
+the revised document once its export has been verified.
+
+The legacy full-paper archive retains a layout-description paragraph on
+page 9. That paragraph describes the historical document, not a scientific
+result or the current submission format. The conference PDF's metadata names
+only one author, while its visible title page names three; the author list on
+the title page is authoritative for that historical record.
+
+The first journal export passed page-level layout inspection, embedded all
+17 fonts and produced no missing-character, unresolved-citation or
+overfull-box warnings. Its 49 bibliography entries were checked against
+external metadata; such checks establish bibliographic identity, not the
+validity of every cited conclusion. Funding, competing-interest and
+author-contribution declarations require author confirmation for the selected
+journal. No declaration is inferred from the document build.
 
 Closure does not authorize another compute campaign. Proposed work below has
 no admitted outcomes, and closure must not be described as completion of

@@ -60,5 +60,10 @@ tables remain prohibited.
 The production freeze intentionally retains machine and scheduler provenance
 and is not a public artifact. Public release uses the allowlisted projection in
 [`PUBLIC_AUDIT_BUNDLE.md`](PUBLIC_AUDIT_BUNDLE.md), which rewrites dependency
-links, recalculates hashes, and rejects machine paths, scheduler fields,
-credentials, internal phase labels, and automated-system provenance names.
+links and recalculates hashes. The projection excludes scheduler logs,
+machine paths, environment dumps, credentials, and operational status fields;
+its validation also checks for legacy operational labels and tool-name markers
+in result records. These record-level filters do not establish authorship or
+replace contribution and disclosure statements. Scientific attribution,
+software and data citations, and any required assistance disclosures remain
+part of the publication record.
